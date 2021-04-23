@@ -22,24 +22,17 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) => OrientationBuilder(
-        builder: (context, orientation) {
-          // SizerUtil().init(constraints, orientation);
-          return ScreenUtilInit(
-            designSize: const Size(1366, 844),
-            builder: () => GetMaterialApp(
-              title: 'MeoWoof',
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              builder: (BuildContext context, Widget child) {
-                return FlutterEasyLoading(child: child);
-              },
-              home: Container(),
-            ),
-          );
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      builder: () => GetMaterialApp(
+        title: 'MeoWoof',
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        builder: (BuildContext context, Widget child) {
+          return FlutterEasyLoading(child: child);
         },
+        home: Container(),
       ),
     );
   }

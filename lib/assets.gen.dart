@@ -16,12 +16,15 @@ class $ResourcesIconsGen {
   const $ResourcesIconsGen();
 
   AssetGenImage get icItemPlaceholder => const AssetGenImage('resources/icons/ic_item_placeholder.png');
+  AssetGenImage get icLogoBackground => const AssetGenImage('resources/icons/ic_logo_background.png');
+  AssetGenImage get icLogoBottom => const AssetGenImage('resources/icons/ic_logo_bottom.png');
 }
 
 class $ResourcesLangsGen {
   const $ResourcesLangsGen();
 
   String get en => 'resources/langs/en.json';
+  String get vn => 'resources/langs/vn.json';
 }
 
 class Assets {

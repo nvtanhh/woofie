@@ -1,8 +1,9 @@
 {
   "app_name": "MeoWoof",
-  "login": {
-    "terms_of_service": "Terms of Service",
-    "privacy_policy": "Privacy Policy",
-    "copyright": "Copyright 2020 Gii Account. All rights reserved."
+  "welcome": {
+    "social_network_for_pet": "Social Network For Pet",
+    "login": "Login",
+    "or": "Or",
+    "login_with": "Login with"
   }
 }

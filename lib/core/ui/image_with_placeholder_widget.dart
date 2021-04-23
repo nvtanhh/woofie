@@ -64,7 +64,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomLeft: Radius.circular(radius ?? bottomLeftRadius ?? 0),
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
-        color: UIColor.chryslerBurnishedSilver,
+        color: UIColor.primary,
       ),
       child: Center(child: Assets.resources.icons.icItemPlaceholder.image(height: 28.0.h, width: 28.0.w)),
     );

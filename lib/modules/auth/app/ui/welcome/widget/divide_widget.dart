@@ -13,7 +13,7 @@ class DivideWidget extends StatelessWidget {
           height: 2.0.h,
           color: UIColor.silver_sand,
         ),
-        Text(LocaleKeys.start_or.trans()),
+        Text(LocaleKeys.welcome_or.trans()),
         Container(
           height: 2.0.h,
           color: UIColor.silver_sand,
