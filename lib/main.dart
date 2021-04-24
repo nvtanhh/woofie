@@ -34,7 +34,8 @@ class MyApp extends StatelessWidget {
         builder: (BuildContext context, Widget child) {
           return FlutterEasyLoading(child: child);
         },
-        home: WelcomeWidget(),color: UIColor.white,
+        home: WelcomeWidget(),
+        color: UIColor.white,
       ),
     );
   }

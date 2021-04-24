@@ -2,8 +2,26 @@
   "app_name": "MeoWoof",
   "welcome": {
     "social_network_for_pet": "Social Network For Pet",
-    "login": "Login",
+    "LOGIN": "LOGIN",
+    "Login": "Login",
     "or": "Or",
     "login_with": "Login with"
+  },
+  "login": {
+    "email": "Email",
+    "password": "Password",
+    "forgot_password": "Forgot password?",
+    "no_account": "No account?",
+    "register_now": "Register now!",
+    "email_invalid": "Email invalid",
+    "password_invalid": "Password invalid! Must be longer 8 characters."
+  },
+  "register": {
+    "register": "Register",
+    "REGISTER": "REGISTER",
+    "have_account": "Have account?",
+    "login": "Login",
+    "name_account": "Name",
+    "empty": "Not empty!"
   }
 }
