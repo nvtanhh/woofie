@@ -24,7 +24,7 @@ class $ResourcesLangsGen {
   const $ResourcesLangsGen();
 
   String get en => 'resources/langs/en.json';
-  String get vn => 'resources/langs/vn.json';
+  String get vi => 'resources/langs/vi.json';
 }
 
 class Assets {

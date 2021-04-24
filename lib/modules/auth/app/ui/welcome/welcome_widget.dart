@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
@@ -20,56 +21,74 @@ class _WelcomeWidgetState extends BaseViewState<WelcomeWidget, WelcomeWidgetMode
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 148.h,
-          ),
-          Assets.resources.icons.icLogoBackground.image(width: 375.w, height: 245.h),
-          Text(
-            LocaleKeys.app_name.trans(),
-            style: UITextStyle.text_header_24_w700,
-          ),
-          SizedBox(
-            height: 5.h,
-          ),
-          Text(
-            LocaleKeys.welcome_social_network_for_pet.trans(),
-            style: UITextStyle.text_body_14_w600,
-          ),
-          ButtonWidget(
-            height: 50.h,
-            width: 315.w,
-            title: LocaleKeys.welcome_login.trans(),
-            titleStyle: UITextStyle.white_18_w700,
-            onPress: () => viewModel.onLoginClick(),
-          ),
-          DivideWidget(),
-          SizedBox(
-            height: 24.h,
-          ),
-          Row(
-            children: [
-              ButtonLoginWithWidget(
-                width: 150.w,
-                height: 74.h,
-                backgroundColor: UIColor.blue_yonder,
-                callBack: viewModel.onLoginWithFbClick,
-                target: "Facebook",
+      child: Scaffold(
+        backgroundColor: UIColor.white,
+        body: Column(
+          children: [
+            SizedBox(
+              height: 148.h,
+            ),
+            Assets.resources.icons.icLogoBackground.image(height: 245.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.w),
+              child: Column(
+                children: [
+                  Text(
+                    LocaleKeys.app_name.trans(),
+                    style: UITextStyle.text_header_24_w700,
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    LocaleKeys.welcome_social_network_for_pet.trans(),
+                    style: UITextStyle.text_body_14_w600,
+                  ),
+                  SizedBox(
+                    height: 52.h,
+                  ),
+                  ButtonWidget(
+                    height: 50.h,
+                    width: 315.w,
+                    borderRadius: 10.r,
+                    title: LocaleKeys.welcome_LOGIN.trans(),
+                    titleStyle: UITextStyle.white_18_w700,
+                    onPress: () => viewModel.onLoginClick(),
+                  ),
+                  SizedBox(
+                    height: 22.h,
+                  ),
+                  DivideWidget(),
+                  SizedBox(
+                    height: 24.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ButtonLoginWithWidget(
+                        width: 150.w,
+                        height: 74.h,
+                        backgroundColor: UIColor.blue_yonder,
+                        callBack: viewModel.onLoginWithFbClick,
+                        target: "Facebook",
+                      ),
+                      SizedBox(
+                        width: 15.w,
+                      ),
+                      ButtonLoginWithWidget(
+                        width: 150.w,
+                        height: 74.h,
+                        backgroundColor: UIColor.cinnabar,
+                        callBack: viewModel.onLoginWithFbClick,
+                        target: "Google",
+                      ),
+                    ],
+                  )
+                ],
               ),
-              SizedBox(
-                width: 15.w,
-              ),
-              ButtonLoginWithWidget(
-                width: 150.w,
-                height: 74.h,
-                backgroundColor: UIColor.cinnabar,
-                callBack: viewModel.onLoginWithFbClick,
-                target: "Google",
-              ),
-            ],
-          )
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
