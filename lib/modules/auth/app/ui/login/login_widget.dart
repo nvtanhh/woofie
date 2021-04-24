@@ -120,50 +120,51 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                               controller: viewModel.passwordEditingController,
                               validator: (password) => viewModel.passwordValidate(password),
                               decoration: InputDecoration(
-                                  hintText: LocaleKeys.login_password.trans(),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    borderSide: BorderSide(
-                                      color: UIColor.silver_sand,
+                                hintText: LocaleKeys.login_password.trans(),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  borderSide: BorderSide(
+                                    color: UIColor.silver_sand,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  borderSide: BorderSide(
+                                    color: UIColor.silver_sand,
+                                  ),
+                                ),
+                                prefixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      width: 18.0.w,
+                                    ),
+                                    Icon(
+                                      Icons.lock_open_outlined,
+                                      color: UIColor.text_header,
+                                    ),
+                                    SizedBox(
+                                      width: 12.0.w,
+                                    ),
+                                    Container(
+                                      height: 30.h,
+                                      width: 1.0.w,
+                                      color: UIColor.text_secondary,
+                                    ),
+                                    SizedBox(
+                                      width: 12.0.w,
+                                    ),
+                                  ],
+                                ),
+                                suffixIcon: InkWell(
+                                  onTap: viewModel.onEyeClick,
+                                  child: Obx(
+                                    () => Icon(
+                                      viewModel.showPassword ? Icons.remove_red_eye_outlined : Icons.remove_red_eye,
                                     ),
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    borderSide: BorderSide(
-                                      color: UIColor.silver_sand,
-                                    ),
-                                  ),
-                                  prefixIcon: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SizedBox(
-                                        width: 18.0.w,
-                                      ),
-                                      Icon(
-                                        Icons.lock_open_outlined,
-                                        color: UIColor.text_header,
-                                      ),
-                                      SizedBox(
-                                        width: 12.0.w,
-                                      ),
-                                      Container(
-                                        height: 30.h,
-                                        width: 1.0.w,
-                                        color: UIColor.text_secondary,
-                                      ),
-                                      SizedBox(
-                                        width: 12.0.w,
-                                      ),
-                                    ],
-                                  ),
-                                  suffixIcon: InkWell(
-                                    onTap: viewModel.onEyeClick,
-                                    child: Obx(
-                                      () => Icon(
-                                        viewModel.showPassword ? Icons.remove_red_eye_outlined : Icons.remove_red_eye,
-                                      ),
-                                    ),
-                                  )),
+                                ),
+                              ),
                               obscureText: viewModel.showPassword,
                             ),
                           ),
