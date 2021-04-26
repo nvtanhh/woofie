@@ -23,5 +23,8 @@
     "login": "Đăng nhập",
     "name_account": "Tên tài khoản",
     "empty": "Không được để trống"
+  },
+  "add_pet": {
+    "add_pet": "Thêm thú cưng"
   }
 }

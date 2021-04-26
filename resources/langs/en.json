@@ -23,5 +23,8 @@
     "login": "Login",
     "name_account": "Name",
     "empty": "Not empty!"
+  },
+  "add_pet": {
+    "add_pet": "Add pet"
   }
 }

@@ -23,4 +23,6 @@ abstract class LocaleKeys {
   static const register_name_account = 'register.name_account';
   static const register_empty = 'register.empty';
   static const register = 'register';
+  static const add_pet_add_pet = 'add_pet.add_pet';
+  static const add_pet = 'add_pet';
 }

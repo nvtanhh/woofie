@@ -39,9 +39,7 @@ class RegisterWidgetModel extends BaseViewModel {
 
   void onRegisterClick() {
     if (formKey.currentState.validate()) {
-    } else {
-
-    }
+    } else {}
   }
 
   void onGoToLoginClick() {
