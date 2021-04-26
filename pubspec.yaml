@@ -57,7 +57,8 @@ dependencies:
   cupertino_icons: ^1.0.0
   #email validate
   email_validator: ^1.0.6
-
+  #The hasura_connect is designed to facilitate Hasura's integration with Flutter applications, leveraging the full power of Graphql.
+  hasura_connect: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -74,6 +75,10 @@ dev_dependencies:
 
   # The Flutter code generator for your assets, fonts, colors, … — Get rid of all String-based APIs.
   flutter_gen: ^1.2.0
+  firebase_core: ^0.7.0
+  firebase_auth: ^0.20.1
+  google_sign_in: ^4.5.9
+  flutter_facebook_auth: ^2.0.2+1
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_gen:

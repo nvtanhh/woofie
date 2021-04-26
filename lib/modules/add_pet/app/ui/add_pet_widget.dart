@@ -26,9 +26,7 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
           elevation: 0,
         ),
         body: Column(
-          children: [
-
-          ],
+          children: [],
         ),
       ),
     );
