@@ -28,7 +28,6 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: 94.h,
@@ -56,7 +55,6 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                       height: 87.h,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           LocaleKeys.welcome_Login.trans(),
@@ -78,13 +76,13 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                 hintText: LocaleKeys.login_email.trans(),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
@@ -94,7 +92,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                     SizedBox(
                                       width: 18.0.w,
                                     ),
-                                    Icon(
+                                    const Icon(
                                       Icons.email_outlined,
                                       color: UIColor.text_header,
                                     ),
@@ -123,13 +121,13 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                 hintText: LocaleKeys.login_password.trans(),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
@@ -139,7 +137,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                     SizedBox(
                                       width: 18.0.w,
                                     ),
-                                    Icon(
+                                    const Icon(
                                       Icons.lock_open_outlined,
                                       color: UIColor.text_header,
                                     ),

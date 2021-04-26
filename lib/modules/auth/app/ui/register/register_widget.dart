@@ -28,7 +28,6 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: 94.h,
@@ -56,7 +55,6 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                       height: 60.h,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           LocaleKeys.register_register.trans(),
@@ -78,13 +76,13 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                 hintText: LocaleKeys.register_name_account.trans(),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
@@ -94,7 +92,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                     SizedBox(
                                       width: 18.0.w,
                                     ),
-                                    Icon(
+                                    const Icon(
                                       Icons.person_outline,
                                       color: UIColor.text_header,
                                     ),
@@ -122,13 +120,13 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                 hintText: LocaleKeys.login_email.trans(),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
@@ -138,7 +136,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                     SizedBox(
                                       width: 18.0.w,
                                     ),
-                                    Icon(
+                                    const Icon(
                                       Icons.email_outlined,
                                       color: UIColor.text_header,
                                     ),
@@ -167,13 +165,13 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                   hintText: LocaleKeys.login_password.trans(),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.r),
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                       color: UIColor.silver_sand,
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.r),
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                       color: UIColor.silver_sand,
                                     ),
                                   ),
@@ -183,7 +181,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                       SizedBox(
                                         width: 18.0.w,
                                       ),
-                                      Icon(
+                                      const Icon(
                                         Icons.lock_open_outlined,
                                         color: UIColor.text_header,
                                       ),

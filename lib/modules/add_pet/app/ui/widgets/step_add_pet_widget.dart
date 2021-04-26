@@ -7,7 +7,7 @@ class StepAddPetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 10,
       child: Row(
         children: [

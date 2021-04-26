@@ -4,7 +4,7 @@ import 'package:suga_core/suga_core.dart';
 
 class WelcomeWidgetModel extends BaseViewModel {
   void onLoginClick() {
-    Get.to(LoginWidget());
+    Get.to(() => LoginWidget());
   }
 
   void onLoginWithFbClick() {}

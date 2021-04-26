@@ -7,7 +7,7 @@ import 'package:suga_core/suga_core.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 
 class LoginWidgetModel extends BaseViewModel {
-  RxBool _showPassword = RxBool(false);
+  final RxBool _showPassword = RxBool(false);
   final emailEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -43,6 +43,6 @@ class LoginWidgetModel extends BaseViewModel {
   }
 
   void onRegisterClick() {
-    Get.to(RegisterWidget());
+    Get.to(() => RegisterWidget());
   }
 }

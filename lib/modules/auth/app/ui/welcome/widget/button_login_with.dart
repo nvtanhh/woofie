@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:meowoof/core/extensions/string_ext.dart';
 
 class ButtonLoginWithWidget extends StatelessWidget {
   final Function callBack;
@@ -17,15 +17,14 @@ class ButtonLoginWithWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ButtonWidget(
-      onPress: callBack,
       width: width,
       height: height,
+      onPress: () => callBack(),
       backgroundColor: backgroundColor,
       borderRadius: 10.0.r,
       contentWidget: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               LocaleKeys.welcome_login_with.trans(),
