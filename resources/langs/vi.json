@@ -1,0 +1,30 @@
+{
+  "app_name": "MeoWoof",
+  "welcome": {
+    "social_network_for_pet": "Mạng xã hội cho thú cưng",
+    "LOGIN": "ĐĂNG NHẬP",
+    "Login": "Đăng nhập",
+    "or": "Hoặc",
+    "login_with": "Đăng nhập với"
+  },
+  "login": {
+    "email": "Email",
+    "password": "Mật khẩu",
+    "forgot_password": "Quên mật khẩu?",
+    "no_account": "Không có tài khoản?",
+    "register_now": "Đăng ký ngay!",
+    "email_invalid": "Email không hợp lệ!",
+    "password_invalid": "Mật khẩu không hợp lệ! Phải dài hơn 8 ký tự."
+  },
+  "register": {
+    "register": "Đăng ký",
+    "REGISTER": "ĐĂNG KÝ",
+    "have_account": "Đã có tài khoản?",
+    "login": "Đăng nhập",
+    "name_account": "Tên tài khoản",
+    "empty": "Không được để trống"
+  },
+  "add_pet": {
+    "add_pet": "Thêm thú cưng"
+  }
+}

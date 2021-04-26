@@ -1,8 +1,30 @@
 {
   "app_name": "MeoWoof",
+  "welcome": {
+    "social_network_for_pet": "Social Network For Pet",
+    "LOGIN": "LOGIN",
+    "Login": "Login",
+    "or": "Or",
+    "login_with": "Login with"
+  },
   "login": {
-    "terms_of_service": "Terms of Service",
-    "privacy_policy": "Privacy Policy",
-    "copyright": "Copyright 2020 Gii Account. All rights reserved."
+    "email": "Email",
+    "password": "Password",
+    "forgot_password": "Forgot password?",
+    "no_account": "No account?",
+    "register_now": "Register now!",
+    "email_invalid": "Email invalid",
+    "password_invalid": "Password invalid! Must be longer 8 characters."
+  },
+  "register": {
+    "register": "Register",
+    "REGISTER": "REGISTER",
+    "have_account": "Have account?",
+    "login": "Login",
+    "name_account": "Name",
+    "empty": "Not empty!"
+  },
+  "add_pet": {
+    "add_pet": "Add pet"
   }
 }

@@ -20,7 +20,7 @@ class RemoveButtonWidget extends StatelessWidget {
           width: 20.0.w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0.w),
-            color: UIColor.red,
+            color: UIColor.accent,
           ),
           child: Icon(
             Icons.close,

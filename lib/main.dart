@@ -4,6 +4,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
+import 'package:meowoof/theme/ui_color.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,9 +13,9 @@ void main() {
   setupEasyLoading();
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en')],
+      supportedLocales: const [Locale('vi')],
       path: 'resources/langs',
-      fallbackLocale: const Locale('en'),
+      fallbackLocale: const Locale('vi'),
       child: MyApp(),
     ),
   );
@@ -22,24 +24,18 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) => OrientationBuilder(
-        builder: (context, orientation) {
-          // SizerUtil().init(constraints, orientation);
-          return ScreenUtilInit(
-            designSize: const Size(1366, 844),
-            builder: () => GetMaterialApp(
-              title: 'MeoWoof',
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              builder: (BuildContext context, Widget child) {
-                return FlutterEasyLoading(child: child);
-              },
-              home: Container(),
-            ),
-          );
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      builder: () => GetMaterialApp(
+        title: 'MeoWoof',
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        builder: (BuildContext context, Widget child) {
+          return FlutterEasyLoading(child: child);
         },
+        home: WelcomeWidget(),
+        color: UIColor.white,
       ),
     );
   }
