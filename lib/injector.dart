@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:meowoof/configs/app_config.dart';
 import 'package:meowoof/configs/backend_config.dart';
+import 'package:meowoof/core/interceptors/jwt_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -54,5 +57,13 @@ abstract class RegisterModule {
       verbose: AppConfig.LOG_LEVEL == Level.verbose,
     );
     return wrapper;
+  }
+
+  @lazySingleton
+  FirebaseAuth getFirebaseAuth() => FirebaseAuth.instance;
+
+  @lazySingleton
+  HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {
+    return HasuraConnect(BackendConfig.BASE_HASURA_URL, interceptors: [interceptor]);
   }
 }

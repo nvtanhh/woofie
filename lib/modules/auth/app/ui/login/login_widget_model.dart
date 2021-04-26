@@ -43,6 +43,6 @@ class LoginWidgetModel extends BaseViewModel {
   }
 
   void onRegisterClick() {
-    Get.to(RegisterWidget());
+    Get.to(()=>RegisterWidget());
   }
 }

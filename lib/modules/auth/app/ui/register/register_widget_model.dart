@@ -6,7 +6,7 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:suga_core/suga_core.dart';
 
 class RegisterWidgetModel extends BaseViewModel {
-  RxBool _showPassword = RxBool(false);
+  final RxBool _showPassword = RxBool(false);
   final emailEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
   final nameEditingController = TextEditingController();

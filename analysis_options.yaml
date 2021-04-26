@@ -1,0 +1,30 @@
+include: package:lint/analysis_options.yaml
+linter:
+  rules:
+    - annotate_overrides
+    - avoid_void_async
+    - prefer_interpolation_to_compose_strings
+    - unnecessary_new
+    - sort_child_properties_last
+    - unawaited_futures
+    - await_only_futures
+    - unnecessary_await_in_return
+analyzer:
+  exclude:
+    - '**/*.g.dart'
+    - 'lib/injector.config.dart'
+    - 'lib/locale_keys.g.dart'
+    - 'lib/configs/app_config.dart'
+    - 'lib/configs/backend_config.dart'
+    - 'lib/theme/ui_color.dart'
+    - 'lib/theme/ui_text_style.dart'
+    - 'deploy/*'
+  errors:
+    annotate_overrides: warning
+    avoid_void_async: error
+    prefer_interpolation_to_compose_strings: warning
+    unnecessary_new: warning
+    sort_child_properties_last: warning
+    unawaited_futures: error
+    await_only_futures: warning
+    unnecessary_await_in_return: warning
