@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget_model.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/widget/button_login_with.dart';
@@ -78,7 +79,7 @@ class _WelcomeWidgetState extends BaseViewState<WelcomeWidget, WelcomeWidgetMode
                         width: 150.w,
                         height: 74.h,
                         backgroundColor: UIColor.cinnabar,
-                        callBack: viewModel.onLoginWithFbClick,
+                        callBack: viewModel.onLoginGoogleClick,
                         target: "Google",
                       ),
                     ],
@@ -93,5 +94,5 @@ class _WelcomeWidgetState extends BaseViewState<WelcomeWidget, WelcomeWidgetMode
   }
 
   @override
-  WelcomeWidgetModel createViewModel() => WelcomeWidgetModel();
+  WelcomeWidgetModel createViewModel() => injector<WelcomeWidgetModel>();
 }

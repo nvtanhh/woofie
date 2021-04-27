@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
@@ -20,6 +23,10 @@ void setupInjector() => $initGetIt(injector, environment: Environment.dev);
 
 @module
 abstract class RegisterModule {
+  @lazySingleton
+  @preResolve
+  Future<FirebaseApp> getFirebaseApp() async => Firebase.initializeApp();
+
   @lazySingleton
   @preResolve
   Future<SharedPreferences> getSharePreferences() async => SharedPreferences.getInstance();
@@ -61,6 +68,12 @@ abstract class RegisterModule {
 
   @lazySingleton
   FirebaseAuth getFirebaseAuth() => FirebaseAuth.instance;
+
+  @lazySingleton
+  GoogleSignIn getGoogleSignIn() => GoogleSignIn();
+
+  @lazySingleton
+  FacebookLogin getFacebookLogin() => FacebookLogin();
 
   @lazySingleton
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {
