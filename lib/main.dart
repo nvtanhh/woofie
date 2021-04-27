@@ -4,7 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:meowoof/injector.dart';
-import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
+import 'package:meowoof/modules/splash/app/ui/splash_widget.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 void main() {
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         builder: (BuildContext context, Widget child) {
           return FlutterEasyLoading(child: child);
         },
-        home: WelcomeWidget(),
+        home: SplashWidget(),
         color: UIColor.white,
       ),
     );

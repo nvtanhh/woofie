@@ -38,4 +38,8 @@ class AuthDatasource {
     }
     return user;
   }
+
+  Future logout() async {
+    return _firebaseAuth.signOut();
+  }
 }

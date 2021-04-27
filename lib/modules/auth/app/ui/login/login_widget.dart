@@ -218,6 +218,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                 Assets.resources.icons.icLogoBottom.image(
                   height: 180.h,
                   width: Get.width,
+                  fit: BoxFit.fill,
                 )
               ],
             ),

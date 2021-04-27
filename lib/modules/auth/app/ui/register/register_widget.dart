@@ -246,6 +246,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                 Assets.resources.icons.icLogoBottom.image(
                   height: 140.h,
                   width: Get.width,
+                  fit: BoxFit.fill,
                 )
               ],
             ),

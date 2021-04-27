@@ -21,18 +21,14 @@ class WelcomeWidgetModel extends BaseViewModel {
   Future onLoginWithFbClick() async {
     await call(
       () async => user = await _loginWithFacebookUsecase.call(),
-      onSuccess: () {
-
-      },
+      onSuccess: () {},
     );
   }
 
   Future onLoginGoogleClick() async {
     await call(
       () async => user = await _loginWithGoogleUsecase.call(),
-      onSuccess: () {
-
-      },
+      onSuccess: () {},
     );
   }
 }
