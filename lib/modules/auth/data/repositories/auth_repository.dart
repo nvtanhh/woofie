@@ -15,4 +15,12 @@ class AuthRepository {
   Future<User> loginWithFacebook() {
     return _authDatasource.loginWithFacebook();
   }
+
+  Future logout() {
+    return _authDatasource.logout();
+  }
+
+  Future<User> loginWithEmailPassword(String email, String password) {
+    return _authDatasource.loginWithEmailPassword(email, password);
+  }
 }

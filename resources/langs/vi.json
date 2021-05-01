@@ -25,6 +25,18 @@
     "empty": "Không được để trống"
   },
   "add_pet": {
-    "add_pet": "Thêm thú cưng"
+    "add_pet": "Thêm thú cưng",
+    "do_not_have_pet": "Tôi chưa có thú cưng",
+    "unknown": "Không biết",
+    "continue": "Tiếp tục",
+    "done": "Hoàn tất",
+    "select_pet_breed": "Chọn giống",
+    "base_info": "Thông tin cơ bản",
+    "avatar": "Ảnh đại diện",
+    "name": "Tên",
+    "male": "Đực",
+    "female": "Cái",
+    "age": "Tuổi",
+    "gender": "Giới tính"
   }
 }

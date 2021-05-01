@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/add_pet/app/ui/add_pet_widget.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_facebook_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_google_usecase.dart';
@@ -21,14 +22,18 @@ class WelcomeWidgetModel extends BaseViewModel {
   Future onLoginWithFbClick() async {
     await call(
       () async => user = await _loginWithFacebookUsecase.call(),
-      onSuccess: () {},
+      onSuccess: () {
+        Get.offAll(() => AddPetWidget());
+      },
     );
   }
 
   Future onLoginGoogleClick() async {
     await call(
       () async => user = await _loginWithGoogleUsecase.call(),
-      onSuccess: () {},
+      onSuccess: () {
+        Get.offAll(() => AddPetWidget());
+      },
     );
   }
 }

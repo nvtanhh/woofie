@@ -56,19 +56,30 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
-  #email validate
+
+  # Email validate
   email_validator: ^1.0.6
-  #The hasura_connect is designed to facilitate Hasura's integration with Flutter applications, leveraging the full power of Graphql.
+
+  # The hasura_connect is designed to facilitate Hasura's integration with Flutter applications, leveraging the full power of Graphql.
   hasura_connect: ^2.0.1
 
+  # A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
   firebase_core: ^0.7.0
-#
+
+  # A Flutter plugin to use the Firebase Authentication API.
   firebase_auth: ^0.20.1
-#
+
+  # A Flutter plugin for Google Sign In.
   google_sign_in: ^4.5.9
-#
+
+  # A Flutter plugin for using the native Facebook Login SDKs on Android and iOS.
   flutter_facebook_login: ^3.0.0
 
+  # Toast Library for Flutter
+  fluttertoast: ^7.1.8
+
+  # A Flutter plugin for iOS and Android for picking images from the image library, and taking new pictures with the camera.
+  image_picker: ^0.6.7+22
 dev_dependencies:
   flutter_test:
     sdk: flutter

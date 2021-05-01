@@ -14,5 +14,11 @@ class UITextStyle {
   static TextStyle text_body_16_w700 = TextStyle(color: UIColor.text_body, fontSize: 16.0.sp, fontWeight: FontWeight.w700);
   static TextStyle white_18_w700 = TextStyle(color: UIColor.white, fontSize: 18.0.sp, fontWeight: FontWeight.w700);
   static TextStyle white_12_w500 = TextStyle(color: UIColor.white, fontSize: 12.0.sp, fontWeight: FontWeight.w500);
+  static TextStyle white_18_w500 = TextStyle(color: UIColor.white, fontSize: 18.0.sp, fontWeight: FontWeight.w500);
   static TextStyle primary_14_w600 = TextStyle(color: UIColor.primary, fontSize: 14.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle primary_12_w500 = TextStyle(color: UIColor.primary, fontSize: 12.0.sp, fontWeight: FontWeight.w500);
+  static TextStyle text_secondary_18_w600 = TextStyle(color: UIColor.text_secondary, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle accent2_14_w600 = TextStyle(color: UIColor.accent2, fontSize: 14.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle accent2_18_w500 = TextStyle(color: UIColor.accent2, fontSize: 18.0.sp, fontWeight: FontWeight.w500);
+  static TextStyle text_body_18_w500 = TextStyle(color: UIColor.text_body, fontSize: 18.0.sp, fontWeight: FontWeight.w500);
 }

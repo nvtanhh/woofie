@@ -42,4 +42,9 @@ class AuthDatasource {
   Future logout() async {
     return _firebaseAuth.signOut();
   }
+
+  Future<User> loginWithEmailPassword(String email, String password) async {
+    final UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+    return userCredential.user;
+  }
 }

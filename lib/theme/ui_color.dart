@@ -13,4 +13,6 @@ class UIColor {
   static const Color silver_sand = Color(0xFFC4C4C4);
   static const Color blue_yonder = Color(0xFF4267B2);
   static const Color cinnabar = Color(0xFFDB4437);
+  static const Color antique_white = Color(0xFFFAEBD5);
+  static const Color alice_blue = Color(0xFFEDF1F5);
 }

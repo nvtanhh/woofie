@@ -21,6 +21,7 @@ class _SplashWidgetState extends BaseViewState<SplashWidget, SplashWidgetModel> 
     viewModel.checkLogged();
     super.loadArguments();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
