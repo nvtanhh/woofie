@@ -26,8 +26,7 @@ class AddPetDatasource {
   }
 
   Future<List<PetBreed>> getPetBreeds(int petTypeId) async {
-    final queryGetPetBreeds =
-    """
+    final queryGetPetBreeds = """
     query getpet {
     pet_breeds(where: {id_pet_type: {_eq: $petTypeId}}) {
     avatar
@@ -41,10 +40,21 @@ class AddPetDatasource {
     final listPetType = GetMapFromHasura.getMap(data as Map)["pet_breeds"] as List;
     return listPetType.map((e) => PetBreed.fromJson(e as Map<String, dynamic>)).toList();
   }
-  Future<bool> addPet(Pet pet){
-    final queryGetPetBreeds =
-    """
-    
+
+  Future<bool> addPet(Pet pet) async {
+    final mutationInsertPet = """
+    mutation insert_pet {
+    insert_pets(objects: {avatar: "${pet.avatar}", gender: ${pet.gender.index}, id_pet_breed: ${pet.petBreedId}, id_pet_type: ${pet.petTypeId}, name: "${pet.name}"}) {
+    affected_rows
+    }
+    }
     """;
+    final data = await _hasuraConnect.mutation(mutationInsertPet);
+    final affected_rows = GetMapFromHasura.getMap(data as Map)["insert_pets"] as Map;
+    if ((affected_rows["affected_rows"] as int) >= 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

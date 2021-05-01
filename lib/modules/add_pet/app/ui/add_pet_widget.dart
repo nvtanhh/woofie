@@ -123,7 +123,7 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                   break;
                 case 3:
                   return TextButton(
-                    onPressed: () => viewModel.onDone,
+                    onPressed: () => viewModel.onDone(),
                     style: TextButton.styleFrom(
                       backgroundColor: UIColor.primary,
                       padding: EdgeInsets.zero,

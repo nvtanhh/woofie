@@ -26,6 +26,7 @@ class JwtInterceptor extends Interceptor {
     await Fluttertoast.showToast(
       msg: request.message,
     );
+    printError(info: request.message);
   }
 
   @override

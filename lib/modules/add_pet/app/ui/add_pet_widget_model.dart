@@ -6,6 +6,7 @@ import 'package:meowoof/modules/add_pet/domain/models/gender.dart';
 import 'package:meowoof/modules/add_pet/domain/models/pet.dart';
 import 'package:meowoof/modules/add_pet/domain/models/pet_breed.dart';
 import 'package:meowoof/modules/add_pet/domain/models/pet_type.dart';
+import 'package:meowoof/modules/add_pet/domain/usecases/add_pet_usecase.dart';
 import 'package:meowoof/modules/add_pet/domain/usecases/get_pet_breeds_usecase.dart';
 import 'package:meowoof/modules/add_pet/domain/usecases/get_pet_types_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -14,6 +15,7 @@ import 'package:suga_core/suga_core.dart';
 class AddPetWidgetModel extends BaseViewModel {
   final GetPetTypesUsecase _getPetTypesUsecase;
   final GetPetBreedUsecase _getPetBreedUsecase;
+  final AddPetUsecase _addPetUsecase;
   final RxList<PetType> _petTypes = RxList([]);
   final RxList<PetBreed> _petBreeds = RxList([]);
   final RxInt _currentStepAddPet = RxInt(1);
@@ -23,7 +25,7 @@ class AddPetWidgetModel extends BaseViewModel {
   PetBreed petBreedSelected;
   Pet pet;
 
-  AddPetWidgetModel(this._getPetTypesUsecase, this._getPetBreedUsecase);
+  AddPetWidgetModel(this._getPetTypesUsecase, this._getPetBreedUsecase, this._addPetUsecase);
 
   @override
   void initState() {
@@ -70,7 +72,13 @@ class AddPetWidgetModel extends BaseViewModel {
     }
   }
 
-  void onDone() {}
+  void onDone() {
+    call(
+      () => _addPetUsecase.call(pet),
+      onSuccess: () {},
+      onFailure: (err) {},
+    );
+  }
 
   void onNameChange(String name) {
     pet.name = name;

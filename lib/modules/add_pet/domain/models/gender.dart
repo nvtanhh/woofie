@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
 enum Gender {
-  @JsonValue(1)
+  @JsonValue(0)
   male,
-  @JsonValue(2)
+  @JsonValue(1)
   female,
-  @JsonValue(3)
+  @JsonValue(2)
   unknown,
 }
