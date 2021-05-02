@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget_model.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -21,6 +22,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: UIColor.white,
+        resizeToAvoidBottomInset: false,
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
           child: SingleChildScrollView(
@@ -229,5 +231,5 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
   }
 
   @override
-  LoginWidgetModel createViewModel() => LoginWidgetModel();
+  LoginWidgetModel createViewModel() => injector<LoginWidgetModel>();
 }

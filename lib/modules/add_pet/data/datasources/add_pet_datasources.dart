@@ -50,8 +50,8 @@ class AddPetDatasource {
     }
     """;
     final data = await _hasuraConnect.mutation(mutationInsertPet);
-    final affected_rows = GetMapFromHasura.getMap(data as Map)["insert_pets"] as Map;
-    if ((affected_rows["affected_rows"] as int) >= 1) {
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pets"] as Map;
+    if ((affectedRows["affected_rows"] as int) >= 1) {
       return true;
     } else {
       return false;

@@ -23,6 +23,7 @@ class _WelcomeWidgetState extends BaseViewState<WelcomeWidget, WelcomeWidgetMode
     return SafeArea(
       child: Scaffold(
         backgroundColor: UIColor.white,
+        resizeToAvoidBottomInset: false,
         body: Column(
           children: [
             SizedBox(

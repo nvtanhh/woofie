@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/register/register_widget_model.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -257,5 +258,5 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
   }
 
   @override
-  RegisterWidgetModel createViewModel() => RegisterWidgetModel();
+  RegisterWidgetModel createViewModel() => injector<RegisterWidgetModel>();
 }

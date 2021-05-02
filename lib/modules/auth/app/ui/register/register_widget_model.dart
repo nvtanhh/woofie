@@ -1,16 +1,26 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/auth/domain/usecases/register_usecase.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
+@injectable
 class RegisterWidgetModel extends BaseViewModel {
+  final RegisterUsecase _registerUsecase;
   final RxBool _showPassword = RxBool(false);
   final emailEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
   final nameEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  User user;
+
+  RegisterWidgetModel(this._registerUsecase);
 
   String emailValidate(String email) {
     if (EmailValidator.validate(email)) {
@@ -39,14 +49,40 @@ class RegisterWidgetModel extends BaseViewModel {
 
   void onRegisterClick() {
     if (formKey.currentState.validate()) {
-    } else {}
+      call(
+        () async {
+          user = await _registerUsecase.call(emailEditingController.text, passwordEditingController.text);
+        },
+        onSuccess: () {
+          Fluttertoast.showToast(msg: "Đăng ký thành công");
+        },
+        onFailure: (err) {
+          Get.snackbar(
+            "Error",
+            (err as FirebaseAuthException).code,
+            duration: const Duration(seconds: 4),
+            backgroundColor: UIColor.primary,
+            colorText: UIColor.white,
+          );
+          // switch ((err as FirebaseAuthException).code) {
+          //   case "email-already-in-use":
+          //     Get.snackbar("Error", "email-already-in-use")
+          //     break;
+          //   case "invalid-email":
+          //     break;
+          //   case "operation-not-allowed":
+          //     break;
+          //   case "weak-password":
+          //     break;
+          // }
+        },
+      );
+    }
   }
 
   void onGoToLoginClick() {
     Get.back();
   }
-
-  void onForgotPasswordClick() {}
 
   bool get showPassword => _showPassword.value;
 
