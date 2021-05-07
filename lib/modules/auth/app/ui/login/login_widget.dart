@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget_model.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -21,6 +22,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: UIColor.white,
+        resizeToAvoidBottomInset: false,
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
           child: SingleChildScrollView(
@@ -28,7 +30,6 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: 94.h,
@@ -56,7 +57,6 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                       height: 87.h,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           LocaleKeys.welcome_Login.trans(),
@@ -78,13 +78,13 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                 hintText: LocaleKeys.login_email.trans(),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
@@ -94,7 +94,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                     SizedBox(
                                       width: 18.0.w,
                                     ),
-                                    Icon(
+                                    const Icon(
                                       Icons.email_outlined,
                                       color: UIColor.text_header,
                                     ),
@@ -123,13 +123,13 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                 hintText: LocaleKeys.login_password.trans(),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: UIColor.silver_sand,
                                   ),
                                 ),
@@ -139,7 +139,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                     SizedBox(
                                       width: 18.0.w,
                                     ),
-                                    Icon(
+                                    const Icon(
                                       Icons.lock_open_outlined,
                                       color: UIColor.text_header,
                                     ),
@@ -220,6 +220,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                 Assets.resources.icons.icLogoBottom.image(
                   height: 180.h,
                   width: Get.width,
+                  fit: BoxFit.fill,
                 )
               ],
             ),
@@ -230,5 +231,5 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
   }
 
   @override
-  LoginWidgetModel createViewModel() => LoginWidgetModel();
+  LoginWidgetModel createViewModel() => injector<LoginWidgetModel>();
 }

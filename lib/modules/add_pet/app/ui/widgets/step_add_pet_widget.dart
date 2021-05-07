@@ -3,13 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 class StepAddPetWidget extends StatelessWidget {
-  final int currentStep = 1;
+  final int currentStep;
+
+  const StepAddPetWidget({Key key, this.currentStep}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 10,
+    return SizedBox(
+      height: 20,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             width: 36.w,

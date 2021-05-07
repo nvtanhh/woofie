@@ -25,6 +25,18 @@
     "empty": "Not empty!"
   },
   "add_pet": {
-    "add_pet": "Add pet"
+    "add_pet": "Add pet",
+    "do_not_have_pet": "I don't have pet",
+    "unknown": "Unknown",
+    "continue": "Continue",
+    "done": "Done",
+    "select_pet_breed": "Select pet breed",
+    "base_info": "Base information",
+    "avatar": "Avatar",
+    "name": "Name",
+    "male": "Male",
+    "female": "Female",
+    "age": "Age",
+    "gender": "Gender"
   }
 }
