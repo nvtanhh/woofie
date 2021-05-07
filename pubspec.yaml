@@ -80,6 +80,10 @@ dependencies:
 
   # A Flutter plugin for iOS and Android for picking images from the image library, and taking new pictures with the camera.
   image_picker: ^0.6.7+22
+
+  #  Easily use any of the 977 fonts (and their variants) from fonts.google.com in your Flutter app.
+  google_fonts: ^1.1.2
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -109,3 +113,4 @@ flutter:
   assets:
     - resources/langs/
     - resources/icons/
+    - resources/google_fonts/
