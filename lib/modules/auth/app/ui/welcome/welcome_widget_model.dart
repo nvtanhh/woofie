@@ -6,6 +6,7 @@ import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_facebook_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_google_usecase.dart';
+import 'package:meowoof/modules/home_menu/app/ui/home_menu.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -35,7 +36,6 @@ class WelcomeWidgetModel extends BaseViewModel {
       () async => user = await _loginWithGoogleUsecase.call(),
       onSuccess: () {
         checkUserHavePetForNavigator();
-        // Get.offAll(() => AddPetWidget());
       },
     );
   }
@@ -46,9 +46,9 @@ class WelcomeWidgetModel extends BaseViewModel {
       () async => status = await _checkUserHavePetUsecase.call(),
       onSuccess: () {
         if (!status) {
-          Get.offAll(AddPetWidget());
+          Get.offAll(() => AddPetWidget());
         } else {
-          //TODO go Home
+          Get.offAll(() => HomeMenuWidget());
         }
       },
     );
