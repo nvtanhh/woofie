@@ -38,5 +38,10 @@
     "female": "Female",
     "age": "Age",
     "gender": "Gender"
+  },
+  "new_feed": {
+    "with": "with",
+    "comment": "Comment",
+    "post": "Post"
   }
 }

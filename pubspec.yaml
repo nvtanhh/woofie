@@ -83,7 +83,12 @@ dependencies:
 
   #  Easily use any of the 977 fonts (and their variants) from fonts.google.com in your Flutter app.
   google_fonts: ^1.1.2
-  
+
+  # A library useful for creating fuzzy timestamps. (e.g. "5 minutes ago")
+  timeago: ^2.0.30
+  # A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
+  better_player: ^0.0.61
+  video_player: ^1.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

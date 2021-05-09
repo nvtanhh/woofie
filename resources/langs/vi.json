@@ -38,5 +38,10 @@
     "female": "Cái",
     "age": "Tuổi",
     "gender": "Giới tính"
+  },
+  "new_feed": {
+    "with": "cùng với",
+    "comment": "Bình luận",
+    "post": "Bài viết"
   }
 }

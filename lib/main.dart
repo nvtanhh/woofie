@@ -16,8 +16,7 @@ void main() {
   setupEasyLoading();
   // set up google_fonts
   LicenseRegistry.addLicense(() async* {
-    final license =
-        await rootBundle.loadString('resources/google_fonts/OFL.txt');
+    final license = await rootBundle.loadString('resources/google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
   runApp(
@@ -40,10 +39,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        theme: ThemeData(
-            textTheme: GoogleFonts.montserratTextTheme(),
-            appBarTheme:
-                AppBarTheme(textTheme: GoogleFonts.montserratTextTheme())),
+        theme: ThemeData(textTheme: GoogleFonts.montserratTextTheme(), appBarTheme: AppBarTheme(textTheme: GoogleFonts.montserratTextTheme())),
         builder: (BuildContext context, Widget child) {
           return FlutterEasyLoading(child: child);
         },
