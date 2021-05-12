@@ -88,7 +88,6 @@ dependencies:
   timeago: ^2.0.30
   # A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
   better_player: ^0.0.61
-  video_player: ^1.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

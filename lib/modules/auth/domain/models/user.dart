@@ -8,6 +8,8 @@ part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User {
+  @JsonKey(name: "id")
+  int id;
   @JsonKey(name: "uid")
   final String uid;
   @JsonKey(name: "name")

@@ -42,6 +42,7 @@
   "new_feed": {
     "with": "with",
     "comment": "Comment",
-    "post": "Post"
+    "post": "Post",
+    "write_a_comment": "Write a comment"
   }
 }

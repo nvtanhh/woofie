@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/data/datasources/auth_datasource.dart';
 import 'package:meowoof/modules/auth/data/datasources/hasura_datasource.dart';
+import 'package:meowoof/modules/auth/domain/models/user.dart';
 
 @lazySingleton
 class AuthRepository {
@@ -10,11 +11,11 @@ class AuthRepository {
 
   AuthRepository(this._authDatasource, this._hasuraDatasource);
 
-  Future<User> loginWithGoogle() {
+  Future<firebase.User> loginWithGoogle() {
     return _authDatasource.loginWithGoogle();
   }
 
-  Future<User> loginWithFacebook() {
+  Future<firebase.User> loginWithFacebook() {
     return _authDatasource.loginWithFacebook();
   }
 
@@ -22,15 +23,19 @@ class AuthRepository {
     return _authDatasource.logout();
   }
 
-  Future<User> loginWithEmailPassword(String email, String password) {
+  Future<firebase.User> loginWithEmailPassword(String email, String password) {
     return _authDatasource.loginWithEmailPassword(email, password);
   }
 
-  Future<User> registerWithEmailPassword(String email, String password) {
+  Future<firebase.User> registerWithEmailPassword(String email, String password) {
     return _authDatasource.registerWithEmailPassword(email, password);
   }
 
-  Future<bool> checkUserHavePet() {
-    return _hasuraDatasource.checkUseHavePet();
+  Future<bool> checkUserHavePet(int userId) {
+    return _hasuraDatasource.checkUseHavePet(userId);
+  }
+
+  Future<User> getUser(String uid) {
+    return _hasuraDatasource.getUser(uid);
   }
 }

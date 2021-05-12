@@ -58,7 +58,7 @@ class ImagesViewWidget extends StatelessWidget {
               alignment: Alignment.center,
               child: Obx(
                 () => Text(
-                  "${indexPage.value+1}/${medias.length}",
+                  "${indexPage.value + 1}/${medias.length}",
                   style: UITextStyle.white_12_w600,
                 ),
               ),

@@ -33,8 +33,8 @@ class JwtInterceptor extends Interceptor {
     if (jwtToken != null) {
       try {
         request.headers["Authorization"] = "Bearer $jwtToken";
-        // printInfo(info: jwtToken.substring(0, (jwtToken.length / 2).floor() + 3));
-        // printInfo(info: jwtToken.substring((jwtToken.length / 2).floor(), jwtToken.length));
+        printInfo(info: jwtToken.substring(0, (jwtToken.length / 2).floor() + 3));
+        printInfo(info: jwtToken.substring((jwtToken.length / 2).floor(), jwtToken.length));
         return request;
       } catch (e) {
         return null;

@@ -21,7 +21,11 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10.h, left: 16.w, right: 16.w),
+      padding: EdgeInsets.only(
+        top: 10.h,
+        left: 16.w,
+        right: 16.w,
+      ),
       child: Column(
         children: [
           SizedBox(
@@ -76,6 +80,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                 itemBuilder: (context, index) {
                   return PostItemInListView(
                     post: viewModel.posts[index],
+                    onCommentClick: viewModel.onCommentClick,
+                    onLikeClick: viewModel.onLikeClick,
                   );
                 },
               ),

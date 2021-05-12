@@ -64,17 +64,6 @@ class RegisterWidgetModel extends BaseViewModel {
             backgroundColor: UIColor.primary,
             colorText: UIColor.white,
           );
-          // switch ((err as FirebaseAuthException).code) {
-          //   case "email-already-in-use":
-          //     Get.snackbar("Error", "email-already-in-use")
-          //     break;
-          //   case "invalid-email":
-          //     break;
-          //   case "operation-not-allowed":
-          //     break;
-          //   case "weak-password":
-          //     break;
-          // }
         },
       );
     }

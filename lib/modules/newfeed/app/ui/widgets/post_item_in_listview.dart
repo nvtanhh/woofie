@@ -8,12 +8,19 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class PostItemInListView extends StatelessWidget {
   final Post post;
+  final Function(int) onCommentClick;
+  final Function(int) onLikeClick;
 
-  const PostItemInListView({Key key, this.post}) : super(key: key);
+  const PostItemInListView({
+    Key key,
+    this.post,
+    this.onCommentClick,
+    this.onLikeClick,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 600.h,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,29 +44,38 @@ class PostItemInListView extends StatelessWidget {
           ),
           Row(
             children: [
-              Row(
-                children: [
-                  Assets.resources.icons.icReact.image(width: 24.w, height: 24.w, fit: BoxFit.fill),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Text("${post.postReactsAggregate.aggregate.count}", style: UITextStyle.black_14_w600),
-                ],
+              InkWell(
+                onTap: () => () => onLikeClick(post.id),
+                child: Row(
+                  children: [
+                    Assets.resources.icons.icReact.image(width: 24.w, height: 24.w, fit: BoxFit.fill),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text("${post.postReactsAggregate.aggregate.count}", style: UITextStyle.black_14_w600),
+                  ],
+                ),
               ),
               SizedBox(
                 width: 45.w,
               ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.comment_outlined,
-                    size: 24.w,
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Text("${post.commentsAggregate.aggregate.count}", style: UITextStyle.black_14_w600),
-                ],
+              InkWell(
+                onTap: () => onCommentClick(post.id),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.comment_outlined,
+                      size: 24.w,
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      "${post.commentsAggregate.aggregate.count}",
+                      style: UITextStyle.black_14_w600,
+                    ),
+                  ],
+                ),
               ),
             ],
           )
