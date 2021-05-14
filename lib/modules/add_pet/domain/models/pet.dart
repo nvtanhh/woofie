@@ -13,28 +13,28 @@ class Pet {
   @JsonKey(name: "id")
   int id;
   @JsonKey(name: "name")
-  String name;
+  String? name;
   @JsonKey(name: "id_pet_type")
-  int petTypeId;
+  int? petTypeId;
   @JsonKey(name: "gender")
-  Gender gender;
+  Gender? gender;
   @JsonKey(name: "dob")
-  DateTime dob;
+  DateTime? dob;
   @JsonKey(name: "avatar")
-  String avatar;
+  String? avatar;
   @JsonKey(name: "id_owner")
-  String ownerId;
+  String? ownerId;
   @JsonKey(name: "owner")
-  User owner;
+  User? owner;
   @JsonKey(name: "pet_type")
-  PetType petType;
+  PetType? petType;
   @JsonKey(name: "id_pet_breed")
-  int petBreedId;
+  int? petBreedId;
   @JsonKey(name: "pet_breed")
-  PetBreed petBreed;
+  PetBreed? petBreed;
 
   Pet({
-    this.id,
+    required this.id,
     this.name,
     this.petTypeId,
     this.gender,

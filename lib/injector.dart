@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasura_connect/hasura_connect.dart';
@@ -73,7 +73,7 @@ abstract class RegisterModule {
   GoogleSignIn getGoogleSignIn() => GoogleSignIn();
 
   @lazySingleton
-  FacebookLogin getFacebookLogin() => FacebookLogin();
+  FacebookAuth getFacebookAuth() => FacebookAuth.instance;
 
   @lazySingleton
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {

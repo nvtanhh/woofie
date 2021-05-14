@@ -7,8 +7,9 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/splash/app/ui/splash_widget.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
-void main() {
+Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   setupInjector();
   setupEasyLoading();
   runApp(
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return FlutterEasyLoading(child: child);
         },
         home: SplashWidget(),

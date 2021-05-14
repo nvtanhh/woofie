@@ -12,7 +12,14 @@ class ButtonLoginWithWidget extends StatelessWidget {
   final double height;
   final Color backgroundColor;
 
-  const ButtonLoginWithWidget({Key key, this.callBack, this.target, this.width, this.height, this.backgroundColor}) : super(key: key);
+  const ButtonLoginWithWidget({
+    Key? key,
+    required this.callBack,
+    required this.target,
+    required this.width,
+    required this.height,
+    required this.backgroundColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
