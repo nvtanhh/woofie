@@ -40,33 +40,6 @@ abstract class RegisterModule {
   EventBus getEventBus() => EventBus();
 
   @lazySingleton
-  Oauth2Manager getOauth2Manager(SharedPreferences prefs, Logger logger) {
-    final Oauth2Manager config = Oauth2Manager(
-      endpoint: Uri.parse("${BackendConfig.BASE_URL}/oauth/token"),
-      credentialStorage: OAuth2CredentialsStorage(prefs: prefs),
-      secret: BackendConfig.OAUTH2_CLIENT_SECRET,
-      identifier: BackendConfig.OAUTH2_CLIENT_ID,
-      logger: logger,
-    );
-    return config;
-  }
-
-  @lazySingleton
-  HttpClientWrapper getHttpClient(Oauth2Manager oauth2Manager, Logger logger) {
-    final HttpClientWrapper wrapper = HttpClientWrapper(
-      options: BaseOptions(
-        baseUrl: BackendConfig.BASE_URL,
-        connectTimeout: BackendConfig.CONNECT_TIMEOUT,
-        receiveTimeout: BackendConfig.RECEIVE_TIMEOUT,
-      ),
-      logger: logger,
-      oauth2Manager: oauth2Manager,
-      verbose: AppConfig.LOG_LEVEL == Level.verbose,
-    );
-    return wrapper;
-  }
-
-  @lazySingleton
   FirebaseAuth getFirebaseAuth() => FirebaseAuth.instance;
 
   @lazySingleton
