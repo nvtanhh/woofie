@@ -7,7 +7,7 @@ class LoginWithEmailPasswordUsecase {
   final AuthRepository _authRepository;
 
   LoginWithEmailPasswordUsecase(this._authRepository);
-  Future<User> call(String email, String password) {
+  Future<User?> call(String email, String password) {
     return _authRepository.loginWithEmailPassword(email, password);
   }
 }

@@ -5,19 +5,19 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class ButtonWidget extends StatefulWidget {
   final Function() onPress;
-  final String title;
-  final Color backgroundColor;
-  final double borderRadius;
-  final double height;
-  final double width;
-  final TextStyle titleStyle;
-  final Widget contentWidget;
-  final Color borderColor;
-  final Widget loadingWidget;
-  final EdgeInsets contentPadding;
+  final String? title;
+  final Color? backgroundColor;
+  final double? borderRadius;
+  final double? height;
+  final double? width;
+  final TextStyle? titleStyle;
+  final Widget? contentWidget;
+  final Color? borderColor;
+  final Widget? loadingWidget;
+  final EdgeInsets? contentPadding;
 
   const ButtonWidget({
-    this.onPress,
+    required this.onPress,
     this.title,
     this.backgroundColor,
     this.borderRadius,
@@ -47,32 +47,35 @@ class _ButtonWidgetState extends State<ButtonWidget> {
             decoration: BoxDecoration(
               color: widget.backgroundColor ?? UIColor.primary,
               borderRadius: BorderRadius.circular(widget.borderRadius ?? 5.0.w),
-              border: widget.borderColor != null ? Border.all(color: widget.borderColor) : null,
+              border: widget.borderColor != null ? Border.all(color: widget.borderColor!) : null,
             ),
-            child: FlatButton(
+            child: TextButton(
+              style: TextButton.styleFrom(
                 padding: widget.contentPadding ?? EdgeInsets.zero,
-                onPressed: () async {
-                  if (widget.onPress != null && widget.onPress is Future Function()) {
+              ),
+              onPressed: () async {
+                if (widget.onPress is Future Function()) {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await widget.onPress();
+                  if (mounted) {
                     setState(() {
-                      isLoading = true;
+                      isLoading = false;
                     });
-                    await widget.onPress();
-                    if (mounted) {
-                      setState(() {
-                        isLoading = false;
-                      });
-                    }
-                  } else if (widget.onPress is Function()) {
-                    widget.onPress();
                   }
-                },
-                child: widget.contentWidget ??
-                    Center(
-                      child: Text(
-                        widget.title ?? "",
-                        style: widget.titleStyle ?? UITextStyle.white_18_w700,
-                      ),
-                    )),
+                } else if (widget.onPress is Function()) {
+                  widget.onPress();
+                }
+              },
+              child: widget.contentWidget ??
+                  Center(
+                    child: Text(
+                      widget.title ?? "",
+                      style: widget.titleStyle ?? UITextStyle.white_18_w700,
+                    ),
+                  ),
+            ),
           );
   }
 }

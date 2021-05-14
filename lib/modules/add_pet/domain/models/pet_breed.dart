@@ -7,20 +7,21 @@ part 'pet_breed.g.dart';
 @JsonSerializable(explicitToJson: true)
 class PetBreed {
   @JsonKey(name: "id")
-  final int id;
+  int id;
   @JsonKey(name: "id_pet_type")
-  final int petTypeId;
+  int? petTypeId;
   @JsonKey(name: "name")
-  final String name;
+  String? name;
   @JsonKey(name: "avatar")
-  final String avatar;
+  String? avatar;
 
-  PetBreed(
-    this.id,
+  PetBreed({
+    required this.id,
     this.petTypeId,
     this.name,
     this.avatar,
-  );
+  });
+
   factory PetBreed.fromJson(Map<String, dynamic> json) => _$PetBreedFromJson(json);
 
   factory PetBreed.fromJsonString(String jsonString) => PetBreed.fromJson(json.decode(jsonString) as Map<String, dynamic>);

@@ -13,7 +13,7 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class BaseInfoWidget extends StatelessWidget {
   final Rx<Gender> _genderSelected = Rx<Gender>(Gender.male);
-  final Rx<File> _imageFile = Rx<File>();
+  final Rx<File?> _imageFile = Rx<File?>(null);
   final picker = ImagePicker();
   final _nameEditingController = TextEditingController();
   final _ageEditingController = TextEditingController();
@@ -23,11 +23,11 @@ class BaseInfoWidget extends StatelessWidget {
   final Function(Gender) onGenderChange;
 
   BaseInfoWidget({
-    Key key,
-    this.onNameChange,
-    this.onAgeChange,
-    this.onAvatarChange,
-    this.onGenderChange,
+    Key? key,
+    required this.onNameChange,
+    required this.onAgeChange,
+    required this.onAvatarChange,
+    required this.onGenderChange,
   }) : super(key: key);
 
   @override
@@ -215,7 +215,7 @@ class BaseInfoWidget extends StatelessWidget {
     );
   }
 
-  ImageProvider image(File file) {
+  ImageProvider image(File? file) {
     if (file == null) {
       return const AssetImage("resources/icons/ic_cat_face.png");
     } else {
@@ -225,7 +225,9 @@ class BaseInfoWidget extends StatelessWidget {
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
-    _imageFile.value = File(pickedFile.path);
-    onAvatarChange(_imageFile.value);
+    if (pickedFile != null) {
+      _imageFile.value = File(pickedFile.path);
+      onAvatarChange(_imageFile.value!);
+    }
   }
 }

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasura_connect/hasura_connect.dart';
@@ -40,40 +40,13 @@ abstract class RegisterModule {
   EventBus getEventBus() => EventBus();
 
   @lazySingleton
-  Oauth2Manager getOauth2Manager(SharedPreferences prefs, Logger logger) {
-    final Oauth2Manager config = Oauth2Manager(
-      endpoint: Uri.parse("${BackendConfig.BASE_URL}/oauth/token"),
-      credentialStorage: OAuth2CredentialsStorage(prefs: prefs),
-      secret: BackendConfig.OAUTH2_CLIENT_SECRET,
-      identifier: BackendConfig.OAUTH2_CLIENT_ID,
-      logger: logger,
-    );
-    return config;
-  }
-
-  @lazySingleton
-  HttpClientWrapper getHttpClient(Oauth2Manager oauth2Manager, Logger logger) {
-    final HttpClientWrapper wrapper = HttpClientWrapper(
-      options: BaseOptions(
-        baseUrl: BackendConfig.BASE_URL,
-        connectTimeout: BackendConfig.CONNECT_TIMEOUT,
-        receiveTimeout: BackendConfig.RECEIVE_TIMEOUT,
-      ),
-      logger: logger,
-      oauth2Manager: oauth2Manager,
-      verbose: AppConfig.LOG_LEVEL == Level.verbose,
-    );
-    return wrapper;
-  }
-
-  @lazySingleton
   FirebaseAuth getFirebaseAuth() => FirebaseAuth.instance;
 
   @lazySingleton
   GoogleSignIn getGoogleSignIn() => GoogleSignIn();
 
   @lazySingleton
-  FacebookLogin getFacebookLogin() => FacebookLogin();
+  FacebookAuth getFacebookAuth() => FacebookAuth.instance;
 
   @lazySingleton
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {

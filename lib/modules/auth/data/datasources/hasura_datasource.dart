@@ -9,7 +9,7 @@ class HasuraDatasource {
   HasuraDatasource(this._hasuraConnect);
 
   Future<bool> checkUseHavePet() async {
-    final queryCountPetFromUser = """
+    const queryCountPetFromUser = """
     query countPet {
     pets_aggregate {
     aggregate {

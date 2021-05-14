@@ -5,20 +5,20 @@ import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 class ImageWithPlaceHolderWidget extends StatelessWidget {
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   final String imageUrl;
-  final double topLeftRadius;
-  final double topRightRadius;
-  final double bottomLeftRadius;
-  final double bottomRightRadius;
-  final double radius;
-  final BoxFit fit;
+  final double? topLeftRadius;
+  final double? topRightRadius;
+  final double? bottomLeftRadius;
+  final double? bottomRightRadius;
+  final double? radius;
+  final BoxFit? fit;
 
   const ImageWithPlaceHolderWidget({
     this.width,
     this.height,
-    this.imageUrl,
+    required this.imageUrl,
     this.topLeftRadius,
     this.topRightRadius,
     this.bottomLeftRadius,
@@ -29,7 +29,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (GetUtils.isNullOrBlank(imageUrl)) {
+    if (GetUtils.isBlank(imageUrl) == true) {
       return itemPlaceholder();
     } else {
       return ClipRRect(

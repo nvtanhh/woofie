@@ -10,11 +10,11 @@ class AuthRepository {
 
   AuthRepository(this._authDatasource, this._hasuraDatasource);
 
-  Future<User> loginWithGoogle() {
+  Future<User?> loginWithGoogle() {
     return _authDatasource.loginWithGoogle();
   }
 
-  Future<User> loginWithFacebook() {
+  Future<User?> loginWithFacebook() {
     return _authDatasource.loginWithFacebook();
   }
 
@@ -22,11 +22,11 @@ class AuthRepository {
     return _authDatasource.logout();
   }
 
-  Future<User> loginWithEmailPassword(String email, String password) {
+  Future<User?> loginWithEmailPassword(String email, String password) {
     return _authDatasource.loginWithEmailPassword(email, password);
   }
 
-  Future<User> registerWithEmailPassword(String email, String password) {
+  Future<User?> registerWithEmailPassword(String email, String password) {
     return _authDatasource.registerWithEmailPassword(email, password);
   }
 

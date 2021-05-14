@@ -18,26 +18,26 @@ class RegisterWidgetModel extends BaseViewModel {
   final passwordEditingController = TextEditingController();
   final nameEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  User user;
+  User? user;
 
   RegisterWidgetModel(this._registerUsecase);
 
-  String emailValidate(String email) {
-    if (EmailValidator.validate(email)) {
+  String? emailValidate(String? email) {
+    if (EmailValidator.validate(email ?? "")) {
       return null;
     }
     return LocaleKeys.login_email_invalid.trans();
   }
 
-  String passwordValidate(String password) {
-    if (RegExp(r'^.{8,}$').hasMatch(password)) {
+  String? passwordValidate(String? password) {
+    if (RegExp(r'^.{8,}$').hasMatch(password ?? "")) {
       return null;
     }
     return LocaleKeys.login_password_invalid.trans();
   }
 
-  String nameValidate(String name) {
-    if (name.isNotEmpty) {
+  String? nameValidate(String? name) {
+    if (name?.isNotEmpty == true) {
       return null;
     }
     return LocaleKeys.register_empty.trans();
@@ -48,7 +48,7 @@ class RegisterWidgetModel extends BaseViewModel {
   }
 
   void onRegisterClick() {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState?.validate() == true) {
       call(
         () async {
           user = await _registerUsecase.call(emailEditingController.text, passwordEditingController.text);

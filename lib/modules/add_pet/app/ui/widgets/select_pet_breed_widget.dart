@@ -11,7 +11,12 @@ class SelectPetBreedWidget extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onSelectedIndex;
 
-  const SelectPetBreedWidget({Key key, this.petBreeds, this.selectedIndex, this.onSelectedIndex}) : super(key: key);
+  const SelectPetBreedWidget({
+    Key? key,
+    required this.petBreeds,
+    required this.selectedIndex,
+    required this.onSelectedIndex,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +55,7 @@ class SelectPetBreedWidget extends StatelessWidget {
                               border: Border.all(color: index == selectedIndex ? UIColor.accent2 : UIColor.white),
                               image: DecorationImage(
                                   image: NetworkImage(
-                                petBreeds[index].avatar,
+                                petBreeds[index].avatar ?? "",
                               ))),
                         ),
                         SizedBox(
@@ -58,7 +63,7 @@ class SelectPetBreedWidget extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            petBreeds[index].name,
+                            petBreeds[index].name ?? "",
                             maxLines: 1,
                             style: index == selectedIndex ? UITextStyle.accent2_18_w500 : UITextStyle.text_body_18_w500,
                             overflow: TextOverflow.ellipsis,

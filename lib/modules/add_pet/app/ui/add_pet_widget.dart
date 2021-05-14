@@ -52,7 +52,6 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                         selectedIndex: viewModel.indexPetTypeSelected,
                       ),
                     );
-                    break;
                   case 2:
                     return Obx(
                       () => SelectPetBreedWidget(
@@ -61,7 +60,6 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                         petBreeds: viewModel.petBreeds,
                       ),
                     );
-                    break;
                   case 3:
                     return BaseInfoWidget(
                       onAgeChange: viewModel.onAgeChange,
@@ -69,10 +67,8 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                       onAvatarChange: viewModel.onAvatarChange,
                       onNameChange: viewModel.onNameChange,
                     );
-                    break;
                   default:
                     return Container();
-                    break;
                 }
               }),
             ),
@@ -86,7 +82,6 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                       style: UITextStyle.text_secondary_18_w600,
                     ),
                   );
-                  break;
                 case 2:
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +115,6 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                       ),
                     ],
                   );
-                  break;
                 case 3:
                   return TextButton(
                     onPressed: () => viewModel.onDone(),
@@ -146,10 +140,8 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                       ],
                     ),
                   );
-                  break;
                 default:
                   return Container();
-                  break;
               }
             }),
           ],

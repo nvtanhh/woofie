@@ -13,7 +13,7 @@ class WelcomeWidgetModel extends BaseViewModel {
   final LoginWithGoogleUsecase _loginWithGoogleUsecase;
   final LoginWithFacebookUsecase _loginWithFacebookUsecase;
   final CheckUserHavePetUsecase _checkUserHavePetUsecase;
-  User user;
+  User? user;
 
   WelcomeWidgetModel(this._loginWithGoogleUsecase, this._loginWithFacebookUsecase, this._checkUserHavePetUsecase);
 
@@ -41,7 +41,7 @@ class WelcomeWidgetModel extends BaseViewModel {
   }
 
   void checkUserHavePetForNavigator() {
-    bool status;
+    bool status = true;
     call(
       () async => status = await _checkUserHavePetUsecase.call(),
       onSuccess: () {

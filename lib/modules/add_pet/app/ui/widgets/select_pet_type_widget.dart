@@ -11,10 +11,10 @@ class SelectPetTypeWidget extends StatelessWidget {
   final Function(int) onSelectedIndex;
 
   const SelectPetTypeWidget({
-    Key key,
-    this.petTypes,
+    Key? key,
+    required this.petTypes,
     this.selectedIndex = -1,
-    this.onSelectedIndex,
+    required this.onSelectedIndex,
   }) : super(key: key);
 
   @override
@@ -56,7 +56,7 @@ class SelectPetTypeWidget extends StatelessWidget {
                           height: 5.h,
                         ),
                         Text(
-                          petTypes[index].name,
+                          petTypes[index].name ?? "",
                           style: index == selectedIndex ? UITextStyle.accent2_14_w600 : UITextStyle.text_body_14_w600,
                         )
                       ],

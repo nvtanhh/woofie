@@ -5,7 +5,10 @@ import 'package:meowoof/theme/ui_color.dart';
 class StepAddPetWidget extends StatelessWidget {
   final int currentStep;
 
-  const StepAddPetWidget({Key key, this.currentStep}) : super(key: key);
+  const StepAddPetWidget({
+    Key? key,
+    required this.currentStep,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -10,14 +10,14 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/splash/app/ui/splash_widget.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
-void main() {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   setupInjector();
   setupEasyLoading();
   // set up google_fonts
   LicenseRegistry.addLicense(() async* {
-    final license =
-        await rootBundle.loadString('resources/google_fonts/OFL.txt');
+    final license = await rootBundle.loadString('resources/google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
   runApp(
@@ -41,10 +41,12 @@ class MyApp extends StatelessWidget {
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         theme: ThemeData(
+          textTheme: GoogleFonts.montserratTextTheme(),
+          appBarTheme: AppBarTheme(
             textTheme: GoogleFonts.montserratTextTheme(),
-            appBarTheme:
-                AppBarTheme(textTheme: GoogleFonts.montserratTextTheme())),
-        builder: (BuildContext context, Widget child) {
+          ),
+        ),
+        builder: (BuildContext context, Widget? child) {
           return FlutterEasyLoading(child: child);
         },
         home: SplashWidget(),

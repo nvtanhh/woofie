@@ -21,15 +21,15 @@ class AddPetWidgetModel extends BaseViewModel {
   final RxInt _currentStepAddPet = RxInt(1);
   final RxInt _indexPetTypeSelected = RxInt(-1);
   final RxInt _indexPetBreedSelected = RxInt(-1);
-  PetType petTypeSelected;
-  PetBreed petBreedSelected;
-  Pet pet;
+  PetType? petTypeSelected;
+  PetBreed? petBreedSelected;
+  late Pet pet;
 
   AddPetWidgetModel(this._getPetTypesUsecase, this._getPetBreedUsecase, this._addPetUsecase);
 
   @override
   void initState() {
-    pet = Pet();
+    pet = Pet(id: 0);
     loadPetTypes();
     super.initState();
   }
@@ -50,14 +50,14 @@ class AddPetWidgetModel extends BaseViewModel {
   void onPetTypeSelectedIndex(int index) {
     indexPetTypeSelected = index;
     petTypeSelected = petTypes[index];
-    loadPetBreeds(petTypeSelected.id);
-    pet.petTypeId = petTypeSelected.id;
+    loadPetBreeds(petTypeSelected!.id);
+    pet.petTypeId = petTypeSelected!.id;
   }
 
   void onPetBreedSelectedIndex(int index) {
     indexPetBreedSelected = index;
     petBreedSelected = petBreeds[index];
-    pet.petBreedId = petBreedSelected.id;
+    pet.petBreedId = petBreedSelected!.id;
   }
 
   void doNotHavePet() {}

@@ -7,20 +7,20 @@ part 'pet_type.g.dart';
 @JsonSerializable(explicitToJson: true)
 class PetType {
   @JsonKey(name: "id")
-  final int id;
+  int id;
   @JsonKey(name: "name")
-  final String name;
+  String? name;
   @JsonKey(name: "descriptions")
-  final String descriptions;
+  String? descriptions;
   @JsonKey(name: "avatar")
-  final String avatar;
+  String? avatar;
 
-  PetType(
-    this.id,
+  PetType({
+    required this.id,
     this.name,
     this.descriptions,
     this.avatar,
-  );
+  });
 
   factory PetType.fromJson(Map<String, dynamic> json) => _$PetTypeFromJson(json);
 
