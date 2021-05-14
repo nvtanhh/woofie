@@ -11,7 +11,9 @@ class ObjectAggregate {
   @JsonKey(name: "aggregate")
   Aggregate aggregate;
 
-  ObjectAggregate({this.aggregate});
+  ObjectAggregate({
+    required this.aggregate,
+  });
 
   factory ObjectAggregate.fromJson(Map<String, dynamic> json) => _$ObjectAggregateFromJson(json);
 

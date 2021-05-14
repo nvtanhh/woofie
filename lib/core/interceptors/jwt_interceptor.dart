@@ -12,14 +12,6 @@ class JwtInterceptor extends Interceptor {
   JwtInterceptor(this.auth);
 
   @override
-  // ignore: missing_return
-  Future<void> onConnected(HasuraConnect connect) {}
-
-  @override
-  // ignore: missing_return
-  Future<void> onDisconnected() {}
-
-  @override
   Future onError(HasuraError request) async {
     await Fluttertoast.showToast(
       msg: request.message,
@@ -28,8 +20,19 @@ class JwtInterceptor extends Interceptor {
   }
 
   @override
-  Future onRequest(Request request) async {
-    final jwtToken = await auth.currentUser.getIdToken();
+  Future onResponse(Response data) async {
+    return data;
+  }
+
+  @override
+  Future<void>? onConnected(HasuraConnect connect) {}
+
+  @override
+  Future<void>? onDisconnected() {}
+
+  @override
+  Future? onRequest(Request request) async {
+    final jwtToken = await auth.currentUser?.getIdToken();
     if (jwtToken != null) {
       try {
         request.headers["Authorization"] = "Bearer $jwtToken";
@@ -45,15 +48,8 @@ class JwtInterceptor extends Interceptor {
   }
 
   @override
-  Future onResponse(Response data) async {
-    return data;
-  }
+  Future<void>? onSubscription(Request request, Snapshot snapshot) {}
 
   @override
-  // ignore: missing_return
-  Future<void> onSubscription(Request request, Snapshot snapshot) {}
-
-  @override
-  // ignore: missing_return
-  Future<void> onTryAgain(HasuraConnect connect) {}
+  Future<void>? onTryAgain(HasuraConnect connect) {}
 }

@@ -8,7 +8,7 @@ class LoginWithFacebookUsecase {
 
   LoginWithFacebookUsecase(this._authRepository);
 
-  Future<User> call() {
+  Future<User?> call() {
     return _authRepository.loginWithFacebook();
   }
 }

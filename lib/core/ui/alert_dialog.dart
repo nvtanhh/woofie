@@ -5,7 +5,7 @@ class SGAlertDialog extends StatelessWidget {
   final Widget body;
   final bool transparentMode;
 
-  const SGAlertDialog({this.body, this.transparentMode = false});
+  const SGAlertDialog({required this.body, this.transparentMode = false});
 
   @override
   Widget build(BuildContext context) {

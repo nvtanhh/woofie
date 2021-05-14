@@ -44,7 +44,7 @@ class AddPetDatasource {
   Future<bool> addPet(Pet pet) async {
     final mutationInsertPet = """
     mutation insert_pet {
-    insert_pets(objects: {avatar: "${pet.avatar}", gender: ${pet.gender.index}, id_pet_breed: ${pet.petBreedId}, id_pet_type: ${pet.petTypeId}, name: "${pet.name}"}) {
+    insert_pets(objects: {avatar: "${pet.avatar}", gender: ${pet.gender?.index}, id_pet_breed: ${pet.petBreedId}, id_pet_type: ${pet.petTypeId}, name: "${pet.name}"}) {
     affected_rows
     }
     }

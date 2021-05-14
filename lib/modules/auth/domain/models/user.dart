@@ -9,21 +9,28 @@ part 'user.g.dart';
 @JsonSerializable(explicitToJson: true)
 class User {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   @JsonKey(name: "uid")
-  final String uid;
+  String? uid;
   @JsonKey(name: "name")
-  final String name;
+  String? name;
   @JsonKey(name: "phone_number")
-  final String phoneNumber;
+  String? phoneNumber;
   @JsonKey(name: "email")
-  final String email;
+  String? email;
   @JsonKey(name: "pets")
-  final List<Pet> pets;
+  List<Pet>? pets;
   @JsonKey(name: "avatar_current")
-  Medias avatar;
-
-  User({this.uid, this.name, this.phoneNumber, this.email, this.pets, this.avatar});
+  Medias? avatar;
+  User({
+    this.id,
+    this.uid,
+    this.name,
+    this.phoneNumber,
+    this.email,
+    this.pets,
+    this.avatar,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

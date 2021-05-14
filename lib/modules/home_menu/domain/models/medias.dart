@@ -8,15 +8,20 @@ part 'medias.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Medias {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   @JsonKey(name: "url")
-  String url;
+  String? url;
   @JsonKey(name: "type")
-  MediaType type;
+  MediaType? type;
   @JsonKey(name: "id_post")
-  int postId;
+  int? postId;
 
-  Medias({this.id, this.url, this.type, this.postId});
+  Medias({
+    this.id,
+    this.url,
+    this.type,
+    this.postId,
+  });
 
   factory Medias.fromJson(Map<String, dynamic> json) => _$MediasFromJson(json);
 

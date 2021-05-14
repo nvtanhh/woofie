@@ -17,10 +17,10 @@ class WelcomeWidgetModel extends BaseViewModel {
   final LoginWithGoogleUsecase _loginWithGoogleUsecase;
   final LoginWithFacebookUsecase _loginWithFacebookUsecase;
   final CheckUserHavePetUsecase _checkUserHavePetUsecase;
+  User? user;
   final GetUserUsecase _getUserUsecase;
   final UserStorage _userStorage;
   final FirebaseAuth _firebaseAuth;
-  User user;
 
   WelcomeWidgetModel(
     this._loginWithGoogleUsecase,
@@ -54,12 +54,16 @@ class WelcomeWidgetModel extends BaseViewModel {
   }
 
   Future checkUserHavePetForNavigator() async {
-    bool status;
+    bool status = false;
     await call(() async {
       await Future.delayed(const Duration(seconds: 2));
-      final hasura_user.User haUser = await _getUserUsecase.call(user.uid);
-      status = await _checkUserHavePetUsecase.call(haUser.id);
-      _userStorage.set(haUser);
+      final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
+      if (haUser != null) {
+        status = await _checkUserHavePetUsecase.call(haUser.id!);
+        _userStorage.set(haUser);
+      } else {
+        throw Exception("Cant get user");
+      }
     }, onSuccess: () {
       if (!status) {
         Get.offAll(() => AddPetWidget());
@@ -67,7 +71,7 @@ class WelcomeWidgetModel extends BaseViewModel {
         Get.offAll(() => HomeMenuWidget());
       }
     }, onFailure: (err) {
-      _firebaseAuth.currentUser.getIdToken(true);
+      _firebaseAuth.currentUser?.getIdToken(true);
       checkUserHavePetForNavigator();
     });
   }

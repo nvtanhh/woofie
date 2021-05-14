@@ -9,15 +9,15 @@ part 'comment_tag_user.g.dart';
 @JsonSerializable(explicitToJson: true)
 class CommentTagUser {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   @JsonKey(name: "comment_id")
-  int commentId;
+  int? commentId;
   @JsonKey(name: "user_id")
-  int userId;
+  int? userId;
   @JsonKey(name: "comment")
-  Comment comment;
+  Comment? comment;
   @JsonKey(name: "user")
-  User user;
+  User? user;
 
   CommentTagUser({
     this.id,

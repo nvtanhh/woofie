@@ -12,10 +12,10 @@ class PostItemInListView extends StatelessWidget {
   final Function(int) onLikeClick;
 
   const PostItemInListView({
-    Key key,
-    this.post,
-    this.onCommentClick,
-    this.onLikeClick,
+    Key? key,
+    required this.post,
+    required this.onCommentClick,
+    required this.onLikeClick,
   }) : super(key: key);
 
   @override
@@ -26,15 +26,15 @@ class PostItemInListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InfoUserPostWidget(
-            pets: post.pets,
-            postCreatedAt: post.createdAt,
-            user: post.creator,
+            pets: post.pets!,
+            postCreatedAt: post.createdAt!,
+            user: post.creator!,
           ),
           ImagesViewWidget(
             medias: post.medias ?? [],
           ),
           Text(
-            post.content,
+            post.content ?? "",
             maxLines: 3,
             style: UITextStyle.text_body_14_w500,
             overflow: TextOverflow.ellipsis,
@@ -45,14 +45,14 @@ class PostItemInListView extends StatelessWidget {
           Row(
             children: [
               InkWell(
-                onTap: () => () => onLikeClick(post.id),
+                onTap: () => () => onLikeClick(post.id!),
                 child: Row(
                   children: [
                     Assets.resources.icons.icReact.image(width: 24.w, height: 24.w, fit: BoxFit.fill),
                     SizedBox(
                       width: 5.w,
                     ),
-                    Text("${post.postReactsAggregate.aggregate.count}", style: UITextStyle.black_14_w600),
+                    Text("${post.postReactsAggregate?.aggregate.count ?? "0"}", style: UITextStyle.black_14_w600),
                   ],
                 ),
               ),
@@ -60,7 +60,7 @@ class PostItemInListView extends StatelessWidget {
                 width: 45.w,
               ),
               InkWell(
-                onTap: () => onCommentClick(post.id),
+                onTap: () => onCommentClick(post.id!),
                 child: Row(
                   children: [
                     Icon(
@@ -71,7 +71,7 @@ class PostItemInListView extends StatelessWidget {
                       width: 5.w,
                     ),
                     Text(
-                      "${post.commentsAggregate.aggregate.count}",
+                      "${post.commentsAggregate?.aggregate.count ?? "0"}",
                       style: UITextStyle.black_14_w600,
                     ),
                   ],

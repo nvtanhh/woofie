@@ -7,7 +7,7 @@ class HomeMenuWidgetModel extends BaseViewModel {
   List<Widget> listScreen = [
     NewFeedWidget(),
   ];
-  TabController tabController;
+  late TabController tabController;
   final RxInt _currentTab = RxInt(0);
 
   void onTabChange(int index) {

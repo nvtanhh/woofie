@@ -25,7 +25,7 @@ class LoginWidgetModel extends BaseViewModel {
   final emailEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  User user;
+  User? user;
 
   LoginWidgetModel(
     this._loginWithEmailPasswordUsecase,
@@ -38,15 +38,15 @@ class LoginWidgetModel extends BaseViewModel {
     showPassword = !showPassword;
   }
 
-  String emailValidate(String email) {
-    if (EmailValidator.validate(email)) {
+  String? emailValidate(String? email) {
+    if (EmailValidator.validate(email ?? "")) {
       return null;
     }
     return LocaleKeys.login_email_invalid.trans();
   }
 
-  String passwordValidate(String password) {
-    if (RegExp(r'^.{8,}$').hasMatch(password)) {
+  String? passwordValidate(String? password) {
+    if (RegExp(r'^.{8,}$').hasMatch(password ?? "")) {
       return null;
     }
     return LocaleKeys.login_password_invalid.trans();
@@ -60,17 +60,19 @@ class LoginWidgetModel extends BaseViewModel {
   }
 
   void onLoginClick() {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState?.validate() == true) {
       call(
         () async {
           await login();
-          final haUser = await _getUserUsecase.call(user.uid);
-          _userStorage.set(haUser);
-          final status = await _checkUserHavePetUsecase.call(haUser.id);
-          if (!status) {
-            await Get.offAll(() => AddPetWidget());
-          } else {
-            await Get.offAll(() => HomeMenuWidget());
+          if (user.isBlank == false) {
+            final haUser = await _getUserUsecase.call(user!.uid);
+            _userStorage.set(haUser!);
+            final status = await _checkUserHavePetUsecase.call(haUser.id!);
+            if (!status) {
+              await Get.offAll(() => AddPetWidget());
+            } else {
+              await Get.offAll(() => HomeMenuWidget());
+            }
           }
         },
         onFailure: (err) {

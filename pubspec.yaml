@@ -18,96 +18,98 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   # retrofit.dart is an dio client generator using source_gen and inspired by Chopper and Retrofit.
-  retrofit: ^1.3.4
+  retrofit: ^2.0.0-beta1
 
   # Automatically generate code for converting to and from JSON by annotating Dart classes.
-  json_serializable: ^3.4.1
+  json_serializable: ^4.1.1
 
   # Classes and helper functions that support JSON code generation via the `json_serializable` package.
-  json_annotation: ^3.0.1
+  json_annotation: ^4.0.1
 
   # Simple direct Service Locator that allows to decouple the interface from a concrete implementation and to access the concrete implementation from everywhere in your App"
-  get_it: ^5.0.0
+  get_it: ^6.1.1
 
   # Injectable is a convenient code generator for get_it. Inspired by Angular DI, Guice DI and inject.dart.
-  injectable: ^1.0.5
+  injectable: ^1.3.0
 
   # Suga Core Package.
-  suga_core: ^0.3.2
+  suga_core: ^1.0.0
 
   # Open screens/snackbars/dialogs without context, manage states and inject dependencies easily with GetX.
-  get: ^3.6.2
+  get: ^4.1.4
 
   # Easy and Fast internationalizing and localization your Flutter Apps, this package simplify the internationalizing process.
-  easy_localization: ^2.3.3
+  easy_localization: ^3.0.0
 
   # A simple Event Bus using Dart Streams for decoupling applications
-  event_bus: ^1.1.1
+  event_bus: ^2.0.0
 
   #A flutter plugin for adapting screen and font size.Let your UI display a reasonable layout on different screen sizes!
-  flutter_screenutil: ^4.0.3+1
+  flutter_screenutil: ^5.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
 
   # Email validate
-  email_validator: ^1.0.6
+  email_validator: ^2.0.1
 
   # The hasura_connect is designed to facilitate Hasura's integration with Flutter applications, leveraging the full power of Graphql.
-  hasura_connect: ^2.0.1
+  hasura_connect: ^3.0.2
 
   # A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
-  firebase_core: ^0.7.0
+  firebase_core: ^1.1.1
 
   # A Flutter plugin to use the Firebase Authentication API.
-  firebase_auth: ^0.20.1
+  firebase_auth: ^1.1.4
 
   # A Flutter plugin for Google Sign In.
-  google_sign_in: ^4.5.9
+  google_sign_in: ^5.0.3
 
   # A Flutter plugin for using the native Facebook Login SDKs on Android and iOS.
-  flutter_facebook_login: ^3.0.0
+  flutter_facebook_auth: ^3.3.3+1
 
   # Toast Library for Flutter
-  fluttertoast: ^7.1.8
+  fluttertoast: ^8.0.6
 
   # A Flutter plugin for iOS and Android for picking images from the image library, and taking new pictures with the camera.
-  image_picker: ^0.6.7+22
+  image_picker: ^0.7.5
 
   #  Easily use any of the 977 fonts (and their variants) from fonts.google.com in your Flutter app.
-  google_fonts: ^1.1.2
+  google_fonts: ^2.0.0
 
   # A library useful for creating fuzzy timestamps. (e.g. "5 minutes ago")
-  timeago: ^2.0.30
+  timeago: ^3.0.2
   # A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
-  better_player: ^0.0.61
+  better_player: ^0.0.66
   # Create awesome and powerful modal bottom sheets.
-  modal_bottom_sheet: ^1.0.0+1
+  modal_bottom_sheet: ^2.0.0
   # A package provides an easy way to add shimmer effect in Flutter project
-  shimmer: ^1.1.2
+  shimmer: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   # An opiniated, community-driven set of lint rules for Dart and Flutter projects. Like pedantic but stricter
-  lint: ^1.2.0
+  lint: ^1.5.3
   # A build system for Dart code generation and modular compilation.
-  build_runner: ^1.10.1
+  build_runner: ^1.12.2
 
   # Injectable is a convenient code generator for get_it. Inspired by Angular DI, Guice DI and inject.dart.
-  injectable_generator: ^1.0.4
+  injectable_generator: ^1.2.2
 
   # retrofit generator is an dio client generator using source_gen and inspired by Chopper and Retrofit.
-  retrofit_generator: ^1.3.7+6
+  retrofit_generator: ^2.0.0-beta3
 
   # The Flutter code generator for your assets, fonts, colors, … — Get rid of all String-based APIs.
-  flutter_gen: ^1.2.0
+  flutter_gen_runner: ^3.1.1
 
 flutter_gen:
   output: lib/

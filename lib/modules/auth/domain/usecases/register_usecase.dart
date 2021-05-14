@@ -8,7 +8,7 @@ class RegisterUsecase {
 
   RegisterUsecase(this._authDatasource);
 
-  Future<User> call(String email, String password) {
+  Future<User?> call(String email, String password) {
     return _authDatasource.registerWithEmailPassword(email, password);
   }
 }
