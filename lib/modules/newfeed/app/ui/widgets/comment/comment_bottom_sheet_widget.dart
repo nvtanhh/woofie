@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/injector.dart';
@@ -103,12 +104,27 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
               padding: EdgeInsets.only(top: 10.h),
               child: Row(
                 children: [
-                  ImageWithPlaceHolderWidget(
-                    width: 45.w,
-                    height: 45.w,
-                    fit: BoxFit.fill,
-                    imageUrl: viewModel.user?.avatar?.url ?? "",
-                    radius: 10.r,
+                  Obx(
+                    () {
+                      if (viewModel.user == null) {
+                        return Container(
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetGenImage("resources/icons/ic_person.png"),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        );
+                      } else {
+                        return ImageWithPlaceHolderWidget(
+                          width: 45.w,
+                          height: 45.w,
+                          fit: BoxFit.fill,
+                          imageUrl: viewModel.user?.avatar?.url ?? "",
+                          radius: 10.r,
+                        );
+                      }
+                    },
                   ),
                   SizedBox(
                     width: 10.w,

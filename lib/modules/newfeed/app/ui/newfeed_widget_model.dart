@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/comment_bottom_sheet_widget.dart';
 import 'package:meowoof/modules/newfeed/domain/models/post.dart';
 import 'package:meowoof/modules/newfeed/domain/usecases/get_posts_usecase.dart';
+import 'package:meowoof/modules/newfeed/domain/usecases/like_post_usecase.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -13,8 +14,9 @@ import 'package:suga_core/suga_core.dart';
 class NewFeedWidgetModel extends BaseViewModel {
   final GetPostsUsecase _getPostsUsecase;
   final RxList<Post> _posts = RxList<Post>([]);
+  final LikePostUsecase _likePostUsecase;
 
-  NewFeedWidgetModel(this._getPostsUsecase);
+  NewFeedWidgetModel(this._getPostsUsecase, this._likePostUsecase);
 
   @override
   void initState() {
@@ -37,10 +39,18 @@ class NewFeedWidgetModel extends BaseViewModel {
     );
   }
 
-  void onLikeClick(int idPost) {}
+  void onLikeClick(int idPost) {
+    call(
+      () => _likePostUsecase.call(idPost),
+      showLoading: false,
+      onFailure: (err) {},
+    );
+  }
 
   void getPosts() {
-    call(() async => posts = await _getPostsUsecase.call());
+    call(
+      () async => posts = await _getPostsUsecase.call(),
+    );
   }
 
   List<Post> get posts => _posts.toList();

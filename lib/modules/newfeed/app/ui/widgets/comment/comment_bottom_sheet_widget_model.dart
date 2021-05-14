@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/auth/domain/models/user.dart';
 import 'package:meowoof/modules/newfeed/domain/models/comment.dart';
 import 'package:meowoof/modules/newfeed/domain/usecases/get_comment_in_post_usecase.dart';
@@ -12,10 +13,14 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   final RxList<Comment> _comments = RxList<Comment>();
   final GetCommentInPostUsecase _getCommentInPostUsecase;
   final RxBool _isLoading = RxBool(true);
+  final UserStorage _userStorage;
   TextEditingController commentEditingController = TextEditingController();
   late int postId;
 
-  CommentBottomSheetWidgetModel(this._getCommentInPostUsecase);
+  CommentBottomSheetWidgetModel(
+    this._getCommentInPostUsecase,
+    @Named("current_user_storage") this._userStorage,
+  );
 
   void loadComments() {
     call(
@@ -27,8 +32,15 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
     );
   }
 
+  void loadUserLocal() {
+    call(() async => user = _userStorage.get(), showLoading: false, onSuccess: () {
+      print(user?.avatar?.url);
+    });
+  }
+
   @override
   void initState() {
+    loadUserLocal();
     loadComments();
     super.initState();
   }

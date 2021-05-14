@@ -1,3 +1,4 @@
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/add_pet/domain/models/pet.dart';
 import 'package:meowoof/modules/auth/domain/models/user.dart';
@@ -10,6 +11,8 @@ import 'package:meowoof/modules/newfeed/domain/models/post.dart';
 
 @lazySingleton
 class NewFeedDatasource {
+  final HasuraConnect _hasuraConnect;
+  NewFeedDatasource(this._hasuraConnect);
   Future<List<Post>> getPosts() async {
     final Post post = Post(
       id: 1,
@@ -73,5 +76,9 @@ class NewFeedDatasource {
     );
     comment2.isLiked = false;
     return <Comment>[comment, comment2];
+  }
+
+  Future<bool> likePost(int idPost) async {
+    return true;
   }
 }

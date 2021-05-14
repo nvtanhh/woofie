@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/images_view_widget.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/info_user_post_widget.dart';
@@ -10,13 +11,18 @@ class PostItemInListView extends StatelessWidget {
   final Post post;
   final Function(int) onCommentClick;
   final Function(int) onLikeClick;
+  final RxBool isLiked = RxBool(false);
+  final RxInt countLike = RxInt(0);
 
-  const PostItemInListView({
+  PostItemInListView({
     Key? key,
     required this.post,
     required this.onCommentClick,
     required this.onLikeClick,
-  }) : super(key: key);
+  }) : super(key: key) {
+    isLiked.value = post.isLiked ?? false;
+    countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +41,7 @@ class PostItemInListView extends StatelessWidget {
           ),
           Text(
             post.content ?? "",
-            maxLines: 3,
+            maxLines: 4,
             style: UITextStyle.text_body_14_w500,
             overflow: TextOverflow.ellipsis,
           ),
@@ -44,28 +50,43 @@ class PostItemInListView extends StatelessWidget {
           ),
           Row(
             children: [
-              InkWell(
-                onTap: () => () => onLikeClick(post.id!),
+              SizedBox(
+                width: 60.w,
                 child: Row(
                   children: [
-                    Assets.resources.icons.icReact.image(width: 24.w, height: 24.w, fit: BoxFit.fill),
+                    InkWell(
+                      onTap: () => likeClick(),
+                      child: Assets.resources.icons.icReact.image(
+                        width: 24.w,
+                        height: 24.w,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                     SizedBox(
                       width: 5.w,
                     ),
-                    Text("${post.postReactsAggregate?.aggregate.count ?? "0"}", style: UITextStyle.black_14_w600),
+                    Obx(
+                      () => Text(
+                        "${countLike.value}",
+                        style: UITextStyle.black_14_w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
               SizedBox(
                 width: 45.w,
               ),
-              InkWell(
-                onTap: () => onCommentClick(post.id!),
+              SizedBox(
+                width: 60.w,
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.comment_outlined,
-                      size: 24.w,
+                    InkWell(
+                      onTap: () => onCommentClick(post.id!),
+                      child: Icon(
+                        Icons.comment_outlined,
+                        size: 24.w,
+                      ),
                     ),
                     SizedBox(
                       width: 5.w,
@@ -82,5 +103,15 @@ class PostItemInListView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void likeClick() {
+    if (isLiked.value) {
+      countLike.value++;
+    } else {
+      countLike.value--;
+    }
+    isLiked.value = !isLiked.value;
+    onLikeClick(post.id!);
   }
 }
