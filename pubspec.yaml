@@ -88,6 +88,10 @@ dependencies:
   timeago: ^2.0.30
   # A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
   better_player: ^0.0.61
+  # Create awesome and powerful modal bottom sheets.
+  modal_bottom_sheet: ^1.0.0+1
+  # A package provides an easy way to add shimmer effect in Flutter project
+  shimmer: ^1.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

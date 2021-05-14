@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/add_pet/app/ui/add_pet_widget.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
-import 'package:meowoof/modules/auth/domain/models/user.dart' as hasuraUser;
+import 'package:meowoof/modules/auth/domain/models/user.dart' as hasura_user;
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_facebook_usecase.dart';
@@ -57,7 +57,7 @@ class WelcomeWidgetModel extends BaseViewModel {
     bool status;
     await call(() async {
       await Future.delayed(const Duration(seconds: 2));
-      final hasuraUser.User haUser = await _getUserUsecase.call(user.uid);
+      final hasura_user.User haUser = await _getUserUsecase.call(user.uid);
       status = await _checkUserHavePetUsecase.call(haUser.id);
       _userStorage.set(haUser);
     }, onSuccess: () {

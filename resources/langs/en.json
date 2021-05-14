@@ -43,6 +43,8 @@
     "with": "with",
     "comment": "Comment",
     "post": "Post",
-    "write_a_comment": "Write a comment"
+    "write_a_comment": "Write a comment",
+    "like": "Like",
+    "no_comments_yet": "No comments yet"
   }
 }

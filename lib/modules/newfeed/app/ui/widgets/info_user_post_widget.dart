@@ -7,7 +7,7 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/add_pet/domain/models/pet.dart';
 import 'package:meowoof/modules/auth/domain/models/user.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart' as time_ago;
 
 class InfoUserPostWidget extends StatelessWidget {
   final User user;
@@ -49,7 +49,7 @@ class InfoUserPostWidget extends StatelessWidget {
                   maxLines: 2,
                 ),
                 Text(
-                  timeago.format(postCreatedAt, locale: 'vi'),
+                  time_ago.format(postCreatedAt, locale: 'vi'),
                   style: UITextStyle.text_secondary_12_w500,
                 ),
               ],
@@ -81,7 +81,7 @@ class InfoUserPostWidget extends StatelessWidget {
     for (var i = 0; i < pets.length; i++) {
       inLineSpan.add(
         TextSpan(
-          text: "${pets[i].name}${i != pets.length - 1 ? ", " : "awddwa"}",
+          text: "${pets[i].name}${i != pets.length - 1 ? ", " : " "}",
           style: UITextStyle.text_header_16_w600,
         ),
       );

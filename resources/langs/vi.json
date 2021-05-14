@@ -43,6 +43,8 @@
     "with": "cùng với",
     "comment": "Bình luận",
     "post": "Bài viết",
-    "write_a_comment": "Viết bình luận"
+    "write_a_comment": "Viết bình luận",
+    "like": "Thích",
+    "no_comments_yet": "Chưa có bình luận nào"
   }
 }

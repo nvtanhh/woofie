@@ -26,8 +26,8 @@ class Post {
   PostType type;
   @JsonKey(name: "user")
   User creator;
-  @JsonKey(name: "ilike")
-  bool ilike;
+  @JsonKey(name: "is_liked")
+  bool isLiked;
   @JsonKey(name: "comments")
   List<Comment> comments;
   @JsonKey(name: "post_pets")
@@ -41,7 +41,7 @@ class Post {
   @JsonKey(name: "medias_aggregate")
   ObjectAggregate mediasAggregate;
 
-  Post({this.id, this.content, this.isClosed, this.createdAt, this.creatorId, this.type, this.creator, this.ilike, this.comments, this.pets});
+  Post({this.id, this.content, this.isClosed, this.createdAt, this.creatorId, this.type, this.creator, this.isLiked, this.comments, this.pets});
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 

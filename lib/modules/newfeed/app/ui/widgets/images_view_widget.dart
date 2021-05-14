@@ -14,7 +14,7 @@ class ImagesViewWidget extends StatelessWidget {
 
   ImagesViewWidget({Key key, this.medias}) : super(key: key);
   final PageController _pageController = PageController();
-  final RxInt indexPage = RxInt(1);
+  final RxInt indexPage = RxInt(0);
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +29,7 @@ class ImagesViewWidget extends StatelessWidget {
                 return ImageWithPlaceHolderWidget(
                   imageUrl: medias[index].url,
                   radius: 20.r,
+                  fit: BoxFit.fill,
                 );
               } else if (medias[index].type == MediaType.video) {
                 return BetterPlayer.network(

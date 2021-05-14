@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/auth/domain/models/user.dart';
 import 'package:meowoof/modules/home_menu/domain/models/object_aggregate.dart';
+import 'package:meowoof/modules/newfeed/domain/models/comment_tag_user.dart';
 
 part 'comment.g.dart';
 
@@ -16,12 +17,17 @@ class Comment {
   int postId;
   @JsonKey(name: "creator_id")
   int creatorId;
-  @JsonKey(name: "ilike")
-  bool ilike;
+  @JsonKey(name: "is_liked")
+  bool isLiked;
   @JsonKey(name: "user")
   User creator;
   @JsonKey(name: "comment_reacts_aggregate")
   ObjectAggregate commentReactsAggregate;
+  @JsonKey(name: "comment_tag_users")
+  List<CommentTagUser> commentTagUser;
+  @JsonKey(name: "created_at")
+  DateTime createdAt;
+
   Comment(this.id);
 
   factory Comment.fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
