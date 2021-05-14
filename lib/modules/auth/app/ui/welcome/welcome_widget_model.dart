@@ -3,9 +3,15 @@ import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/add_pet/app/ui/add_pet_widget.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
+import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
+import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
+import 'package:meowoof/modules/auth/domain/models/user.dart' as hasura_user;
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
+import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
+import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_facebook_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_google_usecase.dart';
+import 'package:meowoof/modules/home_menu/app/ui/home_menu.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -14,8 +20,18 @@ class WelcomeWidgetModel extends BaseViewModel {
   final LoginWithFacebookUsecase _loginWithFacebookUsecase;
   final CheckUserHavePetUsecase _checkUserHavePetUsecase;
   User? user;
+  final GetUserUsecase _getUserUsecase;
+  final UserStorage _userStorage;
+  final FirebaseAuth _firebaseAuth;
 
-  WelcomeWidgetModel(this._loginWithGoogleUsecase, this._loginWithFacebookUsecase, this._checkUserHavePetUsecase);
+  WelcomeWidgetModel(
+    this._loginWithGoogleUsecase,
+    this._loginWithFacebookUsecase,
+    this._checkUserHavePetUsecase,
+    this._getUserUsecase,
+    @Named("current_user_storage") this._userStorage,
+    this._firebaseAuth,
+  );
 
   void onLoginClick() {
     Get.to(() => LoginWidget());
@@ -40,17 +56,22 @@ class WelcomeWidgetModel extends BaseViewModel {
     );
   }
 
-  void checkUserHavePetForNavigator() {
-    bool status = true;
-    call(
-      () async => status = await _checkUserHavePetUsecase.call(),
-      onSuccess: () {
-        if (!status) {
-          Get.offAll(AddPetWidget());
-        } else {
-          //TODO go Home
-        }
-      },
-    );
+  Future checkUserHavePetForNavigator() async {
+    bool status;
+    await call(() async {
+      await Future.delayed(const Duration(seconds: 2));
+      final hasura_user.User haUser = await _getUserUsecase.call(user.uid);
+      status = await _checkUserHavePetUsecase.call(haUser.id);
+      _userStorage.set(haUser);
+    }, onSuccess: () {
+      if (!status) {
+        Get.offAll(() => AddPetWidget());
+      } else {
+        Get.offAll(() => HomeMenuWidget());
+      }
+    }, onFailure: (err) {
+      _firebaseAuth.currentUser.getIdToken(true);
+      checkUserHavePetForNavigator();
+    });
   }
 }

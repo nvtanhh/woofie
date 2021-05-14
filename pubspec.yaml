@@ -85,6 +85,15 @@ dependencies:
   #  Easily use any of the 977 fonts (and their variants) from fonts.google.com in your Flutter app.
   google_fonts: ^2.0.0
 
+  # A library useful for creating fuzzy timestamps. (e.g. "5 minutes ago")
+  timeago: ^3.0.2
+  # A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
+  better_player: ^0.0.66
+  # Create awesome and powerful modal bottom sheets.
+  modal_bottom_sheet: ^2.0.0
+  # A package provides an easy way to add shimmer effect in Flutter project
+  shimmer: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

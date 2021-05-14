@@ -7,6 +7,8 @@ part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User {
+  @JsonKey(name: "id")
+  int id;
   @JsonKey(name: "uid")
   String? uid;
   @JsonKey(name: "name")
@@ -18,6 +20,7 @@ class User {
   @JsonKey(name: "pets")
   List<Pet>? pets;
   User({
+    required this.id,
     this.uid,
     this.name,
     this.phoneNumber,

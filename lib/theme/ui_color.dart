@@ -15,4 +15,6 @@ class UIColor {
   static const Color cinnabar = Color(0xFFDB4437);
   static const Color antique_white = Color(0xFFFAEBD5);
   static const Color alice_blue = Color(0xFFEDF1F5);
+  static const Color black = Color(0xFF000000);
+  static const Color eclipse = Color(0xFF3A3A3A);
 }

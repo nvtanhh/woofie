@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/modules/add_pet/app/ui/add_pet_widget.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
+import 'package:meowoof/modules/home_menu/app/ui/home_menu.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -17,7 +17,7 @@ class SplashWidgetModel extends BaseViewModel {
       isChecked = true;
       await Future.delayed(const Duration(seconds: 1));
       if (_firebaseAuth.currentUser != null) {
-        await Get.offAll(() => AddPetWidget());
+        await Get.offAll(() => HomeMenuWidget());
       } else {
         await Get.offAll(() => WelcomeWidget());
       }

@@ -11,6 +11,7 @@ import 'package:logger/logger.dart';
 import 'package:meowoof/configs/app_config.dart';
 import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/interceptors/jwt_interceptor.dart';
+import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -52,4 +53,8 @@ abstract class RegisterModule {
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {
     return HasuraConnect(BackendConfig.BASE_HASURA_URL, interceptors: [interceptor]);
   }
+
+  @lazySingleton
+  @Named('current_user_storage')
+  UserStorage getCurrentUserStorage(SharedPreferences prefs) => UserStorage(prefs, 'current_user');
 }
