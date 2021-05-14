@@ -13,35 +13,46 @@ part 'post.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Post {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   @JsonKey(name: "content")
-  String content;
+  String? content;
   @JsonKey(name: "is_closed")
-  bool isClosed;
+  bool? isClosed;
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  DateTime? createdAt;
   @JsonKey(name: "creator_id")
-  int creatorId;
+  int? creatorId;
   @JsonKey(name: "type")
-  PostType type;
+  PostType? type;
   @JsonKey(name: "user")
-  User creator;
+  User? creator;
   @JsonKey(name: "is_liked")
-  bool isLiked;
+  bool? isLiked;
   @JsonKey(name: "comments")
-  List<Comment> comments;
+  List<Comment>? comments;
   @JsonKey(name: "post_pets")
-  List<Pet> pets;
+  List<Pet>? pets;
   @JsonKey(name: "medias")
-  List<Medias> medias;
+  List<Medias>? medias;
   @JsonKey(name: "post_reacts_aggregate")
-  ObjectAggregate postReactsAggregate;
+  ObjectAggregate? postReactsAggregate;
   @JsonKey(name: "comments_aggregate")
-  ObjectAggregate commentsAggregate;
+  ObjectAggregate? commentsAggregate;
   @JsonKey(name: "medias_aggregate")
-  ObjectAggregate mediasAggregate;
+  ObjectAggregate? mediasAggregate;
 
-  Post({this.id, this.content, this.isClosed, this.createdAt, this.creatorId, this.type, this.creator, this.isLiked, this.comments, this.pets});
+  Post({
+    this.id,
+    this.content,
+    this.isClosed,
+    this.createdAt,
+    this.creatorId,
+    this.type,
+    this.creator,
+    this.isLiked,
+    this.comments,
+    this.pets,
+  });
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 

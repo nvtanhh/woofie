@@ -10,25 +10,35 @@ part 'comment.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Comment {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   @JsonKey(name: "content")
-  String content;
+  String? content;
   @JsonKey(name: "post_id")
-  int postId;
+  int? postId;
   @JsonKey(name: "creator_id")
-  int creatorId;
+  int? creatorId;
   @JsonKey(name: "is_liked")
-  bool isLiked;
+  bool? isLiked;
   @JsonKey(name: "user")
-  User creator;
+  User? creator;
   @JsonKey(name: "comment_reacts_aggregate")
-  ObjectAggregate commentReactsAggregate;
+  ObjectAggregate? commentReactsAggregate;
   @JsonKey(name: "comment_tag_users")
-  List<CommentTagUser> commentTagUser;
+  List<CommentTagUser>? commentTagUser;
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  DateTime? createdAt;
 
-  Comment(this.id);
+  Comment({
+    this.id,
+    this.content,
+    this.postId,
+    this.creatorId,
+    this.isLiked,
+    this.creator,
+    this.commentReactsAggregate,
+    this.commentTagUser,
+    this.createdAt,
+  });
 
   factory Comment.fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
 

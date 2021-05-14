@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/add_pet/domain/models/pet.dart';
+import 'package:meowoof/modules/home_menu/domain/models/medias.dart';
 
 part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   @JsonKey(name: "uid")
   String? uid;
   @JsonKey(name: "name")
@@ -19,13 +20,16 @@ class User {
   String? email;
   @JsonKey(name: "pets")
   List<Pet>? pets;
+  @JsonKey(name: "avatar_current")
+  Medias? avatar;
   User({
-    required this.id,
+    this.id,
     this.uid,
     this.name,
     this.phoneNumber,
     this.email,
     this.pets,
+    this.avatar,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

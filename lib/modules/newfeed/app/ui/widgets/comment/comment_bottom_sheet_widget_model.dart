@@ -8,12 +8,12 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class CommentBottomSheetWidgetModel extends BaseViewModel {
-  final Rx<User> _user = Rx<User>();
+  final Rx<User?> _user = Rx<User?>(null);
   final RxList<Comment> _comments = RxList<Comment>();
   final GetCommentInPostUsecase _getCommentInPostUsecase;
   final RxBool _isLoading = RxBool(true);
   TextEditingController commentEditingController = TextEditingController();
-  int postId;
+  late int postId;
 
   CommentBottomSheetWidgetModel(this._getCommentInPostUsecase);
 
@@ -35,12 +35,11 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
 
   void onSendComment() {}
 
-  void onLikeCommentClick(int idComment) {
+  void onLikeCommentClick(int idComment) {}
 
-  }
-  User get user => _user.value;
+  User? get user => _user.value;
 
-  set user(User value) {
+  set user(User? value) {
     _user.value = value;
   }
 
@@ -55,5 +54,4 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   set isLoading(bool value) {
     _isLoading.value = value;
   }
-
 }

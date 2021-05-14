@@ -64,13 +64,15 @@ class LoginWidgetModel extends BaseViewModel {
       call(
         () async {
           await login();
-          final haUser = await _getUserUsecase.call(user.uid);
-          _userStorage.set(haUser);
-          final status = await _checkUserHavePetUsecase.call(haUser.id);
-          if (!status) {
-            await Get.offAll(() => AddPetWidget());
-          } else {
-            await Get.offAll(() => HomeMenuWidget());
+          if (user.isBlank == false) {
+            final haUser = await _getUserUsecase.call(user!.uid);
+            _userStorage.set(haUser!);
+            final status = await _checkUserHavePetUsecase.call(haUser.id!);
+            if (!status) {
+              await Get.offAll(() => AddPetWidget());
+            } else {
+              await Get.offAll(() => HomeMenuWidget());
+            }
           }
         },
         onFailure: (err) {
@@ -84,20 +86,6 @@ class LoginWidgetModel extends BaseViewModel {
         },
       );
     }
-  }
-
-  void checkUserHavePetForNavigator() {
-    bool status = true;
-    call(
-      () async => status = await _checkUserHavePetUsecase.call(),
-      onSuccess: () {
-        if (status) {
-          Get.offAll(AddPetWidget());
-        } else {
-          //TODO go Home
-        }
-      },
-    );
   }
 
   void onForgotPasswordClick() {}

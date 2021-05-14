@@ -32,7 +32,7 @@ class HasuraDatasource {
     }
   }
 
-  Future<User> getUser(String uid) async {
+  Future<User?> getUser(String uid) async {
     final queryGetUser = """
    query MyQuery {
    users(where: {uid: {_eq: "$uid"}}) {

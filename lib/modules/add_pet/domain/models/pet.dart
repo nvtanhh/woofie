@@ -11,7 +11,7 @@ part 'pet.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Pet {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   @JsonKey(name: "name")
   String? name;
   @JsonKey(name: "id_pet_type")
@@ -34,7 +34,7 @@ class Pet {
   PetBreed? petBreed;
 
   Pet({
-    required this.id,
+    this.id,
     this.name,
     this.petTypeId,
     this.gender,

@@ -16,8 +16,8 @@ class CommentBottomSheetWidget extends StatefulWidget {
   final int postId;
 
   const CommentBottomSheetWidget({
-    Key key,
-    this.postId,
+    Key? key,
+    required this.postId,
   }) : super(key: key);
 
   @override

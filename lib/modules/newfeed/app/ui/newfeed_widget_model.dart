@@ -24,7 +24,7 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   void onCommentClick(int idPost) {
     showMaterialModalBottomSheet(
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => CommentBottomSheetWidget(
         postId: idPost,
       ),

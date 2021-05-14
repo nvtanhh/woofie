@@ -6,8 +6,8 @@ class UserStorage extends Storage<User> {
   UserStorage(SharedPreferences prefs, String key) : super(prefs: prefs, key: key);
 
   @override
-  User get({User defaultValue}) {
-    final String jsonString = prefs.getString(key);
+  User? get({User? defaultValue}) {
+    final String? jsonString = prefs.getString(key);
     return jsonString != null ? User.fromJsonString(jsonString) : defaultValue;
   }
 

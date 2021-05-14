@@ -15,10 +15,10 @@ class InfoUserPostWidget extends StatelessWidget {
   final DateTime postCreatedAt;
 
   const InfoUserPostWidget({
-    Key key,
-    this.user,
-    this.pets,
-    this.postCreatedAt,
+    Key? key,
+    required this.user,
+    required this.pets,
+    required this.postCreatedAt,
   }) : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class InfoUserPostWidget extends StatelessWidget {
             width: 45.w,
             height: 45.w,
             fit: BoxFit.fill,
-            imageUrl: user.avatar.url,
+            imageUrl: user.avatar?.url ?? "",
             radius: 10.r,
           ),
           SizedBox(
@@ -94,7 +94,7 @@ class InfoUserPostWidget extends StatelessWidget {
       return Assets.resources.icons.icPerson;
     } else {
       return NetworkImage(
-        user.avatar.url,
+        user.avatar?.url ?? "",
       );
     }
   }

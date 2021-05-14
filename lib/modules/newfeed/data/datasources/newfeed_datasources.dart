@@ -44,7 +44,7 @@ class NewFeedDatasource {
 
   Future<List<Comment>> getCommentsInProject(int postId) async {
     await Future.delayed(const Duration(seconds: 1));
-    Comment comment = Comment(0);
+    Comment comment = Comment(id: 1);
     comment.creator = User(
       avatar: Medias(
         type: MediaType.image,
@@ -52,12 +52,13 @@ class NewFeedDatasource {
       ),
       name: "Bao Nguyen",
     );
-    comment.content = "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.";
+    comment.content =
+        "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.";
     comment.createdAt = DateTime.now().subtract(
       const Duration(seconds: 120),
     );
     comment.isLiked = true;
-    Comment comment2 = Comment(1);
+    Comment comment2 = Comment(id: 1);
     comment2.creator = User(
       avatar: Medias(
         type: MediaType.image,
@@ -65,11 +66,12 @@ class NewFeedDatasource {
       ),
       name: "Bao Nguyen",
     );
-    comment2.content = "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.";
+    comment2.content =
+        "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.";
     comment2.createdAt = DateTime.now().subtract(
       const Duration(seconds: 120),
     );
     comment2.isLiked = false;
-    return <Comment>[comment,comment2];
+    return <Comment>[comment, comment2];
   }
 }

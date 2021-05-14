@@ -7,7 +7,7 @@ part 'aggregate.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Aggregate {
   @JsonKey(name: "count")
-  int count;
+  int? count;
 
   Aggregate({this.count});
 

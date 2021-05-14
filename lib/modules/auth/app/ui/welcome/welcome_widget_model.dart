@@ -4,10 +4,8 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/add_pet/app/ui/add_pet_widget.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
-import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/auth/domain/models/user.dart' as hasura_user;
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
-import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_facebook_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_google_usecase.dart';
@@ -51,18 +49,21 @@ class WelcomeWidgetModel extends BaseViewModel {
       () async => user = await _loginWithGoogleUsecase.call(),
       onSuccess: () {
         checkUserHavePetForNavigator();
-        // Get.offAll(() => AddPetWidget());
       },
     );
   }
 
   Future checkUserHavePetForNavigator() async {
-    bool status;
+    bool status = false;
     await call(() async {
       await Future.delayed(const Duration(seconds: 2));
-      final hasura_user.User haUser = await _getUserUsecase.call(user.uid);
-      status = await _checkUserHavePetUsecase.call(haUser.id);
-      _userStorage.set(haUser);
+      final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
+      if (haUser != null) {
+        status = await _checkUserHavePetUsecase.call(haUser.id!);
+        _userStorage.set(haUser);
+      } else {
+        throw Exception("Cant get user");
+      }
     }, onSuccess: () {
       if (!status) {
         Get.offAll(() => AddPetWidget());
@@ -70,7 +71,7 @@ class WelcomeWidgetModel extends BaseViewModel {
         Get.offAll(() => HomeMenuWidget());
       }
     }, onFailure: (err) {
-      _firebaseAuth.currentUser.getIdToken(true);
+      _firebaseAuth.currentUser?.getIdToken(true);
       checkUserHavePetForNavigator();
     });
   }

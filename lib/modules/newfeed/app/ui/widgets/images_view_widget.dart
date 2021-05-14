@@ -12,7 +12,10 @@ import 'package:meowoof/theme/ui_text_style.dart';
 class ImagesViewWidget extends StatelessWidget {
   final List<Medias> medias;
 
-  ImagesViewWidget({Key key, this.medias}) : super(key: key);
+  ImagesViewWidget({
+    Key? key,
+    required this.medias,
+  }) : super(key: key);
   final PageController _pageController = PageController();
   final RxInt indexPage = RxInt(0);
 
@@ -27,13 +30,13 @@ class ImagesViewWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               if (medias[index].type == MediaType.image || medias[index].type == MediaType.gif) {
                 return ImageWithPlaceHolderWidget(
-                  imageUrl: medias[index].url,
+                  imageUrl: medias[index].url ?? "",
                   radius: 20.r,
                   fit: BoxFit.fill,
                 );
               } else if (medias[index].type == MediaType.video) {
                 return BetterPlayer.network(
-                  medias[index].url,
+                  medias[index].url ?? "",
                 );
               } else {
                 return const SizedBox();

@@ -16,7 +16,11 @@ class CommentWidget extends StatelessWidget {
   final Function(int) onLikeCommentClick;
   final RxBool isLiked = RxBool(false);
 
-  CommentWidget({Key key, this.comment, this.onLikeCommentClick}) : super(key: key) {
+  CommentWidget({
+    Key? key,
+    required this.comment,
+    required this.onLikeCommentClick,
+  }) : super(key: key) {
     isLiked.value = comment.isLiked ?? false;
   }
 
@@ -41,7 +45,7 @@ class CommentWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                comment.creator.name,
+                comment.creator?.name ?? "",
                 style: UITextStyle.text_header_14_w600,
               ),
               SizedBox(
@@ -74,7 +78,7 @@ class CommentWidget extends StatelessWidget {
                     width: 26.w,
                   ),
                   Obx(
-                        () => Text.rich(
+                    () => Text.rich(
                       TextSpan(
                         text: LocaleKeys.new_feed_like.trans(),
                         style: isLiked.value ? UITextStyle.primary_10_w600 : UITextStyle.text_body_10_w600,
@@ -93,18 +97,18 @@ class CommentWidget extends StatelessWidget {
 
   void onLikeClick() {
     isLiked.value = !isLiked.value;
-    onLikeCommentClick(comment.id);
+    onLikeCommentClick(comment.id!);
   }
 
   List<InlineSpan> createTagUser() {
     if (comment.commentTagUser == null) return [];
     final List<InlineSpan> inLineSpan = [];
-    for (var i = 0; i < comment.commentTagUser.length; i++) {
+    for (var i = 0; i < (comment.commentTagUser?.length ?? 0); i++) {
       inLineSpan.add(
         TextSpan(
-          text: "${comment.commentTagUser[i].user.name}${i != comment.commentTagUser.length - 1 ? ", " : " "}",
+          text: "${comment.commentTagUser?[i].user?.name ?? ""}${i != (comment.commentTagUser?.length ?? 0) - 1 ? ", " : " "}",
           style: UITextStyle.text_header_16_w600,
-          recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(comment.commentTagUser[i].user.id),
+          recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(comment.commentTagUser?[i].user?.id ?? 0),
         ),
       );
     }
