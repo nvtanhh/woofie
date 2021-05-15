@@ -93,6 +93,8 @@ dependencies:
   modal_bottom_sheet: ^2.0.0
   # A package provides an easy way to add shimmer effect in Flutter project
   shimmer: ^2.0.0
+  # A package provides lazily load and display small chunks of items as the user scrolls down the screen
+  infinite_scroll_pagination: ^3.0.1
 
 dev_dependencies:
   flutter_test:

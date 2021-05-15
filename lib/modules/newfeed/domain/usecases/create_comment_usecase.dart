@@ -7,6 +7,6 @@ class CreateCommentUsecase {
 
   CreateCommentUsecase(this._newFeedRepository);
 
-  // Future<Comment?> createComment(int postId, String content) {
-  // }
+// Future<Comment?> createComment(int postId, String content) {
+// }
 }

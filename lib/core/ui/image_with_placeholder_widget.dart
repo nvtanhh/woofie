@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
-import 'package:meowoof/theme/ui_color.dart';
 
 class ImageWithPlaceHolderWidget extends StatelessWidget {
   final double? width;

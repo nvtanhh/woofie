@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
@@ -9,6 +10,7 @@ import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/comment_bottom_sh
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/comment_widget.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/send_comment_widget.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/shimmer_comment_widget.dart';
+import 'package:meowoof/modules/newfeed/domain/models/comment.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
@@ -76,33 +78,29 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
         body: Column(
           children: [
             Expanded(
-              child: Obx(
-                () {
-                  if (viewModel.isLoading) {
-                    return ShimmerCommentWidget();
-                  } else {
-                    return ListView.builder(
-                      padding: EdgeInsets.only(
-                        top: 10.h,
-                        left: 10.w,
-                        right: 10.w,
-                      ),
-                      itemBuilder: (context, index) {
-                        if (viewModel.comments.isEmpty) {
-                          return Text(
-                            LocaleKeys.new_feed_no_comments_yet.trans(),
-                            style: UITextStyle.text_secondary_12_w500,
-                          );
-                        }
-                        return CommentWidget(
-                          comment: viewModel.comments[index],
-                          onLikeCommentClick: viewModel.onLikeCommentClick,
-                        );
-                      },
-                      itemCount: viewModel.comments.length,
+              child: PagedListView<int, Comment>(
+                pagingController: viewModel.pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Comment>(
+                  itemBuilder: (context, item, index) {
+                    return CommentWidget(
+                      comment: item,
+                      onLikeCommentClick: viewModel.onLikeCommentClick,
                     );
-                  }
-                },
+                  },
+                  firstPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
+                  noItemsFoundIndicatorBuilder: (_) => Center(
+                    child: Text(
+                      LocaleKeys.new_feed_no_comments_yet.trans(),
+                      style: UITextStyle.text_secondary_12_w500,
+                    ),
+                  ),
+                    newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
+                ),
+                padding: EdgeInsets.only(
+                  top: 10.h,
+                  left: 10.w,
+                  right: 10.w,
+                ),
               ),
             ),
             SendCommentWidget(

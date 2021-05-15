@@ -12,7 +12,9 @@ import 'package:meowoof/modules/newfeed/domain/models/post.dart';
 @lazySingleton
 class NewFeedDatasource {
   final HasuraConnect _hasuraConnect;
+
   NewFeedDatasource(this._hasuraConnect);
+
   Future<List<Post>> getPosts() async {
     final Post post = Post(
       id: 1,
@@ -69,13 +71,21 @@ class NewFeedDatasource {
       ),
       name: "Bao Nguyen",
     );
-    comment2.content =
-        "Một năm rồi cơ. Bây giờ xịn hơn rồi.";
+    comment2.content = "Một năm rồi cơ. Bây giờ xịn hơn rồi.";
     comment2.createdAt = DateTime.now().subtract(
       const Duration(seconds: 120),
     );
     comment2.isLiked = false;
-    return <Comment>[comment, comment2];
+    var list =<Comment>[comment, comment2];
+    list.add(list[0]);
+    list.add(list[1]);
+    list.add(list[0]);
+    list.add(list[1]);
+    list.add(list[0]);
+    list.add(list[1]);
+    list.add(list[0]);
+    list.add(list[1]);
+    return list;
   }
 
   Future<bool> likePost(int idPost) async {

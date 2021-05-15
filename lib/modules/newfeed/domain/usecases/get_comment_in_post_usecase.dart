@@ -7,6 +7,7 @@ class GetCommentInPostUsecase {
   final NewFeedRepository _newFeedRepository;
 
   GetCommentInPostUsecase(this._newFeedRepository);
+
   Future<List<Comment>> call(int postId) {
     return _newFeedRepository.getCommentInPost(postId);
   }

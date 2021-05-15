@@ -3,28 +3,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/comment_bottom_sheet_widget.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/post/post_widget.dart';
 import 'package:meowoof/modules/newfeed/domain/models/post.dart';
 import 'package:meowoof/modules/newfeed/domain/usecases/get_posts_usecase.dart';
 import 'package:meowoof/modules/newfeed/domain/usecases/like_post_usecase.dart';
-import 'package:meowoof/theme/ui_color.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class NewFeedWidgetModel extends BaseViewModel {
   final GetPostsUsecase _getPostsUsecase;
-  final RxList<Post> _posts = RxList<Post>([]);
+  List<Post> posts = [];
   final LikePostUsecase _likePostUsecase;
+  late PagingController<int, Post> pagingController;
+  final int pageSize = 10;
 
-  NewFeedWidgetModel(this._getPostsUsecase, this._likePostUsecase);
+  NewFeedWidgetModel(this._getPostsUsecase, this._likePostUsecase) {
+    pagingController = PagingController(firstPageKey: 0);
+  }
 
   @override
   void initState() {
-    getPosts();
+    pagingController.addPageRequestListener(
+      (pageKey) {
+        _loadMorePost(pageKey);
+      },
+    );
     super.initState();
+  }
+
+  Future _loadMorePost(int pageKey) async {
+    try {
+      final newItems = await _getPostsUsecase.call();
+      final isLastPage = newItems.length < pageSize;
+      if (isLastPage) {
+        pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + newItems.length;
+        pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      pagingController.error = error;
+    }
   }
 
   void onCommentClick(int idPost) {
@@ -65,9 +88,10 @@ class NewFeedWidgetModel extends BaseViewModel {
     );
   }
 
-  List<Post> get posts => _posts.toList();
-
-  set posts(List<Post> value) {
-    _posts.assignAll(value);
+  @override
+  void disposeState() {
+    pagingController.removeListener(() {});
+    pagingController.dispose();
+    super.disposeState();
   }
 }
