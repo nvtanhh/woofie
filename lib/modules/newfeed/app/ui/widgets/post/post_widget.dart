@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
@@ -9,6 +10,7 @@ import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/send_comm
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/shimmer_comment_widget.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/post/post_widget_model.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/post_item_in_listview.dart';
+import 'package:meowoof/modules/newfeed/domain/models/comment.dart';
 import 'package:meowoof/modules/newfeed/domain/models/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -57,26 +59,42 @@ class _PostWidgetState extends BaseViewState<PostWidget, PostWidgetModel> {
         body: Column(
           children: [
             Expanded(
-              child: Obx(
-                () => ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  itemBuilder: (context, index) {
+              child: PagedListView<int, Comment>(
+                pagingController: viewModel.pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Comment>(
+                  itemBuilder: (context, item, index) {
                     if (index == 0) {
                       return PostItemInListView(
                         post: viewModel.post,
                         onLikeClick: viewModel.onLikeClick,
                       );
                     }
-                    if (!viewModel.isLoaded) {
-                      return ShimmerCommentWidget();
-                    } else {
-                      return CommentWidget(
-                        comment: viewModel.post.comments![index - 1],
-                        onLikeCommentClick: viewModel.onLikeCommentClick,
-                      );
-                    }
+                    return CommentWidget(
+                      comment: viewModel.pagingController.itemList![index - 1],
+                      onLikeCommentClick: viewModel.onLikeCommentClick,
+                    );
                   },
-                  itemCount: viewModel.isLoaded ? (viewModel.post.comments?.length ?? 0) + 1 : 2,
+                  firstPageProgressIndicatorBuilder: (_) => Column(
+                    children: [
+                      PostItemInListView(
+                        post: viewModel.post,
+                        onLikeClick: viewModel.onLikeClick,
+                      ),
+                      ShimmerCommentWidget()
+                    ],
+                  ),
+                  noItemsFoundIndicatorBuilder: (_) => Center(
+                    child: Text(
+                      LocaleKeys.new_feed_no_comments_yet.trans(),
+                      style: UITextStyle.text_secondary_12_w500,
+                    ),
+                  ),
+                  newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
+                ),
+                padding: EdgeInsets.only(
+                  top: 10.h,
+                  left: 10.w,
+                  right: 10.w,
                 ),
               ),
             ),

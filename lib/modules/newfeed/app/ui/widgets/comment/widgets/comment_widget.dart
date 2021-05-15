@@ -27,7 +27,7 @@ class CommentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20.h),
+      padding: EdgeInsets.only(bottom: 20.h, top: 20.h),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
