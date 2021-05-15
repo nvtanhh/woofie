@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
-class MFButton extends StatelessWidget {
+class MWButton extends StatelessWidget {
   final Widget child;
   final Widget? icon;
   final VoidCallback onPressed;
   final VoidCallback? onLongPressed;
   final bool isDisabled;
   final bool isLoading;
-  final MFButtonSize size;
+  final MWButtonSize size;
   final double? minWidth;
   final EdgeInsets? padding;
   final ShapeBorder? shape;
@@ -21,13 +21,13 @@ class MFButton extends StatelessWidget {
   final bool outline;
   final BorderRadius? borderRadius;
 
-  const MFButton(
+  const MWButton(
       {required this.child,
       required this.onPressed,
       this.minHeight,
       this.minWidth,
       this.icon,
-      this.size = MFButtonSize.medium,
+      this.size = MWButtonSize.medium,
       this.shape,
       this.boxShadow,
       this.isDisabled = false,
@@ -95,15 +95,15 @@ class MFButton extends StatelessWidget {
   }
 
   TextStyle _getButtonTextStyleForSize(
-      {MFButtonSize? size, required Color color}) {
+      {MWButtonSize? size, required Color color}) {
     TextStyle textStyle = TextStyle(color: color);
 
     switch (size) {
-      case MFButtonSize.large:
+      case MWButtonSize.large:
         textStyle = textStyle.copyWith(fontSize: 18.sp);
         break;
-      case MFButtonSize.medium:
-      case MFButtonSize.small:
+      case MWButtonSize.medium:
+      case MWButtonSize.small:
       default:
     }
 
@@ -119,17 +119,17 @@ class MFButton extends StatelessWidget {
     );
   }
 
-  double _getButtonMinWidthForSize(MFButtonSize type) {
+  double _getButtonMinWidthForSize(MWButtonSize size) {
     double buttonMinWidth;
 
     switch (size) {
-      case MFButtonSize.large:
+      case MWButtonSize.large:
         buttonMinWidth = 140.w;
         break;
-      case MFButtonSize.medium:
+      case MWButtonSize.medium:
         buttonMinWidth = 100.w;
         break;
-      case MFButtonSize.small:
+      case MWButtonSize.small:
         buttonMinWidth = 70.w;
         break;
       default:
@@ -138,22 +138,22 @@ class MFButton extends StatelessWidget {
     return buttonMinWidth;
   }
 
-  EdgeInsets _getButtonPaddingForSize(MFButtonSize size) {
+  EdgeInsets _getButtonPaddingForSize(MWButtonSize size) {
     if (padding != null) return padding!;
 
     EdgeInsets buttonPadding;
 
     switch (size) {
-      case MFButtonSize.large:
+      case MWButtonSize.large:
         buttonPadding = EdgeInsets.symmetric(
           vertical: 10.w,
           horizontal: 10.h,
         );
         break;
-      case MFButtonSize.medium:
+      case MWButtonSize.medium:
         buttonPadding = EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.h);
         break;
-      case MFButtonSize.small:
+      case MWButtonSize.small:
         buttonPadding = EdgeInsets.symmetric(vertical: 4.w, horizontal: 10.h);
         break;
       default:
@@ -163,4 +163,4 @@ class MFButton extends StatelessWidget {
   }
 }
 
-enum MFButtonSize { small, medium, large }
+enum MWButtonSize { small, medium, large }
