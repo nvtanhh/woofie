@@ -23,10 +23,8 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: UIColor.white,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          backgroundColor: UIColor.white,
           title: Text(
             LocaleKeys.add_pet_add_pet.trans(),
             style: UITextStyle.text_header_24_w600,

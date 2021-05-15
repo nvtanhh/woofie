@@ -73,7 +73,9 @@ class ImagesViewWidget extends StatelessWidget {
         ),
       );
     } else {
-      return SizedBox(height: 10.h,);
+      return SizedBox(
+        height: 10.h,
+      );
     }
   }
 }

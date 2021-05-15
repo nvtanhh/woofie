@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/comment_bottom_sheet_widget.dart';
+import 'package:meowoof/modules/newfeed/app/ui/widgets/post/post_widget.dart';
 import 'package:meowoof/modules/newfeed/domain/models/post.dart';
 import 'package:meowoof/modules/newfeed/domain/usecases/get_posts_usecase.dart';
 import 'package:meowoof/modules/newfeed/domain/usecases/like_post_usecase.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -36,6 +39,7 @@ class NewFeedWidgetModel extends BaseViewModel {
           topLeft: Radius.circular(30.r),
         ),
       ),
+      backgroundColor: Colors.transparent,
     );
   }
 
@@ -44,6 +48,14 @@ class NewFeedWidgetModel extends BaseViewModel {
       () => _likePostUsecase.call(idPost),
       showLoading: false,
       onFailure: (err) {},
+    );
+  }
+
+  void onPostClick(Post post) {
+    Get.to(
+      () => PostWidget(
+        post: post,
+      ),
     );
   }
 

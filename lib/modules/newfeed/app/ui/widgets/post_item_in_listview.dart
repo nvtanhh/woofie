@@ -9,16 +9,18 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class PostItemInListView extends StatelessWidget {
   final Post post;
-  final Function(int) onCommentClick;
+  final Function(int)? onCommentClick;
   final Function(int) onLikeClick;
+  final Function(Post)? onPostClick;
   final RxBool isLiked = RxBool(false);
   final RxInt countLike = RxInt(0);
 
   PostItemInListView({
     Key? key,
     required this.post,
-    required this.onCommentClick,
+    this.onCommentClick,
     required this.onLikeClick,
+    this.onPostClick,
   }) : super(key: key) {
     isLiked.value = post.isLiked ?? false;
     countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
@@ -26,81 +28,84 @@ class PostItemInListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 600.h,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InfoUserPostWidget(
-            pets: post.pets!,
-            postCreatedAt: post.createdAt!,
-            user: post.creator!,
-          ),
-          ImagesViewWidget(
-            medias: post.medias ?? [],
-          ),
-          Text(
-            post.content ?? "",
-            maxLines: 4,
-            style: UITextStyle.text_body_14_w500,
-            overflow: TextOverflow.ellipsis,
-          ),
-          SizedBox(
-            height: 13.h,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 60.w,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () => likeClick(),
-                      child: Assets.resources.icons.icReact.image(
-                        width: 24.w,
-                        height: 24.w,
-                        fit: BoxFit.fill,
+    return InkWell(
+      onTap: () => onPostClick?.call(post),
+      child: SizedBox(
+        height: 600.h,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InfoUserPostWidget(
+              pets: post.pets!,
+              postCreatedAt: post.createdAt!,
+              user: post.creator!,
+            ),
+            ImagesViewWidget(
+              medias: post.medias ?? [],
+            ),
+            Text(
+              post.content ?? "",
+              maxLines: 4,
+              style: UITextStyle.text_body_14_w500,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(
+              height: 13.h,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 60.w,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () => likeClick(),
+                        child: Assets.resources.icons.icReact.image(
+                          width: 24.w,
+                          height: 24.w,
+                          fit: BoxFit.fill,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    Obx(
-                      () => Text(
-                        "${countLike.value}",
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Obx(
+                        () => Text(
+                          "${countLike.value}",
+                          style: UITextStyle.black_14_w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 45.w,
+                ),
+                SizedBox(
+                  width: 60.w,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () => onCommentClick?.call(post.id!),
+                        child: Icon(
+                          Icons.comment_outlined,
+                          size: 24.w,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Text(
+                        "${post.commentsAggregate?.aggregate.count ?? "0"}",
                         style: UITextStyle.black_14_w600,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 45.w,
-              ),
-              SizedBox(
-                width: 60.w,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () => onCommentClick(post.id!),
-                      child: Icon(
-                        Icons.comment_outlined,
-                        size: 24.w,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    Text(
-                      "${post.commentsAggregate?.aggregate.count ?? "0"}",
-                      style: UITextStyle.black_14_w600,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

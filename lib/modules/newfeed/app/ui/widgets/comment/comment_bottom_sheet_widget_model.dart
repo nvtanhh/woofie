@@ -9,7 +9,7 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class CommentBottomSheetWidgetModel extends BaseViewModel {
-  final Rx<User?> _user = Rx<User?>(null);
+  final Rx<User?> user = Rx<User?>(null);
   final RxList<Comment> _comments = RxList<Comment>();
   final GetCommentInPostUsecase _getCommentInPostUsecase;
   final RxBool _isLoading = RxBool(true);
@@ -33,9 +33,11 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   }
 
   void loadUserLocal() {
-    call(() async => user = _userStorage.get(), showLoading: false, onSuccess: () {
-      print(user?.avatar?.url);
-    });
+    call(
+      () async => user.value = _userStorage.get(),
+      showLoading: false,
+      onSuccess: () {},
+    );
   }
 
   @override
@@ -49,12 +51,6 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
 
   void onLikeCommentClick(int idComment) {}
 
-  User? get user => _user.value;
-
-  set user(User? value) {
-    _user.value = value;
-  }
-
   List<Comment> get comments => _comments.toList();
 
   set comments(List<Comment> value) {
@@ -65,5 +61,11 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
 
   set isLoading(bool value) {
     _isLoading.value = value;
+  }
+
+  @override
+  void disposeState() {
+    commentEditingController.dispose();
+    super.disposeState();
   }
 }

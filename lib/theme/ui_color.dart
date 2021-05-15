@@ -17,4 +17,5 @@ class UIColor {
   static const Color alice_blue = Color(0xFFEDF1F5);
   static const Color black = Color(0xFF000000);
   static const Color eclipse = Color(0xFF3A3A3A);
+  static const Color pink_swan27 = Color(0x40B7B7B7);
 }

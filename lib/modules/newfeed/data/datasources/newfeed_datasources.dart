@@ -46,7 +46,7 @@ class NewFeedDatasource {
   }
 
   Future<List<Comment>> getCommentsInProject(int postId) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
     Comment comment = Comment(id: 1);
     comment.creator = User(
       avatar: Medias(
@@ -70,7 +70,7 @@ class NewFeedDatasource {
       name: "Bao Nguyen",
     );
     comment2.content =
-        "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.";
+        "Một năm rồi cơ. Bây giờ xịn hơn rồi.";
     comment2.createdAt = DateTime.now().subtract(
       const Duration(seconds: 120),
     );

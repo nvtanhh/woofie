@@ -82,6 +82,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                     post: viewModel.posts[index],
                     onCommentClick: viewModel.onCommentClick,
                     onLikeClick: viewModel.onLikeClick,
+                    onPostClick: viewModel.onPostClick,
                   );
                 },
               ),

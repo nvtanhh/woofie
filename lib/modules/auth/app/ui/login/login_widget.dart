@@ -21,7 +21,6 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: UIColor.white,
         resizeToAvoidBottomInset: false,
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 30.w),

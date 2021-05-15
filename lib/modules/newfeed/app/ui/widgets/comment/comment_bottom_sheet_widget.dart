@@ -1,13 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
-import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/comment_bottom_sheet_widget_model.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/comment_widget.dart';
+import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/send_comment_widget.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/shimmer_comment_widget.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -41,38 +41,40 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
           topLeft: Radius.circular(30.r),
           topRight: Radius.circular(30.r),
         ),
+        color: UIColor.white,
       ),
-      padding: EdgeInsets.all(10.r),
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: UIColor.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.r),
+              topRight: Radius.circular(30.r),
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.close,
+                size: 24.w,
+                color: UIColor.text_header,
+              ),
+              onPressed: () => Get.back(),
+              padding: EdgeInsets.only(right: 20.w),
+              constraints: const BoxConstraints(),
+            ),
+          ],
+          title: Text(
+            LocaleKeys.new_feed_comment.trans(),
+            style: UITextStyle.text_header_18_w600,
+          ),
+          centerTitle: true,
+          elevation: 0,
+          toolbarHeight: 30.h,
+        ),
+        backgroundColor: Colors.transparent,
         body: Column(
           children: [
-            SizedBox(
-              height: 60.h,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Center(
-                    child: Text(
-                      LocaleKeys.new_feed_comment.trans(),
-                      style: UITextStyle.text_header_18_w600,
-                    ),
-                  ),
-                  Positioned(
-                    right: 10.w,
-                    top: 15.h,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        size: 24.w,
-                      ),
-                      onPressed: () => Get.back(),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                    ),
-                  )
-                ],
-              ),
-            ),
             Expanded(
               child: Obx(
                 () {
@@ -80,7 +82,11 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
                     return ShimmerCommentWidget();
                   } else {
                     return ListView.builder(
-                      padding: EdgeInsets.zero,
+                      padding: EdgeInsets.only(
+                        top: 10.h,
+                        left: 10.w,
+                        right: 10.w,
+                      ),
                       itemBuilder: (context, index) {
                         if (viewModel.comments.isEmpty) {
                           return Text(
@@ -99,64 +105,10 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
                 },
               ),
             ),
-            Container(
-              height: 60.h,
-              padding: EdgeInsets.only(top: 10.h),
-              child: Row(
-                children: [
-                  Obx(
-                    () {
-                      if (viewModel.user == null) {
-                        return Container(
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetGenImage("resources/icons/ic_person.png"),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        );
-                      } else {
-                        return ImageWithPlaceHolderWidget(
-                          width: 45.w,
-                          height: 45.w,
-                          fit: BoxFit.fill,
-                          imageUrl: viewModel.user?.avatar?.url ?? "",
-                          radius: 10.r,
-                        );
-                      }
-                    },
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: LocaleKeys.new_feed_write_a_comment.trans(),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
-                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
-                        fillColor: UIColor.holder,
-                        focusColor: UIColor.black,
-                        filled: true,
-                      ),
-                      controller: viewModel.commentEditingController,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.send,
-                      color: UIColor.primary,
-                      size: 30.w,
-                    ),
-                    onPressed: () => viewModel.onSendComment(),
-                    constraints: const BoxConstraints(),
-                  )
-                ],
-              ),
+            SendCommentWidget(
+              user: viewModel.user,
+              commentEditingController: viewModel.commentEditingController,
+              onSendComment: viewModel.onSendComment,
             )
           ],
         ),
