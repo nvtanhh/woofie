@@ -22,6 +22,8 @@ class AuthDatasource {
       );
       final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
       user = userCredential.user;
+    } else {
+      throw Exception("Login fail");
     }
     return user;
   }
@@ -33,6 +35,8 @@ class AuthDatasource {
       final AuthCredential credential = FacebookAuthProvider.credential(facebookLoginResult.accessToken?.token ?? "");
       final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
       user = userCredential.user;
+    } else {
+      throw Exception("Login fail");
     }
     return user;
   }

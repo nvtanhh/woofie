@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             textTheme: GoogleFonts.montserratTextTheme(),
           ),
+          scaffoldBackgroundColor: UIColor.white,
         ),
         builder: (BuildContext context, Widget? child) {
           return FlutterEasyLoading(child: child);

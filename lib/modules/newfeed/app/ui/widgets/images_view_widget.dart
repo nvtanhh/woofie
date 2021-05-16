@@ -21,55 +21,61 @@ class ImagesViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400.h,
-      margin: EdgeInsets.symmetric(vertical: 15.h),
-      child: Stack(
-        children: [
-          PageView.builder(
-            itemBuilder: (context, index) {
-              if (medias[index].type == MediaType.image || medias[index].type == MediaType.gif) {
-                return ImageWithPlaceHolderWidget(
-                  imageUrl: medias[index].url ?? "",
-                  radius: 20.r,
-                  fit: BoxFit.fill,
-                );
-              } else if (medias[index].type == MediaType.video) {
-                return BetterPlayer.network(
-                  medias[index].url ?? "",
-                );
-              } else {
-                return const SizedBox();
-              }
-            },
-            itemCount: medias.length,
-            controller: _pageController,
-            allowImplicitScrolling: true,
-            onPageChanged: (index) {
-              indexPage.value = index;
-            },
-          ),
-          Positioned(
-            top: 20,
-            right: 10,
-            child: Container(
-              width: 41.w,
-              height: 32.h,
-              decoration: BoxDecoration(
-                color: UIColor.eclipse,
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              alignment: Alignment.center,
-              child: Obx(
-                () => Text(
-                  "${indexPage.value + 1}/${medias.length}",
-                  style: UITextStyle.white_12_w600,
+    if (medias.isNotEmpty) {
+      return Container(
+        height: 400.h,
+        margin: EdgeInsets.symmetric(vertical: 15.h),
+        child: Stack(
+          children: [
+            PageView.builder(
+              itemBuilder: (context, index) {
+                if (medias[index].type == MediaType.image || medias[index].type == MediaType.gif) {
+                  return ImageWithPlaceHolderWidget(
+                    imageUrl: medias[index].url ?? "",
+                    radius: 20.r,
+                    fit: BoxFit.cover,
+                  );
+                } else if (medias[index].type == MediaType.video) {
+                  return BetterPlayer.network(
+                    medias[index].url ?? "",
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
+              itemCount: medias.length,
+              controller: _pageController,
+              allowImplicitScrolling: true,
+              onPageChanged: (index) {
+                indexPage.value = index;
+              },
+            ),
+            Positioned(
+              top: 20,
+              right: 10,
+              child: Container(
+                width: 41.w,
+                height: 32.h,
+                decoration: BoxDecoration(
+                  color: UIColor.eclipse,
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                alignment: Alignment.center,
+                child: Obx(
+                  () => Text(
+                    "${indexPage.value + 1}/${medias.length}",
+                    style: UITextStyle.white_12_w600,
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
-      ),
-    );
+            )
+          ],
+        ),
+      );
+    } else {
+      return SizedBox(
+        height: 10.h,
+      );
+    }
   }
 }

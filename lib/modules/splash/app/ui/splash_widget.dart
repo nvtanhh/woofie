@@ -26,7 +26,6 @@ class _SplashWidgetState extends BaseViewState<SplashWidget, SplashWidgetModel> 
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: UIColor.white,
         body: Stack(
           alignment: Alignment.center,
           fit: StackFit.expand,

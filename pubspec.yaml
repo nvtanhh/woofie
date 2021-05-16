@@ -87,12 +87,21 @@ dependencies:
 
   # A library useful for creating fuzzy timestamps. (e.g. "5 minutes ago")
   timeago: ^3.0.2
+
   # A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
   better_player: ^0.0.66
+
   # Create awesome and powerful modal bottom sheets.
   modal_bottom_sheet: ^2.0.0
+
   # A package provides an easy way to add shimmer effect in Flutter project
   shimmer: ^2.0.0
+
+  # A powerful official extension library of image
+  extended_image: ^4.1.0
+
+  # A package provides lazily load and display small chunks of items as the user scrolls down the screen
+  infinite_scroll_pagination: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -115,7 +124,6 @@ flutter_gen:
   output: lib/
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -124,3 +132,5 @@ flutter:
     - resources/langs/
     - resources/icons/
     - resources/google_fonts/
+    - resources/images/
+    - resources/images/fallbacks/

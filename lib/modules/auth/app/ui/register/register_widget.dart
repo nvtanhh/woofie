@@ -21,7 +21,6 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: UIColor.white,
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
           child: SingleChildScrollView(

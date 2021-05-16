@@ -64,7 +64,7 @@ class LoginWidgetModel extends BaseViewModel {
       call(
         () async {
           await login();
-          if (user.isBlank == false) {
+          if (user != null) {
             final haUser = await _getUserUsecase.call(user!.uid);
             _userStorage.set(haUser!);
             final status = await _checkUserHavePetUsecase.call(haUser.id!);

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,75 +5,57 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/comment_bottom_sheet_widget_model.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/comment_widget.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/send_comment_widget.dart';
 import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/widgets/shimmer_comment_widget.dart';
+import 'package:meowoof/modules/newfeed/app/ui/widgets/post/post_widget_model.dart';
+import 'package:meowoof/modules/newfeed/app/ui/widgets/post_item_in_listview.dart';
 import 'package:meowoof/modules/newfeed/domain/models/comment.dart';
+import 'package:meowoof/modules/newfeed/domain/models/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
-class CommentBottomSheetWidget extends StatefulWidget {
-  final int postId;
+class PostWidget extends StatefulWidget {
+  final Post post;
 
-  const CommentBottomSheetWidget({
+  const PostWidget({
     Key? key,
-    required this.postId,
+    required this.post,
   }) : super(key: key);
 
   @override
-  _CommentBottomSheetWidgetState createState() => _CommentBottomSheetWidgetState();
+  _PostWidgetState createState() => _PostWidgetState();
 }
 
-class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWidget, CommentBottomSheetWidgetModel> {
+class _PostWidgetState extends BaseViewState<PostWidget, PostWidgetModel> {
   @override
   void loadArguments() {
-    viewModel.postId = widget.postId;
+    viewModel.post = widget.post;
     super.loadArguments();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: (Get.height - 93).h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.r),
-          topRight: Radius.circular(30.r),
-        ),
-        color: UIColor.white,
-      ),
+    return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: UIColor.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.r),
-              topRight: Radius.circular(30.r),
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.close,
-                size: 24.w,
-                color: UIColor.text_header,
-              ),
-              onPressed: () => Get.back(),
-              padding: EdgeInsets.only(right: 20.w),
-              constraints: const BoxConstraints(),
-            ),
-          ],
+          elevation: 0,
           title: Text(
-            LocaleKeys.new_feed_comment.trans(),
+            LocaleKeys.new_feed_post.trans(),
             style: UITextStyle.text_header_18_w600,
           ),
           centerTitle: true,
-          elevation: 0,
-          toolbarHeight: 30.h,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_outlined,
+              color: UIColor.text_header,
+              size: 20.w,
+            ),
+            onPressed: () => Get.back(),
+          ),
         ),
-        backgroundColor: Colors.transparent,
         body: Column(
           children: [
             Expanded(
@@ -82,12 +63,26 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
                 pagingController: viewModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Comment>(
                   itemBuilder: (context, item, index) {
+                    if (index == 0) {
+                      return PostItemInListView(
+                        post: viewModel.post,
+                        onLikeClick: viewModel.onLikeClick,
+                      );
+                    }
                     return CommentWidget(
-                      comment: item,
+                      comment: viewModel.pagingController.itemList![index - 1],
                       onLikeCommentClick: viewModel.onLikeCommentClick,
                     );
                   },
-                  firstPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
+                  firstPageProgressIndicatorBuilder: (_) => Column(
+                    children: [
+                      PostItemInListView(
+                        post: viewModel.post,
+                        onLikeClick: viewModel.onLikeClick,
+                      ),
+                      ShimmerCommentWidget()
+                    ],
+                  ),
                   noItemsFoundIndicatorBuilder: (_) => Center(
                     child: Text(
                       LocaleKeys.new_feed_no_comments_yet.trans(),
@@ -115,5 +110,5 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
   }
 
   @override
-  CommentBottomSheetWidgetModel createViewModel() => injector<CommentBottomSheetWidgetModel>();
+  PostWidgetModel createViewModel() => injector<PostWidgetModel>();
 }
