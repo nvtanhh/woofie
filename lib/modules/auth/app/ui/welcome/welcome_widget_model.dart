@@ -62,7 +62,7 @@ class WelcomeWidgetModel extends BaseViewModel {
         status = await _checkUserHavePetUsecase.call(haUser.id!);
         _userStorage.set(haUser);
       } else {
-        throw Exception("Cant get user");
+        return;
       }
     }, onSuccess: () {
       if (!status) {

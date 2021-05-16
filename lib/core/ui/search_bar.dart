@@ -9,14 +9,7 @@ class MWSearchBar extends StatefulWidget {
   final Widget? filter;
   final bool? searchWidget;
 
-  const MWSearchBar(
-      {Key? key,
-      required this.onSearch,
-      this.hintText,
-      this.onCancel,
-      this.filter,
-      this.searchWidget = false})
-      : super(key: key);
+  const MWSearchBar({Key? key, required this.onSearch, this.hintText, this.onCancel, this.filter, this.searchWidget = false}) : super(key: key);
 
   @override
   MWSearchBarState createState() {
@@ -45,8 +38,7 @@ class MWSearchBarState extends State<MWSearchBar> {
   @override
   Widget build(BuildContext context) {
     final bool hasText = _textController.text.isNotEmpty;
-    final EdgeInsetsGeometry inputContentPadding = EdgeInsets.only(
-        top: 8.h, bottom: 8.h, left: 20.w, right: hasText ? 40.w : 20.w);
+    final EdgeInsetsGeometry inputContentPadding = EdgeInsets.only(top: 8.h, bottom: 8.h, left: 20.w, right: hasText ? 40.w : 20.w);
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -54,9 +46,7 @@ class MWSearchBarState extends State<MWSearchBar> {
         children: <Widget>[
           Expanded(
             child: DecoratedBox(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: UIColor.holder),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: UIColor.holder),
               child: Stack(
                 children: <Widget>[
                   if (widget.searchWidget == false)
@@ -71,11 +61,9 @@ class MWSearchBarState extends State<MWSearchBar> {
                           padding: EdgeInsets.symmetric(horizontal: 8.w),
                           child: Icon(Icons.search),
                         ),
-                        prefixIconConstraints:
-                            BoxConstraints(maxWidth: 40.w, maxHeight: 20.h),
+                        prefixIconConstraints: BoxConstraints(maxWidth: 40.w, maxHeight: 20.h),
                         hintText: widget.hintText,
-                        hintStyle:
-                            TextStyle(color: Colors.grey[500], fontSize: 15.sp),
+                        hintStyle: TextStyle(color: Colors.grey[500], fontSize: 15.sp),
                         contentPadding: inputContentPadding,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
@@ -97,13 +85,10 @@ class MWSearchBarState extends State<MWSearchBar> {
                             errorBorder: _outlineInputBorder,
                             disabledBorder: _outlineInputBorder,
                             enabledBorder: _outlineInputBorder,
-                            hintStyle: TextStyle(
-                                color: Colors.grey[500], fontSize: 15.sp),
+                            hintStyle: TextStyle(color: Colors.grey[500], fontSize: 15.sp),
                             filled: true,
                             fillColor: Colors.grey.shade200,
-                            suffixIcon: (!hasText)
-                                ? const Icon(Icons.add)
-                                : const SizedBox()),
+                            suffixIcon: (!hasText) ? const Icon(Icons.add) : const SizedBox()),
                       ),
                     ),
                   if (hasText)

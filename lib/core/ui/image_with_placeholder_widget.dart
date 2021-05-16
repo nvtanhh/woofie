@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
-import 'package:meowoof/theme/ui_color.dart';
 
 class ImageWithPlaceHolderWidget extends StatelessWidget {
   final double? width;
@@ -64,9 +63,11 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomLeft: Radius.circular(radius ?? bottomLeftRadius ?? 0),
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
-        color: UIColor.primary,
+        image: const DecorationImage(
+          image: AssetGenImage("resources/icons/ic_person.png"),
+          fit: BoxFit.cover,
+        ),
       ),
-      child: Center(child: Assets.resources.icons.icItemPlaceholder.image(height: 28.0.h, width: 28.0.w)),
     );
   }
 }

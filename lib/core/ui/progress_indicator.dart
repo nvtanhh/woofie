@@ -5,8 +5,7 @@ class MWProgressIndicator extends StatelessWidget {
   final Color? color;
   final double size;
 
-  const MWProgressIndicator({Key? key, this.color, this.size = 20.0})
-      : super(key: key);
+  const MWProgressIndicator({Key? key, this.color, this.size = 20.0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -19,13 +19,7 @@ class ToastService {
     VoidCallback? onDismissed,
     Duration? duration,
   }) {
-    toast(
-        message: message,
-        type: ToastType.warning,
-        context: context,
-        duration: duration,
-        onDismissed: onDismissed,
-        scaffoldKey: scaffoldKey);
+    toast(message: message, type: ToastType.warning, context: context, duration: duration, onDismissed: onDismissed, scaffoldKey: scaffoldKey);
   }
 
   void success({
@@ -53,13 +47,7 @@ class ToastService {
     VoidCallback? onDismissed,
     Duration? duration,
   }) {
-    toast(
-        message: message,
-        type: ToastType.error,
-        context: context,
-        onDismissed: onDismissed,
-        duration: duration,
-        scaffoldKey: scaffoldKey);
+    toast(message: message, type: ToastType.error, context: context, onDismissed: onDismissed, duration: duration, scaffoldKey: scaffoldKey);
   }
 
   void info({
@@ -89,12 +77,7 @@ class ToastService {
     VoidCallback? onDismissed,
     Duration? duration,
   }) {
-    MFToast.of(context).showToast(
-        child: child,
-        color: _getToastColor(type),
-        message: message,
-        duration: duration,
-        onDismissed: onDismissed);
+    MFToast.of(context).showToast(child: child, color: _getToastColor(type), message: message, duration: duration, onDismissed: onDismissed);
   }
 
   Color _getToastColor(ToastType type) {

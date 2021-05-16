@@ -3,7 +3,7 @@ description: Social network for pet
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
   flutter: ">=2.0.0"
 
 dependencies:
@@ -96,8 +96,12 @@ dependencies:
 
   # A package provides an easy way to add shimmer effect in Flutter project
   shimmer: ^2.0.0
+
   # A powerful official extension library of image
   extended_image: ^4.1.0
+
+  # A package provides lazily load and display small chunks of items as the user scrolls down the screen
+  infinite_scroll_pagination: ^3.0.1
 
 dev_dependencies:
   flutter_test:

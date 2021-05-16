@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/newfeed/data/repositories/newfeed_repository.dart';
-import 'package:meowoof/modules/newfeed/domain/models/comment.dart';
 
 @lazySingleton
 class CreateCommentUsecase {
@@ -8,6 +7,6 @@ class CreateCommentUsecase {
 
   CreateCommentUsecase(this._newFeedRepository);
 
-  // Future<Comment?> createComment(int postId, String content) {
-  // }
+// Future<Comment?> createComment(int postId, String content) {
+// }
 }

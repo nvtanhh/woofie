@@ -23,8 +23,7 @@ class OBAvatar extends StatelessWidget {
   static const double AVATAR_SIZE_MEDIUM = 50.0;
   static const double AVATAR_SIZE_LARGE = 80.0;
   static const double AVATAR_SIZE_EXTRA_LARGE = 120;
-  static final AssetGenImage DEFAULT_AVATAR_ASSET =
-      Assets.resources.images.fallbacks.avatarFallback;
+  static final AssetGenImage DEFAULT_AVATAR_ASSET = Assets.resources.images.fallbacks.avatarFallback;
   static const double avatarBorderRadius = 60;
 
   static double getAvatarSize(OBAvatarSize size) {

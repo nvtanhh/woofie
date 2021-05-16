@@ -1,3 +1,4 @@
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/add_pet/domain/models/pet.dart';
 import 'package:meowoof/modules/auth/domain/models/user.dart';
@@ -10,6 +11,10 @@ import 'package:meowoof/modules/newfeed/domain/models/post.dart';
 
 @lazySingleton
 class NewFeedDatasource {
+  final HasuraConnect _hasuraConnect;
+
+  NewFeedDatasource(this._hasuraConnect);
+
   Future<List<Post>> getPosts() async {
     final Post post = Post(
       id: 1,
@@ -43,7 +48,7 @@ class NewFeedDatasource {
   }
 
   Future<List<Comment>> getCommentsInProject(int postId) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
     Comment comment = Comment(id: 1);
     comment.creator = User(
       avatar: Medias(
@@ -66,12 +71,24 @@ class NewFeedDatasource {
       ),
       name: "Bao Nguyen",
     );
-    comment2.content =
-        "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.";
+    comment2.content = "Một năm rồi cơ. Bây giờ xịn hơn rồi.";
     comment2.createdAt = DateTime.now().subtract(
       const Duration(seconds: 120),
     );
     comment2.isLiked = false;
-    return <Comment>[comment, comment2];
+    var list = <Comment>[comment, comment2];
+    list.add(list[0]);
+    list.add(list[1]);
+    list.add(list[0]);
+    list.add(list[1]);
+    list.add(list[0]);
+    list.add(list[1]);
+    list.add(list[0]);
+    list.add(list[1]);
+    return list;
+  }
+
+  Future<bool> likePost(int idPost) async {
+    return true;
   }
 }
