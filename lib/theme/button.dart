@@ -58,8 +58,7 @@ class MWButton extends StatelessWidget {
       );
     }
 
-    TextStyle defaultTextStyle =
-        _getButtonTextStyleForSize(size: size, color: textColor);
+    TextStyle defaultTextStyle = _getButtonTextStyleForSize(size: size, color: textColor);
 
     if (textStyle != null) {
       defaultTextStyle = defaultTextStyle.merge(textStyle);
@@ -94,8 +93,7 @@ class MWButton extends StatelessWidget {
     );
   }
 
-  TextStyle _getButtonTextStyleForSize(
-      {MWButtonSize? size, required Color color}) {
+  TextStyle _getButtonTextStyleForSize({MWButtonSize? size, required Color color}) {
     TextStyle textStyle = TextStyle(color: color);
 
     switch (size) {
@@ -114,8 +112,7 @@ class MWButton extends StatelessWidget {
     return SizedBox(
       height: 16.h,
       width: 16.w,
-      child: CircularProgressIndicator(
-          strokeWidth: 2.0, valueColor: AlwaysStoppedAnimation<Color>(color)),
+      child: CircularProgressIndicator(strokeWidth: 2.0, valueColor: AlwaysStoppedAnimation<Color>(color)),
     );
   }
 

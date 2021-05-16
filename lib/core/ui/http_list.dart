@@ -75,8 +75,7 @@ class OBHttpList<T> extends StatefulWidget {
 class OBHttpListState<T> extends State<OBHttpList<T>> {
   late ToastService _toastService;
 
-  final GlobalKey<RefreshIndicatorState> _listRefreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _listRefreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   late ScrollController _listScrollController;
   List<T> _list = [];
   List<T> _listSearchResults = [];
@@ -116,8 +115,7 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
     _prependedItems = widget.prependedItems?.toList() ?? [];
   }
 
-  void insertListItem(T listItem,
-      {bool shouldScrollToTop = true, bool shouldRefresh = false}) {
+  void insertListItem(T listItem, {bool shouldScrollToTop = true, bool shouldRefresh = false}) {
     _list.insert(0, listItem);
     _setList(_list.toList());
     if (shouldScrollToTop) scrollToTop(shouldRefresh: shouldRefresh);
@@ -166,8 +164,7 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
     if (widget.listSearcher != null && widget.hasSearchBar) {
       columnItems.add(
         Padding(
-          padding:
-              widget.searchbarPadding ?? EdgeInsets.symmetric(horizontal: 16.w),
+          padding: widget.searchbarPadding ?? EdgeInsets.symmetric(horizontal: 16.w),
           child: SizedBox(
             child: MWSearchBar(
               searchWidget: widget.searchWidget,
@@ -268,11 +265,7 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
               physics: physics,
               itemCount: listItemCount,
               itemBuilder: _buildSearchResultsListItem)
-          : ListView.builder(
-              padding: widget.padding,
-              physics: physics,
-              itemCount: listItemCount,
-              itemBuilder: _buildSearchResultsListItem),
+          : ListView.builder(padding: widget.padding, physics: physics, itemCount: listItemCount, itemBuilder: _buildSearchResultsListItem),
     );
   }
 
@@ -282,13 +275,10 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
 
       if (_searchRequestInProgress) {
         // Search in progress
-        return ListTile(
-            leading: const MWProgressIndicator(), title: Text(searchQuery));
+        return ListTile(leading: const MWProgressIndicator(), title: Text(searchQuery));
       } else if (_listSearchResults.isEmpty) {
         // Results were empty
-        return ListTile(
-            leading: const MWIcon(MWIcons.sad),
-            title: Text('No result for: $searchQuery'));
+        return ListTile(leading: const MWIcon(MWIcons.sad), title: Text('No result for: $searchQuery'));
       } else {
         return const SizedBox();
       }
@@ -296,8 +286,7 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
 
     final T listItem = _listSearchResults[index];
 
-    final Widget listItemWidget =
-        widget.searchResultListItemBuilder(context, listItem);
+    final Widget listItemWidget = widget.searchResultListItemBuilder(context, listItem);
 
     if (!widget.isSelectable) return listItemWidget;
 
@@ -344,8 +333,7 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         MWButtonAlert(
-          text:
-              'No result found for: ${widget.resourcePluralName.toLowerCase()}',
+          text: 'No result found for: ${widget.resourcePluralName.toLowerCase()}',
           onPressed: _refreshList,
           buttonText: 'Refresh',
           buttonIcon: MWIcons.refresh,
@@ -425,8 +413,7 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
         refreshFutures.add(widget.secondaryRefresher!());
       }
 
-      _refreshOperation =
-          CancelableOperation.fromFuture(Future.wait(refreshFutures));
+      _refreshOperation = CancelableOperation.fromFuture(Future.wait(refreshFutures));
       final results = await _refreshOperation!.value;
       final List<T> list = results[0] as List<T>;
       _setList(list);
@@ -438,15 +425,9 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
     }
   }
 
-  Future refreshList(
-      {bool shouldScrollToTop = false,
-      bool shouldUseRefreshIndicator = false}) async {
-    await (shouldUseRefreshIndicator
-        ? _refreshWithRefreshIndicator()
-        : _refreshList());
-    if (shouldScrollToTop &&
-        _listScrollController.hasClients &&
-        _listScrollController.offset != 0) {
+  Future refreshList({bool shouldScrollToTop = false, bool shouldUseRefreshIndicator = false}) async {
+    await (shouldUseRefreshIndicator ? _refreshWithRefreshIndicator() : _refreshList());
+    if (shouldScrollToTop && _listScrollController.hasClients && _listScrollController.offset != 0) {
       scrollToTop();
     }
   }
@@ -466,8 +447,7 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
     debugPrint('Loading more list items');
 
     try {
-      _loadMoreOperation =
-          CancelableOperation.fromFuture(widget.listOnScrollLoader(_list));
+      _loadMoreOperation = CancelableOperation.fromFuture(widget.listOnScrollLoader(_list));
       final loadMoreOperation = _loadMoreOperation;
       final List<T> moreListItems = await loadMoreOperation!.value as List<T>;
 
@@ -502,11 +482,9 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
     _setSearchRequestInProgress(true);
 
     try {
-      _searchOperation =
-          CancelableOperation.fromFuture(widget.listSearcher(_searchQuery));
+      _searchOperation = CancelableOperation.fromFuture(widget.listSearcher(_searchQuery));
 
-      final List<T> listSearchResults =
-          await _searchOperation!.value as List<T>;
+      final List<T> listSearchResults = await _searchOperation!.value as List<T>;
       _setListSearchResults(listSearchResults);
     } catch (error) {
       await _onError(error);
@@ -526,8 +504,7 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
     _setSelectionSubmissionInProgress(true);
 
     try {
-      _submitSelectionOperation = CancelableOperation.fromFuture(
-          widget.selectionSubmitter!(_listSelection));
+      _submitSelectionOperation = CancelableOperation.fromFuture(widget.selectionSubmitter!(_listSelection));
       widget.onSelectionSubmitted!(_listSelection);
     } catch (error) {
       await _onError(error);
@@ -636,14 +613,12 @@ class OBHttpListController<T> {
     _state = state;
   }
 
-  void insertListItem(T listItem,
-      {bool shouldScrollToTop = true, bool shouldRefresh = false}) {
+  void insertListItem(T listItem, {bool shouldScrollToTop = true, bool shouldRefresh = false}) {
     if (!_isMounted()) {
       debugPrint('Tried to insertListItem in unattached OBHttpList');
       return;
     }
-    _state!.insertListItem(listItem,
-        shouldScrollToTop: shouldScrollToTop, shouldRefresh: shouldRefresh);
+    _state!.insertListItem(listItem, shouldScrollToTop: shouldScrollToTop, shouldRefresh: shouldRefresh);
   }
 
   void removeListItem(T listItem) {
@@ -656,13 +631,9 @@ class OBHttpListController<T> {
     _state!.scrollToTop();
   }
 
-  Future refresh(
-      {bool shouldScrollToTop = false,
-      bool shouldUseRefreshIndicator = false}) async {
+  Future refresh({bool shouldScrollToTop = false, bool shouldUseRefreshIndicator = false}) async {
     if (!_isMounted()) return;
-    await _state!.refreshList(
-        shouldScrollToTop: shouldScrollToTop,
-        shouldUseRefreshIndicator: shouldUseRefreshIndicator);
+    await _state!.refreshList(shouldScrollToTop: shouldScrollToTop, shouldUseRefreshIndicator: shouldUseRefreshIndicator);
   }
 
   Future search(String query) {
@@ -686,26 +657,20 @@ class OBHttpListController<T> {
   }
 }
 
-typedef OBHttpListItemBuilder<T> = Widget Function(
-    BuildContext context, T listItem);
+typedef OBHttpListItemBuilder<T> = Widget Function(BuildContext context, T listItem);
 typedef OBHttpListSearcher<T> = Future<List<T>> Function(String searchQuery);
 typedef OBHttpListRefresher<T> = Future<List<T>> Function();
 typedef OBHttpListSecondaryRefresher<T> = Future Function();
-typedef OBHttpListOnScrollLoader<T> = Future<List<T>> Function(
-    List<T> currentList);
-typedef OBHttpListSelectionChangedListener<T> = void Function(
-    List<T> selectionItems);
-typedef OBHttpListSelectionSubmittedListener<T> = void Function(
-    List<T> selectionItems);
-typedef OBHttpListSelectionSubmitter<T> = Future Function(
-    List<T> selectionItems);
+typedef OBHttpListOnScrollLoader<T> = Future<List<T>> Function(List<T> currentList);
+typedef OBHttpListSelectionChangedListener<T> = void Function(List<T> selectionItems);
+typedef OBHttpListSelectionSubmittedListener<T> = void Function(List<T> selectionItems);
+typedef OBHttpListSelectionSubmitter<T> = Future Function(List<T> selectionItems);
 
 class OBHttpListLoadMoreDelegate extends LoadMoreDelegate {
   const OBHttpListLoadMoreDelegate();
 
   @override
-  Widget buildChild(LoadMoreStatus status,
-      {LoadMoreTextBuilder builder = DefaultLoadMoreTextBuilder.chinese}) {
+  Widget buildChild(LoadMoreStatus status, {LoadMoreTextBuilder builder = DefaultLoadMoreTextBuilder.chinese}) {
     if (status == LoadMoreStatus.fail) {
       return SizedBox(
         child: Row(

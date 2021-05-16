@@ -76,7 +76,7 @@ class NewFeedDatasource {
       const Duration(seconds: 120),
     );
     comment2.isLiked = false;
-    var list =<Comment>[comment, comment2];
+    var list = <Comment>[comment, comment2];
     list.add(list[0]);
     list.add(list[1]);
     list.add(list[0]);

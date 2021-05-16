@@ -19,11 +19,13 @@ class PostWidgetModel extends BaseViewModel {
   final LikePostUsecase _likePostUsecase;
   final GetCommentInPostUsecase _getCommentInPostUsecase;
   final int pageSize = 10;
-  late PagingController<int,Comment> pagingController;
+  late PagingController<int, Comment> pagingController;
 
-  PostWidgetModel(@Named("current_user_storage") this._userStorage,
-      this._likePostUsecase,
-      this._getCommentInPostUsecase,) {
+  PostWidgetModel(
+    @Named("current_user_storage") this._userStorage,
+    this._likePostUsecase,
+    this._getCommentInPostUsecase,
+  ) {
     pagingController = PagingController(firstPageKey: 0);
   }
 
@@ -31,7 +33,7 @@ class PostWidgetModel extends BaseViewModel {
 
   void onLikeClick(int idPost) {
     call(
-          () => _likePostUsecase.call(idPost),
+      () => _likePostUsecase.call(idPost),
       showLoading: false,
       onFailure: (err) {},
     );
@@ -48,24 +50,23 @@ class PostWidgetModel extends BaseViewModel {
 
   void _loadComments(int pageKey) {
     call(
-          () async {
+      () async {
         post.comments = await _getCommentInPostUsecase.call(post.id!);
-        if ((post.comments?.length??0) < pageSize) {
-          pagingController.appendLastPage(post.comments??[]);
+        if ((post.comments?.length ?? 0) < pageSize) {
+          pagingController.appendLastPage(post.comments ?? []);
         } else {
-          final nextPageKey = pageKey + (post.comments?.length??0);
-          pagingController.appendPage(post.comments??[], nextPageKey);
+          final nextPageKey = pageKey + (post.comments?.length ?? 0);
+          pagingController.appendPage(post.comments ?? [], nextPageKey);
         }
       },
       showLoading: false,
-      onSuccess: () {
-      },
+      onSuccess: () {},
     );
   }
 
   void _loadUserLocal() {
     call(
-          () async => user.value = _userStorage.get(),
+      () async => user.value = _userStorage.get(),
       showLoading: false,
     );
   }

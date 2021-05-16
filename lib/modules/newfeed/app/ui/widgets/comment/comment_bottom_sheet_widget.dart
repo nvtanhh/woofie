@@ -94,7 +94,7 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
                       style: UITextStyle.text_secondary_12_w500,
                     ),
                   ),
-                    newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
+                  newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
                 ),
                 padding: EdgeInsets.only(
                   top: 10.h,

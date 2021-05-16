@@ -8,10 +8,8 @@ import 'package:flutter/material.dart';
 typedef FutureCallBack = Future<bool> Function();
 
 class LoadMore extends StatefulWidget {
-  static DelegateBuilder<LoadMoreDelegate> buildDelegate =
-      () => const DefaultLoadMoreDelegate();
-  static DelegateBuilder<LoadMoreTextBuilder> buildTextBuilder =
-      () => DefaultLoadMoreTextBuilder.english;
+  static DelegateBuilder<LoadMoreDelegate> buildDelegate = () => const DefaultLoadMoreDelegate();
+  static DelegateBuilder<LoadMoreTextBuilder> buildTextBuilder = () => DefaultLoadMoreTextBuilder.english;
 
   final Widget child;
 
@@ -49,8 +47,7 @@ class LoadMore extends StatefulWidget {
 class _LoadMoreState extends State<LoadMore> {
   Widget get child => widget.child;
 
-  LoadMoreDelegate get loadMoreDelegate =>
-      widget.delegate ?? LoadMore.buildDelegate();
+  LoadMoreDelegate get loadMoreDelegate => widget.delegate ?? LoadMore.buildDelegate();
 
   @override
   void initState() {
@@ -79,8 +76,7 @@ class _LoadMoreState extends State<LoadMore> {
     final delegate = listView.childrenDelegate;
     outer:
     if (delegate is SliverChildBuilderDelegate) {
-      SliverChildBuilderDelegate delegate =
-          listView.childrenDelegate as SliverChildBuilderDelegate;
+      SliverChildBuilderDelegate delegate = listView.childrenDelegate as SliverChildBuilderDelegate;
       if (!widget.whenEmptyLoad && delegate.estimatedChildCount == 0) {
         break outer;
       }
@@ -110,8 +106,7 @@ class _LoadMoreState extends State<LoadMore> {
         shrinkWrap: listView.shrinkWrap,
       );
     } else if (delegate is SliverChildListDelegate) {
-      final SliverChildListDelegate delegate =
-          listView.childrenDelegate as SliverChildListDelegate;
+      final SliverChildListDelegate delegate = listView.childrenDelegate as SliverChildListDelegate;
 
       if (!widget.whenEmptyLoad && delegate.estimatedChildCount == 0) {
         break outer;
@@ -251,8 +246,7 @@ class DefaultLoadMoreViewState extends State<DefaultLoadMoreView> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (widget.status == LoadMoreStatus.fail ||
-            widget.status == LoadMoreStatus.idle) {
+        if (widget.status == LoadMoreStatus.fail || widget.status == LoadMoreStatus.idle) {
           _RetryNotify().dispatch(context);
         }
       },
@@ -268,8 +262,7 @@ class DefaultLoadMoreViewState extends State<DefaultLoadMoreView> {
   }
 
   Future notify() async {
-    final delay =
-        max(delegate.loadMoreDelay(), const Duration(milliseconds: 16));
+    final delay = max(delegate.loadMoreDelay(), const Duration(milliseconds: 16));
     await Future.delayed(delay);
     if (widget.status == LoadMoreStatus.idle) {
       _BuildNotify().dispatch(context);
@@ -292,8 +285,7 @@ typedef T DelegateBuilder<T>();
 
 /// loadmore widget properties
 abstract class LoadMoreDelegate {
-  static DelegateBuilder<LoadMoreDelegate> buildWidget =
-      () => const DefaultLoadMoreDelegate();
+  static DelegateBuilder<LoadMoreDelegate> buildWidget = () => const DefaultLoadMoreDelegate();
 
   const LoadMoreDelegate();
 
@@ -303,16 +295,14 @@ abstract class LoadMoreDelegate {
   /// build loadmore delay
   Duration loadMoreDelay() => const Duration(milliseconds: _loadMoreDelay);
 
-  Widget buildChild(LoadMoreStatus status,
-      {LoadMoreTextBuilder builder = DefaultLoadMoreTextBuilder.chinese});
+  Widget buildChild(LoadMoreStatus status, {LoadMoreTextBuilder builder = DefaultLoadMoreTextBuilder.chinese});
 }
 
 class DefaultLoadMoreDelegate extends LoadMoreDelegate {
   const DefaultLoadMoreDelegate();
 
   @override
-  Widget buildChild(LoadMoreStatus status,
-      {LoadMoreTextBuilder builder = DefaultLoadMoreTextBuilder.chinese}) {
+  Widget buildChild(LoadMoreStatus status, {LoadMoreTextBuilder builder = DefaultLoadMoreTextBuilder.chinese}) {
     final String text = builder(status);
     if (status == LoadMoreStatus.fail) {
       return Text(text);
