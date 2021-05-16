@@ -7,7 +7,9 @@ class UIColor {
   static const Color text_secondary = Color(0xFFC8C8C8);
   static const Color accent = Color(0xFFF38847);
   static const Color accent2 = Color(0xFF1AAB4B);
+  static const Color waring_color = Color(0xFFFFD54F);
   static const Color text_body = Color(0xFF5F5F5F);
+  static const Color danger = Color(0xFFE34747);
   static const Color holder = Color(0xFFEDF1F5);
   static const Color text_header = Color(0xDE000000);
   static const Color silver_sand = Color(0xFFC4C4C4);
