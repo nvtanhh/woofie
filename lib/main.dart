@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/splash/app/ui/splash_widget.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 Future main() async {
@@ -17,9 +17,14 @@ Future main() async {
   setupEasyLoading();
   // set up google_fonts
   LicenseRegistry.addLicense(() async* {
-    final license = await rootBundle.loadString('resources/google_fonts/OFL.txt');
+    final license =
+        await rootBundle.loadString('resources/google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
+  // setting status bar color
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
+  );
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('vi')],
@@ -44,6 +49,8 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.montserratTextTheme(),
           appBarTheme: AppBarTheme(
             textTheme: GoogleFonts.montserratTextTheme(),
+            backgroundColor: UIColor.white,
+            elevation: 0,
           ),
           scaffoldBackgroundColor: UIColor.white,
         ),

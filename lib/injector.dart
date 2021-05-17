@@ -31,7 +31,8 @@ abstract class RegisterModule {
 
   @lazySingleton
   @preResolve
-  Future<SharedPreferences> getSharePreferences() async => SharedPreferences.getInstance();
+  Future<SharedPreferences> getSharePreferences() async =>
+      SharedPreferences.getInstance();
 
   @lazySingleton
   Logger getLogger() => Logger(
@@ -52,12 +53,14 @@ abstract class RegisterModule {
 
   @lazySingleton
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {
-    return HasuraConnect(BackendConfig.BASE_HASURA_URL, interceptors: [interceptor]);
+    return HasuraConnect(BackendConfig.BASE_HASURA_URL,
+        interceptors: [interceptor]);
   }
 
   @lazySingleton
   @Named('current_user_storage')
-  UserStorage getCurrentUserStorage(SharedPreferences prefs) => UserStorage(prefs, 'current_user');
+  UserStorage getCurrentUserStorage(SharedPreferences prefs) =>
+      UserStorage(prefs, 'current_user');
 
   @singleton
   ToastService getToastService() => ToastService();

@@ -21,7 +21,10 @@ class NewFeedDatasource {
       createdAt: DateTime.now(),
       content:
           "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.",
-      creator: User(name: "Bảo Nguyễn", avatar: Medias(url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg")),
+      creator: User(
+          name: "Bảo Nguyễn",
+          avatar: Medias(url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
+          avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
       isLiked: false,
       pets: [
         Pet(name: "Vàng"),
@@ -55,6 +58,7 @@ class NewFeedDatasource {
         type: MediaType.image,
         url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       ),
+      avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       name: "Bao Nguyen",
     );
     comment.content =
@@ -69,6 +73,7 @@ class NewFeedDatasource {
         type: MediaType.image,
         url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       ),
+      avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       name: "Bao Nguyen",
     );
     comment2.content = "Một năm rồi cơ. Bây giờ xịn hơn rồi.";
