@@ -10,6 +10,7 @@ import 'package:logger/logger.dart';
 import 'package:meowoof/configs/app_config.dart';
 import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/interceptors/jwt_interceptor.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,5 +59,8 @@ abstract class RegisterModule {
   UserStorage getCurrentUserStorage(SharedPreferences prefs) => UserStorage(prefs, 'current_user');
 
   @lazySingleton
-  ToastService getToastService(JwtInterceptor interceptor) => ToastService();
+  ToastService getToastService() => ToastService();
+
+  @singleton
+  LoggedUser getLoggedUser() => LoggedUser();
 }

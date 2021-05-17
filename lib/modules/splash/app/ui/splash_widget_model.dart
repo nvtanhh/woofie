@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
-import 'package:meowoof/modules/home_menu/app/ui/home_menu.dart';
+import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
