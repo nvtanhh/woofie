@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/data/datasources/auth_datasource.dart';
 import 'package:meowoof/modules/auth/data/datasources/hasura_datasource.dart';
-import 'package:meowoof/modules/auth/domain/models/user.dart' as hasura_user;
+import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
 
 @lazySingleton
 class AuthRepository {

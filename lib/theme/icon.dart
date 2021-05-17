@@ -87,7 +87,7 @@ class MWIcon extends StatelessWidget {
             iconColor = UIColor.danger;
             break;
           default:
-            iconColor = UIColor.primary;
+            iconColor = UIColor.text_body;
         }
       }
 
@@ -97,7 +97,7 @@ class MWIcon extends StatelessWidget {
         color: iconColor,
       );
     } else {
-      return Assets.resources.icons.icAddPost.image(height: iconSize, width: iconSize, fit: BoxFit.cover);
+      return iconData.assetImageFile!.image(height: iconSize, width: iconSize, fit: BoxFit.cover);
     }
   }
 }
@@ -131,6 +131,7 @@ class MWIcons {
   static const refresh = MWIconData(nativeIcon: Icons.refresh);
   static const checkCircleSelected = MWIconData(nativeIcon: Icons.check_circle);
   static const checkCircle = MWIconData(nativeIcon: Icons.radio_button_unchecked);
+
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);

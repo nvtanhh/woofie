@@ -45,7 +45,9 @@
     "post": "Bài viết",
     "write_a_comment": "Viết bình luận",
     "like": "Thích",
-    "no_comments_yet": "Chưa có bình luận nào"
+    "no_comments_yet": "Chưa có bình luận nào",
+    "edit_post": "Chỉnh sửa bài viết",
+    "delete_post": "Xoá bài viết"
   },
   "explore": {
     "search": "Tìm kiếm",
