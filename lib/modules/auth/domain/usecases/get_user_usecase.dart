@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/data/repositories/auth_repository.dart';
-import 'package:meowoof/modules/auth/domain/models/user.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class GetUserUsecase {

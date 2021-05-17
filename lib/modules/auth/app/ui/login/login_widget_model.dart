@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/modules/add_pet/app/ui/add_pet_widget.dart';
 import 'package:meowoof/modules/auth/app/ui/register/register_widget.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_email_password_usecase.dart';
-import 'package:meowoof/modules/home_menu/app/ui/home_menu.dart';
+import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
+import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 

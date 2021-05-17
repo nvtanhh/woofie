@@ -45,6 +45,8 @@
     "post": "Post",
     "write_a_comment": "Write a comment",
     "like": "Like",
-    "no_comments_yet": "No comments yet"
+    "no_comments_yet": "No comments yet",
+    "edit_post": "Edit post",
+    "delete_post": "Delete post"
   }
 }

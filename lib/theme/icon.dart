@@ -87,7 +87,7 @@ class MWIcon extends StatelessWidget {
             iconColor = UIColor.danger;
             break;
           default:
-            iconColor = UIColor.primary;
+            iconColor = UIColor.text_body;
         }
       }
 
@@ -97,7 +97,7 @@ class MWIcon extends StatelessWidget {
         color: iconColor,
       );
     } else {
-      return Assets.resources.icons.icAddPost.image(height: iconSize, width: iconSize, fit: BoxFit.cover);
+      return iconData.assetImageFile!.image(height: iconSize, width: iconSize, fit: BoxFit.cover);
     }
   }
 }
@@ -109,6 +109,7 @@ class MWIcons {
   static const notificaiton = MWIconData(nativeIcon: Icons.notifications);
   static const profile = MWIconData(nativeIcon: Icons.person_rounded);
   static const mail = MWIconData(nativeIcon: Icons.mail_outline);
+  static const message = MWIconData(nativeIcon: Icons.message_outlined);
   static const lock = MWIconData(nativeIcon: Icons.lock_outline_rounded);
   static const visibility = MWIconData(nativeIcon: Icons.visibility);
   static const invisibility = MWIconData(nativeIcon: Icons.visibility_off);
@@ -131,10 +132,11 @@ class MWIcons {
   static const refresh = MWIconData(nativeIcon: Icons.refresh);
   static const checkCircleSelected = MWIconData(nativeIcon: Icons.check_circle);
   static const checkCircle = MWIconData(nativeIcon: Icons.radio_button_unchecked);
+  static const delete = MWIconData(nativeIcon: Icons.delete_rounded);
+  static const edit = MWIconData(nativeIcon: Icons.edit);
 
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
-  static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);
   static final react = MWIconData(assetImageFile: Assets.resources.icons.icReact);
 }
 
