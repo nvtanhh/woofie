@@ -22,6 +22,8 @@ class User {
   List<Pet>? pets;
   @JsonKey(name: "avatar_current")
   Media? avatar;
+  @JsonKey(name: "avatar_url")
+  String? avatarUrl;
   User({
     this.id,
     this.uid,
@@ -30,11 +32,13 @@ class User {
     this.email,
     this.pets,
     this.avatar,
+    this.avatarUrl,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  factory User.fromJsonString(String jsonString) => User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory User.fromJsonString(String jsonString) =>
+      User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 

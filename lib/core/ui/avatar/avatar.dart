@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/assets.gen.dart';
 
-enum OBAvatarSize { extraSmall, small, medium, large, extraLarge }
+enum MWAvatarSize { extraSmall, small, medium, large, extraLarge }
 
-enum OBAvatarType { user, community }
-
-class OBAvatar extends StatelessWidget {
+class MWAvatar extends StatelessWidget {
   final String? avatarUrl;
   final File? avatarFile;
-  final OBAvatarSize size;
+  final MWAvatarSize size;
   final VoidCallback? onPressed;
   final double? borderWidth;
   final bool isZoomable;
@@ -20,29 +18,29 @@ class OBAvatar extends StatelessWidget {
 
   static const double AVATAR_SIZE_EXTRA_SMALL = 20.0;
   static const double AVATAR_SIZE_SMALL = 30.0;
-  static const double AVATAR_SIZE_MEDIUM = 50.0;
-  static const double AVATAR_SIZE_LARGE = 80.0;
-  static const double AVATAR_SIZE_EXTRA_LARGE = 120;
+  static const double AVATAR_SIZE_MEDIUM = 45.0;
+  static const double AVATAR_SIZE_LARGE = 70.0;
+  static const double AVATAR_SIZE_EXTRA_LARGE = 100;
   static final AssetGenImage DEFAULT_AVATAR_ASSET = Assets.resources.images.fallbacks.avatarFallback;
   static const double avatarBorderRadius = 60;
 
-  static double getAvatarSize(OBAvatarSize size) {
+  static double getAvatarSize(MWAvatarSize size) {
     double avatarSize;
 
     switch (size) {
-      case OBAvatarSize.extraSmall:
+      case MWAvatarSize.extraSmall:
         avatarSize = AVATAR_SIZE_EXTRA_SMALL;
         break;
-      case OBAvatarSize.small:
+      case MWAvatarSize.small:
         avatarSize = AVATAR_SIZE_SMALL;
         break;
-      case OBAvatarSize.medium:
+      case MWAvatarSize.medium:
         avatarSize = AVATAR_SIZE_MEDIUM;
         break;
-      case OBAvatarSize.large:
+      case MWAvatarSize.large:
         avatarSize = AVATAR_SIZE_LARGE;
         break;
-      case OBAvatarSize.extraLarge:
+      case MWAvatarSize.extraLarge:
         avatarSize = AVATAR_SIZE_EXTRA_LARGE;
         break;
     }
@@ -50,9 +48,9 @@ class OBAvatar extends StatelessWidget {
     return avatarSize;
   }
 
-  const OBAvatar(
+  const MWAvatar(
       {this.avatarUrl,
-      this.size = OBAvatarSize.small,
+      this.size = MWAvatarSize.medium,
       this.onPressed,
       this.avatarFile,
       this.borderWidth,
