@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
-import 'package:meowoof/modules/add_pet/domain/models/pet.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 
 class PetItemWidget extends StatelessWidget {
   final Pet pet;
@@ -16,7 +16,7 @@ class PetItemWidget extends StatelessWidget {
       width: 165.w,
       height: 157.h,
       child: Stack(
-        children: [ImageWithPlaceHolderWidget(imageUrl: pet.)],
+        children: [ImageWithPlaceHolderWidget(imageUrl: pet.avatar!)],
       ),
     );
   }

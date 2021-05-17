@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meowoof/modules/social_network/app/explore/app/ui/explore_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/newfeed_widget.dart';
 import 'package:suga_core/suga_core.dart';
 

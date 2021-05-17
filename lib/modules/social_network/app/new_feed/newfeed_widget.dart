@@ -95,7 +95,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
             ),
             InkWell(
               onTap: () {},
-              child: const MWIcon(
+              child: MWIcon(
                 MWIcons.message,
                 customSize: 28,
                 color: UIColor.text_header,
