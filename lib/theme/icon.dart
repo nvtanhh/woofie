@@ -97,8 +97,7 @@ class MWIcon extends StatelessWidget {
         color: iconColor,
       );
     } else {
-      return iconData.assetImageFile!
-          .image(height: iconSize, width: iconSize, fit: BoxFit.cover);
+      return iconData.assetImageFile!.image(height: iconSize, width: iconSize, fit: BoxFit.cover);
     }
   }
 }
@@ -122,8 +121,7 @@ class MWIcons {
   static const bookmark = MWIconData(nativeIcon: Icons.bookmark);
   static const addImage = MWIconData(nativeIcon: Icons.add_photo_alternate);
   static const location = MWIconData(nativeIcon: Icons.location_on_rounded);
-  static const notificaitonImportant =
-      MWIconData(nativeIcon: Icons.notification_important_rounded);
+  static const notificaitonImportant = MWIconData(nativeIcon: Icons.notification_important_rounded);
   static const save = MWIconData(nativeIcon: Icons.security_rounded);
   static const moreVerical = MWIconData(nativeIcon: Icons.more_vert_rounded);
   static const moreHoriz = MWIconData(nativeIcon: Icons.more_horiz_rounded);
@@ -133,23 +131,13 @@ class MWIcons {
   static const sad = MWIconData(nativeIcon: Icons.sentiment_dissatisfied);
   static const refresh = MWIconData(nativeIcon: Icons.refresh);
   static const checkCircleSelected = MWIconData(nativeIcon: Icons.check_circle);
-  static const checkCircle =
-      MWIconData(nativeIcon: Icons.radio_button_unchecked);
+  static const checkCircle = MWIconData(nativeIcon: Icons.radio_button_unchecked);
   static const delete = MWIconData(nativeIcon: Icons.delete_rounded);
   static const edit = MWIconData(nativeIcon: Icons.edit);
 
   // Icon with asset image
-  static final add =
-      MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
-  static final react =
-      MWIconData(assetImageFile: Assets.resources.icons.icReact);
+  static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
+  static final react = MWIconData(assetImageFile: Assets.resources.icons.icReact);
 }
 
-enum MWIconThemeColor {
-  primary,
-  primaryText,
-  primaryAccent,
-  danger,
-  success,
-  secondaryText
-}
+enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }

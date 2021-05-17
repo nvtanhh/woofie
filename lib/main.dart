@@ -17,8 +17,7 @@ Future main() async {
   setupEasyLoading();
   // set up google_fonts
   LicenseRegistry.addLicense(() async* {
-    final license =
-        await rootBundle.loadString('resources/google_fonts/OFL.txt');
+    final license = await rootBundle.loadString('resources/google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
   // setting status bar color

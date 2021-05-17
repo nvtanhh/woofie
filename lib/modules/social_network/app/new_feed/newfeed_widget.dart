@@ -20,8 +20,7 @@ class NewFeedWidget extends StatefulWidget {
   _NewFeedWidgetState createState() => _NewFeedWidgetState();
 }
 
-class _NewFeedWidgetState
-    extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
+class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,8 +81,7 @@ class _NewFeedWidgetState
             ),
             Text(
               LocaleKeys.app_name.trans(),
-              style: GoogleFonts.montserrat(
-                  textStyle: UITextStyle.text_header_24_w700),
+              style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w700),
             ),
             const Expanded(
               child: SizedBox(),

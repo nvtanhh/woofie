@@ -40,15 +40,13 @@ class PostHeader extends StatelessWidget {
         TextSpan(
           text: user.name,
           children: createTagPet(),
-          style: GoogleFonts.montserrat(
-              textStyle: UITextStyle.text_header_16_w600),
+          style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_16_w600),
         ),
         maxLines: 2,
       ),
       subtitle: Text(
         time_ago.format(post.createdAt!, locale: 'vi'),
-        style: GoogleFonts.montserrat(
-            textStyle: UITextStyle.text_secondary_12_w500),
+        style: GoogleFonts.montserrat(textStyle: UITextStyle.text_secondary_12_w500),
       ),
       trailing: IconButton(
         icon: const MWIcon(
@@ -70,16 +68,14 @@ class PostHeader extends StatelessWidget {
     inLineSpan.add(
       TextSpan(
         text: " ${LocaleKeys.new_feed_with.trans()} ",
-        style:
-            GoogleFonts.montserrat(textStyle: UITextStyle.text_header_16_w400),
+        style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_16_w400),
       ),
     );
     for (var i = 0; i < pets.length; i++) {
       inLineSpan.add(
         TextSpan(
           text: "${pets[i].name}${i != pets.length - 1 ? ", " : " "}",
-          style: GoogleFonts.montserrat(
-              textStyle: UITextStyle.text_header_16_w600),
+          style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_16_w600),
         ),
       );
     }

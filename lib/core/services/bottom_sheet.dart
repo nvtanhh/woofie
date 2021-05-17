@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/comment_bottom_sheet_widget.dart';
-import 'package:meowoof/modules/newfeed/app/ui/widgets/comment/post_actions_bottom_sheet.dart';
-import 'package:meowoof/modules/newfeed/domain/models/post.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/comment_bottom_sheet_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/post_actions_bottom_sheet.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

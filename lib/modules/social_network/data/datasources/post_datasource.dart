@@ -22,11 +22,8 @@ class PostDatasource {
           "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.",
       creator: User(
           name: "Bảo Nguyễn",
-          avatar: Media(
-              url:
-                  "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
-          avatarUrl:
-              "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
+          avatar: Media(url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
+          avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
       isLiked: false,
       pets: [
         Pet(name: "Vàng"),
@@ -36,18 +33,15 @@ class PostDatasource {
     post.medias = <Media>[
       Media(
         type: MediaType.image,
-        url:
-            "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
+        url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       ),
       Media(
         type: MediaType.image,
-        url:
-            "https://i.pinimg.com/564x/6c/f4/34/6cf434d87d710e4aee8f82624b697aef.jpg",
+        url: "https://i.pinimg.com/564x/6c/f4/34/6cf434d87d710e4aee8f82624b697aef.jpg",
       ),
       Media(
         type: MediaType.video,
-        url:
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       ),
     ];
     post.postReactsAggregate = ObjectAggregate(aggregate: Aggregate(count: 11));
@@ -61,11 +55,9 @@ class PostDatasource {
     comment.creator = User(
       avatar: Media(
         type: MediaType.image,
-        url:
-            "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
+        url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       ),
-      avatarUrl:
-          "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
+      avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       name: "Bao Nguyen",
     );
     comment.content =
@@ -78,11 +70,9 @@ class PostDatasource {
     comment2.creator = User(
       avatar: Media(
         type: MediaType.image,
-        url:
-            "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
+        url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       ),
-      avatarUrl:
-          "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
+      avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       name: "Bao Nguyen",
     );
     comment2.content = "Một năm rồi cơ. Bây giờ xịn hơn rồi.";

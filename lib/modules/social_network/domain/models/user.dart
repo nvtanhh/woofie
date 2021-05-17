@@ -37,8 +37,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  factory User.fromJsonString(String jsonString) =>
-      User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory User.fromJsonString(String jsonString) => User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 

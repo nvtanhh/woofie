@@ -10,12 +10,7 @@ class PostActionsBottomSheet extends StatelessWidget {
   final Post post;
   final ValueChanged<Post> onPostDeleted;
   final ValueChanged<Post> onPostEdited;
-  const PostActionsBottomSheet(
-      {Key? key,
-      required this.post,
-      required this.onPostDeleted,
-      required this.onPostEdited})
-      : super(key: key);
+  const PostActionsBottomSheet({Key? key, required this.post, required this.onPostDeleted, required this.onPostEdited}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +23,14 @@ class PostActionsBottomSheet extends StatelessWidget {
             leading: const MWIcon(MWIcons.edit),
             title: Text(
               LocaleKeys.new_feed_edit_post.trans(),
-              style: GoogleFonts.montserrat(
-                  textStyle: UITextStyle.text_body_16_w500),
+              style: GoogleFonts.montserrat(textStyle: UITextStyle.text_body_16_w500),
             ),
           ),
           ListTile(
             leading: const MWIcon(MWIcons.delete),
             title: Text(
               LocaleKeys.new_feed_delete_post.trans(),
-              style: GoogleFonts.montserrat(
-                  textStyle: UITextStyle.text_body_16_w500),
+              style: GoogleFonts.montserrat(textStyle: UITextStyle.text_body_16_w500),
             ),
           )
         ],
