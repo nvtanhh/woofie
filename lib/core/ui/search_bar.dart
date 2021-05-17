@@ -6,10 +6,10 @@ class MWSearchBar extends StatefulWidget {
   final MWSearchBarOnSearch onSearch;
   final VoidCallback? onCancel;
   final String? hintText;
-  final Widget? filter;
+  final Widget? action;
   final bool? searchWidget;
 
-  const MWSearchBar({Key? key, required this.onSearch, this.hintText, this.onCancel, this.filter, this.searchWidget = false}) : super(key: key);
+  const MWSearchBar({Key? key, required this.onSearch, this.hintText, this.onCancel, this.action, this.searchWidget = false}) : super(key: key);
 
   @override
   MWSearchBarState createState() {
@@ -102,7 +102,7 @@ class MWSearchBarState extends State<MWSearchBar> {
               ),
             ),
           ),
-          widget.filter ?? const SizedBox(height: 0, width: 0),
+          widget.action ?? const SizedBox(height: 0, width: 0),
           if (hasText)
             _buildCancelButton()
           else
@@ -122,7 +122,7 @@ class MWSearchBarState extends State<MWSearchBar> {
         width: 35.w,
         child: Icon(
           Icons.close,
-          size: 15.sp,
+          size: 20.w,
         ),
       ),
     );
@@ -140,18 +140,19 @@ class MWSearchBarState extends State<MWSearchBar> {
   }
 
   Widget _buildCancelButton() {
-    final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-      minimumSize: Size(44.w, 44.h),
-      backgroundColor: Colors.grey,
-      padding: const EdgeInsets.all(5),
-    );
-    return TextButton(
-      style: flatButtonStyle,
-      onPressed: _cancelSearch,
-      child: const Text(
-        'Cancel',
-      ),
-    );
+    return const SizedBox();
+    // final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+    //   minimumSize: Size(44.w, 44.h),
+    //   backgroundColor: Colors.grey,
+    //   padding: const EdgeInsets.all(5),
+    // );
+    // return TextButton(
+    //   style: flatButtonStyle,
+    //   onPressed: _cancelSearch,
+    //   child: const Text(
+    //     'Cancel',
+    //   ),
+    // );
   }
 }
 

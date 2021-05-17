@@ -131,7 +131,6 @@ class MWIcons {
   static const refresh = MWIconData(nativeIcon: Icons.refresh);
   static const checkCircleSelected = MWIconData(nativeIcon: Icons.check_circle);
   static const checkCircle = MWIconData(nativeIcon: Icons.radio_button_unchecked);
-
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);

@@ -46,5 +46,13 @@
     "write_a_comment": "Write a comment",
     "like": "Like",
     "no_comments_yet": "No comments yet"
+  },
+  "explore": {
+    "search": "Search",
+    "more": "Add",
+    "adoption": "Pet adoption",
+    "matting": "Matting",
+    "lost_pet": "Lost pet",
+    "service_pet": "Services pet"
   }
 }

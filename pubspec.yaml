@@ -132,5 +132,5 @@ flutter:
     - resources/langs/
     - resources/icons/
     - resources/google_fonts/
-    - resources/images/
     - resources/images/fallbacks/
+    - resources/images/explore/

@@ -58,5 +58,5 @@ abstract class RegisterModule {
   UserStorage getCurrentUserStorage(SharedPreferences prefs) => UserStorage(prefs, 'current_user');
 
   @lazySingleton
-  ToastService getToastService(JwtInterceptor interceptor) => ToastService();
+  ToastService getToastService() => ToastService();
 }

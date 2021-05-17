@@ -170,7 +170,7 @@ class OBHttpListState<T> extends State<OBHttpList<T>> {
               searchWidget: widget.searchWidget,
               onSearch: _onSearch,
               hintText: 'Search...',
-              filter: widget.filter ?? const SizedBox(height: 0, width: 0),
+              action: widget.filter ?? const SizedBox(height: 0, width: 0),
             ),
           ),
         ),

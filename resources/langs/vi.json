@@ -46,5 +46,13 @@
     "write_a_comment": "Viết bình luận",
     "like": "Thích",
     "no_comments_yet": "Chưa có bình luận nào"
+  },
+  "explore": {
+    "search": "Tìm kiếm",
+    "more": "Thêm",
+    "adoption": "Nhận nuôi thú cưng",
+    "matting": "Kiếm mối",
+    "lost_pet": "Thú cưng thất lạc",
+    "service_pet": "Dịch vụ thú cưng"
   }
 }
