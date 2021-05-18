@@ -33,20 +33,6 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
       body: Column(
         children: [
           Expanded(
-            // child: Obx(
-            //   () => ListView.builder(
-            //     padding: EdgeInsets.only(top: 15.h),
-            //     itemCount: viewModel.posts.length,
-            //     itemBuilder: (context, index) {
-            //       return PostItemInListView(
-            //         post: viewModel.posts[index],
-            //         onCommentClick: viewModel.onCommentClick,
-            //         onLikeClick: viewModel.onLikeClick,
-            //         onPostClick: viewModel.onPostClick,
-            //       );
-            //     },
-            //   ),
-            // ),
             child: PagedListView<int, Post>(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
               pagingController: viewModel.pagingController,
