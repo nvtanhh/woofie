@@ -6,6 +6,8 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adop_widget/adop_widget_model.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adop_widget/widgets/pet_item_shimmer_widget.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adop_widget/widgets/pet_item_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -25,7 +27,7 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
           backgroundColor: UIColor.white,
           elevation: 0,
           title: Text(
-            LocaleKeys.new_feed_post.trans(),
+            LocaleKeys.explore_adoption.trans(),
             style: UITextStyle.text_header_18_w600,
           ),
           centerTitle: true,
@@ -45,12 +47,21 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
                 pagingController: viewModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) {
-                    return SizedBox();
+                    return PetItemWidget(pet: item.pets![0]);
                   },
+                  firstPageProgressIndicatorBuilder: (_) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PetItemShimmerWidget(),
+                      PetItemShimmerWidget(),
+                    ],
+                  ),
+                  newPageProgressIndicatorBuilder: (_) => PetItemShimmerWidget(),
                 ),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 165.w / 157.h,
+                  childAspectRatio: 165.w / 213.h,
                 ),
                 padding: EdgeInsets.only(
                   top: 10.h,

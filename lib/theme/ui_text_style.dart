@@ -11,6 +11,7 @@ class UITextStyle {
   static TextStyle text_header_18_w700 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_18_w600 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
   static TextStyle text_header_14_w600 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle text_header_14_w700 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_16_w600 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w600);
   static TextStyle text_header_16_w400 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w400);
   static TextStyle text_header_14_w400 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w400);
@@ -41,4 +42,5 @@ class UITextStyle {
   static TextStyle allports_18_w600 = TextStyle(color: UIColor.allports, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
   static TextStyle charm_18_w600 = TextStyle(color: UIColor.charm, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
   static TextStyle persian_red_18_w600 = TextStyle(color: UIColor.persian_red, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle dodger_blue_10_w500 = TextStyle(color: UIColor.dodger_blue, fontSize: 10.0.sp, fontWeight: FontWeight.w500);
 }

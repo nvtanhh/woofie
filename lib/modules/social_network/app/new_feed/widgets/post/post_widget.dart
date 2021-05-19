@@ -9,7 +9,7 @@ import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widg
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/shimmer_comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_widget_model.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_in_listview.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_item_in_listview.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';

@@ -21,14 +21,14 @@ class PostActionsBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: MWIcon(MWIcons.edit),
+            leading: const MWIcon(MWIcons.edit),
             title: Text(
               LocaleKeys.new_feed_edit_post.trans(),
               style: GoogleFonts.montserrat(textStyle: UITextStyle.text_body_16_w500),
             ),
           ),
           ListTile(
-            leading: MWIcon(MWIcons.delete),
+            leading: const MWIcon(MWIcons.delete),
             title: Text(
               LocaleKeys.new_feed_delete_post.trans(),
               style: GoogleFonts.montserrat(textStyle: UITextStyle.text_body_16_w500),

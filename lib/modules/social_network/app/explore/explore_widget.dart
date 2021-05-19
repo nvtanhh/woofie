@@ -8,6 +8,7 @@ import 'package:meowoof/core/ui/search_bar.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/explore/explore_widget_model.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adop_widget/adop_widget.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/service_widget.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -49,53 +50,56 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                   LocaleKeys.explore_more.trans(),
                   style: UITextStyle.text_header_18_w700,
                 ),
-                SizedBox(
-                  height: 120.h,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Container(
-                        height: 95.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.r),
-                          color: UIColor.pattens_blue,
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            SizedBox(
-                              width: (Get.width * 0.6).w,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    LocaleKeys.explore_adoption.trans(),
-                                    style: UITextStyle.allports_18_w600,
-                                  ),
-                                  SizedBox(
-                                    height: 5.h,
-                                  ),
-                                  Text(
-                                    "Có đến 250 thú cưng đang chờ bạn nhận nuôi",
-                                    style: UITextStyle.text_body_10_w500,
-                                  )
-                                ],
+                InkWell(
+                  onTap: () => Get.to(AdoptionWidget()),
+                  child: SizedBox(
+                    height: 120.h,
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Container(
+                          height: 95.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: UIColor.pattens_blue,
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20.w,
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                width: (Get.width * 0.6).w,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      LocaleKeys.explore_adoption.trans(),
+                                      style: UITextStyle.allports_18_w600,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      "Có đến 250 thú cưng đang chờ bạn nhận nuôi",
+                                      style: UITextStyle.text_body_10_w500,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        right: 10.w,
-                        bottom: 10.h,
-                        child: Assets.resources.images.explore.adop.image(
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    ],
+                        Positioned(
+                          right: 10.w,
+                          bottom: 10.h,
+                          child: Assets.resources.images.explore.adop.image(
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(

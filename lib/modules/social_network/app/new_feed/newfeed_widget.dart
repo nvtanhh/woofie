@@ -8,7 +8,7 @@ import 'package:meowoof/core/ui/app_logo.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/newfeed_widget_model.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/icon.dart';
@@ -24,11 +24,6 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // padding: EdgeInsets.only(
-      //   top: 10.h,
-      //   left: 16.w,
-      //   right: 16.w,
-      // ),
       appBar: _buildAppBar(),
       body: Column(
         children: [

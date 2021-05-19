@@ -31,4 +31,7 @@ class UIColor {
   static const Color allports = Color(0xFF127189);
   static const Color charm = Color(0xFFD67D94);
   static const Color persian_red = Color(0xFFD14242);
+  static const Color dodger_blue = Color(0xFF2196F3);
+  static const Color pattens_blue2 = Color(0xFFD2E8F9);
+  static const Color whisper = Color(0xFFE8E8E8);
 }

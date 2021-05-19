@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/services/bottom_sheet.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
@@ -31,7 +30,7 @@ class PostHeader extends StatelessWidget {
     final User user = post.creator!;
 
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+      contentPadding: const EdgeInsets.symmetric(),
       leading: MWAvatar(
         avatarUrl: user.avatarUrl,
         borderRadius: 10.r,
