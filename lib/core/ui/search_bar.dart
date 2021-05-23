@@ -59,7 +59,7 @@ class MWSearchBarState extends State<MWSearchBar> {
                       decoration: InputDecoration(
                         prefixIcon: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          child: Icon(Icons.search),
+                          child: const Icon(Icons.search),
                         ),
                         prefixIconConstraints: BoxConstraints(maxWidth: 40.w, maxHeight: 20.h),
                         hintText: widget.hintText,
@@ -70,8 +70,6 @@ class MWSearchBarState extends State<MWSearchBar> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      autocorrect: true,
-                      maxLines: 1,
                     )
                   else
                     SizedBox(

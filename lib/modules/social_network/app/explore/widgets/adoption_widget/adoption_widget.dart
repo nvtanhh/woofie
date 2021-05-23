@@ -47,7 +47,10 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
                 pagingController: viewModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) {
-                    return PetItemWidget(pet: item.pets![0]);
+                    return PetItemWidget(
+                      pet: item.pets![0],
+                      onClick: () => viewModel.onItemClick(item),
+                    );
                   },
                   firstPageProgressIndicatorBuilder: (_) => Row(
                     crossAxisAlignment: CrossAxisAlignment.start,

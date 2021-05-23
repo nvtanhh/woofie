@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:meowoof/theme/ui_color.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
+import 'package:meowoof/theme/ui_color.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class UITextStyle {
   static final TextTheme montserratTextTheme = GoogleFonts.montserratTextTheme();
-  UITextStyle._();
 
-  static TextStyle text_header_18_w700 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_18_w600 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle text_header_18_w700 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_14_w600 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w600);
   static TextStyle text_header_14_w700 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_16_w600 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w600);
@@ -43,4 +42,5 @@ class UITextStyle {
   static TextStyle charm_18_w600 = TextStyle(color: UIColor.charm, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
   static TextStyle persian_red_18_w600 = TextStyle(color: UIColor.persian_red, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
   static TextStyle dodger_blue_10_w500 = TextStyle(color: UIColor.dodger_blue, fontSize: 10.0.sp, fontWeight: FontWeight.w500);
+  static TextStyle text_header_16_w6002 = GoogleFonts.montserrat(textStyle: text_header_16_w600);
 }

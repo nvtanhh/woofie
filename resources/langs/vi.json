@@ -55,6 +55,12 @@
     "adoption": "Nhận nuôi thú cưng",
     "matting": "Kiếm mối",
     "lost_pet": "Thú cưng thất lạc",
-    "service_pet": "Dịch vụ thú cưng"
+    "service_pet": "Dịch vụ thú cưng",
+    "gender": "Giới tính",
+    "age": "Tuổi",
+    "breed": "Giống",
+    "detail": "Chi tiết",
+    "contact": "Liên hệ",
+    "owner_pet": "Chủ thú cưng"
   }
 }

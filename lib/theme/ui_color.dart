@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class UIColor {
-  UIColor._();
-
   static const Color white = Color(0xFFFFFFFF);
   static const Color primary = Color(0xFF6772F1);
   static const Color text_secondary = Color(0xFFC8C8C8);
@@ -34,4 +32,5 @@ class UIColor {
   static const Color dodger_blue = Color(0xFF2196F3);
   static const Color pattens_blue2 = Color(0xFFD2E8F9);
   static const Color whisper = Color(0xFFE8E8E8);
+  static const Color alice_blue3 = Color(0xFFF5FAFF);
 }

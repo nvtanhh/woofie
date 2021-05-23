@@ -1,5 +1,7 @@
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -37,5 +39,9 @@ class AdoptionWidgetModel extends BaseViewModel {
       showLoading: false,
       onSuccess: () {},
     );
+  }
+
+  void onItemClick(Post post) {
+    Get.to(() => AdoptionPetDetailWidget(post: post));
   }
 }
