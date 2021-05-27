@@ -12,6 +12,7 @@ class UITextStyle {
   static TextStyle text_header_14_w600 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w600);
   static TextStyle text_header_14_w700 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_16_w600 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle text_header_16_w700 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_16_w400 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w400);
   static TextStyle text_header_14_w400 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w400);
   static TextStyle text_header_24_w700 = TextStyle(color: UIColor.text_header, fontSize: 24.0.sp, fontWeight: FontWeight.w700);

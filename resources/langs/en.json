@@ -61,6 +61,10 @@
     "breed": "Breed",
     "detail": "Detail",
     "contact": "contact",
-    "owner_pet": "Owner pet"
+    "owner_pet": "Owner pet",
+    "pet": "Pet",
+    "post": "Post",
+    "service": "Service",
+    "follow": "Follow"
   }
 }

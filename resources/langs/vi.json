@@ -61,6 +61,10 @@
     "breed": "Giống",
     "detail": "Chi tiết",
     "contact": "Liên hệ",
-    "owner_pet": "Chủ thú cưng"
+    "owner_pet": "Chủ thú cưng",
+    "pet": "Thú cưng",
+    "post": "Bài viết",
+    "service": "Dịch vụ",
+    "follow": "Theo dõi"
   }
 }

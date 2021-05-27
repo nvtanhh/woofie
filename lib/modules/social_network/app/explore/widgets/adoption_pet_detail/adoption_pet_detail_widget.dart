@@ -52,10 +52,17 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
               Positioned(
                 bottom: 0,
                 child: Container(
-                  height: Get.height / 2,
+                  height: Get.height / 2 + 50.h,
                   width: Get.width,
-                  decoration: BoxDecoration(color: UIColor.white, borderRadius: BorderRadius.circular(20.r)),
-                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                  decoration: BoxDecoration(
+                    color: UIColor.white,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  padding: EdgeInsets.only(
+                    left: 10.w,
+                    right: 10.w,
+                    top: 10.h,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -144,6 +151,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                           height: 47.h,
                           title: LocaleKeys.explore_contact.trans(),
                           onPress: () => null,
+                          borderRadius: 15.r,
                         ),
                       )
                     ],
@@ -153,11 +161,14 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
               Positioned(
                 top: 0,
                 left: 0,
-                child: SizedBox(
+                child: Container(
                   width: Get.width,
                   height: 50.h,
+                  margin: EdgeInsets.only(top: 10.h),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w,),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -167,7 +178,10 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                           height: 40.w,
                           borderRadius: 20.w,
                           backgroundColor: UIColor.white,
-                          contentWidget: const Icon(Icons.arrow_back_ios_outlined),
+                          contentWidget: const Icon(
+                            Icons.arrow_back_ios_outlined,
+                            color: UIColor.text_header,
+                          ),
                         ),
                         ButtonWidget(
                           onPress: () => null,
@@ -175,7 +189,10 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                           height: 40.w,
                           borderRadius: 20.w,
                           backgroundColor: UIColor.white,
-                          contentWidget: const Icon(Icons.more_vert_sharp),
+                          contentWidget: const Icon(
+                            Icons.more_horiz_outlined,
+                            color: UIColor.text_header,
+                          ),
                         )
                       ],
                     ),

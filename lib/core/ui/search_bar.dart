@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 class MWSearchBar extends StatefulWidget {
-  final MWSearchBarOnSearch onSearch;
+  final Function(String)? onSearch;
   final VoidCallback? onCancel;
   final String? hintText;
   final Widget? action;
   final bool? searchWidget;
+  final Function(String)? onSubmitted;
+  final String? textInit;
 
-  const MWSearchBar({Key? key, required this.onSearch, this.hintText, this.onCancel, this.action, this.searchWidget = false}) : super(key: key);
+  const MWSearchBar({
+    Key? key,
+    this.onSearch,
+    this.hintText,
+    this.onCancel,
+    this.action,
+    this.searchWidget = false,
+    this.onSubmitted,
+    this.textInit,
+  }) : super(key: key);
 
   @override
   MWSearchBarState createState() {
@@ -24,22 +36,25 @@ class MWSearchBarState extends State<MWSearchBar> {
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(color: Colors.grey[200]!),
   );
+  RxBool hasText = RxBool(false);
 
   @override
   void initState() {
     super.initState();
     _textFocusNode = FocusNode();
-    _textController = TextEditingController();
+    _textController = TextEditingController(text: widget.textInit ?? "");
     _textController.addListener(() {
-      widget.onSearch(_textController.text);
+      if (_textController.text.isEmpty) {
+        hasText.value = false;
+      } else if (_textController.text.isNotEmpty && !hasText.value) {
+        hasText.value = true;
+      }
+      widget.onSearch?.call(_textController.text);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool hasText = _textController.text.isNotEmpty;
-    final EdgeInsetsGeometry inputContentPadding = EdgeInsets.only(top: 8.h, bottom: 8.h, left: 20.w, right: hasText ? 40.w : 20.w);
-
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.h),
       child: Row(
@@ -64,12 +79,18 @@ class MWSearchBarState extends State<MWSearchBar> {
                         prefixIconConstraints: BoxConstraints(maxWidth: 40.w, maxHeight: 20.h),
                         hintText: widget.hintText,
                         hintStyle: TextStyle(color: Colors.grey[500], fontSize: 15.sp),
-                        contentPadding: inputContentPadding,
+                        contentPadding: EdgeInsets.only(
+                          top: 8.h,
+                          bottom: 8.h,
+                          left: 20.w,
+                          right: hasText.value ? 40.w : 20.w,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
                           borderSide: BorderSide.none,
                         ),
                       ),
+                      onSubmitted: widget.onSubmitted,
                     )
                   else
                     SizedBox(
@@ -78,35 +99,33 @@ class MWSearchBarState extends State<MWSearchBar> {
                         focusNode: _textFocusNode,
                         controller: _textController,
                         decoration: InputDecoration(
-                            border: _outlineInputBorder,
-                            focusedBorder: _outlineInputBorder,
-                            errorBorder: _outlineInputBorder,
-                            disabledBorder: _outlineInputBorder,
-                            enabledBorder: _outlineInputBorder,
-                            hintStyle: TextStyle(color: Colors.grey[500], fontSize: 15.sp),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                            suffixIcon: (!hasText) ? const Icon(Icons.add) : const SizedBox()),
+                          border: _outlineInputBorder,
+                          focusedBorder: _outlineInputBorder,
+                          errorBorder: _outlineInputBorder,
+                          disabledBorder: _outlineInputBorder,
+                          enabledBorder: _outlineInputBorder,
+                          hintStyle: TextStyle(color: Colors.grey[500], fontSize: 15.sp),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                          suffixIcon: (!hasText.value) ? const Icon(Icons.add) : const SizedBox(),
+                        ),
+                        onSubmitted: widget.onSubmitted,
                       ),
                     ),
-                  if (hasText)
-                    Positioned(
-                      right: 0,
-                      child: _buildClearButton(),
-                    )
-                  else
-                    const SizedBox()
+                  Obx(() {
+                    if (hasText.value) {
+                      return Positioned(
+                        right: 0,
+                        child: _buildClearButton(),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  })
                 ],
               ),
             ),
           ),
-          widget.action ?? const SizedBox(height: 0, width: 0),
-          if (hasText)
-            _buildCancelButton()
-          else
-            const SizedBox(
-                // width: 15.0,
-                )
         ],
       ),
     );
@@ -152,6 +171,11 @@ class MWSearchBarState extends State<MWSearchBar> {
     //   ),
     // );
   }
-}
 
-typedef MWSearchBarOnSearch = void Function(String searchString);
+  @override
+  void dispose() {
+    _textController.dispose();
+    _textFocusNode.dispose();
+    super.dispose();
+  }
+}

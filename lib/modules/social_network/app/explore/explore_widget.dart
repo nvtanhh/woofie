@@ -32,6 +32,7 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
               children: [
                 MWSearchBar(
                   onSearch: viewModel.onSearchBar,
+                  onSubmitted: viewModel.onSubmitted,
                   action: IconButton(
                     padding: EdgeInsets.only(left: 10.w),
                     constraints: const BoxConstraints(),
