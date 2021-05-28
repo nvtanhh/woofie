@@ -27,9 +27,10 @@ class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetM
       child: Scaffold(
         body: TabBarView(
           controller: viewModel.tabController,
+          physics: const NeverScrollableScrollPhysics(),
           children: viewModel.listScreen,
         ),
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         bottomNavigationBar: Obx(
           () => BottomNavigationBar(
             currentIndex: viewModel.currentTab,

@@ -109,7 +109,6 @@ class MWIcons {
   static const notificaiton = MWIconData(nativeIcon: Icons.notifications);
   static const profile = MWIconData(nativeIcon: Icons.person_rounded);
   static const mail = MWIconData(nativeIcon: Icons.mail_outline);
-  static const message = MWIconData(nativeIcon: Icons.message_outlined);
   static const lock = MWIconData(nativeIcon: Icons.lock_outline_rounded);
   static const visibility = MWIconData(nativeIcon: Icons.visibility);
   static const invisibility = MWIconData(nativeIcon: Icons.visibility_off);
@@ -137,6 +136,7 @@ class MWIcons {
 
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
+  static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);
   static final react = MWIconData(assetImageFile: Assets.resources.icons.icReact);
   static final comment = MWIconData(assetImageFile: Assets.resources.icons.icComment);
 }

@@ -27,7 +27,7 @@ class PetDatasource {
 
   Future<List<PetBreed>> getPetBreeds(int petTypeId) async {
     final queryGetPetBreeds = """
-    query getpet {
+    query get_pet {
     pet_breeds(where: {id_pet_type: {_eq: $petTypeId}}) {
     avatar
     id

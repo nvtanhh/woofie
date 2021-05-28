@@ -48,5 +48,23 @@
     "no_comments_yet": "No comments yet",
     "edit_post": "Edit post",
     "delete_post": "Delete post"
+  },
+  "explore": {
+    "search": "Search",
+    "more": "Add",
+    "adoption": "Pet adoption",
+    "matting": "Matting",
+    "lost_pet": "Lost pet",
+    "service_pet": "Services pet",
+    "gender": "Gender",
+    "age": "Age",
+    "breed": "Breed",
+    "detail": "Detail",
+    "contact": "contact",
+    "owner_pet": "Owner pet",
+    "pet": "Pet",
+    "post": "Post",
+    "service": "Service",
+    "follow": "Follow"
   }
 }

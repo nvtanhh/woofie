@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meowoof/modules/social_network/app/explore/explore_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/newfeed_widget.dart';
 import 'package:suga_core/suga_core.dart';
 
 class HomeMenuWidgetModel extends BaseViewModel {
-  List<Widget> listScreen = [
-    NewFeedWidget(),
-  ];
+  List<Widget> listScreen = [NewFeedWidget(), ExploreWidget()];
   late TabController tabController;
   final RxInt _currentTab = RxInt(0);
 
