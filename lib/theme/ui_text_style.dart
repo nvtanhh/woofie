@@ -5,8 +5,42 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
 class UITextStyle {
-  static final TextTheme montserratTextTheme = GoogleFonts.montserratTextTheme();
   UITextStyle._();
+
+  static TextStyle heading_18_semiBold = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w600),
+  );
+  static TextStyle heading_16_semiBold = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w600),
+  );
+  static TextStyle heading_16_medium = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w500),
+  );
+  static TextStyle heading_16_reg = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w400),
+  );
+  static TextStyle body_14_semiBold = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_body, fontSize: 14.0.sp, fontWeight: FontWeight.w600),
+  );
+  static TextStyle body_14_medium = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_body, fontSize: 14.0.sp, fontWeight: FontWeight.w500),
+  );
+  static TextStyle body_14_reg = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_body, fontSize: 14.0.sp, fontWeight: FontWeight.w400),
+  );
+
+  static TextStyle second_12_medium = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_secondary, fontSize: 12.0.sp, fontWeight: FontWeight.w500),
+  );
+  static TextStyle body_12_reg = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_body, fontSize: 12.0.sp, fontWeight: FontWeight.w400),
+  );
+  static TextStyle body_12_medium = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_body, fontSize: 12.0.sp, fontWeight: FontWeight.w500),
+  );
+  static TextStyle body_10_reg = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_body, fontSize: 10.0.sp, fontWeight: FontWeight.w400),
+  );
 
   static TextStyle text_header_18_w700 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_18_w600 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w600);

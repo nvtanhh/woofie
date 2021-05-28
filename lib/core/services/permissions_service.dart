@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meowoof/core/services/toast_service.dart';
 
 class PermissionsService {
-  final ToastService _toastService;
-
-  PermissionsService(this._toastService);
-
   Future<bool> requestStoragePermissions({required BuildContext context}) async {
     return _requestPermissionWithErrorMessage(permission: null, errorMessage: 'Permissions denied!', context: context);
   }

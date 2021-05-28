@@ -10,8 +10,8 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/newfeed_widget_model.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/icon.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -56,6 +56,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                   onCommentClick: viewModel.onCommentClick,
                   onLikeClick: viewModel.onLikeClick,
                   onPostClick: viewModel.onPostClick,
+                  onPostDeleted: viewModel.onPostDeleted,
+                  onPostEdited: viewModel.onPostEdited,
                 ),
               ),
             ),
@@ -87,7 +89,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
               child: SizedBox(),
             ),
             InkWell(
-              onTap: () {},
+              onTap: viewModel.onWantsCreateNewPost,
               child: MWIcon(MWIcons.add),
             ),
             SizedBox(

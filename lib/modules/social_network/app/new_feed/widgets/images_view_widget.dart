@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/medias.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
@@ -23,31 +23,34 @@ class ImagesViewWidget extends StatelessWidget {
     if (medias.isNotEmpty) {
       return Container(
         height: 400.h,
-        margin: EdgeInsets.symmetric(vertical: 15.h),
+        margin: EdgeInsets.only(top: 10.h, bottom: 15.h),
         child: Stack(
           children: [
-            PageView.builder(
-              itemBuilder: (context, index) {
-                if (medias[index].type == MediaType.image || medias[index].type == MediaType.gif) {
-                  return ImageWithPlaceHolderWidget(
-                    imageUrl: medias[index].url ?? "",
-                    radius: 20.r,
-                    fit: BoxFit.cover,
-                  );
-                } else if (medias[index].type == MediaType.video) {
-                  return BetterPlayer.network(
-                    medias[index].url ?? "",
-                  );
-                } else {
-                  return const SizedBox();
-                }
-              },
-              itemCount: medias.length,
-              controller: _pageController,
-              allowImplicitScrolling: true,
-              onPageChanged: (index) {
-                indexPage.value = index;
-              },
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20.r),
+              child: PageView.builder(
+                itemBuilder: (context, index) {
+                  if (medias[index].type == MediaType.image || medias[index].type == MediaType.gif) {
+                    return ImageWithPlaceHolderWidget(
+                      imageUrl: medias[index].url,
+                      radius: 20.r,
+                      fit: BoxFit.cover,
+                    );
+                  } else if (medias[index].type == MediaType.video) {
+                    return BetterPlayer.network(
+                      medias[index].url,
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+                itemCount: medias.length,
+                controller: _pageController,
+                allowImplicitScrolling: true,
+                onPageChanged: (index) {
+                  indexPage.value = index;
+                },
+              ),
             ),
             Positioned(
               top: 20,

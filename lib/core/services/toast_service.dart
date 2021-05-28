@@ -6,7 +6,7 @@ import 'package:meowoof/theme/ui_color.dart';
 enum ToastType { info, warning, success, error }
 
 class ToastService {
-  static const Duration toastDuration = Duration(seconds: 3);
+  static const Duration toastDuration = Duration(seconds: 1);
   static Color colorError = UIColor.accent;
   static Color colorSuccess = UIColor.accent2;
   static Color colorInfo = UIColor.primary;

@@ -116,7 +116,6 @@ class MWIcons {
   static const person = MWIconData(nativeIcon: Icons.person_outline);
   static const back = MWIconData(nativeIcon: Icons.arrow_back_ios_rounded);
   static const close = MWIconData(nativeIcon: Icons.close_rounded);
-  static const comment = MWIconData(nativeIcon: Icons.comment_rounded);
   static const send = MWIconData(nativeIcon: Icons.send);
   static const bookmark = MWIconData(nativeIcon: Icons.bookmark);
   static const addImage = MWIconData(nativeIcon: Icons.add_photo_alternate);
@@ -134,10 +133,12 @@ class MWIcons {
   static const checkCircle = MWIconData(nativeIcon: Icons.radio_button_unchecked);
   static const delete = MWIconData(nativeIcon: Icons.delete_rounded);
   static const edit = MWIconData(nativeIcon: Icons.edit);
+  static const arrowDown = MWIconData(nativeIcon: Icons.keyboard_arrow_down_rounded);
 
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final react = MWIconData(assetImageFile: Assets.resources.icons.icReact);
+  static final comment = MWIconData(assetImageFile: Assets.resources.icons.icComment);
 }
 
 enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }

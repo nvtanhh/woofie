@@ -4,7 +4,7 @@ import 'package:meowoof/modules/social_network/domain/models/aggregate/aggregate
 import 'package:meowoof/modules/social_network/domain/models/aggregate/object_aggregate.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/medias.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
@@ -17,12 +17,14 @@ class PostDatasource {
   Future<List<Post>> getPosts() async {
     final Post post = Post(
       id: 1,
+      type: PostType.activity,
       createdAt: DateTime.now(),
       content:
           "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.",
       creator: User(
+          id: 1,
           name: "Bảo Nguyễn",
-          avatar: Media(url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
+          avatar: Media(id: 1, url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg", type: MediaType.image),
           avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
       isLiked: false,
       pets: [
@@ -32,14 +34,17 @@ class PostDatasource {
     );
     post.medias = <Media>[
       Media(
+        id: 2,
         type: MediaType.image,
         url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       ),
       Media(
+        id: 3,
         type: MediaType.image,
         url: "https://i.pinimg.com/564x/6c/f4/34/6cf434d87d710e4aee8f82624b697aef.jpg",
       ),
       Media(
+        id: 4,
         type: MediaType.video,
         url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       ),
@@ -51,36 +56,29 @@ class PostDatasource {
 
   Future<List<Comment>> getPostComments(int postId) async {
     await Future.delayed(const Duration(seconds: 2));
-    Comment comment = Comment(id: 1);
-    comment.creator = User(
+    final User user = User(
+      id: 2,
       avatar: Media(
+        id: 5,
         type: MediaType.image,
         url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       ),
       avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       name: "Bao Nguyen",
     );
-    comment.content =
+    const String content =
         "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.";
-    comment.createdAt = DateTime.now().subtract(
-      const Duration(seconds: 120),
-    );
+
+    final Comment comment = Comment(id: 1, content: content, creatorId: user.id, postId: postId);
     comment.isLiked = true;
-    Comment comment2 = Comment(id: 1);
-    comment2.creator = User(
-      avatar: Media(
-        type: MediaType.image,
-        url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
-      ),
-      avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
-      name: "Bao Nguyen",
-    );
-    comment2.content = "Một năm rồi cơ. Bây giờ xịn hơn rồi.";
+
+    final Comment comment2 = Comment(id: 2, content: content, creatorId: user.id, postId: postId);
     comment2.createdAt = DateTime.now().subtract(
       const Duration(seconds: 120),
     );
     comment2.isLiked = false;
-    var list = <Comment>[comment, comment2];
+
+    final list = <Comment>[comment, comment2];
     list.add(list[0]);
     list.add(list[1]);
     list.add(list[0]);

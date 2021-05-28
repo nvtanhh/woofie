@@ -92,7 +92,7 @@ class MWAvatar extends StatelessWidget {
       finalAvatarImage = _getAvatarPlaceholder(avatarSize);
     }
 
-    Widget avatar = ClipRRect(
+    final Widget avatar = ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius ?? avatarBorderRadius),
       child: finalAvatarImage,
     );

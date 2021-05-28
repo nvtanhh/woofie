@@ -5,7 +5,7 @@ import 'package:meowoof/theme/ui_color.dart';
 class MWButton extends StatelessWidget {
   final Widget child;
   final Widget? icon;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final VoidCallback? onLongPressed;
   final bool isDisabled;
   final bool isLoading;
@@ -19,6 +19,8 @@ class MWButton extends StatelessWidget {
   final Color color;
   final Color textColor;
   final bool outline;
+  final Color? borderColor;
+  final double? borderWidth;
   final BorderRadius? borderRadius;
 
   const MWButton(
@@ -38,7 +40,9 @@ class MWButton extends StatelessWidget {
       this.textColor = UIColor.text_body,
       this.onLongPressed,
       this.outline = false,
-      this.borderRadius});
+      this.borderRadius,
+      this.borderColor,
+      this.borderWidth});
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +53,6 @@ class MWButton extends StatelessWidget {
     final finalOnLongPressed = isLoading || isDisabled ? () {} : onLongPressed;
 
     var buttonChild = isLoading ? _getLoadingIndicator(textColor) : child;
-
-    if (isDisabled) buttonChild = Opacity(opacity: 0.5, child: buttonChild);
 
     if (icon != null && !isLoading) {
       buttonChild = Row(
@@ -64,6 +66,13 @@ class MWButton extends StatelessWidget {
       defaultTextStyle = defaultTextStyle.merge(textStyle);
     }
 
+    Color finalBackgroundColor = color;
+
+    if (isDisabled) {
+      finalBackgroundColor = UIColor.disable_bg;
+      defaultTextStyle.apply(color: UIColor.text_body);
+    }
+
     return GestureDetector(
       onTap: finalOnPressed,
       onLongPress: finalOnLongPressed,
@@ -73,9 +82,9 @@ class MWButton extends StatelessWidget {
           minHeight: buttonMinHeight,
         ),
         decoration: BoxDecoration(
-            border: outline ? Border.all(color: textColor) : const Border(),
+            border: outline ? Border.all(width: borderWidth ?? 1, color: borderColor ?? textColor) : const Border(),
             boxShadow: boxShadow ?? [],
-            color: color,
+            color: finalBackgroundColor,
             borderRadius: borderRadius ?? BorderRadius.circular(50.0)),
         child: Material(
           color: Colors.transparent,
@@ -148,7 +157,7 @@ class MWButton extends StatelessWidget {
         );
         break;
       case MWButtonSize.medium:
-        buttonPadding = EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.h);
+        buttonPadding = EdgeInsets.symmetric(vertical: 10.h, horizontal: 18.w);
         break;
       case MWButtonSize.small:
         buttonPadding = EdgeInsets.symmetric(vertical: 4.w, horizontal: 10.h);

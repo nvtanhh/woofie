@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/images_view_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_header.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:meowoof/theme/icon.dart';
-import 'package:meowoof/theme/ui_color.dart';
+import 'package:meowoof/theme/ui_text_style.dart';
+
+import 'post_body.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;
@@ -15,12 +15,16 @@ class PostItem extends StatelessWidget {
   final Function(Post)? onPostClick;
   final RxBool isLiked = RxBool(false);
   final RxInt countLike = RxInt(0);
+  final Function(Post) onPostEdited;
+  final Function(Post) onPostDeleted;
 
   PostItem({
     Key? key,
     required this.post,
-    this.onCommentClick,
     required this.onLikeClick,
+    required this.onPostEdited,
+    required this.onPostDeleted,
+    this.onCommentClick,
     this.onPostClick,
   }) : super(key: key) {
     isLiked.value = post.isLiked ?? false;
@@ -36,18 +40,10 @@ class PostItem extends StatelessWidget {
         children: [
           PostHeader(
             post: post,
-            onPostDeleted: _onPostDeleted,
-            onPostEdited: _onPostEdited,
+            onPostDeleted: onPostDeleted,
+            onPostEdited: onPostEdited,
           ),
-          ImagesViewWidget(
-            medias: post.medias ?? [],
-          ),
-          Text(
-            post.content ?? "",
-            maxLines: 4,
-            style: UITextStyle.text_body_14_w500,
-            overflow: TextOverflow.ellipsis,
-          ),
+          PostBody(post: post),
           SizedBox(
             height: 13.h,
           ),
@@ -64,12 +60,8 @@ class PostItem extends StatelessWidget {
       countLike.value--;
     }
     isLiked.value = !isLiked.value;
-    onLikeClick(post.id!);
+    onLikeClick(post.id);
   }
-
-  void _onPostDeleted(Post value) {}
-
-  void _onPostEdited(Post value) {}
 
   Widget _buildPostActions() {
     return Row(
@@ -98,18 +90,16 @@ class PostItem extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 45.w,
+          width: 30.w,
         ),
         SizedBox(
           width: 60.w,
           child: Row(
             children: [
               InkWell(
-                onTap: () => onCommentClick?.call(post.id!),
-                child: const MWIcon(
+                onTap: () => onCommentClick?.call(post.id),
+                child: MWIcon(
                   MWIcons.comment,
-                  size: MWIconSize.small,
-                  color: UIColor.text_header,
                 ),
               ),
               SizedBox(
