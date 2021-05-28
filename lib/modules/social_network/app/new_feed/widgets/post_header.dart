@@ -8,6 +8,7 @@ import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:timeago/timeago.dart' as time_ago;
+
 import './post/post_actions_popup.dart';
 
 class PostHeader extends StatelessWidget {
@@ -57,9 +58,7 @@ class PostHeader extends StatelessWidget {
     if (pets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(
-          text: " ${LocaleKeys.new_feed_with.trans()} ",
-          style: UITextStyle.heading_16_reg),
+      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < pets.length; i++) {
       inLineSpan.add(

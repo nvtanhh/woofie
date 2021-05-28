@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/images_view_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PostBody extends StatelessWidget {
   final Post post;

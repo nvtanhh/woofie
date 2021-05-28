@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/services/bottom_sheet_service.dart';
+import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
-import 'package:meowoof/core/services/bottom_sheet_service.dart';
-import 'package:meowoof/injector.dart';
-import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable

@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_header.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:meowoof/theme/icon.dart';
-import 'package:meowoof/theme/ui_color.dart';
+import 'package:meowoof/theme/ui_text_style.dart';
+
 import 'post_body.dart';
 
 class PostItem extends StatelessWidget {

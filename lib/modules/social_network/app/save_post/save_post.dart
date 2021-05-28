@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/media_button.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
@@ -13,10 +16,6 @@ import 'package:meowoof/theme/icon.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/core/extensions/string_ext.dart';
-
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'save_post_model.dart';
 import 'widgets/post_type_choose.dart';
@@ -41,9 +40,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
   void initState() {
     super.initState();
     try {
-      _user = widget.post != null
-          ? widget.post!.creator
-          : injector<LoggedInUser>().loggedInUser;
+      _user = widget.post != null ? widget.post!.creator : injector<LoggedInUser>().loggedInUser;
     } catch (error) {
       _user = User(
         id: 7,
@@ -51,19 +48,12 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         avatarUrl:
             'https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/162354720_1147808662336518_1297648803267744126_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=P68qZDEZZXIAX826eFN&_nc_ht=scontent.fhan2-3.fna&oh=e10ef4fe2b17089b3f9071aa6d611366&oe=60CEC5D6',
         pets: [
-          Pet(
-              name: "Vàng",
-              avatar:
-                  'https://p0.pikist.com/photos/657/191/cat-animal-eyes-kitten-head-cute-nature-predator-look-feline.jpg'),
-          Pet(
-              name: "Đỏ",
-              avatar:
-                  'https://p0.pikist.com/photos/389/595/animal-cat-cute-domestic-eyes-face-feline-fur-head.jpg'),
+          Pet(name: "Vàng", avatar: 'https://p0.pikist.com/photos/657/191/cat-animal-eyes-kitten-head-cute-nature-predator-look-feline.jpg'),
+          Pet(name: "Đỏ", avatar: 'https://p0.pikist.com/photos/389/595/animal-cat-cute-domestic-eyes-face-feline-fur-head.jpg'),
         ],
       );
     }
-    _postType.value =
-        widget.post != null ? widget.post!.type : PostType.activity;
+    _postType.value = widget.post != null ? widget.post!.type : PostType.activity;
 
     _contentController.addListener(_onTextChanged);
     _files.stream.listen(_onFilesChanged);
@@ -113,8 +103,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(
-              bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
           child: _mediaWrapper(),
         ),
       ],
@@ -140,8 +129,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                                 key: ObjectKey(file),
                                 mediaFile: file,
                                 onRemove: () => _onRemoveMedia(file),
-                                onImageEdited: (editedFile) =>
-                                    _onImageEdited(file, editedFile),
+                                onImageEdited: (editedFile) => _onImageEdited(file, editedFile),
                               ))
                           .toList(),
                     ),
@@ -177,9 +165,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 onPressed: () {},
                 isDisabled: _isDisable.value,
                 borderRadius: BorderRadius.circular(5.r),
-                textStyle: UITextStyle.heading_16_medium.apply(
-                    color:
-                        _isDisable.value ? UIColor.text_body : UIColor.white),
+                textStyle: UITextStyle.heading_16_medium.apply(color: _isDisable.value ? UIColor.text_body : UIColor.white),
                 child: Text(
                   widget.post == null ? 'Post' : 'Update',
                 ),
@@ -242,15 +228,12 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
     if (_taggedPets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(
-          text: " ${LocaleKeys.new_feed_with.trans()} ",
-          style: UITextStyle.heading_16_reg),
+      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < _taggedPets.length; i++) {
       inLineSpan.add(
         TextSpan(
-          text:
-              "${_taggedPets[i].name}${i != _taggedPets.length - 1 ? ", " : " "}",
+          text: "${_taggedPets[i].name}${i != _taggedPets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
         ),
       );
@@ -279,8 +262,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
   }
 
   void _onFilesChanged(List<MediaFile>? event) {
-    if ((event != null && event.isNotEmpty) ||
-        _contentController.text.isNotEmpty) {
+    if ((event != null && event.isNotEmpty) || _contentController.text.isNotEmpty) {
       _isDisable.value = false;
     } else {
       _isDisable.value = true;
