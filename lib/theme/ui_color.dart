@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class UIColor {
-  UIColor._();
   static const Color white = Color(0xFFFFFFFF);
   static const Color primary = Color(0xFF6772F1);
   static const Color text_secondary = Color(0xFFC8C8C8);
+  static const Color disable_bg = Color(0xFFD7D7D7);
   static const Color accent = Color(0xFFF38847);
   static const Color accent2 = Color(0xFF1AAB4B);
   static const Color waring_color = Color(0xFFFFD54F);

@@ -61,6 +61,7 @@ class SearchWidgetModel extends BaseViewModel {
       petPagingController.appendLastPage(pets);
     }
   }
+
   Future searchServices(String keyWord) async {
     printInfo(info: "searchServices");
     servicePagingController.itemList?.clear();
@@ -101,7 +102,6 @@ class SearchWidgetModel extends BaseViewModel {
     } else if (services.isEmpty && tabController.index == 1) {
       searchServices(keyWord ?? "");
     }
-
   }
 
   void onTab(int index) {

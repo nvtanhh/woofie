@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
-import 'package:meowoof/core/services/bottom_sheet.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
-import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
-import 'package:meowoof/theme/icon.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:timeago/timeago.dart' as time_ago;
 

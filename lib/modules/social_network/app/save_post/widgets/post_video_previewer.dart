@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/media_service.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
-import 'package:meowoof/theme/icon.dart';
 
 class PostVideoPreviewer extends StatelessWidget {
   final File? postVideoFile;

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
 
 class UITextStyle {
-
   static TextStyle heading_18_semiBold = GoogleFonts.montserrat(
     textStyle: TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w600),
   );
@@ -43,7 +41,6 @@ class UITextStyle {
 
   static TextStyle text_header_18_w700 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_18_w600 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
-  static TextStyle text_header_18_w700 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_14_w600 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w600);
   static TextStyle text_header_14_w700 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_16_w600 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w600);

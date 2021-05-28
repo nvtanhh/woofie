@@ -103,6 +103,34 @@ dependencies:
   # A package provides lazily load and display small chunks of items as the user scrolls down the screen
   infinite_scroll_pagination: ^3.0.1
 
+  # A package that allows you to use the native file explorer to pick single or multiple files, with extensions filtering support.
+  file_picker: ^3.0.0
+
+  # Package for working with MIME type definitions and for processing streams of MIME multipart media types
+  mime: ^1.0.0
+
+  # This plugin generates thumbnail from video file or URL
+  video_thumbnail: ^0.3.3
+
+  # A comprehensive, cross-platform path manipulation library for Dart.
+  path: ^1.8.0
+
+  # Simple, fast generation of RFC4122 UUIDs.
+  uuid: ^3.0.4
+
+  # Flutter plugin for getting commonly used locations on host platform file systems, such as the temp and app data directories.
+  path_provider: ^2.0.1
+
+  # A simple zoomable image/content widget for Flutter.
+  photo_view: ^0.11.1
+
+  # Plugin that allows you to keep the device screen awake, i.e. prevent the screen from sleeping
+  wakelock: ^0.5.2
+
+  # A Flutter plugin for Android and iOS supports cropping images.
+  image_cropper: ^1.4.0
+  # A package provides calculate a person's age and the time remaining to their next birthday in years, months and days.
+  age_calculator: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
