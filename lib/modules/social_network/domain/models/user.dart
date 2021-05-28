@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/medias.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 
 part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User {
   @JsonKey(name: "id")
-  int? id;
+  int id;
   @JsonKey(name: "uid")
   String? uid;
   @JsonKey(name: "name")
@@ -25,7 +25,7 @@ class User {
   @JsonKey(name: "avatar_url")
   String? avatarUrl;
   User({
-    this.id,
+    required this.id,
     this.uid,
     this.name,
     this.phoneNumber,

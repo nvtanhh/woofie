@@ -54,7 +54,7 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
     }
     await controller.forward();
 
-    await _dismissToastAfterDelay(duration ?? const Duration(seconds: 3));
+    await _dismissToastAfterDelay(duration ?? const Duration(seconds: 1));
   }
 
   Future _dismissToastAfterDelay(Duration duration) async {
