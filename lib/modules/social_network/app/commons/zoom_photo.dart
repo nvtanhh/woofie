@@ -4,7 +4,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:meowoof/theme/icon.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ZoomablePhoto extends StatefulWidget {

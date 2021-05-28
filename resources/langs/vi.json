@@ -48,5 +48,23 @@
     "no_comments_yet": "Chưa có bình luận nào",
     "edit_post": "Chỉnh sửa bài viết",
     "delete_post": "Xoá bài viết"
+  },
+  "explore": {
+    "search": "Tìm kiếm",
+    "more": "Thêm",
+    "adoption": "Nhận nuôi thú cưng",
+    "matting": "Kiếm mối",
+    "lost_pet": "Thú cưng thất lạc",
+    "service_pet": "Dịch vụ thú cưng",
+    "gender": "Giới tính",
+    "age": "Tuổi",
+    "breed": "Giống",
+    "detail": "Chi tiết",
+    "contact": "Liên hệ",
+    "owner_pet": "Chủ thú cưng",
+    "pet": "Thú cưng",
+    "post": "Bài viết",
+    "service": "Dịch vụ",
+    "follow": "Theo dõi"
   }
 }

@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
 
 class UITextStyle {
-  UITextStyle._();
-
   static TextStyle heading_18_semiBold = GoogleFonts.montserrat(
     textStyle: TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w600),
   );
@@ -45,13 +42,16 @@ class UITextStyle {
   static TextStyle text_header_18_w700 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_18_w600 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
   static TextStyle text_header_14_w600 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle text_header_14_w700 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_16_w600 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle text_header_16_w700 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_16_w400 = TextStyle(color: UIColor.text_header, fontSize: 16.0.sp, fontWeight: FontWeight.w400);
   static TextStyle text_header_14_w400 = TextStyle(color: UIColor.text_header, fontSize: 14.0.sp, fontWeight: FontWeight.w400);
   static TextStyle text_header_24_w700 = TextStyle(color: UIColor.text_header, fontSize: 24.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_24_w600 = TextStyle(color: UIColor.text_header, fontSize: 24.0.sp, fontWeight: FontWeight.w600);
   static TextStyle text_body_12_w600 = TextStyle(color: UIColor.text_body, fontSize: 12.0.sp, fontWeight: FontWeight.w600);
   static TextStyle text_body_10_w600 = TextStyle(color: UIColor.text_body, fontSize: 10.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle text_body_10_w500 = TextStyle(color: UIColor.text_body, fontSize: 10.0.sp, fontWeight: FontWeight.w500);
   static TextStyle text_body_14_w600 = TextStyle(color: UIColor.text_body, fontSize: 14.0.sp, fontWeight: FontWeight.w600);
   static TextStyle text_body_14_w400 = TextStyle(color: UIColor.text_body, fontSize: 14.0.sp, fontWeight: FontWeight.w400);
   static TextStyle text_body_14_w500 = TextStyle(color: UIColor.text_body, fontSize: 14.0.sp, fontWeight: FontWeight.w500);
@@ -71,4 +71,9 @@ class UITextStyle {
   static TextStyle accent2_18_w500 = TextStyle(color: UIColor.accent2, fontSize: 18.0.sp, fontWeight: FontWeight.w500);
   static TextStyle text_body_18_w500 = TextStyle(color: UIColor.text_body, fontSize: 18.0.sp, fontWeight: FontWeight.w500);
   static TextStyle black_14_w600 = TextStyle(color: UIColor.black, fontSize: 14.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle allports_18_w600 = TextStyle(color: UIColor.allports, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle charm_18_w600 = TextStyle(color: UIColor.charm, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle persian_red_18_w600 = TextStyle(color: UIColor.persian_red, fontSize: 18.0.sp, fontWeight: FontWeight.w600);
+  static TextStyle dodger_blue_10_w500 = TextStyle(color: UIColor.dodger_blue, fontSize: 10.0.sp, fontWeight: FontWeight.w500);
+  static TextStyle text_header_16_w6002 = GoogleFonts.montserrat(textStyle: text_header_16_w600);
 }

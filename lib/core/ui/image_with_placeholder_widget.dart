@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
+import 'package:meowoof/theme/ui_color.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ImageWithPlaceHolderWidget extends StatelessWidget {
   final double? width;
@@ -45,6 +47,25 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           errorBuilder: (context, url, error) {
             printError(info: error.toString());
             return itemPlaceholder();
+          },
+          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Shimmer.fromColors(
+              baseColor: UIColor.white,
+              highlightColor: UIColor.silver_sand,
+              child: Container(
+                width: width ?? 180.0.w,
+                height: height ?? 180.0.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10.r),
+                    topLeft: Radius.circular(10.r),
+                  ),
+                  color: UIColor.white,
+                ),
+                margin: EdgeInsets.only(right: 10.w),
+              ),
+            );
           },
           fit: fit ?? BoxFit.fill,
         ),

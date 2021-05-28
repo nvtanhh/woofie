@@ -4,11 +4,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/services/media_service.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/post_media_previewer.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
-import 'package:meowoof/theme/icon.dart';
 
 class MediaButton extends StatelessWidget {
   final Media? postMedia;

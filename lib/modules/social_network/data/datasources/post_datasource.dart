@@ -15,6 +15,7 @@ class PostDatasource {
   PostDatasource(this._hasuraConnect);
 
   Future<List<Post>> getPosts() async {
+    await Future.delayed(const Duration(seconds: 2));
     final Post post = Post(
       id: 1,
       type: PostType.activity,
@@ -28,8 +29,8 @@ class PostDatasource {
           avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
       isLiked: false,
       pets: [
-        Pet(name: "Vàng"),
-        Pet(name: "Đỏ"),
+        Pet(name: "Vàng", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
+        Pet(name: "Đỏ", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
       ],
     );
     post.medias = <Media>[

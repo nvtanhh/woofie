@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/ui/alerts/alert.dart';
-import 'package:meowoof/theme/button.dart';
-import 'package:meowoof/theme/icon.dart';
+import 'package:meowoof/core/ui/button.dart';
+import 'package:meowoof/core/ui/icon.dart';
 
 class MWButtonAlert extends StatelessWidget {
   final VoidCallback onPressed;

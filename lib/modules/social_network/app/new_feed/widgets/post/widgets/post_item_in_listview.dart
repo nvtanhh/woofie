@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/images_view_widget.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/info_user_post_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/info_user_post_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
