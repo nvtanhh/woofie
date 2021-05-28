@@ -10,13 +10,13 @@ part 'comment.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Comment {
   @JsonKey(name: "id")
-  int? id;
+  int id;
   @JsonKey(name: "content")
-  String? content;
+  String content;
   @JsonKey(name: "post_id")
-  int? postId;
+  int postId;
   @JsonKey(name: "creator_id")
-  int? creatorId;
+  int creatorId;
   @JsonKey(name: "is_liked")
   bool? isLiked;
   @JsonKey(name: "user")
@@ -29,10 +29,10 @@ class Comment {
   DateTime? createdAt;
 
   Comment({
-    this.id,
-    this.content,
-    this.postId,
-    this.creatorId,
+    required this.id,
+    required this.content,
+    required this.postId,
+    required this.creatorId,
     this.isLiked,
     this.creator,
     this.commentReactsAggregate,

@@ -97,7 +97,7 @@ class CommentWidget extends StatelessWidget {
 
   void onLikeClick() {
     isLiked.value = !isLiked.value;
-    onLikeCommentClick(comment.id!);
+    onLikeCommentClick(comment.id);
   }
 
   List<InlineSpan> createTagUser() {

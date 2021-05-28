@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meowoof/core/ui/toast.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/splash/app/ui/splash_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,25 +40,30 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      builder: () => GetMaterialApp(
-        title: 'MeoWoof',
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        theme: ThemeData(
-          textTheme: GoogleFonts.montserratTextTheme(),
-          appBarTheme: AppBarTheme(
+      builder: () => MFToast(
+        child: GetMaterialApp(
+          title: 'MeoWoof',
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          theme: ThemeData(
             textTheme: GoogleFonts.montserratTextTheme(),
-            backgroundColor: UIColor.white,
-            elevation: 0,
+            appBarTheme: AppBarTheme(
+              textTheme: GoogleFonts.montserratTextTheme(),
+              backgroundColor: UIColor.white,
+              elevation: 0,
+              iconTheme: const IconThemeData(
+                color: UIColor.text_header,
+              ),
+            ),
+            scaffoldBackgroundColor: UIColor.white,
           ),
-          scaffoldBackgroundColor: UIColor.white,
+          builder: (BuildContext context, Widget? child) {
+            return FlutterEasyLoading(child: child);
+          },
+          home: SplashWidget(),
+          color: UIColor.white,
         ),
-        builder: (BuildContext context, Widget? child) {
-          return FlutterEasyLoading(child: child);
-        },
-        home: SplashWidget(),
-        color: UIColor.white,
       ),
     );
   }

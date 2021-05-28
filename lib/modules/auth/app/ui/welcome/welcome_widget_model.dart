@@ -59,7 +59,7 @@ class WelcomeWidgetModel extends BaseViewModel {
       await Future.delayed(const Duration(seconds: 2));
       final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
       if (haUser != null) {
-        status = await _checkUserHavePetUsecase.call(haUser.id!);
+        status = await _checkUserHavePetUsecase.call(haUser.id);
         _userStorage.set(haUser);
       } else {
         return;

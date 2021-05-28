@@ -38,7 +38,7 @@ class PostItemInListView extends StatelessWidget {
             InfoUserPostWidget(
               pets: post.pets!,
               postCreatedAt: post.createdAt!,
-              user: post.creator!,
+              user: post.creator,
             ),
             ImagesViewWidget(
               medias: post.medias ?? [],
@@ -86,7 +86,7 @@ class PostItemInListView extends StatelessWidget {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: () => onCommentClick?.call(post.id!),
+                        onTap: () => onCommentClick?.call(post.id),
                         child: Icon(
                           Icons.comment_outlined,
                           size: 24.w,
@@ -117,6 +117,6 @@ class PostItemInListView extends StatelessWidget {
       countLike.value--;
     }
     isLiked.value = !isLiked.value;
-    onLikeClick(post.id!);
+    onLikeClick(post.id);
   }
 }

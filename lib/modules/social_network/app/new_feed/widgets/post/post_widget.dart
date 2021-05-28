@@ -16,19 +16,19 @@ import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
-class PostWidget extends StatefulWidget {
+class PostDetail extends StatefulWidget {
   final Post post;
 
-  const PostWidget({
+  const PostDetail({
     Key? key,
     required this.post,
   }) : super(key: key);
 
   @override
-  _PostWidgetState createState() => _PostWidgetState();
+  _PostDetailState createState() => _PostDetailState();
 }
 
-class _PostWidgetState extends BaseViewState<PostWidget, PostWidgetModel> {
+class _PostDetailState extends BaseViewState<PostDetail, PostWidgetModel> {
   @override
   void loadArguments() {
     viewModel.post = widget.post;

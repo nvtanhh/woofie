@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_widget.dart';
+import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
-import 'package:meowoof/core/services/bottom_sheet.dart';
+import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -64,11 +61,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   void onPostClick(Post post) {
-    Get.to(
-      () => PostWidget(
-        post: post,
-      ),
-    );
+    injector<NavigationService>().navigateToPostDetail(post);
   }
 
   void getPosts() {
@@ -82,5 +75,17 @@ class NewFeedWidgetModel extends BaseViewModel {
     pagingController.removeListener(() {});
     pagingController.dispose();
     super.disposeState();
+  }
+
+  void onPostEdited(Post post) {
+    injector<ToastService>().success(message: 'Post edited', context: Get.context!);
+  }
+
+  void onPostDeleted(Post post) {
+    injector<ToastService>().success(message: 'Post delted!', context: Get.context!);
+  }
+
+  Future onWantsCreateNewPost() async {
+    await injector<NavigationService>().navigateToSavePost();
   }
 }

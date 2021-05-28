@@ -11,9 +11,12 @@ import 'package:meowoof/configs/app_config.dart';
 import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/interceptors/jwt_interceptor.dart';
 import 'package:meowoof/core/logged_user.dart';
-import 'package:meowoof/core/services/bottom_sheet.dart';
-import 'package:meowoof/core/services/permissions.dart';
+import 'package:meowoof/core/services/bottom_sheet_service.dart';
+import 'package:meowoof/core/services/dialog_service.dart';
+import 'package:meowoof/core/services/media_service.dart';
+import 'package:meowoof/core/services/permissions_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -64,12 +67,20 @@ abstract class RegisterModule {
   ToastService getToastService() => ToastService();
 
   @lazySingleton
-  PermissionsService getPermissionsService() => PermissionsService(getToastService());
+  PermissionsService getPermissionsService() => PermissionsService();
 
-  @lazySingleton
   @singleton
-  LoggedUser getLoggedUser() => LoggedUser();
+  LoggedInUser getLoggedUser() => LoggedInUser();
 
   @lazySingleton
   BottomSheetService getBottomSheetService() => BottomSheetService();
+
+  @lazySingleton
+  NavigationService getNavigationService() => NavigationService();
+
+  @lazySingleton
+  MediaService getMediaService() => MediaService();
+
+  @lazySingleton
+  DialogService getDialogService() => DialogService();
 }

@@ -56,6 +56,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                   onCommentClick: viewModel.onCommentClick,
                   onLikeClick: viewModel.onLikeClick,
                   onPostClick: viewModel.onPostClick,
+                  onPostDeleted: viewModel.onPostDeleted,
+                  onPostEdited: viewModel.onPostEdited,
                 ),
               ),
             ),
@@ -87,7 +89,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
               child: SizedBox(),
             ),
             InkWell(
-              onTap: () {},
+              onTap: viewModel.onWantsCreateNewPost,
               child: MWIcon(MWIcons.add),
             ),
             SizedBox(
