@@ -66,5 +66,17 @@
     "post": "Post",
     "service": "Service",
     "follow": "Follow"
+  },
+  "profile": {
+    "edit_profile": "Edit profile",
+    "pet": "Pets",
+    "post": "Posts",
+    "follow": "Follow",
+    "information":"Information",
+    "medical_record": "Medical record",
+    "weight": "Weight",
+    "worm_flush": "Worm flushed",
+    "vaccinated": "Vaccinated",
+    "add_pet": "Add pet"
   }
 }

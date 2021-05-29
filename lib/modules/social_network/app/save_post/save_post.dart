@@ -40,7 +40,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
   void initState() {
     super.initState();
     try {
-      _user = widget.post != null ? widget.post!.creator : injector<LoggedInUser>().loggedInUser;
+      _user = widget.post != null ? widget.post!.creator : injector<LoggedInUser>().loggedInUser ?? User(id: 1);
     } catch (error) {
       _user = User(
         id: 7,
@@ -54,7 +54,6 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
       );
     }
     _postType.value = widget.post != null ? widget.post!.type : PostType.activity;
-
     _contentController.addListener(_onTextChanged);
     _files.stream.listen(_onFilesChanged);
     _taggedPets.addAll(_user.pets ?? []);

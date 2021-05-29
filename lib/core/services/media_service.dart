@@ -5,12 +5,14 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/file_helper.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+@lazySingleton
 class MediaService {
   String defaultThumbnailCacheUrl = '/thumbnailCache';
 

@@ -14,9 +14,9 @@ import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/media_service.dart';
+import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/permissions_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
-import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,28 +59,7 @@ abstract class RegisterModule {
     return HasuraConnect(BackendConfig.BASE_HASURA_URL, interceptors: [interceptor]);
   }
 
-  @lazySingleton
+  @singleton
   @Named('current_user_storage')
   UserStorage getCurrentUserStorage(SharedPreferences prefs) => UserStorage(prefs, 'current_user');
-
-  @singleton
-  ToastService getToastService() => ToastService();
-
-  @lazySingleton
-  PermissionsService getPermissionsService() => PermissionsService();
-
-  @singleton
-  LoggedInUser getLoggedUser() => LoggedInUser();
-
-  @lazySingleton
-  BottomSheetService getBottomSheetService() => BottomSheetService();
-
-  @lazySingleton
-  NavigationService getNavigationService() => NavigationService();
-
-  @lazySingleton
-  MediaService getMediaService() => MediaService();
-
-  @lazySingleton
-  DialogService getDialogService() => DialogService();
 }

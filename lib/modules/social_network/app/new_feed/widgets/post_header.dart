@@ -25,7 +25,7 @@ class PostHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User user = post.creator!;
+    final User user = post.creator;
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 0),

@@ -14,6 +14,8 @@ class User {
   String? uid;
   @JsonKey(name: "name")
   String? name;
+  @JsonKey(name: "bio")
+  String? bio;
   @JsonKey(name: "phone_number")
   String? phoneNumber;
   @JsonKey(name: "email")

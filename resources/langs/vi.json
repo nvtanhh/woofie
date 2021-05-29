@@ -66,5 +66,17 @@
     "post": "Bài viết",
     "service": "Dịch vụ",
     "follow": "Theo dõi"
+  },
+  "profile": {
+    "edit_profile": "Chỉnh sửa trang cá nhân",
+    "pet": "Thú cưng",
+    "post": "Bài viết",
+    "follow": "Theo dõi",
+    "information":"Thông tin",
+    "medical_record": "Hồ sơ sức khỏe",
+    "weight": "Cân nặng",
+    "worm_flush": "Xổ giun",
+    "vaccinated": "Tiêm ngừa",
+    "add_pet": "Thêm thú cưng"
   }
 }

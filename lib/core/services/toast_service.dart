@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/ui/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:meowoof/theme/ui_color.dart';
 
 enum ToastType { info, warning, success, error }
 
+@lazySingleton
 class ToastService {
   static const Duration toastDuration = Duration(seconds: 1);
   static Color colorError = UIColor.accent;
