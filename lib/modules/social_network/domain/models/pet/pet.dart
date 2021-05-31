@@ -14,6 +14,8 @@ class Pet {
   int? id;
   @JsonKey(name: "name")
   String? name;
+  @JsonKey(name: "bio")
+  String? bio;
   @JsonKey(name: "id_pet_type")
   int? petTypeId;
   @JsonKey(name: "gender")
@@ -32,6 +34,8 @@ class Pet {
   int? petBreedId;
   @JsonKey(name: "pet_breed")
   PetBreed? petBreed;
+  @JsonKey(name: "is_following")
+  bool? isFollowing;
 
   Pet({
     this.id,
@@ -45,6 +49,8 @@ class Pet {
     this.petType,
     this.petBreed,
     this.petBreedId,
+    this.bio,
+    this.isFollowing,
   });
 
   factory Pet.fromJson(Map<String, dynamic> json) => _$PetFromJson(json);

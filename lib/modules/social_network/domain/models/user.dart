@@ -35,6 +35,7 @@ class User {
     this.pets,
     this.avatar,
     this.avatarUrl,
+    this.bio,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
