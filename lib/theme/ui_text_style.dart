@@ -44,6 +44,9 @@ class UITextStyle {
   static TextStyle body_10_reg = GoogleFonts.montserrat(
     textStyle: TextStyle(color: UIColor.text_body, fontSize: 10.0.sp, fontWeight: FontWeight.w400),
   );
+  static TextStyle body_10_medium = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_body, fontSize: 10.0.sp, fontWeight: FontWeight.w500),
+  );
 
   static TextStyle text_header_18_w700 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w700);
   static TextStyle text_header_18_w600 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w600);

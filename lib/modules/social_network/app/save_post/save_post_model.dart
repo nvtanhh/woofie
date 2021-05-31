@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
+import 'package:meowoof/core/services/dialog_service.dart';
+import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
@@ -20,6 +23,9 @@ class SavePostModel extends BaseViewModel {
   final RxBool _isDisable = true.obs;
   final RxList<Pet> _taggedPets = <Pet>[].obs;
   Post? post;
+  RxString currentAdress = ''.obs;
+  Placemark? currentPlacemark;
+  RxBool isLoadingAddress = false.obs;
 
   @override
   void initState() {
@@ -54,8 +60,18 @@ class SavePostModel extends BaseViewModel {
     // _taggedPets.addAll(_user.pets ?? []);
   }
 
-  Future<void> onPostTypeChosen(PostType chosenType) async {
+  Future onPostTypeChosen(PostType chosenType) async {
     _postType.value = chosenType;
+    // ignore: unrelated_type_equality_checks
+    if (_postType != PostType.activity && currentPlacemark == null) {
+      bool isResetDisable = false;
+      if (!_isDisable.value) {
+        _isDisable.value = true;
+        isResetDisable = true;
+      }
+      await _getCurrentAddress();
+      if (isResetDisable) _isDisable.value = false;
+    }
   }
 
   Future onMediasPicked(List<MediaFile> pickedFiles) async {
@@ -133,5 +149,35 @@ class SavePostModel extends BaseViewModel {
     } else {
       _taggedPets.add(pet);
     }
+  }
+
+  Future _getCurrentAddress() async {
+    final LocationService locationService = injector<LocationService>();
+    if (await locationService.isPermissionDenied()) {
+      await _showDialogAlert();
+    }
+
+    try {
+      isLoadingAddress.value = true;
+      currentPlacemark = await locationService.getCurrentPlacemark();
+      final String address = (currentPlacemark!.street!.isNotEmpty
+              ? '${currentPlacemark!.street!}, '
+              : '') +
+          (currentPlacemark!.locality!.isNotEmpty
+              ? '${currentPlacemark!.locality!}, '
+              : '') +
+          (currentPlacemark!.subAdministrativeArea!.isNotEmpty
+              ? '${currentPlacemark!.subAdministrativeArea!}, '
+              : '');
+      currentAdress.value = address.trim().substring(0, address.length - 2);
+    } catch (error) {
+      currentAdress.value = error.toString();
+    } finally {
+      isLoadingAddress.value = false;
+    }
+  }
+
+  Future _showDialogAlert() async {
+    await injector<DialogService>().showPermisstionDialog();
   }
 }

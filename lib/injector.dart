@@ -13,6 +13,7 @@ import 'package:meowoof/core/interceptors/jwt_interceptor.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
+import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/core/services/permissions_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
@@ -83,4 +84,7 @@ abstract class RegisterModule {
 
   @lazySingleton
   DialogService getDialogService() => DialogService();
+
+  @lazySingleton
+  LocationService getLocationService() => LocationService();
 }

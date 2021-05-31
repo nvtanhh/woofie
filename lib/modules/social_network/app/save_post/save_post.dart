@@ -15,6 +15,7 @@ import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
 import 'save_post_model.dart';
+import 'widgets/jumping_widget.dart';
 import 'widgets/post_type_choose.dart';
 
 class CreatePost extends StatefulWidget {
@@ -200,16 +201,20 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10.h),
-                  child: Row(
-                    children: [
-                      Obx(
-                        () => PostTypeChoseWidget(
+                  padding: EdgeInsets.only(top: 12.h),
+                  child: Obx(
+                    () => Row(
+                      children: [
+                        PostTypeChoseWidget(
                           onPostTypeChosen: viewModel.onPostTypeChosen,
                           chosenPostType: viewModel.postType,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: _buildLocater(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -239,5 +244,51 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
       );
     }
     return inLineSpan;
+  }
+
+  Widget _buildLocater() {
+    if (viewModel.postType == PostType.activity) return const SizedBox();
+
+    return viewModel.isLoadingAddress.value
+        ? _buildLoadingAddressWidget()
+        : viewModel.currentAdress.value.isNotEmpty
+            ? Row(children: [
+                const MWIcon(
+                  MWIcons.location,
+                  themeColor: MWIconThemeColor.primary,
+                  customSize: 20,
+                ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: Text(
+                    viewModel.currentAdress.value,
+                    style: UITextStyle.body_10_medium,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ])
+            : const SizedBox();
+  }
+
+  Widget _buildLoadingAddressWidget() {
+    return Row(children: [
+      const JumpingWidget(
+        child: MWIcon(
+          MWIcons.location,
+          themeColor: MWIconThemeColor.primary,
+          customSize: 20,
+        ),
+      ),
+      const SizedBox(width: 5),
+      Expanded(
+        child: Text(
+          'Loading your address...',
+          style: UITextStyle.body_10_medium,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    ]);
   }
 }

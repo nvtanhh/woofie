@@ -49,17 +49,14 @@ class Pet {
 
   factory Pet.fromJson(Map<String, dynamic> json) => _$PetFromJson(json);
 
-  factory Pet.fromJsonString(String jsonString) =>
-      Pet.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Pet.fromJsonString(String jsonString) => Pet.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PetToJson(this);
 
   String toJsonString() => json.encode(toJson());
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Pet && runtimeType == other.runtimeType && id == other.id;
+  bool operator ==(Object other) => identical(this, other) || other is Pet && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;

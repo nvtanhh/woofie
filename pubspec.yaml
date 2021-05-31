@@ -133,6 +133,12 @@ dependencies:
   #   Being able to compare objects in Dart often involves having to override the == operator as well as hashCode.
   equatable: ^2.0.2
 
+  # A Flutter geolocation plugin which provides easy access to platform specific location services
+  geolocator: ^7.0.3
+
+  # A Flutter Geocoding plugin which provides easy geocoding and reverse-geocoding features.
+  geocoding: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:

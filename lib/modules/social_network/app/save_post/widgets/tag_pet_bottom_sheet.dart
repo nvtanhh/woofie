@@ -42,8 +42,7 @@ class TagPetBottomSheetWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: userPets.length,
               itemBuilder: (context, index) => Obx(() {
-                final bool isSelected =
-                    taggedPets.toList().contains(userPets[index]);
+                final bool isSelected = taggedPets.toList().contains(userPets[index]);
                 return PetCardItem(
                   pet: userPets[index],
                   isSelected: isSelected,
