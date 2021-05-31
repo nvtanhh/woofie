@@ -1,4 +1,3 @@
-import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suga_core/suga_core.dart';

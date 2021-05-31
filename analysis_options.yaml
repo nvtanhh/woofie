@@ -13,7 +13,7 @@ analyzer:
   exclude:
     - '**/*.g.dart'
     - 'lib/injector.config.dart'
-    - 'lib/locale_keys.g.dart'
+#    - 'lib/locale_keys.g.dart'
     - 'lib/configs/app_config.dart'
     - 'lib/configs/backend_config.dart'
 #    - 'lib/theme/ui_color.dart'

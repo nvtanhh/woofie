@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meowoof/core/ui/toast.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/splash/app/ui/splash_widget.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 Future main() async {

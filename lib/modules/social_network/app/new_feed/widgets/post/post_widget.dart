@@ -70,7 +70,7 @@ class _PostDetailState extends BaseViewState<PostDetail, PostWidgetModel> {
                       );
                     }
                     return CommentWidget(
-                      comment: viewModel.pagingController.itemList![index - 1],
+                      comment: item,
                       onLikeCommentClick: viewModel.onLikeCommentClick,
                     );
                   },

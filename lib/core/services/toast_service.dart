@@ -1,7 +1,7 @@
-import 'package:injectable/injectable.dart';
-import 'package:meowoof/core/ui/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/ui/toast.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 enum ToastType { info, warning, success, error }

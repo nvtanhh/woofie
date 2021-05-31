@@ -39,4 +39,5 @@ class UIColor {
   static const Color pattens_blue2 = Color(0xFFD2E8F9);
   static const Color whisper = Color(0xFFE8E8E8);
   static const Color alice_blue3 = Color(0xFFF5FAFF);
+  static const Color dim_gray = Color(0x33737373);
 }

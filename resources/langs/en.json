@@ -72,11 +72,15 @@
     "pet": "Pets",
     "post": "Posts",
     "follow": "Follow",
+    "un_follow": "UnFollow",
     "information":"Information",
     "medical_record": "Medical record",
     "weight": "Weight",
     "worm_flush": "Worm flushed",
     "vaccinated": "Vaccinated",
-    "add_pet": "Add pet"
+    "add_pet": "Add pet",
+    "contact": "Contact",
+    "report": "Report",
+    "block": "Block"
   }
 }

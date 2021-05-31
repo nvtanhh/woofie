@@ -131,6 +131,8 @@ dependencies:
   image_cropper: ^1.4.0
   # A package provides calculate a person's age and the time remaining to their next birthday in years, months and days.
   age_calculator: ^1.0.0
+  # Contains utility classes in the style of dart:async to work with asynchronous computations.
+  async: ^2.6.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
