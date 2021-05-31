@@ -25,10 +25,10 @@ class PostHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User user = post.creator!;
+    final User user = post.creator;
 
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+      contentPadding: EdgeInsets.zero,
       leading: MWAvatar(
         avatarUrl: user.avatarUrl,
         borderRadius: 10.r,
@@ -58,7 +58,9 @@ class PostHeader extends StatelessWidget {
     if (pets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
+      TextSpan(
+          text: " ${LocaleKeys.new_feed_with.trans()} ",
+          style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < pets.length; i++) {
       inLineSpan.add(

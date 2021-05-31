@@ -19,22 +19,19 @@ class LocationService {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
     return Geolocator.getCurrentPosition();
   }
 
   Future<Placemark> getCurrentPlacemark() async {
     final Position currentPosition = await determinePosition();
-    final List<Placemark> placemarks = await placemarkFromCoordinates(
-        currentPosition.latitude, currentPosition.longitude);
+    final List<Placemark> placemarks = await placemarkFromCoordinates(currentPosition.latitude, currentPosition.longitude);
     return placemarks.first;
   }
 
   Future<bool> isPermissionDenied() async {
     final LocationPermission permission = await Geolocator.requestPermission();
-    return permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever;
+    return permission == LocationPermission.denied || permission == LocationPermission.deniedForever;
   }
 }

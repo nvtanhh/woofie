@@ -16,8 +16,7 @@ class JumpingWidget extends StatefulWidget {
   _JumpingWidgetState createState() => _JumpingWidgetState();
 }
 
-class _JumpingWidgetState extends State<JumpingWidget>
-    with TickerProviderStateMixin {
+class _JumpingWidgetState extends State<JumpingWidget> with TickerProviderStateMixin {
   late AnimationController _animationControllers;
   late Animation<double> _animate;
   int animationDuration = 200;
@@ -35,12 +34,9 @@ class _JumpingWidgetState extends State<JumpingWidget>
   }
 
   void _initAnimation() {
-    _animationControllers =
-        AnimationController(vsync: this, duration: widget.duration)
-          ..repeat(reverse: true);
+    _animationControllers = AnimationController(vsync: this, duration: widget.duration)..repeat(reverse: true);
 
-    _animate = Tween<double>(begin: 0, end: 0 - widget.jumpingHeight)
-        .animate(_animationControllers);
+    _animate = Tween<double>(begin: 0, end: 0 - widget.jumpingHeight).animate(_animationControllers);
   }
 
   @override
@@ -49,8 +45,7 @@ class _JumpingWidgetState extends State<JumpingWidget>
       child: AnimatedBuilder(
         animation: _animate,
         builder: (BuildContext context, Widget? child) {
-          return Transform.translate(
-              offset: Offset(0, _animate.value), child: child);
+          return Transform.translate(offset: Offset(0, _animate.value), child: child);
         },
         child: widget.child,
       ),

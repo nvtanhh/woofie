@@ -31,8 +31,7 @@ class SavePostModel extends BaseViewModel {
   void initState() {
     super.initState();
     try {
-      _user =
-          post != null ? post!.creator : injector<LoggedInUser>().loggedInUser;
+      _user = post != null ? post!.creator : injector<LoggedInUser>().loggedInUser;
     } catch (error) {
       _user = User(
         id: 7,
@@ -40,16 +39,8 @@ class SavePostModel extends BaseViewModel {
         avatarUrl:
             'https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/162354720_1147808662336518_1297648803267744126_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=P68qZDEZZXIAX826eFN&_nc_ht=scontent.fhan2-3.fna&oh=e10ef4fe2b17089b3f9071aa6d611366&oe=60CEC5D6',
         pets: [
-          Pet(
-              id: 1,
-              name: "Vàng",
-              avatar:
-                  'https://p0.pikist.com/photos/657/191/cat-animal-eyes-kitten-head-cute-nature-predator-look-feline.jpg'),
-          Pet(
-              id: 2,
-              name: "Đỏ",
-              avatar:
-                  'https://p0.pikist.com/photos/389/595/animal-cat-cute-domestic-eyes-face-feline-fur-head.jpg'),
+          Pet(id: 1, name: "Vàng", avatar: 'https://p0.pikist.com/photos/657/191/cat-animal-eyes-kitten-head-cute-nature-predator-look-feline.jpg'),
+          Pet(id: 2, name: "Đỏ", avatar: 'https://p0.pikist.com/photos/389/595/animal-cat-cute-domestic-eyes-face-feline-fur-head.jpg'),
         ],
       );
     }
@@ -91,8 +82,7 @@ class SavePostModel extends BaseViewModel {
   }
 
   void onFilesChanged(List<MediaFile>? event) {
-    if ((event != null && event.isNotEmpty) ||
-        contentController.text.isNotEmpty) {
+    if ((event != null && event.isNotEmpty) || contentController.text.isNotEmpty) {
       _isDisable.value = false;
     } else {
       _isDisable.value = true;
@@ -160,15 +150,9 @@ class SavePostModel extends BaseViewModel {
     try {
       isLoadingAddress.value = true;
       currentPlacemark = await locationService.getCurrentPlacemark();
-      final String address = (currentPlacemark!.street!.isNotEmpty
-              ? '${currentPlacemark!.street!}, '
-              : '') +
-          (currentPlacemark!.locality!.isNotEmpty
-              ? '${currentPlacemark!.locality!}, '
-              : '') +
-          (currentPlacemark!.subAdministrativeArea!.isNotEmpty
-              ? '${currentPlacemark!.subAdministrativeArea!}, '
-              : '');
+      final String address = (currentPlacemark!.street!.isNotEmpty ? '${currentPlacemark!.street!}, ' : '') +
+          (currentPlacemark!.locality!.isNotEmpty ? '${currentPlacemark!.locality!}, ' : '') +
+          (currentPlacemark!.subAdministrativeArea!.isNotEmpty ? '${currentPlacemark!.subAdministrativeArea!}, ' : '');
       currentAdress.value = address.trim().substring(0, address.length - 2);
     } catch (error) {
       currentAdress.value = error.toString();

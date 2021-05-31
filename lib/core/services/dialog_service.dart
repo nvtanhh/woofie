@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:meowoof/core/ui/button.dart';
 import 'package:meowoof/modules/social_network/app/commons/video_dialog.dart';
 import 'package:meowoof/modules/social_network/app/commons/zoom_photo.dart';
-import 'package:meowoof/theme/button.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
