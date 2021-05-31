@@ -21,6 +21,7 @@ class UIColor {
   static const Color black = Color(0xFF000000);
   static const Color eclipse = Color(0xFF3A3A3A);
   static const Color pink_swan27 = Color(0x40B7B7B7);
+  static const Color box_shadow_color = Color(0x40737373);
   static const Color adoption_color = Color(0xff127189);
   static const Color adoption_color_bg = Color(0xffEFF8FB);
   static const Color mating_color = Color(0xffE09BAD);

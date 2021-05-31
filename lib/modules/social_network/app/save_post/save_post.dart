@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -76,7 +77,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(
+              bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
           child: _mediaWrapper(),
         ),
       ],
@@ -102,7 +104,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                                 key: ObjectKey(file),
                                 mediaFile: file,
                                 onRemove: () => viewModel.onRemoveMedia(file),
-                                onImageEdited: (editedFile) => viewModel.onImageEdited(file, editedFile),
+                                onImageEdited: (editedFile) =>
+                                    viewModel.onImageEdited(file, editedFile),
                               ))
                           .toList(),
                     ),
@@ -138,7 +141,10 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 onPressed: () {},
                 isDisabled: viewModel.isDisable,
                 borderRadius: BorderRadius.circular(5.r),
-                textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.text_body : UIColor.white),
+                textStyle: UITextStyle.heading_16_medium.apply(
+                    color: viewModel.isDisable
+                        ? UIColor.text_body
+                        : UIColor.white),
                 child: Text(
                   widget.post == null ? 'Post' : 'Update',
                 ),
@@ -166,14 +172,31 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(
-                  () => Text.rich(
-                    TextSpan(
-                      text: viewModel.user.name,
-                      children: _buildPetTags(),
-                      style: UITextStyle.heading_16_semiBold,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  () => Row(
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          text: viewModel.user.name,
+                          children: _buildPetTags(),
+                          style: UITextStyle.heading_16_semiBold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(width: 10),
+                      if (viewModel.taggedPets.isEmpty)
+                        GestureDetector(
+                          onTap: viewModel.onTagPet,
+                          child: Row(
+                            children: [
+                              MWIcon(MWIcons.petTag, customSize: 20),
+                              SizedBox(width: 5.w),
+                              Text('Tag your pet',
+                                  style: UITextStyle.second_14_medium),
+                            ],
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 Padding(
@@ -201,13 +224,17 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
     if (viewModel.taggedPets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
+      TextSpan(
+          text: " ${LocaleKeys.new_feed_with.trans()} ",
+          style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < viewModel.taggedPets.length; i++) {
       inLineSpan.add(
         TextSpan(
-          text: "${viewModel.taggedPets[i].name}${i != viewModel.taggedPets.length - 1 ? ", " : " "}",
+          text:
+              "${viewModel.taggedPets[i].name}${i != viewModel.taggedPets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
+          recognizer: TapGestureRecognizer()..onTap = viewModel.onTagPet,
         ),
       );
     }

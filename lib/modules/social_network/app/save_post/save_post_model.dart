@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
@@ -12,6 +13,7 @@ import 'package:suga_core/suga_core.dart';
 @injectable
 class SavePostModel extends BaseViewModel {
   final TextEditingController contentController = TextEditingController();
+
   late User _user;
   late final Rx<PostType> _postType = PostType.activity.obs;
   final RxList<MediaFile> _files = <MediaFile>[].obs;
@@ -21,8 +23,10 @@ class SavePostModel extends BaseViewModel {
 
   @override
   void initState() {
+    super.initState();
     try {
-      _user = post != null ? post!.creator : injector<LoggedInUser>().loggedInUser;
+      _user =
+          post != null ? post!.creator : injector<LoggedInUser>().loggedInUser;
     } catch (error) {
       _user = User(
         id: 7,
@@ -30,8 +34,16 @@ class SavePostModel extends BaseViewModel {
         avatarUrl:
             'https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/162354720_1147808662336518_1297648803267744126_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=P68qZDEZZXIAX826eFN&_nc_ht=scontent.fhan2-3.fna&oh=e10ef4fe2b17089b3f9071aa6d611366&oe=60CEC5D6',
         pets: [
-          Pet(name: "Vàng", avatar: 'https://p0.pikist.com/photos/657/191/cat-animal-eyes-kitten-head-cute-nature-predator-look-feline.jpg'),
-          Pet(name: "Đỏ", avatar: 'https://p0.pikist.com/photos/389/595/animal-cat-cute-domestic-eyes-face-feline-fur-head.jpg'),
+          Pet(
+              id: 1,
+              name: "Vàng",
+              avatar:
+                  'https://p0.pikist.com/photos/657/191/cat-animal-eyes-kitten-head-cute-nature-predator-look-feline.jpg'),
+          Pet(
+              id: 2,
+              name: "Đỏ",
+              avatar:
+                  'https://p0.pikist.com/photos/389/595/animal-cat-cute-domestic-eyes-face-feline-fur-head.jpg'),
         ],
       );
     }
@@ -39,8 +51,7 @@ class SavePostModel extends BaseViewModel {
 
     contentController.addListener(onTextChanged);
     _files.stream.listen(onFilesChanged);
-    taggedPets.addAll(_user.pets ?? []);
-    super.initState();
+    // _taggedPets.addAll(_user.pets ?? []);
   }
 
   Future<void> onPostTypeChosen(PostType chosenType) async {
@@ -64,7 +75,8 @@ class SavePostModel extends BaseViewModel {
   }
 
   void onFilesChanged(List<MediaFile>? event) {
-    if ((event != null && event.isNotEmpty) || contentController.text.isNotEmpty) {
+    if ((event != null && event.isNotEmpty) ||
+        contentController.text.isNotEmpty) {
       _isDisable.value = false;
     } else {
       _isDisable.value = true;
@@ -105,5 +117,21 @@ class SavePostModel extends BaseViewModel {
 
   set user(User value) {
     _user = value;
+  }
+
+  void onTagPet() {
+    injector<BottomSheetService>().showTagPetBottomSheet(
+      userPets: _user.pets ?? [],
+      taggedPets: _taggedPets,
+      onPetChosen: _onTaggedPetChosen,
+    );
+  }
+
+  void _onTaggedPetChosen(Pet pet) {
+    if (_taggedPets.contains(pet)) {
+      _taggedPets.remove(pet);
+    } else {
+      _taggedPets.add(pet);
+    }
   }
 }

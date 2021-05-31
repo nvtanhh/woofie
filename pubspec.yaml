@@ -130,6 +130,9 @@ dependencies:
   # A Flutter plugin for Android and iOS supports cropping images.
   image_cropper: ^1.4.0
 
+  #   Being able to compare objects in Dart often involves having to override the == operator as well as hashCode.
+  equatable: ^2.0.2
+
 
 dev_dependencies:
   flutter_test:
