@@ -22,42 +22,49 @@ class DetailInfoPetWidget extends StatelessWidget {
   Future _loadPetDetailInfo() async {
     try {
       pet = await _getDetailInfoPetUsecase.call(pet.id!);
-      _isLoaded.value =true;
+      _isLoaded.value = true;
     } catch (e) {
-      _isLoaded.value =false;
+      printError(info: e.toString());
+      _isLoaded.value = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CardDetailWidget(
-              title: LocaleKeys.explore_gender.trans(),
-              value: pet.gender?.toString() ?? "",
+    return Obx(
+      () => _isLoaded.value
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CardDetailWidget(
+                      title: LocaleKeys.explore_gender.trans(),
+                      value: pet.gender?.toString() ?? "",
+                    ),
+                    CardDetailWidget(
+                      title: LocaleKeys.explore_age.trans(),
+                      value: DateTimeHelper.calcAge(pet.dob),
+                    ),
+                    CardDetailWidget(
+                      title: LocaleKeys.explore_breed.trans(),
+                      value: pet.petBreed?.name ?? "",
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Text(
+                  LocaleKeys.profile_medical_record.trans(),
+                  style: UITextStyle.text_header_18_w600,
+                ),
+              ],
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
             ),
-            CardDetailWidget(
-              title: LocaleKeys.explore_age.trans(),
-              value: DateTimeHelper.calcAge(pet.dob),
-            ),
-            CardDetailWidget(
-              title: LocaleKeys.explore_breed.trans(),
-              value: pet.petBreed?.name ?? "",
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-        Text(
-          LocaleKeys.explore_age.trans(),
-          style: UITextStyle.text_header_18_w600,
-        ),
-      ],
     );
   }
 }

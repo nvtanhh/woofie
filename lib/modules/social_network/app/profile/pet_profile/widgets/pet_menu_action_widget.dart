@@ -3,40 +3,45 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
-class UserMenuActionWidget extends StatelessWidget {
-  final User user;
-  final ValueChanged<User> onUserReport;
-  final ValueChanged<User> onUserBlock;
+class PetMenuActionWidget extends StatelessWidget {
+  final Pet pet;
+  final ValueChanged<Pet> onPetReport;
+  final ValueChanged<Pet> onPetBlock;
 
-  const UserMenuActionWidget({Key? key, required this.user, required this.onUserReport, required this.onUserBlock}) : super(key: key);
+  const PetMenuActionWidget({
+    Key? key,
+    required this.pet,
+    required this.onPetReport,
+    required this.onPetBlock,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<UserMenuAction>(
+    return PopupMenuButton<PetMenuAction>(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
         ),
       ),
       padding: EdgeInsets.zero,
-      onSelected: (UserMenuAction action) {
+      onSelected: (PetMenuAction action) {
         switch (action) {
-          case UserMenuAction.report:
-            onUserBlock(user);
+          case PetMenuAction.report:
+            onPetBlock(pet);
             break;
-          case UserMenuAction.block:
-            onUserReport(user);
+          case PetMenuAction.block:
+            onPetReport(pet);
             break;
           default:
         }
       },
       itemBuilder: (BuildContext context) => [
-        PopupMenuItem<UserMenuAction>(
-          value: UserMenuAction.report,
+        PopupMenuItem<PetMenuAction>(
+          value: PetMenuAction.report,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -52,8 +57,8 @@ class UserMenuActionWidget extends StatelessWidget {
             ],
           ),
         ),
-        PopupMenuItem<UserMenuAction>(
-          value: UserMenuAction.block,
+        PopupMenuItem<PetMenuAction>(
+          value: PetMenuAction.block,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -86,4 +91,4 @@ class UserMenuActionWidget extends StatelessWidget {
   }
 }
 
-enum UserMenuAction { report, block }
+enum PetMenuAction { report, block }
