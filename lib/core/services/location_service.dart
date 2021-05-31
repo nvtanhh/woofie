@@ -1,6 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-
+import 'package:injectable/injectable.dart';
+@lazySingleton
 class LocationService {
   Future<Position> determinePosition() async {
     bool serviceEnabled;

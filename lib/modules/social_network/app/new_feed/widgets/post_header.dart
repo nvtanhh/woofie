@@ -58,9 +58,7 @@ class PostHeader extends StatelessWidget {
     if (pets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(
-          text: " ${LocaleKeys.new_feed_with.trans()} ",
-          style: UITextStyle.heading_16_reg),
+      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < pets.length; i++) {
       inLineSpan.add(

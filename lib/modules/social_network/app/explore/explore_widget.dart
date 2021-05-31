@@ -19,8 +19,7 @@ class ExploreWidget extends StatefulWidget {
   _ExploreWidgetState createState() => _ExploreWidgetState();
 }
 
-class _ExploreWidgetState
-    extends BaseViewState<ExploreWidget, ExploreWidgetModel> {
+class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

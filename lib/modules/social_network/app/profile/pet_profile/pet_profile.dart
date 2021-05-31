@@ -86,7 +86,7 @@ class _PetProfileState extends BaseViewState<PetProfile, PetProfileModel> with S
                   height: Get.height * 0.8,
                   child: TabBarView(
                     controller: viewModel.tabController,
-                    physics: const NeverScrollableScrollPhysics(),
+                    // physics: const NeverScrollableScrollPhysics(),
                     children: [
                       DetailInfoPetWidget(pet: viewModel.pet),
                       PostsOfPetWidget(idPet: viewModel.pet.id!),

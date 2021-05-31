@@ -53,8 +53,7 @@ class PostsOfPetWidget extends StatelessWidget {
               onPostDeleted: onPostDeleted,
             );
           },
-          firstPageProgressIndicatorBuilder: (_) => PostItemShimmer()
-      ),
+          firstPageProgressIndicatorBuilder: (_) => PostItemShimmer()),
     );
   }
 

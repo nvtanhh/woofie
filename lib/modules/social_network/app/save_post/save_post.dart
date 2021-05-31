@@ -159,7 +159,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MWAvatar(
-            avatarUrl: viewModel.user.avatarUrl,
+            avatarUrl: viewModel.user?.avatarUrl,
             borderRadius: 10.r,
           ),
           SizedBox(width: 15.w),
@@ -172,7 +172,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                     children: [
                       Text.rich(
                         TextSpan(
-                          text: viewModel.user.name,
+                          text: viewModel.user?.name ?? "",
                           children: _buildPetTags(),
                           style: UITextStyle.heading_16_semiBold,
                         ),
