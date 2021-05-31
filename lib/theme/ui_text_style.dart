@@ -29,6 +29,9 @@ class UITextStyle {
   static TextStyle second_12_medium = GoogleFonts.montserrat(
     textStyle: TextStyle(color: UIColor.text_secondary, fontSize: 12.0.sp, fontWeight: FontWeight.w500),
   );
+  static TextStyle second_14_medium = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_secondary, fontSize: 14.0.sp, fontWeight: FontWeight.w500),
+  );
   static TextStyle body_12_reg = GoogleFonts.montserrat(
     textStyle: TextStyle(color: UIColor.text_body, fontSize: 12.0.sp, fontWeight: FontWeight.w400),
   );
@@ -37,6 +40,9 @@ class UITextStyle {
   );
   static TextStyle body_10_reg = GoogleFonts.montserrat(
     textStyle: TextStyle(color: UIColor.text_body, fontSize: 10.0.sp, fontWeight: FontWeight.w400),
+  );
+  static TextStyle body_10_medium = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.text_body, fontSize: 10.0.sp, fontWeight: FontWeight.w500),
   );
 
   static TextStyle text_header_18_w700 = TextStyle(color: UIColor.text_header, fontSize: 18.0.sp, fontWeight: FontWeight.w700);

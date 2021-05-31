@@ -1,11 +1,15 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
+import 'package:get/get.dart';
+import 'package:meowoof/core/ui/button.dart';
 import 'package:meowoof/modules/social_network/app/commons/video_dialog.dart';
 import 'package:meowoof/modules/social_network/app/commons/zoom_photo.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:meowoof/theme/ui_text_style.dart';
 
 @lazySingleton
 class DialogService {
@@ -62,6 +66,33 @@ class DialogService {
         curve: Curves.easeOut,
       ),
       child: child,
+    );
+  }
+
+  Future showPermisstionDialog() async {
+    await Get.defaultDialog(
+      title: '',
+      content: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              'You need to provide your location if wanted to use this function',
+              style: UITextStyle.body_14_medium,
+            ),
+            const SizedBox(height: 20),
+            MWButton(
+              onPressed: () => Get.back(),
+              borderRadius: BorderRadius.circular(10),
+              child: const Text(
+                'OK',
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

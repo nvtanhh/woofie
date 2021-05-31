@@ -140,6 +140,7 @@ class MWIcons {
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);
   static final react = MWIconData(assetImageFile: Assets.resources.icons.icReact);
   static final comment = MWIconData(assetImageFile: Assets.resources.icons.icComment);
+  static final petTag = MWIconData(assetImageFile: Assets.resources.icons.icTagPet);
 }
 
 enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }
