@@ -1,16 +1,18 @@
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/profile/add_worm_flushed_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/profile/get_worm_flushes_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/add_vaccinated_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/get_vaccinates_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
-class WormFlushedWidgetModel extends BaseViewModel {
+class VaccinatedWidgetModel extends BaseViewModel {
   late int petId;
-  final RxList<PetWormFlushed> _wormFlushes = RxList<PetWormFlushed>();
-  final GetWormFlushesUsecase _getWormFlushesUsecase;
-  final AddWormFlushedUsecase _addWormFlushedUsecase;
+  final RxList<PetVaccinated> _vaccinates = RxList<PetVaccinated>();
+  final GetVaccinatesUsecase _getVaccinatesUsecase;
+  final AddVaccinatedUsecase _addVaccinatedUsecase;
+
+  VaccinatedWidgetModel(this._getVaccinatesUsecase, this._addVaccinatedUsecase);
 
   @override
   void initState() {
@@ -19,14 +21,12 @@ class WormFlushedWidgetModel extends BaseViewModel {
   }
 
   Future _getWormFlushes() async {
-    _wormFlushes.addAll(
-      await _getWormFlushesUsecase.call(
+    _vaccinates.addAll(
+      await _getVaccinatesUsecase.call(
         petId,
       ),
     );
   }
 
-  WormFlushedWidgetModel(this._getWormFlushesUsecase, this._addWormFlushedUsecase);
-
-  List<PetWormFlushed> get wormFlushes => _wormFlushes.toList();
+  List<PetVaccinated> get vaccinates => _vaccinates.toList();
 }

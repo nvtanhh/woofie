@@ -8,22 +8,22 @@ import 'package:meowoof/core/ui/button.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed_model.dart';
+import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccinated/vaccinated_widget_model.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:timelines/timelines.dart';
 
-class WormFlushedWidget extends StatefulWidget {
+class VaccinatedWidget extends StatefulWidget {
   final int petId;
 
-  const WormFlushedWidget({Key? key, required this.petId}) : super(key: key);
+  const VaccinatedWidget({Key? key, required this.petId}) : super(key: key);
 
   @override
-  _WormFlushedWidgetState createState() => _WormFlushedWidgetState();
+  _VaccinatedWidgetState createState() => _VaccinatedWidgetState();
 }
 
-class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlushedWidgetModel> {
+class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedWidgetModel> {
   @override
   void loadArguments() {
     viewModel.petId = widget.petId;
@@ -61,25 +61,41 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
         ),
         body: Obx(
           () => Timeline.tileBuilder(
-            theme: TimelineThemeData(
-              nodePosition: 0,
-              color: UIColor.aquaSpring,
-              connectorTheme: const ConnectorThemeData(
-                thickness: 3.0,
-              ),
-            ),
-            padding: EdgeInsets.all(20.w),
             builder: TimelineTileBuilder.connected(
-              indicatorBuilder: (context, index) {
-                return OutlinedDotIndicator(
-                  color: UIColor.primary,
-                  borderWidth: 5,
-                  size: 20.w,
-                );
-              },
+              oppositeContentsBuilder: (context, index) => Padding(
+                padding: EdgeInsets.all(10.w),
+                child: Text(
+                  FormatHelper.formatDateTime(viewModel.vaccinates[index].createdAt, pattern: "dd/MM/yyyy"),
+                  style: UITextStyle.text_secondary_12_w500,
+                ),
+              ),
+              itemExtent: 100.h,
+              contentsBuilder: (context, index) => Container(
+                margin: EdgeInsets.only(left: 15.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      viewModel.vaccinates[index].name??"",
+                      style: UITextStyle.text_header_14_w600,
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Flexible(
+                      child: Text(
+                        viewModel.vaccinates[index].description ?? "",
+                        style: UITextStyle.text_secondary_12_w500,
+                        maxLines: 3,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               connectorBuilder: (_, index, connectorType) {
                 Color? color;
-                if (index + 1 < viewModel.wormFlushes.length - 1) {
+                if (index + 1 < viewModel.vaccinates.length - 1) {
                   color = UIColor.primary;
                 }
                 return SolidLineConnector(
@@ -88,33 +104,14 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                   color: color ?? UIColor.primary,
                 );
               },
-              contentsBuilder: (context, index) => Container(
-                margin: EdgeInsets.only(left: 15.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      FormatHelper.formatDateTime(viewModel.wormFlushes[index].createdAt, pattern: "dd/MM/yyyy"),
-                      style: UITextStyle.text_header_14_w600,
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Flexible(
-                      child: Text(
-                        viewModel.wormFlushes[index].description ?? "",
-                        style: UITextStyle.text_secondary_12_w500,
-                        maxLines: 3,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              itemExtentBuilder: (_, __) {
-                return 100.h;
+              indicatorBuilder: (context, index) {
+                return OutlinedDotIndicator(
+                  color: UIColor.primary,
+                  borderWidth: 6,
+                  size: 20.w,
+                );
               },
-              itemCount: viewModel.wormFlushes.length,
+              itemCount: viewModel.vaccinates.length,
             ),
           ),
         ),
@@ -123,5 +120,5 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
   }
 
   @override
-  WormFlushedWidgetModel createViewModel() => injector<WormFlushedWidgetModel>();
+  VaccinatedWidgetModel createViewModel() => injector<VaccinatedWidgetModel>();
 }
