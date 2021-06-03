@@ -6,17 +6,16 @@ import 'package:meowoof/core/helpers/datetime_helper.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/widgets/card_detail_widget.dart';
-import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/vaccinated_preview_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/weight_chart_preview_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/worm_flushed_preview_widget.dart';
-import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed.dart';
+import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/detail_info_pet/detail_info_pet_widget_model.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/profile/get_detail_info_pet_usecase.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
+import 'package:suga_core/suga_core.dart';
 
 class DetailInfoPetWidget extends StatefulWidget {
   final Pet pet;
@@ -38,11 +37,21 @@ class DetailInfoPetWidget extends StatefulWidget {
   _DetailInfoPetWidgetState createState() => _DetailInfoPetWidgetState();
 }
 
-class _DetailInfoPetWidgetState extends State<DetailInfoPetWidget> {
+class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, DetailInfoPetWidgetModel> with AutomaticKeepAliveClientMixin {
+  @override
+  void loadArguments() {
+    viewModel.pet = widget.pet;
+    viewModel.isMyPet = widget.isMyPet;
+    viewModel.onAddWeightClick = widget.onAddWeightClick;
+    viewModel.onAddVaccinatedClick = widget.onAddVaccinatedClick;
+    viewModel.onAddWormFlushedClick = widget.onAddWormFlushedClick;
+    super.loadArguments();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => _isLoaded.value
+      () => viewModel.isLoaded
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -51,15 +60,15 @@ class _DetailInfoPetWidgetState extends State<DetailInfoPetWidget> {
                   children: [
                     CardDetailWidget(
                       title: LocaleKeys.explore_gender.trans(),
-                      value: pet.gender?.toString() ?? "",
+                      value: viewModel.pet.gender?.toString() ?? "",
                     ),
                     CardDetailWidget(
                       title: LocaleKeys.explore_age.trans(),
-                      value: DateTimeHelper.calcAge(pet.dob),
+                      value: DateTimeHelper.calcAge(viewModel.pet.dob),
                     ),
                     CardDetailWidget(
                       title: LocaleKeys.explore_breed.trans(),
-                      value: pet.petBreed?.name ?? "",
+                      value: viewModel.pet.petBreed?.name ?? "",
                     ),
                   ],
                 ),
@@ -74,14 +83,12 @@ class _DetailInfoPetWidgetState extends State<DetailInfoPetWidget> {
                   height: 10.h,
                 ),
                 InkWell(
-                  onTap: () => Get.to(
-                    () => Weight(pet: pet, isMyPet: isMyPet),
-                  ),
+                  onTap: () => viewModel.onTabWeightChart(),
                   child: WeightChartPreviewWidget(
                     width: Get.width,
                     height: 175.h,
-                    isMyPet: isMyPet,
-                    onAddClick: isMyPet ? onAddWeightClick : () => null,
+                    isMyPet: viewModel.isMyPet,
+                    onAddClick: viewModel.isMyPet ? viewModel.onAddWeightClick : () => null,
                     weights: [
                       PetWeight(
                         id: 0,
@@ -115,11 +122,7 @@ class _DetailInfoPetWidgetState extends State<DetailInfoPetWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                        onTap: () => Get.to(
-                          () => WormFlushedWidget(
-                            petId: pet.id!,
-                          ),
-                        ),
+                        onTap: () => viewModel.onTabWormFlushed(),
                         child: WormFlushedPreviewWidget(
                           width: 160.w,
                           height: 188.h,
@@ -135,27 +138,30 @@ class _DetailInfoPetWidgetState extends State<DetailInfoPetWidget> {
                               description: "asccasc",
                             ),
                           ],
-                          isMyPet: isMyPet,
-                          onAddClick: isMyPet ? onAddWormFlushedClick : () => null,
+                          isMyPet: viewModel.isMyPet,
+                          onAddClick: viewModel.isMyPet ? viewModel.onAddWormFlushedClick : () => null,
                         ),
                       ),
-                      VaccinatedPreviewWidget(
-                        width: 160.w,
-                        height: 188.h,
-                        vaccinates: [
-                          PetVaccinated(
-                            id: 1,
-                            createdAt: DateTime.now(),
-                            description: "acb",
-                          ),
-                          PetVaccinated(
-                            id: 2,
-                            createdAt: DateTime.now(),
-                            description: "aacccb",
-                          ),
-                        ],
-                        isMyPet: isMyPet,
-                        onAddClick: isMyPet ? onAddVaccinatedClick : () => null,
+                      InkWell(
+                        onTap: () => viewModel.onTabVaccinated(),
+                        child: VaccinatedPreviewWidget(
+                          width: 160.w,
+                          height: 188.h,
+                          vaccinates: [
+                            PetVaccinated(
+                              id: 1,
+                              createdAt: DateTime.now(),
+                              description: "acb",
+                            ),
+                            PetVaccinated(
+                              id: 2,
+                              createdAt: DateTime.now(),
+                              description: "aacccb",
+                            ),
+                          ],
+                          isMyPet: viewModel.isMyPet,
+                          onAddClick: viewModel.isMyPet ? viewModel.onAddVaccinatedClick : () => null,
+                        ),
                       ),
                     ],
                   ),
@@ -167,30 +173,11 @@ class _DetailInfoPetWidgetState extends State<DetailInfoPetWidget> {
             ),
     );
   }
-}
 
-class DetailInfoPetWidget extends StatelessWidget {
-  final RxBool _isLoaded = RxBool(false);
-  final GetDetailInfoPetUsecase _getDetailInfoPetUsecase = injector<GetDetailInfoPetUsecase>();
+  @override
+  DetailInfoPetWidgetModel createViewModel() => injector<DetailInfoPetWidgetModel>();
 
-  DetailInfoPetWidget({
-    Key? key,
-    required this.pet,
-    required this.isMyPet,
-    required this.onAddWeightClick,
-    required this.onAddWormFlushedClick,
-    required this.onAddVaccinatedClick,
-  }) : super(key: key) {
-    _loadPetDetailInfo();
-  }
-
-  Future _loadPetDetailInfo() async {
-    try {
-      pet = await _getDetailInfoPetUsecase.call(pet.id!);
-      _isLoaded.value = true;
-    } catch (e) {
-      printError(info: e.toString());
-      _isLoaded.value = false;
-    }
-  }
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

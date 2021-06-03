@@ -21,6 +21,12 @@ class PetProfileModel extends BaseViewModel {
     tabIndex = value;
   }
 
+  void onAddVaccinatedClick() {}
+
+  void onAddWeightClick() {}
+
+  void onAddWormFlushedClick() {}
+
   bool get isLoaded => _isLoaded.value;
 
   set isLoaded(bool value) {

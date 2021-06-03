@@ -76,7 +76,7 @@ class PetInfoWidget extends StatelessWidget {
                       ? LocaleKeys.profile_edit_profile.trans()
                       : (isFollowing.value ? LocaleKeys.profile_un_follow.trans() : LocaleKeys.profile_follow.trans()),
                   borderRadius: 10.r,
-                  backgroundColor: isFollowing.value ? UIColor.text_secondary : UIColor.primary,
+                  backgroundColor: isFollowing.value ? UIColor.textSecondary : UIColor.primary,
                 ),
               ),
             ),
