@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart ';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
@@ -38,15 +39,12 @@ class InfoUserWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ButtonWidget(
-              onPress: () => null,
+              onPress: () => Scaffold.of(context).openEndDrawer(),
               backgroundColor: UIColor.white,
               width: 40.w,
               height: 40.h,
               borderRadius: 10.r,
-              contentWidget: IconButton(
-                icon: const MWIcon(MWIcons.moreHoriz),
-                onPressed: () => null,
-              ),
+              contentWidget: const MWIcon(MWIcons.moreHoriz),
             ),
           ],
         ),

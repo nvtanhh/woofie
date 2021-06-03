@@ -94,7 +94,7 @@ class _PetProfileState extends BaseViewState<PetProfile, PetProfileModel> with T
                         onAddWeightClick: viewModel.onAddWeightClick,
                         onAddWormFlushedClick: viewModel.onAddWormFlushedClick,
                       ),
-                      PostsOfPetWidget(idPet: viewModel.pet.id!),
+                      PostsOfPetWidget(idPet: viewModel.pet.id),
                     ],
                   ),
                 )

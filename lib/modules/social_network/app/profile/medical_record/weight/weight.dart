@@ -21,11 +21,12 @@ import 'package:suga_core/suga_core.dart';
 class Weight extends StatefulWidget {
   final Pet pet;
   final bool isMyPet;
-
+  final bool? addData;
   const Weight({
     Key? key,
     required this.pet,
     required this.isMyPet,
+    this.addData,
   }) : super(key: key);
 
   @override

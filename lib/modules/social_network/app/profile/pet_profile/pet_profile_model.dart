@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccinated/vaccinated_widget.dart';
+import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight.dart';
+import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -11,6 +14,7 @@ class PetProfileModel extends BaseViewModel {
   final Rx<bool?> _isMyPet = Rx<bool?>(null);
   late TabController tabController;
   final RxInt _tabIndex = RxInt(0);
+
   void onPetBlock(Pet pet) {}
 
   void followPet(Pet pet) {}
@@ -21,11 +25,35 @@ class PetProfileModel extends BaseViewModel {
     tabIndex = value;
   }
 
-  void onAddVaccinatedClick() {}
+  void onAddVaccinatedClick() {
+    Get.to(
+      () => VaccinatedWidget(
+        petId: pet.id,
+        isMyPet: isMyPet!,
+        addData: true,
+      ),
+    );
+  }
 
-  void onAddWeightClick() {}
+  void onAddWeightClick() {
+    Get.to(
+      () => Weight(
+        pet: pet,
+        isMyPet: isMyPet!,
+        addData: true,
+      ),
+    );
+  }
 
-  void onAddWormFlushedClick() {}
+  void onAddWormFlushedClick() {
+    Get.to(
+      () => WormFlushedWidget(
+        petId: pet.id,
+        isMyPet: isMyPet!,
+        addData: true,
+      ),
+    );
+  }
 
   bool get isLoaded => _isLoaded.value;
 

@@ -62,72 +62,40 @@ class ProfileRepository {
   }
 
   Future<List<Post>> getPostsOfPet(int petId, int offset, int limit) async {
-    await Future.delayed(const Duration(seconds: 2));
-    final Post post = Post(
-      id: 1,
-      type: PostType.activity,
-      createdAt: DateTime.now(),
-      content:
-          "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.",
-      creator: User(
-          id: 0,
-          avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
-          name: "Bao Nguyen",
-          pets: [
-            Pet(
-                id: petId,
-                name: "Vàng",
-                avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-                bio: "Siêu ngu"),
-            Pet(
-                id: 0,
-                name: "Đỏ",
-                avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-                bio: "Siêu ngốc"),
-          ],
-          bio: "Người chơi hệ lười"),
-      isLiked: false,
-      pets: [
-        Pet(id: petId, name: "Vàng", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
-        Pet(id: 0, name: "Đỏ", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
-      ],
-    );
-    post.medias = <Media>[
-      Media(
-        id: 2,
-        type: MediaType.image,
-        url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
-      ),
-      Media(
-        id: 3,
-        type: MediaType.image,
-        url: "https://i.pinimg.com/564x/6c/f4/34/6cf434d87d710e4aee8f82624b697aef.jpg",
-      ),
-      Media(
-        id: 4,
-        type: MediaType.video,
-        url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-      ),
-    ];
-    post.postReactsAggregate = ObjectAggregate(
-      aggregate: Aggregate(count: 11),
-    );
-    post.commentsAggregate = ObjectAggregate(
-      aggregate: Aggregate(count: 11),
-    );
-    return <Post>[post];
+    return _postDatasource.getPostsOfPet(petId, offset, limit);
   }
 
   Future<Pet> getDetailInfoPet(int idPet) async {
     await Future.delayed(const Duration(seconds: 1));
     return Pet(
-      id: 0,
-      name: "Vàng",
-      avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-      bio: "Helo",
-      dob: DateTime(2019, 5, 4),
-      gender: Gender.male,
-    );
+        id: 0,
+        name: "Vàng",
+        avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+        bio: "Helo",
+        dob: DateTime(2019, 5, 4),
+        gender: Gender.male,
+        petWeights: [
+          PetWeight(
+            id: 0,
+            createdAt: DateTime.now().subtract(Duration(days: 3)),
+            weight: 2,
+          ),
+          PetWeight(
+            id: 1,
+            createdAt: DateTime.now().subtract(Duration(days: 2)),
+            weight: 3,
+          ),
+          PetWeight(
+            id: 2,
+            createdAt: DateTime.now().subtract(Duration(days: 1)),
+            weight: 2,
+          ),
+          PetWeight(
+            id: 3,
+            createdAt: DateTime.now(),
+            weight: 4,
+          ),
+        ]);
   }
 
   Future followPet(int petID) {

@@ -8,6 +8,7 @@ import 'package:suga_core/suga_core.dart';
 @injectable
 class WormFlushedWidgetModel extends BaseViewModel {
   late int petId;
+  late bool isMyPet;
   final RxList<PetWormFlushed> _wormFlushes = RxList<PetWormFlushed>();
   final GetWormFlushesUsecase _getWormFlushesUsecase;
   final AddWormFlushedUsecase _addWormFlushedUsecase;
@@ -18,6 +19,7 @@ class WormFlushedWidgetModel extends BaseViewModel {
     super.initState();
   }
 
+  void showDialogAddWieght() {}
   Future _getWormFlushes() async {
     _wormFlushes.addAll(
       await _getWormFlushesUsecase.call(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_shimmer.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -45,21 +47,27 @@ class PostsOfPetWidget extends StatelessWidget {
     return PagedListView<int, Post>(
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate(
-          itemBuilder: (context, post, index) {
-            return PostItem(
-              post: post,
-              onLikeClick: onLikeClick,
-              onPostEdited: onPostEdited,
-              onPostDeleted: onPostDeleted,
-            );
-          },
-          firstPageProgressIndicatorBuilder: (_) => PostItemShimmer()),
+        itemBuilder: (context, post, index) {
+          return PostItem(
+            post: post,
+            onLikeClick: onLikeClick,
+            onPostEdited: onPostEdited,
+            onPostDeleted: onPostDeleted,
+            onPostClick: onPostClick,
+          );
+        },
+        firstPageProgressIndicatorBuilder: (_) => PostItemShimmer(),
+      ),
     );
   }
 
-  void onPostEdited(Post p1) {}
+  void onPostEdited(Post post) {}
 
-  void onLikeClick(int p1) {}
+  void onLikeClick(int post) {}
 
-  void onPostDeleted(Post p1) {}
+  void onPostDeleted(Post post) {}
+
+  void onPostClick(Post post) {
+    Get.to(() => PostDetail(post: post));
+  }
 }

@@ -11,9 +11,6 @@ import 'package:meowoof/modules/social_network/app/profile/medical_record/widget
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/worm_flushed_preview_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/detail_info_pet/detail_info_pet_widget_model.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -89,28 +86,7 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
                     height: 175.h,
                     isMyPet: viewModel.isMyPet,
                     onAddClick: viewModel.isMyPet ? viewModel.onAddWeightClick : () => null,
-                    weights: [
-                      PetWeight(
-                        id: 0,
-                        createdAt: DateTime.now().subtract(Duration(days: 3)),
-                        weight: 2,
-                      ),
-                      PetWeight(
-                        id: 1,
-                        createdAt: DateTime.now().subtract(Duration(days: 2)),
-                        weight: 3,
-                      ),
-                      PetWeight(
-                        id: 2,
-                        createdAt: DateTime.now().subtract(Duration(days: 1)),
-                        weight: 2,
-                      ),
-                      PetWeight(
-                        id: 3,
-                        createdAt: DateTime.now(),
-                        weight: 4,
-                      ),
-                    ],
+                    weights: viewModel.pet.petWeights ?? [],
                   ),
                 ),
                 SizedBox(
@@ -126,18 +102,7 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
                         child: WormFlushedPreviewWidget(
                           width: 160.w,
                           height: 188.h,
-                          wormFlushed: [
-                            PetWormFlushed(
-                              id: 1,
-                              createdAt: DateTime.now(),
-                              description: "asdlad",
-                            ),
-                            PetWormFlushed(
-                              id: 2,
-                              createdAt: DateTime.now(),
-                              description: "asccasc",
-                            ),
-                          ],
+                          wormFlushed: viewModel.pet.petWormFlushes ?? [],
                           isMyPet: viewModel.isMyPet,
                           onAddClick: viewModel.isMyPet ? viewModel.onAddWormFlushedClick : () => null,
                         ),
@@ -147,18 +112,7 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
                         child: VaccinatedPreviewWidget(
                           width: 160.w,
                           height: 188.h,
-                          vaccinates: [
-                            PetVaccinated(
-                              id: 1,
-                              createdAt: DateTime.now(),
-                              description: "acb",
-                            ),
-                            PetVaccinated(
-                              id: 2,
-                              createdAt: DateTime.now(),
-                              description: "aacccb",
-                            ),
-                          ],
+                          vaccinates: viewModel.pet.petVaccinates ?? [],
                           isMyPet: viewModel.isMyPet,
                           onAddClick: viewModel.isMyPet ? viewModel.onAddVaccinatedClick : () => null,
                         ),

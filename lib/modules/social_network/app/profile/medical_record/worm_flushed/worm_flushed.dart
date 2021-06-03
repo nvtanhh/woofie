@@ -16,8 +16,10 @@ import 'package:timelines/timelines.dart';
 
 class WormFlushedWidget extends StatefulWidget {
   final int petId;
+  final bool isMyPet;
+  final bool? addData;
 
-  const WormFlushedWidget({Key? key, required this.petId}) : super(key: key);
+  const WormFlushedWidget({Key? key, required this.petId, required this.isMyPet, this.addData}) : super(key: key);
 
   @override
   _WormFlushedWidgetState createState() => _WormFlushedWidgetState();
@@ -27,6 +29,10 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
   @override
   void loadArguments() {
     viewModel.petId = widget.petId;
+    viewModel.isMyPet = widget.isMyPet;
+    if (widget.addData != null && widget.addData == true) {
+      viewModel.showDialogAddWieght();
+    }
     super.loadArguments();
   }
 
@@ -45,19 +51,20 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
             onPressed: () => Get.back(),
           ),
           actions: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.h),
-              child: MWButton(
-                onPressed: () => null,
-                minWidth: 50.w,
-                child: Text(
-                  LocaleKeys.profile_add.trans(),
-                  style: UITextStyle.white_12_w600,
+            if (viewModel.isMyPet)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                child: MWButton(
+                  onPressed: () => null,
+                  minWidth: 50.w,
+                  child: Text(
+                    LocaleKeys.profile_add.trans(),
+                    style: UITextStyle.white_12_w600,
+                  ),
                 ),
-              ),
-            )
+              )
           ],
-          toolbarHeight: 50.h,
+          toolbarHeight: 55.h,
         ),
         body: Obx(
           () => Timeline.tileBuilder(
@@ -68,7 +75,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                 thickness: 3.0,
               ),
             ),
-            padding: EdgeInsets.all(20.w),
+            padding: EdgeInsets.symmetric(horizontal: 10.w,),
             builder: TimelineTileBuilder.connected(
               indicatorBuilder: (context, index) {
                 return OutlinedDotIndicator(
@@ -95,7 +102,10 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      FormatHelper.formatDateTime(viewModel.wormFlushes[index].createdAt, pattern: "dd/MM/yyyy"),
+                      FormatHelper.formatDateTime(
+                        viewModel.wormFlushes[index].createdAt,
+                        pattern: "dd/MM/yyyy",
+                      ),
                       style: UITextStyle.text_header_14_w600,
                     ),
                     SizedBox(

@@ -27,7 +27,7 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
 
   Future _loadPetDetailInfo() async {
     try {
-      pet = await _getDetailInfoPetUsecase.call(pet.id!);
+      pet = await _getDetailInfoPetUsecase.call(pet.id);
       _isLoaded.value = true;
     } catch (e) {
       printError(info: e.toString());
@@ -37,14 +37,18 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
 
   void onTabWeightChart() {
     Get.to(
-      () => Weight(pet: pet, isMyPet: isMyPet),
+      () => Weight(
+        pet: pet,
+        isMyPet: isMyPet,
+      ),
     );
   }
 
   void onTabWormFlushed() {
     Get.to(
       () => WormFlushedWidget(
-        petId: pet.id!,
+        petId: pet.id,
+        isMyPet: isMyPet,
       ),
     );
   }
@@ -52,7 +56,8 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
   void onTabVaccinated() {
     Get.to(
       () => VaccinatedWidget(
-        petId: pet.id!,
+        petId: pet.id,
+        isMyPet: isMyPet,
       ),
     );
   }

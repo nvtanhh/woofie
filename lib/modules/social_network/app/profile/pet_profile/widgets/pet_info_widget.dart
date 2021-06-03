@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/pet_menu_action_widget.dart';
+import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/other_info_menu_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -80,12 +81,23 @@ class PetInfoWidget extends StatelessWidget {
                 ),
               ),
             ),
-            if (!isMyPet)
-              PetMenuActionWidget(
-                pet: pet,
-                onPetBlock: onPetReport!,
-                onPetReport: onPetBlock!,
-              )
+            InkWell(
+              onTap: () => Get.to(
+                () => OtherInfoMenuWidget(),
+              ),
+              child: Container(
+                width: 40.w,
+                height: 40.h,
+                margin: EdgeInsets.only(left: 20.w),
+                padding: EdgeInsets.only(top: 5.h),
+                decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
+                child: const Center(
+                  child: MWIcon(
+                    MWIcons.moreHoriz,
+                  ),
+                ),
+              ),
+            )
           ],
         ),
         SizedBox(

@@ -16,8 +16,15 @@ import 'package:timelines/timelines.dart';
 
 class VaccinatedWidget extends StatefulWidget {
   final int petId;
+  final bool isMyPet;
+  final bool? addData;
 
-  const VaccinatedWidget({Key? key, required this.petId}) : super(key: key);
+  const VaccinatedWidget({
+    Key? key,
+    required this.petId,
+    this.addData,
+    required this.isMyPet,
+  }) : super(key: key);
 
   @override
   _VaccinatedWidgetState createState() => _VaccinatedWidgetState();
@@ -27,6 +34,10 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
   @override
   void loadArguments() {
     viewModel.petId = widget.petId;
+    viewModel.isMyPet = widget.isMyPet;
+    if (widget.addData != null && widget.addData == true) {
+      viewModel.showDialogAddWieght();
+    }
     super.loadArguments();
   }
 
@@ -37,7 +48,7 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            LocaleKeys.profile_worm_flush.trans(),
+            LocaleKeys.profile_vaccinated.trans(),
             style: UITextStyle.text_header_18_w700,
           ),
           leading: IconButton(
@@ -45,25 +56,29 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
             onPressed: () => Get.back(),
           ),
           actions: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.h),
-              child: MWButton(
-                onPressed: () => null,
-                minWidth: 50.w,
-                child: Text(
-                  LocaleKeys.profile_add.trans(),
-                  style: UITextStyle.white_12_w600,
+            if (viewModel.isMyPet)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                child: MWButton(
+                  onPressed: () => null,
+                  minWidth: 50.w,
+                  child: Text(
+                    LocaleKeys.profile_add.trans(),
+                    style: UITextStyle.white_12_w600,
+                  ),
                 ),
-              ),
-            )
+              )
           ],
-          toolbarHeight: 50.h,
+          toolbarHeight: 55.h,
         ),
         body: Obx(
           () => Timeline.tileBuilder(
+            theme: TimelineThemeData(
+              nodePosition: 0.25,
+            ),
             builder: TimelineTileBuilder.connected(
               oppositeContentsBuilder: (context, index) => Padding(
-                padding: EdgeInsets.all(10.w),
+                padding: EdgeInsets.only(right: 10.w),
                 child: Text(
                   FormatHelper.formatDateTime(viewModel.vaccinates[index].createdAt, pattern: "dd/MM/yyyy"),
                   style: UITextStyle.text_secondary_12_w500,
@@ -77,7 +92,7 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      viewModel.vaccinates[index].name??"",
+                      viewModel.vaccinates[index].name ?? "",
                       style: UITextStyle.text_header_14_w600,
                     ),
                     SizedBox(

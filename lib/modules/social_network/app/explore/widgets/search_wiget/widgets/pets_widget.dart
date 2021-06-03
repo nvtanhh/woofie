@@ -56,7 +56,7 @@ class PetsWidget extends StatelessWidget {
                         height: 5.h,
                       ),
                       ButtonWidget(
-                        onPress: () => follow(pet.id!),
+                        onPress: () => follow(pet.id),
                         height: 30.h,
                         width: 65.w,
                         title: LocaleKeys.explore_follow.trans(),

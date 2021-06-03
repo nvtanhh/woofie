@@ -18,6 +18,7 @@ class NotHaveData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           LocaleKeys.profile_not_have_data.trans(),

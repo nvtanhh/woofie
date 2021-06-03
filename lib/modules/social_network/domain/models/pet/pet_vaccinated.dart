@@ -17,7 +17,7 @@ class PetVaccinated {
   @JsonKey(name: "created_at")
   DateTime? createdAt;
 
-  PetVaccinated({required this.id, this.description,this.name, this.createdAt, this.petId});
+  PetVaccinated({required this.id, this.description, this.name, this.createdAt, this.petId});
 
   factory PetVaccinated.fromJson(Map<String, dynamic> json) => _$PetVaccinatedFromJson(json);
 

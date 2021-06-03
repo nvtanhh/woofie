@@ -51,16 +51,7 @@ class VaccinatedPreviewWidget extends StatelessWidget {
   }
 
   List<Widget> genData() {
-    if (vaccinates.isEmpty) {
-      return [
-        NotHaveData(
-          isMyPet: isMyPet,
-          onAddClick: onAddClick,
-        )
-      ];
-    }
-    List<Widget> list = [];
-    list.add(Row(
+    final header = Row(
       children: [
         Assets.resources.icons.icNeedle.image(
           fit: BoxFit.fill,
@@ -75,7 +66,20 @@ class VaccinatedPreviewWidget extends StatelessWidget {
           style: UITextStyle.text_body_12_w600,
         )
       ],
-    ));
+    );
+    if (vaccinates.isEmpty) {
+      return [
+        header,
+        Expanded(
+          child: NotHaveData(
+            isMyPet: isMyPet,
+            onAddClick: onAddClick,
+          ),
+        )
+      ];
+    }
+    List<Widget> list = [];
+    list.add(header);
     list.add(SizedBox(
       height: 10.h,
     ));
