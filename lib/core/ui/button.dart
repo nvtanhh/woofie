@@ -37,7 +37,7 @@ class MWButton extends StatelessWidget {
       this.padding,
       this.textStyle,
       this.color = UIColor.primary,
-      this.textColor = UIColor.text_body,
+      this.textColor = UIColor.textBody,
       this.onLongPressed,
       this.outline = false,
       this.borderRadius,
@@ -69,8 +69,8 @@ class MWButton extends StatelessWidget {
     Color finalBackgroundColor = color;
 
     if (isDisabled) {
-      finalBackgroundColor = UIColor.disable_bg;
-      defaultTextStyle.apply(color: UIColor.text_body);
+      finalBackgroundColor = UIColor.disableBg;
+      defaultTextStyle.apply(color: UIColor.textBody);
     }
 
     return GestureDetector(

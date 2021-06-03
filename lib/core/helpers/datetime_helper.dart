@@ -1,3 +1,4 @@
+import 'package:age_calculator/age_calculator.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class DateTimeHelper {
@@ -57,5 +58,15 @@ class DateTimeHelper {
 
   static bool equalsDate(DateTime a, DateTime b) {
     return a.day == b.day && a.month == b.month && a.year == b.year;
+  }
+
+  static String calcAge(DateTime? dob) {
+    if (dob == null) return "Unknown";
+    final age = AgeCalculator.age(dob);
+    if (age.years == 0) {
+      return age.months.toString();
+    } else {
+      return "${age.years}Y/${age.months}M";
+    }
   }
 }

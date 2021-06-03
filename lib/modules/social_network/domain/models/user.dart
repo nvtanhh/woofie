@@ -14,6 +14,8 @@ class User {
   String? uid;
   @JsonKey(name: "name")
   String? name;
+  @JsonKey(name: "bio")
+  String? bio;
   @JsonKey(name: "phone_number")
   String? phoneNumber;
   @JsonKey(name: "email")
@@ -24,16 +26,9 @@ class User {
   Media? avatar;
   @JsonKey(name: "avatar_url")
   String? avatarUrl;
-  User({
-    required this.id,
-    this.uid,
-    this.name,
-    this.phoneNumber,
-    this.email,
-    this.pets,
-    this.avatar,
-    this.avatarUrl,
-  });
+  @JsonKey(name: "dob")
+  DateTime? dob;
+  User({required this.id, this.uid, this.name, this.phoneNumber, this.email, this.pets, this.avatar, this.avatarUrl, this.bio, this.dob});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

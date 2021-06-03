@@ -1,9 +1,9 @@
-import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/helpers/datetime_helper.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
@@ -108,7 +108,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                           ),
                           CardDetailWidget(
                             title: LocaleKeys.explore_age.trans(),
-                            value: calcAge(viewModel.pet?.dob),
+                            value: DateTimeHelper.calcAge(viewModel.pet?.dob),
                           ),
                           CardDetailWidget(
                             title: LocaleKeys.explore_breed.trans(),
@@ -180,7 +180,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                           backgroundColor: UIColor.white,
                           contentWidget: const Icon(
                             Icons.arrow_back_ios_outlined,
-                            color: UIColor.text_header,
+                            color: UIColor.textHeader,
                           ),
                         ),
                         ButtonWidget(
@@ -191,7 +191,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                           backgroundColor: UIColor.white,
                           contentWidget: const Icon(
                             Icons.more_horiz_outlined,
-                            color: UIColor.text_header,
+                            color: UIColor.textHeader,
                           ),
                         )
                       ],
@@ -204,16 +204,6 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
         ),
       ),
     );
-  }
-
-  String calcAge(DateTime? dob) {
-    if (dob == null) return "";
-    final age = AgeCalculator.age(dob);
-    if (age.years == 0) {
-      return age.months.toString();
-    } else {
-      return age.years.toString();
-    }
   }
 
   @override

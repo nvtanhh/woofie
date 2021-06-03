@@ -50,7 +50,7 @@ class _PostDetailState extends BaseViewState<PostDetail, PostWidgetModel> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios_outlined,
-              color: UIColor.text_header,
+              color: UIColor.textHeader,
               size: 20.w,
             ),
             onPressed: () => Get.back(),
@@ -70,7 +70,7 @@ class _PostDetailState extends BaseViewState<PostDetail, PostWidgetModel> {
                       );
                     }
                     return CommentWidget(
-                      comment: viewModel.pagingController.itemList![index - 1],
+                      comment: item,
                       onLikeCommentClick: viewModel.onLikeCommentClick,
                     );
                   },

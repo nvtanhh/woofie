@@ -75,10 +75,10 @@ class MWIcon extends StatelessWidget {
             iconColor = UIColor.accent2;
             break;
           case MWIconThemeColor.primaryText:
-            iconColor = UIColor.text_body;
+            iconColor = UIColor.textBody;
             break;
           case MWIconThemeColor.secondaryText:
-            iconColor = UIColor.text_secondary;
+            iconColor = UIColor.textSecondary;
             break;
           case MWIconThemeColor.primaryAccent:
             iconColor = UIColor.accent;
@@ -87,7 +87,7 @@ class MWIcon extends StatelessWidget {
             iconColor = UIColor.danger;
             break;
           default:
-            iconColor = UIColor.text_body;
+            iconColor = UIColor.textBody;
         }
       }
 
@@ -133,13 +133,17 @@ class MWIcons {
   static const delete = MWIconData(nativeIcon: Icons.delete_rounded);
   static const edit = MWIconData(nativeIcon: Icons.edit);
   static const arrowDown = MWIconData(nativeIcon: Icons.keyboard_arrow_down_rounded);
-
+  static const warning = MWIconData(nativeIcon: Icons.warning_amber_outlined);
+  static const block = MWIconData(nativeIcon: Icons.person_remove_alt_1_outlined);
+  static const doubleArrow = MWIconData(nativeIcon: Icons.double_arrow_outlined);
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);
   static final react = MWIconData(assetImageFile: Assets.resources.icons.icReact);
   static final comment = MWIconData(assetImageFile: Assets.resources.icons.icComment);
   static final petTag = MWIconData(assetImageFile: Assets.resources.icons.icTagPet);
+  static final otherInformation = MWIconData(assetImageFile: Assets.resources.icons.icOtherInfomation);
+  static final petOwners = MWIconData(assetImageFile: Assets.resources.icons.icPetOwners);
 }
 
 enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }

@@ -17,7 +17,7 @@ import 'package:suga_core/suga_core.dart';
 class SavePostModel extends BaseViewModel {
   final TextEditingController contentController = TextEditingController();
 
-  late User _user;
+  late User? _user;
   late final Rx<PostType> _postType = PostType.activity.obs;
   final RxList<MediaFile> _files = <MediaFile>[].obs;
   final RxBool _isDisable = true.obs;
@@ -119,15 +119,15 @@ class SavePostModel extends BaseViewModel {
     _postType.value = value;
   }
 
-  User get user => _user;
+  User? get user => _user;
 
-  set user(User value) {
+  set user(User? value) {
     _user = value;
   }
 
   void onTagPet() {
     injector<BottomSheetService>().showTagPetBottomSheet(
-      userPets: _user.pets ?? [],
+      userPets: _user?.pets ?? [],
       taggedPets: _taggedPets,
       onPetChosen: _onTaggedPetChosen,
     );

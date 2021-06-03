@@ -19,7 +19,7 @@ class CardDetailWidget extends StatelessWidget {
       width: 107.w,
       height: 70.h,
       decoration: BoxDecoration(
-        color: UIColor.alice_blue3,
+        color: UIColor.aliceBlue3,
         borderRadius: BorderRadius.circular(10.r),
       ),
       child: Column(

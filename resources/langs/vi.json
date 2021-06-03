@@ -66,5 +66,30 @@
     "post": "Bài viết",
     "service": "Dịch vụ",
     "follow": "Theo dõi"
-  }
+  },
+  "profile": {
+    "edit_profile": "Chỉnh sửa thông tin",
+    "pet": "Thú cưng",
+    "post": "Bài viết",
+    "follow": "Theo dõi",
+    "un_follow": "Bỏ theo dõi",
+    "information":"Thông tin",
+    "medical_record": "Hồ sơ sức khỏe",
+    "weight": "Cân nặng",
+    "worm_flush": "Xổ giun",
+    "vaccinated": "Tiêm ngừa",
+    "add_pet": "Thêm thú cưng",
+    "contact": "Liên hệ",
+    "report": "Báo cáo",
+    "block": "Chặn",
+    "not_have_data": "Chưa có dữ liệu",
+    "add": "Thêm",
+    "other_information": "Thông tin khác",
+    "origin_information": "Thông tin xuất xứ",
+    "pet_owners": "Các đời chủ nuôi",
+    "now": "Hiện tại"
+  },
+  "year": "năm",
+  "month": "tháng",
+  "day": "ngày"
 }

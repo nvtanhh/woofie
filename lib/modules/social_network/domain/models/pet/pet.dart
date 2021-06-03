@@ -4,6 +4,9 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 part 'pet.g.dart';
@@ -11,9 +14,11 @@ part 'pet.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Pet {
   @JsonKey(name: "id")
-  int? id;
+  int id;
   @JsonKey(name: "name")
   String? name;
+  @JsonKey(name: "bio")
+  String? bio;
   @JsonKey(name: "id_pet_type")
   int? petTypeId;
   @JsonKey(name: "gender")
@@ -32,9 +37,17 @@ class Pet {
   int? petBreedId;
   @JsonKey(name: "pet_breed")
   PetBreed? petBreed;
+  @JsonKey(name: "is_following")
+  bool? isFollowing;
+  @JsonKey(name: "pet_worm_flusheds")
+  List<PetWormFlushed>? petWormFlushes;
+  @JsonKey(name: "pet_vaccinateds")
+  List<PetVaccinated>? petVaccinates;
+  @JsonKey(name: "pet_weights")
+  List<PetWeight>? petWeights;
 
   Pet({
-    this.id,
+    required this.id,
     this.name,
     this.petTypeId,
     this.gender,
@@ -45,6 +58,11 @@ class Pet {
     this.petType,
     this.petBreed,
     this.petBreedId,
+    this.bio,
+    this.isFollowing,
+    this.petVaccinates,
+    this.petWormFlushes,
+    this.petWeights,
   });
 
   factory Pet.fromJson(Map<String, dynamic> json) => _$PetFromJson(json);

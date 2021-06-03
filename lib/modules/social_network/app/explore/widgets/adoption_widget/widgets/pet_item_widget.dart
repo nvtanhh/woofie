@@ -43,7 +43,7 @@ class PetItemWidget extends StatelessWidget {
                 height: 84.h,
                 width: 165.w,
                 decoration: BoxDecoration(
-                  color: UIColor.alice_blue2,
+                  color: UIColor.aliceBlue2,
                   borderRadius: BorderRadius.circular(15.r),
                   border: Border.all(
                     color: UIColor.viking,
@@ -90,7 +90,7 @@ class PetItemWidget extends StatelessWidget {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: UIColor.pattens_blue2,
+                            color: UIColor.pattensBlue2,
                             borderRadius: BorderRadius.circular(5.r),
                           ),
                           padding: EdgeInsets.all(5.w),

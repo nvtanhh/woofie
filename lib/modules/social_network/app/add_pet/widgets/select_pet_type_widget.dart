@@ -42,8 +42,8 @@ class SelectPetTypeWidget extends StatelessWidget {
                           height: 80.0.w,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
-                              color: UIColor.antique_white,
-                              border: Border.all(color: index == selectedIndex ? UIColor.accent2 : UIColor.antique_white)),
+                              color: UIColor.antiqueWhite,
+                              border: Border.all(color: index == selectedIndex ? UIColor.accent2 : UIColor.antiqueWhite)),
                           child: index == petTypes.length - 1
                               ? Assets.resources.icons.icAnotherPet.image()
                               : Image.network(

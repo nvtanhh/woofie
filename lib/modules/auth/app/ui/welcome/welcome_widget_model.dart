@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
-import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
-import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_facebook_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_google_usecase.dart';
+import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
+import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
 import 'package:suga_core/suga_core.dart';
 
 @injectable

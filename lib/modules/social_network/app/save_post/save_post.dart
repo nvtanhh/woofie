@@ -121,7 +121,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         onTap: () => Get.back(),
         child: const MWIcon(
           MWIcons.back,
-          color: UIColor.text_header,
+          color: UIColor.textHeader,
         ),
       ),
       title: Text(
@@ -140,7 +140,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 onPressed: () {},
                 isDisabled: viewModel.isDisable,
                 borderRadius: BorderRadius.circular(5.r),
-                textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.text_body : UIColor.white),
+                textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.textBody : UIColor.white),
                 child: Text(
                   widget.post == null ? 'Post' : 'Update',
                 ),
@@ -159,7 +159,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MWAvatar(
-            avatarUrl: viewModel.user.avatarUrl,
+            avatarUrl: viewModel.user?.avatarUrl,
             borderRadius: 10.r,
           ),
           SizedBox(width: 15.w),
@@ -172,7 +172,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                     children: [
                       Text.rich(
                         TextSpan(
-                          text: viewModel.user.name,
+                          text: viewModel.user?.name ?? "",
                           children: _buildPetTags(),
                           style: UITextStyle.heading_16_semiBold,
                         ),

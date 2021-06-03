@@ -129,7 +129,7 @@ dependencies:
 
   # A Flutter plugin for Android and iOS supports cropping images.
   image_cropper: ^1.4.0
-  
+
   # A package provides calculate a person's age and the time remaining to their next birthday in years, months and days.
   age_calculator: ^1.0.0
 
@@ -142,7 +142,13 @@ dependencies:
   # A Flutter Geocoding plugin which provides easy geocoding and reverse-geocoding features.
   geocoding: ^2.0.0
 
+  # Contains utility classes in the style of dart:async to work with asynchronous computations.
+  async: ^2.5.0
+  # A library to draw fantastic charts in Flutter
+  fl_chart: ^0.36.1
 
+  #A powerful & easy to use timeline package for Flutter!
+  timelines: ^0.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -4,6 +4,9 @@ import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 
 @lazySingleton
 class PetDatasource {
@@ -56,5 +59,74 @@ class PetDatasource {
     } else {
       return false;
     }
+  }
+
+  Future<List<PetVaccinated>> getVaccinates(int idPet, int limit, int offset) async {
+    return [
+      PetVaccinated(
+        id: 0,
+        name: "Tiêm ngừa dại",
+        createdAt: DateTime(2021, 5, 15),
+        description: "mato",
+      ),
+      PetVaccinated(
+        id: 1,
+        name: "Tiêm ngừa uốn ván",
+        createdAt: DateTime(2021, 2, 15),
+        description: "mato",
+      ),
+      PetVaccinated(
+        id: 3,
+        name: "Tiêm ngừa ngừa ngu",
+        createdAt: DateTime(2021, 1, 15),
+        description: "Mato",
+      ),
+    ];
+  }
+
+  Future<List<PetWeight>> getWeights(int idPet, int limit, int offset) async {
+    return [
+      PetWeight(id: 0, createdAt: DateTime(2021, 5, 15), description: "ac", weight: 5),
+      PetWeight(id: 1, createdAt: DateTime(2021, 4, 15), description: "ac", weight: 3),
+      PetWeight(id: 2, createdAt: DateTime(2021, 3, 15), description: "ac", weight: 4),
+      PetWeight(id: 3, createdAt: DateTime(2021, 4, 15), description: "ac", weight: 5),
+    ];
+  }
+
+  Future<List<PetWormFlushed>> getWormFlushes(int idPet, int limit, int offset) async {
+    return [
+      PetWormFlushed(
+        id: 0,
+        description: "Sau khi xổ giun bé bị ói nhiều",
+        createdAt: DateTime(2021, 5, 15),
+      ),
+      PetWormFlushed(
+        id: 1,
+        description: "Sau khi xổ giun bé bị ói nhiều",
+        createdAt: DateTime(2021, 4, 15),
+      ),
+      PetWormFlushed(
+        id: 2,
+        description: "Sau khi xổ giun bé bị ói nhiều",
+        createdAt: DateTime(2021, 3, 15),
+      ),
+      PetWormFlushed(
+        id: 3,
+        description: "",
+        createdAt: DateTime(2021, 2, 15),
+      ),
+    ];
+  }
+
+  Future<PetVaccinated> addVaccinated(PetVaccinated petVaccinated) async {
+    return petVaccinated;
+  }
+
+  Future<PetWormFlushed> addWormFlushed(PetWormFlushed petWormFlushed) async {
+    return petWormFlushed;
+  }
+
+  Future<PetWeight> addWeight(PetWeight petWeight) async {
+    return petWeight;
   }
 }

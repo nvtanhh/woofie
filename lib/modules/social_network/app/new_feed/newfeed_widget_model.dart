@@ -1,13 +1,14 @@
+import 'package:async/async.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
-import 'package:meowoof/injector.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -18,7 +19,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   final LikePostUsecase _likePostUsecase;
   late PagingController<int, Post> pagingController;
   final int pageSize = 10;
-
+  CancelableOperation? cancelableOperation;
   NewFeedWidgetModel(this._getPostsUsecase, this._likePostUsecase) {
     pagingController = PagingController(firstPageKey: 0);
   }
@@ -27,7 +28,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   void initState() {
     pagingController.addPageRequestListener(
       (pageKey) {
-        _loadMorePost(pageKey);
+        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     super.initState();
@@ -72,7 +73,7 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   @override
   void disposeState() {
-    pagingController.removeListener(() {});
+    cancelableOperation?.cancel();
     pagingController.dispose();
     super.disposeState();
   }
@@ -82,7 +83,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   void onPostDeleted(Post post) {
-    injector<ToastService>().success(message: 'Post delted!', context: Get.context!);
+    injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
   }
 
   Future onWantsCreateNewPost() async {
