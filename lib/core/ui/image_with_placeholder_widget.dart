@@ -52,7 +52,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
             if (loadingProgress == null) return child;
             return Shimmer.fromColors(
               baseColor: UIColor.white,
-              highlightColor: UIColor.silver_sand,
+              highlightColor: UIColor.silverSand,
               child: Container(
                 width: width ?? 180.0.w,
                 height: height ?? 180.0.h,

@@ -8,7 +8,7 @@ class PostItemShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: UIColor.white,
-      highlightColor: UIColor.silver_sand,
+      highlightColor: UIColor.silverSand,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),

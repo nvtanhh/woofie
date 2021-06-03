@@ -34,7 +34,7 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios_outlined,
-              color: UIColor.text_header,
+              color: UIColor.textHeader,
               size: 20.w,
             ),
             onPressed: () => Get.back(),

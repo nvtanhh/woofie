@@ -75,10 +75,10 @@ class MWIcon extends StatelessWidget {
             iconColor = UIColor.accent2;
             break;
           case MWIconThemeColor.primaryText:
-            iconColor = UIColor.text_body;
+            iconColor = UIColor.textBody;
             break;
           case MWIconThemeColor.secondaryText:
-            iconColor = UIColor.text_secondary;
+            iconColor = UIColor.textSecondary;
             break;
           case MWIconThemeColor.primaryAccent:
             iconColor = UIColor.accent;
@@ -87,7 +87,7 @@ class MWIcon extends StatelessWidget {
             iconColor = UIColor.danger;
             break;
           default:
-            iconColor = UIColor.text_body;
+            iconColor = UIColor.textBody;
         }
       }
 
@@ -135,6 +135,7 @@ class MWIcons {
   static const arrowDown = MWIconData(nativeIcon: Icons.keyboard_arrow_down_rounded);
   static const warning = MWIconData(nativeIcon: Icons.warning_amber_outlined);
   static const block = MWIconData(nativeIcon: Icons.person_remove_alt_1_outlined);
+  static const doubleArrow = MWIconData(nativeIcon: Icons.double_arrow_outlined);
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);

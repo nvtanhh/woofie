@@ -121,7 +121,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         onTap: () => Get.back(),
         child: const MWIcon(
           MWIcons.back,
-          color: UIColor.text_header,
+          color: UIColor.textHeader,
         ),
       ),
       title: Text(
@@ -140,7 +140,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 onPressed: () {},
                 isDisabled: viewModel.isDisable,
                 borderRadius: BorderRadius.circular(5.r),
-                textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.text_body : UIColor.white),
+                textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.textBody : UIColor.white),
                 child: Text(
                   widget.post == null ? 'Post' : 'Update',
                 ),

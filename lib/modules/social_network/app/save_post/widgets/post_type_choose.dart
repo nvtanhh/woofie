@@ -78,30 +78,30 @@ class PostTypeChoseWidget extends StatelessWidget {
   Color _getBoderColorByType(PostType? type) {
     switch (type) {
       case PostType.activity:
-        return UIColor.text_secondary;
+        return UIColor.textSecondary;
       case PostType.adop:
-        return UIColor.adoption_color;
+        return UIColor.adoptionColor;
       case PostType.mating:
-        return UIColor.mating_color;
+        return UIColor.matingColor;
       case PostType.lose:
         return UIColor.danger;
       default:
-        return UIColor.text_secondary;
+        return UIColor.textSecondary;
     }
   }
 
   Color _getTextColorByType(PostType type) {
     switch (type) {
       case PostType.activity:
-        return UIColor.text_body;
+        return UIColor.textBody;
       case PostType.adop:
-        return UIColor.adoption_color;
+        return UIColor.adoptionColor;
       case PostType.mating:
-        return UIColor.mating_color;
+        return UIColor.matingColor;
       case PostType.lose:
         return UIColor.danger;
       default:
-        return UIColor.text_body;
+        return UIColor.textBody;
     }
   }
 
@@ -110,9 +110,9 @@ class PostTypeChoseWidget extends StatelessWidget {
       case PostType.activity:
         return UIColor.white;
       case PostType.adop:
-        return UIColor.adoption_color_bg;
+        return UIColor.adoptionColorBg;
       case PostType.mating:
-        return UIColor.mating_color_bg;
+        return UIColor.matingColorBg;
       case PostType.lose:
         return UIColor.danger.withOpacity(.1);
       default:

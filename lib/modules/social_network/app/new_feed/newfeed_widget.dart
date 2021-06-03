@@ -81,7 +81,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
               child: MWIcon(
                 MWIcons.message,
                 customSize: 28,
-                color: UIColor.text_header,
+                color: UIColor.textHeader,
               ),
             )
           ],

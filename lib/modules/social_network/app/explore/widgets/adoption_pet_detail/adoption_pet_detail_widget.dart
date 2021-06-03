@@ -180,7 +180,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                           backgroundColor: UIColor.white,
                           contentWidget: const Icon(
                             Icons.arrow_back_ios_outlined,
-                            color: UIColor.text_header,
+                            color: UIColor.textHeader,
                           ),
                         ),
                         ButtonWidget(
@@ -191,7 +191,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                           backgroundColor: UIColor.white,
                           contentWidget: const Icon(
                             Icons.more_horiz_outlined,
-                            color: UIColor.text_header,
+                            color: UIColor.textHeader,
                           ),
                         )
                       ],

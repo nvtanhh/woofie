@@ -44,7 +44,7 @@ class PetsWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10.r),
                           boxShadow: const [
                             BoxShadow(
-                              color: UIColor.dim_gray,
+                              color: UIColor.dimGray,
                               blurRadius: 5,
                               offset: Offset(2, 0),
                               spreadRadius: 2,
@@ -59,7 +59,7 @@ class PetsWidget extends StatelessWidget {
                               onPressed: () => Get.to(() => AddPetWidget()),
                               icon: const Icon(
                                 Icons.add_box_outlined,
-                                color: UIColor.text_body,
+                                color: UIColor.textBody,
                               ),
                             ),
                             Text(

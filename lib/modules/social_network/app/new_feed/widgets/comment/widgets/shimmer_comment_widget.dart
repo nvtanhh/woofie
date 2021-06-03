@@ -9,7 +9,7 @@ class ShimmerCommentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: UIColor.white,
-      highlightColor: UIColor.silver_sand,
+      highlightColor: UIColor.silverSand,
       child: Padding(
         padding: EdgeInsets.all(10.w),
         child: Row(

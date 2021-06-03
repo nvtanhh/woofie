@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/helpers/format_helper.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/not_have_data_widget.dart';
@@ -10,14 +10,14 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushe
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
-class WormFlushedWidget extends StatelessWidget {
+class WormFlushedPreviewWidget extends StatelessWidget {
   final double width;
   final double height;
   final List<PetWormFlushed> wormFlushed;
   final bool isMyPet;
   final Function onAddClick;
 
-  const WormFlushedWidget({
+  const WormFlushedPreviewWidget({
     Key? key,
     required this.width,
     required this.height,
@@ -103,9 +103,7 @@ class WormFlushedWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    DateFormat("dd/MM/yyyy").format(
-                      worm.createdAt ?? DateTime.now(),
-                    ),
+                    FormatHelper.formatDateTime(worm.createdAt, pattern: "dd/MM/yyyy"),
                     style: UITextStyle.text_body_12_w600,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

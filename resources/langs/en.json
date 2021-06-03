@@ -81,6 +81,11 @@
     "add_pet": "Add pet",
     "contact": "Contact",
     "report": "Report",
-    "block": "Block"
-  }
+    "block": "Block",
+    "not_have_data": "Not have data",
+    "add": "Add"
+  },
+  "year": "year",
+  "month": "month",
+  "day": "day"
 }

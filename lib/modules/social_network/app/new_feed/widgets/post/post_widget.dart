@@ -50,7 +50,7 @@ class _PostDetailState extends BaseViewState<PostDetail, PostWidgetModel> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios_outlined,
-              color: UIColor.text_header,
+              color: UIColor.textHeader,
               size: 20.w,
             ),
             onPressed: () => Get.back(),

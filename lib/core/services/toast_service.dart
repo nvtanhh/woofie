@@ -12,7 +12,7 @@ class ToastService {
   static Color colorError = UIColor.accent;
   static Color colorSuccess = UIColor.accent2;
   static Color colorInfo = UIColor.primary;
-  static Color colorWarning = UIColor.waring_color;
+  static Color colorWarning = UIColor.waringColor;
 
   void warning({
     required String message,

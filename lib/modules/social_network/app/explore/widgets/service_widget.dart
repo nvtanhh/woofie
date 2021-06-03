@@ -25,7 +25,7 @@ class ServiceWidget extends StatelessWidget {
       height: 115.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: UIColor.text_secondary),
+        border: Border.all(color: UIColor.textSecondary),
       ),
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: Row(

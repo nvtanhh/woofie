@@ -81,6 +81,11 @@
     "add_pet": "Thêm thú cưng",
     "contact": "Liên hệ",
     "report": "Báo cáo",
-    "block": "Chặn"
-  }
+    "block": "Chặn",
+    "not_have_data": "Chưa có dữ liệu",
+    "add": "Thêm"
+  },
+  "year": "năm",
+  "month": "tháng",
+  "day": "ngày"
 }

@@ -144,6 +144,11 @@ dependencies:
 
   # Contains utility classes in the style of dart:async to work with asynchronous computations.
   async: ^2.5.0
+  # A library to draw fantastic charts in Flutter
+  fl_chart: ^0.36.1
+
+  #A powerful & easy to use timeline package for Flutter!
+  timelines: ^0.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

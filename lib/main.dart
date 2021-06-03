@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
               backgroundColor: UIColor.white,
               elevation: 0,
               iconTheme: const IconThemeData(
-                color: UIColor.text_header,
+                color: UIColor.textHeader,
               ),
             ),
             scaffoldBackgroundColor: UIColor.white,

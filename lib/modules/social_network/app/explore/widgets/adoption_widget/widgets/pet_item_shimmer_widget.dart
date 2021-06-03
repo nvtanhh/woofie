@@ -8,7 +8,7 @@ class PetItemShimmerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: UIColor.white,
-      highlightColor: UIColor.silver_sand,
+      highlightColor: UIColor.silverSand,
       child: Container(
         width: 165.w,
         height: 213.h,

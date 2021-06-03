@@ -42,7 +42,7 @@ class PreviewFollowPet extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: const [
-            BoxShadow(color: UIColor.dim_gray, blurRadius: 5, offset: Offset(2, 0), spreadRadius: 2),
+            BoxShadow(color: UIColor.dimGray, blurRadius: 5, offset: Offset(2, 0), spreadRadius: 2),
           ],
           color: UIColor.white,
         ),
@@ -87,7 +87,7 @@ class PreviewFollowPet extends StatelessWidget {
                   titleStyle: UITextStyle.white_10_w600,
                   width: 60.w,
                   height: 22.h,
-                  backgroundColor: isFollowing.value ? UIColor.text_secondary : UIColor.primary,
+                  backgroundColor: isFollowing.value ? UIColor.textSecondary : UIColor.primary,
                 ),
               ),
           ],

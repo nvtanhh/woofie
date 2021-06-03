@@ -1,26 +1,29 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/helpers/format_helper.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/not_have_data_widget.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
-class WormFlushedWidget extends StatelessWidget {
+class VaccinatedPreviewWidget extends StatelessWidget {
   final double width;
   final double height;
-  final List<PetWormFlushed> wormFlushed;
+  final List<PetVaccinated> vaccinates;
   final bool isMyPet;
+  final Function onAddClick;
 
-  const WormFlushedWidget({
+  const VaccinatedPreviewWidget({
     Key? key,
     required this.width,
     required this.height,
-    required this.wormFlushed,
+    required this.vaccinates,
     required this.isMyPet,
+    required this.onAddClick,
   }) : super(key: key);
 
   @override
@@ -28,6 +31,7 @@ class WormFlushedWidget extends StatelessWidget {
     return Container(
       width: width,
       height: height,
+      padding: EdgeInsets.all(10.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
         color: UIColor.white,
@@ -40,17 +44,25 @@ class WormFlushedWidget extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: genData(),
       ),
     );
   }
 
   List<Widget> genData() {
-    if (wormFlushed.isEmpty) return [NotHaveData(isMyPet: isMyPet)];
+    if (vaccinates.isEmpty) {
+      return [
+        NotHaveData(
+          isMyPet: isMyPet,
+          onAddClick: onAddClick,
+        )
+      ];
+    }
     List<Widget> list = [];
     list.add(Row(
       children: [
-        Assets.resources.icons.icPill.image(
+        Assets.resources.icons.icNeedle.image(
           fit: BoxFit.fill,
           width: 24.w,
           height: 24.w,
@@ -59,37 +71,64 @@ class WormFlushedWidget extends StatelessWidget {
           width: 10.w,
         ),
         Text(
-          LocaleKeys.profile_worm_flush.trans(),
-          style: UITextStyle.text_secondary_12_w500,
+          LocaleKeys.profile_vaccinated.trans(),
+          style: UITextStyle.text_body_12_w600,
         )
       ],
     ));
-    for (var worm in wormFlushed) {
-      list.add(
-        ListTile(
-          title: Text(
-            DateFormat("dd/MM/yyyy").format(
-              worm.createdAt ?? DateTime.now(),
+    list.add(SizedBox(
+      height: 10.h,
+    ));
+    for (var vaccinate in vaccinates) {
+      list.add(SizedBox(
+        height: 50.h,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: UIColor.primary,
+                borderRadius: BorderRadius.circular(5.r),
+              ),
+              child: SizedBox(
+                width: 10.w,
+                height: 10.w,
+              ),
             ),
-            style: UITextStyle.text_secondary_12_w500,
-          ),
-          subtitle: Text(
-            worm.description ?? "",
-            style: UITextStyle.text_secondary_10_w600,
-          ),
-          leading: DecoratedBox(
-            decoration: BoxDecoration(
-              color: UIColor.primary,
-              borderRadius: BorderRadius.circular(5.r),
-            ),
-            child: SizedBox(
+            SizedBox(
               width: 10.w,
-              height: 10.w,
             ),
-          ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    vaccinate.description ?? "",
+                    style: UITextStyle.text_body_12_w600,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    FormatHelper.formatDateTime(vaccinate.createdAt, pattern: "dd/MM/yyyy"),
+                    style: UITextStyle.text_secondary_10_w600,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
-      );
+      ));
     }
+    list.add(
+      MWIcon(
+        MWIcons.arrowDown,
+      ),
+    );
     return list;
   }
 }

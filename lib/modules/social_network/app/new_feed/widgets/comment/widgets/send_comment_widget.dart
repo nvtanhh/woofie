@@ -28,7 +28,7 @@ class SendCommentWidget extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(
-            color: UIColor.pink_swan27,
+            color: UIColor.pinkSwan27,
             offset: Offset(0, -2),
             blurRadius: 5,
           )

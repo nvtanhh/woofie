@@ -59,7 +59,7 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
               icon: Icon(
                 Icons.close,
                 size: 24.w,
-                color: UIColor.text_header,
+                color: UIColor.textHeader,
               ),
               onPressed: () => Get.back(),
               padding: EdgeInsets.only(right: 20.w),

@@ -62,7 +62,7 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                           height: 95.h,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.r),
-                            color: UIColor.pattens_blue,
+                            color: UIColor.pattensBlue,
                           ),
                           child: Row(
                             children: [
@@ -115,7 +115,7 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                         height: 95.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.r),
-                          color: UIColor.lavender_blush,
+                          color: UIColor.lavenderBlush,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -176,7 +176,7 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                         height: 95.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.r),
-                          color: UIColor.white_smoke,
+                          color: UIColor.whiteSmoke,
                         ),
                         child: Row(
                           children: [

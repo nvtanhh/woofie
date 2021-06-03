@@ -1,16 +1,16 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/helpers/format_helper.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/not_have_data_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
-class ChartWeightPreviewWidget extends StatelessWidget {
+class WeightChartPreviewWidget extends StatelessWidget {
   final double width;
   final double height;
   final List<PetWeight> weights;
@@ -20,7 +20,7 @@ class ChartWeightPreviewWidget extends StatelessWidget {
   late LineChartBarData tooltipsOnBar;
   final Function onAddClick;
 
-  ChartWeightPreviewWidget({
+  WeightChartPreviewWidget({
     Key? key,
     required this.width,
     required this.height,
@@ -132,15 +132,7 @@ class ChartWeightPreviewWidget extends StatelessWidget {
                       bottomTitles: SideTitles(
                           showTitles: true,
                           getTitles: (val) {
-                            try {
-                              return DateFormat("M/yyyy").format(
-                                weights[val.toInt()].createdAt ?? DateTime.now(),
-                              );
-                            } catch (err) {
-                              return DateFormat("M/yyyy").format(
-                                DateTime.now(),
-                              );
-                            }
+                            return FormatHelper.formatDateTime(weights[val.toInt()].createdAt, pattern: "MM/yyyy");
                           },
                           getTextStyles: (value) => UITextStyle.text_body_10_w500),
                     ),

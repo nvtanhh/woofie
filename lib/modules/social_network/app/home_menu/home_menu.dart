@@ -38,7 +38,7 @@ class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetM
             backgroundColor: UIColor.white,
             iconSize: 30.w,
             selectedItemColor: UIColor.primary,
-            unselectedItemColor: UIColor.text_secondary,
+            unselectedItemColor: UIColor.textSecondary,
             items: [
               BottomNavigationBarItem(
                   icon: Icon(

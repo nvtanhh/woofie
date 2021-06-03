@@ -59,7 +59,7 @@ class BaseInfoWidget extends StatelessWidget {
                         child: Obx(
                           () => Container(
                             decoration: BoxDecoration(
-                              color: UIColor.alice_blue,
+                              color: UIColor.aliceBlue,
                               image: DecorationImage(
                                 image: image(_imageFile.value),
                                 fit: BoxFit.contain,
@@ -70,7 +70,7 @@ class BaseInfoWidget extends StatelessWidget {
                             child: Icon(
                               Icons.image,
                               size: 30.w,
-                              color: UIColor.text_secondary,
+                              color: UIColor.textSecondary,
                             ),
                           ),
                         ),
@@ -149,7 +149,7 @@ class BaseInfoWidget extends StatelessWidget {
                               () => TextButton(
                                 onPressed: () => genderChange(Gender.male),
                                 style: TextButton.styleFrom(
-                                  backgroundColor: _genderSelected.value == Gender.male ? UIColor.accent2 : UIColor.text_secondary,
+                                  backgroundColor: _genderSelected.value == Gender.male ? UIColor.accent2 : UIColor.textSecondary,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.r),
                                   ),
@@ -170,7 +170,7 @@ class BaseInfoWidget extends StatelessWidget {
                               () => TextButton(
                                 onPressed: () => genderChange(Gender.female),
                                 style: TextButton.styleFrom(
-                                  backgroundColor: _genderSelected.value == Gender.female ? UIColor.accent2 : UIColor.text_secondary,
+                                  backgroundColor: _genderSelected.value == Gender.female ? UIColor.accent2 : UIColor.textSecondary,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.r),
                                   ),
@@ -210,7 +210,7 @@ class BaseInfoWidget extends StatelessWidget {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(5.r),
       borderSide: const BorderSide(
-        color: UIColor.silver_sand,
+        color: UIColor.silverSand,
       ),
     );
   }
