@@ -6,4 +6,8 @@ class ReportUserUsecase {
   final ProfileRepository _profileRepository;
 
   ReportUserUsecase(this._profileRepository);
+
+  Future reportUser(int userID) {
+    return _profileRepository.reportUser(userID);
+  }
 }

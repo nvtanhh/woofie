@@ -4,6 +4,9 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 part 'pet.g.dart';
@@ -36,6 +39,12 @@ class Pet {
   PetBreed? petBreed;
   @JsonKey(name: "is_following")
   bool? isFollowing;
+  @JsonKey(name: "pet_worm_flusheds")
+  List<PetWormFlushed>? petWormFlushes;
+  @JsonKey(name: "pet_vaccinateds")
+  List<PetVaccinated>? petVaccinates;
+  @JsonKey(name: "pet_weights")
+  List<PetWeight>? petWeights;
 
   Pet({
     this.id,

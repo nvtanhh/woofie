@@ -2,31 +2,33 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'pet_type.g.dart';
+part 'pet_weight.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class PetType {
+class PetWeight {
   @JsonKey(name: "id")
   int id;
-  @JsonKey(name: "name")
-  String? name;
-  @JsonKey(name: "descriptions")
-  String? descriptions;
-  @JsonKey(name: "avatar")
-  String? avatar;
+  @JsonKey(name: "pet_id")
+  int? petId;
+  @JsonKey(name: "weight")
+  double? weight;
+  @JsonKey(name: "description")
+  String? description;
+  @JsonKey(name: "created_at")
+  DateTime? createdAt;
 
-  PetType({
+  PetWeight({
     required this.id,
-    this.name,
-    this.descriptions,
-    this.avatar,
+    this.weight,
+    this.description,
+    this.createdAt,
   });
 
-  factory PetType.fromJson(Map<String, dynamic> json) => _$PetTypeFromJson(json);
+  factory PetWeight.fromJson(Map<String, dynamic> json) => _$PetWeightFromJson(json);
 
-  factory PetType.fromJsonString(String jsonString) => PetType.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory PetWeight.fromJsonString(String jsonString) => PetWeight.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
-  Map<String, dynamic> toJson() => _$PetTypeToJson(this);
+  Map<String, dynamic> toJson() => _$PetWeightToJson(this);
 
   String toJsonString() => json.encode(toJson());
 }

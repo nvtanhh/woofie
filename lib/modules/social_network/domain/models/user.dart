@@ -26,17 +26,9 @@ class User {
   Media? avatar;
   @JsonKey(name: "avatar_url")
   String? avatarUrl;
-  User({
-    required this.id,
-    this.uid,
-    this.name,
-    this.phoneNumber,
-    this.email,
-    this.pets,
-    this.avatar,
-    this.avatarUrl,
-    this.bio,
-  });
+  @JsonKey(name: "dob")
+  DateTime? dob;
+  User({required this.id, this.uid, this.name, this.phoneNumber, this.email, this.pets, this.avatar, this.avatarUrl, this.bio, this.dob});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
