@@ -27,9 +27,10 @@ class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetM
       child: Scaffold(
         body: TabBarView(
           controller: viewModel.tabController,
+          physics: const NeverScrollableScrollPhysics(),
           children: viewModel.listScreen,
         ),
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         bottomNavigationBar: Obx(
           () => BottomNavigationBar(
             currentIndex: viewModel.currentTab,
@@ -37,7 +38,7 @@ class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetM
             backgroundColor: UIColor.white,
             iconSize: 30.w,
             selectedItemColor: UIColor.primary,
-            unselectedItemColor: UIColor.text_secondary,
+            unselectedItemColor: UIColor.textSecondary,
             items: [
               BottomNavigationBarItem(
                   icon: Icon(

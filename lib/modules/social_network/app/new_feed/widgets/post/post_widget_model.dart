@@ -51,7 +51,10 @@ class PostWidgetModel extends BaseViewModel {
   void _loadComments(int pageKey) {
     call(
       () async {
-        post.comments = await _getCommentInPostUsecase.call(post.id!);
+        post.comments = await _getCommentInPostUsecase.call(post.id);
+        if (pagingController.itemList?.isEmpty == true) {
+          post.comments?.insert(0, Comment(id: 0, content: "content", postId: 0, creatorId: 0));
+        }
         if ((post.comments?.length ?? 0) < pageSize) {
           pagingController.appendLastPage(post.comments ?? []);
         } else {

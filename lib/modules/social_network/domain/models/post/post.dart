@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/aggregate/object_aggregate.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/medias.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 part 'post.g.dart';
@@ -12,7 +12,7 @@ part 'post.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Post {
   @JsonKey(name: "id")
-  int? id;
+  int id;
   @JsonKey(name: "content")
   String? content;
   @JsonKey(name: "is_closed")
@@ -22,9 +22,9 @@ class Post {
   @JsonKey(name: "creator_id")
   int? creatorId;
   @JsonKey(name: "type")
-  PostType? type;
+  PostType type;
   @JsonKey(name: "user")
-  User? creator;
+  User creator;
   @JsonKey(name: "is_liked")
   bool? isLiked;
   @JsonKey(name: "comments")
@@ -41,13 +41,13 @@ class Post {
   ObjectAggregate? mediasAggregate;
 
   Post({
-    this.id,
+    required this.id,
+    required this.creator,
+    required this.type,
+    this.creatorId,
     this.content,
     this.isClosed,
     this.createdAt,
-    this.creatorId,
-    this.type,
-    this.creator,
     this.isLiked,
     this.comments,
     this.pets,

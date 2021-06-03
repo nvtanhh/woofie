@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meowoof/theme/ui_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/theme/ui_color.dart';
 
 class MWLogo extends StatelessWidget {
   const MWLogo({Key? key}) : super(key: key);

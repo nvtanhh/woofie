@@ -10,10 +10,6 @@ import 'package:logger/logger.dart';
 import 'package:meowoof/configs/app_config.dart';
 import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/interceptors/jwt_interceptor.dart';
-import 'package:meowoof/core/logged_user.dart';
-import 'package:meowoof/core/services/bottom_sheet.dart';
-import 'package:meowoof/core/services/permissions.dart';
-import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,20 +52,7 @@ abstract class RegisterModule {
     return HasuraConnect(BackendConfig.BASE_HASURA_URL, interceptors: [interceptor]);
   }
 
-  @lazySingleton
+  @singleton
   @Named('current_user_storage')
   UserStorage getCurrentUserStorage(SharedPreferences prefs) => UserStorage(prefs, 'current_user');
-
-  @singleton
-  ToastService getToastService() => ToastService();
-
-  @lazySingleton
-  PermissionsService getPermissionsService() => PermissionsService(getToastService());
-
-  @lazySingleton
-  @singleton
-  LoggedUser getLoggedUser() => LoggedUser();
-
-  @lazySingleton
-  BottomSheetService getBottomSheetService() => BottomSheetService();
 }

@@ -2,18 +2,20 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/medias.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 
 part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User {
   @JsonKey(name: "id")
-  int? id;
+  int id;
   @JsonKey(name: "uid")
   String? uid;
   @JsonKey(name: "name")
   String? name;
+  @JsonKey(name: "bio")
+  String? bio;
   @JsonKey(name: "phone_number")
   String? phoneNumber;
   @JsonKey(name: "email")
@@ -24,16 +26,9 @@ class User {
   Media? avatar;
   @JsonKey(name: "avatar_url")
   String? avatarUrl;
-  User({
-    this.id,
-    this.uid,
-    this.name,
-    this.phoneNumber,
-    this.email,
-    this.pets,
-    this.avatar,
-    this.avatarUrl,
-  });
+  @JsonKey(name: "dob")
+  DateTime? dob;
+  User({required this.id, this.uid, this.name, this.phoneNumber, this.email, this.pets, this.avatar, this.avatarUrl, this.bio, this.dob});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

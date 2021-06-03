@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,7 +93,7 @@ class MWAvatar extends StatelessWidget {
       finalAvatarImage = _getAvatarPlaceholder(avatarSize);
     }
 
-    Widget avatar = ClipRRect(
+    final Widget avatar = ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius ?? avatarBorderRadius),
       child: finalAvatarImage,
     );

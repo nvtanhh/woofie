@@ -55,28 +55,24 @@ class WelcomeWidgetModel extends BaseViewModel {
 
   Future checkUserHavePetForNavigator() async {
     bool status = false;
-    await call(
-      () async {
-        await Future.delayed(const Duration(seconds: 2));
-        final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
-        if (haUser != null) {
-          status = await _checkUserHavePetUsecase.call(haUser.id!);
-          _userStorage.set(haUser);
-        } else {
-          return;
-        }
-      },
-      onSuccess: () {
-        if (!status) {
-          Get.offAll(() => AddPetWidget());
-        } else {
-          Get.offAll(() => HomeMenuWidget());
-        }
-      },
-      onFailure: (err) {
-        _firebaseAuth.currentUser?.getIdToken(true);
-        checkUserHavePetForNavigator();
-      },
-    );
+    await call(() async {
+      await Future.delayed(const Duration(seconds: 2));
+      final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
+      if (haUser != null) {
+        status = await _checkUserHavePetUsecase.call(haUser.id);
+        _userStorage.set(haUser);
+      } else {
+        return;
+      }
+    }, onSuccess: () {
+      if (!status) {
+        Get.offAll(() => AddPetWidget());
+      } else {
+        Get.offAll(() => HomeMenuWidget());
+      }
+    }, onFailure: (err) {
+      _firebaseAuth.currentUser?.getIdToken(true);
+      checkUserHavePetForNavigator();
+    });
   }
 }
