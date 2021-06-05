@@ -18,7 +18,7 @@ class AddPetRepository {
     return _addPetDatasource.getPetBreeds(petTypeId);
   }
 
-  Future<bool> addPet(Pet pet) {
+  Future<Pet> addPet(Pet pet) {
     return _addPetDatasource.addPet(pet);
   }
 }

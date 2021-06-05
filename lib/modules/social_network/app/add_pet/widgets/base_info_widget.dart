@@ -6,6 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/helpers/datetime_helper.dart';
+import 'package:meowoof/core/helpers/format_helper.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -16,11 +19,13 @@ class BaseInfoWidget extends StatelessWidget {
   final Rx<File?> _imageFile = Rx<File?>(null);
   final picker = ImagePicker();
   final _nameEditingController = TextEditingController();
-  final _ageEditingController = TextEditingController();
+  final _bioEditingController = TextEditingController();
   final Function(String) onNameChange;
-  final Function(String) onAgeChange;
+  final Function(String) onBioChange;
+  final Function(DateTime?) onAgeChange;
   final Function(File) onAvatarChange;
   final Function(Gender) onGenderChange;
+  final RxString ageData = RxString("");
 
   BaseInfoWidget({
     Key? key,
@@ -28,6 +33,7 @@ class BaseInfoWidget extends StatelessWidget {
     required this.onAgeChange,
     required this.onAvatarChange,
     required this.onGenderChange,
+    required this.onBioChange,
   }) : super(key: key);
 
   @override
@@ -103,10 +109,10 @@ class BaseInfoWidget extends StatelessWidget {
                           child: TextField(
                             controller: _nameEditingController,
                             decoration: InputDecoration(
-                              border: outlineInputBorder(),
-                              enabledBorder: outlineInputBorder(),
-                              focusedBorder: outlineInputBorder(),
-                            ),
+                                border: outlineInputBorder(),
+                                enabledBorder: outlineInputBorder(),
+                                focusedBorder: outlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w)),
                             onChanged: onNameChange,
                           ),
                         ),
@@ -120,16 +126,29 @@ class BaseInfoWidget extends StatelessWidget {
                         SizedBox(
                           height: 5.h,
                         ),
-                        SizedBox(
+                        Container(
                           height: 40.h,
-                          child: TextField(
-                            controller: _ageEditingController,
-                            decoration: InputDecoration(
-                              border: outlineInputBorder(),
-                              enabledBorder: outlineInputBorder(),
-                              focusedBorder: outlineInputBorder(),
-                            ),
-                            onChanged: onAgeChange,
+                          padding: EdgeInsets.only(left: 5.w),
+                          decoration: BoxDecoration(border: Border.all(color: UIColor.silverSand), borderRadius: BorderRadius.circular(5.r)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Obx(
+                                () => Text(
+                                  ageData.value.isEmpty ? "dd/mm/yyyy" : ageData.value,
+                                  style: ageData.value.isEmpty ? UITextStyle.second_12_medium : UITextStyle.text_body_12_w600,
+                                ),
+                              ),
+                              IconButton(
+                                icon: MWIcon(
+                                  MWIcons.calendar,
+                                  customSize: 20.w,
+                                  color: UIColor.primary,
+                                ),
+                                onPressed: () => onCalendarPress(),
+                                constraints: const BoxConstraints(),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(
@@ -196,6 +215,31 @@ class BaseInfoWidget extends StatelessWidget {
               ],
             ),
           ),
+          Column(
+            children: [
+              Text(
+                LocaleKeys.add_pet_pet_description.trans(),
+                style: UITextStyle.text_body_14_w600,
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              TextField(
+                controller: _bioEditingController,
+                decoration: InputDecoration(
+                  border: outlineInputBorder(),
+                  enabledBorder: outlineInputBorder(),
+                  focusedBorder: outlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 5.h,
+                    horizontal: 5.w,
+                  ),
+                  hintText: "Cute thân thiện",
+                  hintStyle: UITextStyle.second_14_medium,
+                ),onChanged: onBioChange,
+              )
+            ],
+          )
         ],
       ),
     );
@@ -230,4 +274,23 @@ class BaseInfoWidget extends StatelessWidget {
       onAvatarChange(_imageFile.value!);
     }
   }
+
+  DateTime? datePick;
+
+  Future onCalendarPress() async {
+    datePick = await showDatePicker(
+      context: Get.context!,
+      initialDate: datePick ?? DateTime.now(),
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now(),
+    );
+    if (datePick == null) {
+      return;
+    } else {
+      ageData.value = "${FormatHelper.formatDateTime(datePick, pattern: "dd/MM/yyyy")} (${DateTimeHelper.calcAge(datePick)})";
+      onAgeChange(datePick);
+    }
+  }
+
+  void onTapFieldAge() {}
 }

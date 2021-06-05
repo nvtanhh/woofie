@@ -10,12 +10,35 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
+// ignore: must_be_immutable
 class PetsWidget extends StatelessWidget {
   final List<Pet> pets;
   final Function(Pet)? onFollow;
   final bool isMyPets;
+  late RxList<Pet> _list;
 
-  const PetsWidget({Key? key, required this.pets, this.onFollow, required this.isMyPets}) : super(key: key);
+  PetsWidget({
+    Key? key,
+    required this.pets,
+    this.onFollow,
+    required this.isMyPets,
+  }) : super(key: key) {
+    if (pets.isNotEmpty) {
+      _list = RxList<Pet>();
+      _list.assignAll(pets);
+    }
+  }
+
+  Future obPressAddPet() async {
+    final petNew = await Get.to(
+      () => const AddPetWidget(
+        isAddMore: true,
+      ),
+    );
+    if (petNew != null) {
+      _list.add(petNew as Pet);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,52 +56,54 @@ class PetsWidget extends StatelessWidget {
           height: 180.h,
           child: pets.isEmpty
               ? Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
-              : ListView.builder(
-                  itemBuilder: (context, index) {
-                    if (isMyPets && index == pets.length) {
-                      return Container(
-                        width: 115.w,
-                        height: 180.h,
-                        margin: EdgeInsets.all(5.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: UIColor.dimGray,
-                              blurRadius: 5,
-                              offset: Offset(2, 0),
-                              spreadRadius: 2,
-                            ),
-                          ],
-                          color: UIColor.white,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () => Get.to(() => AddPetWidget()),
-                              icon: const Icon(
-                                Icons.add_box_outlined,
-                                color: UIColor.textBody,
+              : Obx(
+                  () => ListView.builder(
+                    itemBuilder: (context, index) {
+                      if (isMyPets && index == _list.length) {
+                        return Container(
+                          width: 115.w,
+                          height: 180.h,
+                          margin: EdgeInsets.all(5.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: UIColor.dimGray,
+                                blurRadius: 5,
+                                offset: Offset(2, 0),
+                                spreadRadius: 2,
                               ),
-                            ),
-                            Text(
-                              LocaleKeys.profile_add_pet.trans(),
-                              style: UITextStyle.text_body_12_w600,
-                            ),
-                          ],
-                        ),
+                            ],
+                            color: UIColor.white,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                onPressed: () => obPressAddPet(),
+                                icon: const Icon(
+                                  Icons.add_box_outlined,
+                                  color: UIColor.textBody,
+                                ),
+                              ),
+                              Text(
+                                LocaleKeys.profile_add_pet.trans(),
+                                style: UITextStyle.text_body_12_w600,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return PreviewFollowPet(
+                        pet: _list[index],
+                        onFollow: onFollow,
+                        margin: EdgeInsets.all(5.w),
+                        isMyPet: isMyPets,
                       );
-                    }
-                    return PreviewFollowPet(
-                      pet: pets[index],
-                      onFollow: onFollow,
-                      margin: EdgeInsets.all(5.w),
-                      isMyPet: isMyPets,
-                    );
-                  },
-                  itemCount: isMyPets ? pets.length + 1 : pets.length,
-                  scrollDirection: Axis.horizontal,
+                    },
+                    itemCount: isMyPets ? _list.length + 1 : _list.length,
+                    scrollDirection: Axis.horizontal,
+                  ),
                 ),
         ),
         SizedBox(

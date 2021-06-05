@@ -64,7 +64,7 @@ class DateTimeHelper {
     if (dob == null) return "Unknown";
     final age = AgeCalculator.age(dob);
     if (age.years == 0) {
-      return age.months.toString();
+      return "${age.months.toString()} M";
     } else {
       return "${age.years}Y/${age.months}M";
     }
