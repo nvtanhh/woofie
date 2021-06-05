@@ -23,6 +23,7 @@ class PetProfileModel extends BaseViewModel {
 
   void onTabChange(int value) {
     tabIndex = value;
+    return;
   }
 
   void onAddVaccinatedClick() {

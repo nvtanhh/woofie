@@ -66,7 +66,7 @@ class WelcomeWidgetModel extends BaseViewModel {
       }
     }, onSuccess: () {
       if (!status) {
-        Get.offAll(() => AddPetWidget());
+        Get.offAll(() => const AddPetWidget());
       } else {
         Get.offAll(() => HomeMenuWidget());
       }

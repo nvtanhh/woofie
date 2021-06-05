@@ -71,7 +71,7 @@ class LoginWidgetModel extends BaseViewModel {
               await _saveUserToLocalUsecase.call(haUser);
               final status = await _checkUserHavePetUsecase.call(haUser.id);
               if (!status) {
-                await Get.offAll(() => AddPetWidget());
+                await Get.offAll(() => const AddPetWidget());
               } else {
                 await Get.offAll(() => HomeMenuWidget());
               }

@@ -14,6 +14,7 @@ import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
+// ignore: must_be_immutable
 class BaseInfoWidget extends StatelessWidget {
   final Rx<Gender> _genderSelected = Rx<Gender>(Gender.male);
   final Rx<File?> _imageFile = Rx<File?>(null);
@@ -25,7 +26,7 @@ class BaseInfoWidget extends StatelessWidget {
   final Function(DateTime?) onAgeChange;
   final Function(File) onAvatarChange;
   final Function(Gender) onGenderChange;
-  final RxString ageData = RxString("");
+  final RxString _ageData = RxString("");
 
   BaseInfoWidget({
     Key? key,
@@ -135,8 +136,8 @@ class BaseInfoWidget extends StatelessWidget {
                             children: [
                               Obx(
                                 () => Text(
-                                  ageData.value.isEmpty ? "dd/mm/yyyy" : ageData.value,
-                                  style: ageData.value.isEmpty ? UITextStyle.second_12_medium : UITextStyle.text_body_12_w600,
+                                  _ageData.value.isEmpty ? "dd/mm/yyyy" : _ageData.value,
+                                  style: _ageData.value.isEmpty ? UITextStyle.second_12_medium : UITextStyle.text_body_12_w600,
                                 ),
                               ),
                               IconButton(
@@ -287,7 +288,7 @@ class BaseInfoWidget extends StatelessWidget {
     if (datePick == null) {
       return;
     } else {
-      ageData.value = "${FormatHelper.formatDateTime(datePick, pattern: "dd/MM/yyyy")} (${DateTimeHelper.calcAge(datePick)})";
+      _ageData.value = "${FormatHelper.formatDateTime(datePick, pattern: "dd/MM/yyyy")} (${DateTimeHelper.calcAge(datePick)})";
       onAgeChange(datePick);
     }
   }
