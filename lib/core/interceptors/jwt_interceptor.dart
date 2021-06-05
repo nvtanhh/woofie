@@ -12,12 +12,7 @@ class JwtInterceptor extends Interceptor {
   JwtInterceptor(this.auth);
 
   @override
-  Future onError(HasuraError request) async {
-    await Fluttertoast.showToast(
-      msg: request.message,
-    );
-    printError(info: request.message);
-  }
+  Future onError(HasuraError request) async {}
 
   @override
   Future onResponse(Response data) async {
@@ -36,11 +31,11 @@ class JwtInterceptor extends Interceptor {
     if (jwtToken != null) {
       try {
         request.headers["Authorization"] = "Bearer $jwtToken";
-        printInfo(info: jwtToken.substring(0, (jwtToken.length / 2).floor() + 3));
-        printInfo(info: jwtToken.substring((jwtToken.length / 2).floor(), jwtToken.length));
+        // printInfo(info: jwtToken.substring(0, (jwtToken.length / 2).floor() + 3));
+        // printInfo(info: jwtToken.substring((jwtToken.length / 2).floor(), jwtToken.length));
         return request;
       } catch (e) {
-        return null;
+        await Get.offAll(WelcomeWidget());
       }
     } else {
       await Get.offAll(WelcomeWidget());

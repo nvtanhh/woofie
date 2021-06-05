@@ -50,7 +50,7 @@ class PreviewFollowPet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ImageWithPlaceHolderWidget(
-              imageUrl: pet.avatar ?? "",
+              imageUrl: pet.avatar?.url ?? "",
               width: 60.w,
               height: 60.w,
               radius: 10.r,

@@ -43,7 +43,9 @@ class OtherInfoMenuWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 20.h,),
+              SizedBox(
+                height: 20.h,
+              ),
               InkWell(
                 child: Row(
                   children: [

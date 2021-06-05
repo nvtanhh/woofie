@@ -1,9 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/user_datasource.dart';
-import 'package:meowoof/modules/social_network/domain/models/aggregate/aggregate.dart';
-import 'package:meowoof/modules/social_network/domain/models/aggregate/object_aggregate.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
@@ -70,7 +69,11 @@ class ProfileRepository {
     return Pet(
         id: 0,
         name: "Vàng",
-        avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+        avatar: Media(
+          id: 0,
+          url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+          type: MediaType.image,
+        ),
         bio: "Helo",
         dob: DateTime(2019, 5, 4),
         gender: Gender.male,

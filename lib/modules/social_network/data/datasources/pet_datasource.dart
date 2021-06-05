@@ -45,12 +45,11 @@ class PetDatasource {
   }
 
   Future<bool> addPet(Pet pet) async {
-    final mutationInsertPet = """
-    mutation insert_pet {
-    insert_pets(objects: {avatar: "${pet.avatar}", gender: ${pet.gender?.index}, id_pet_breed: ${pet.petBreedId}, id_pet_type: ${pet.petTypeId}, name: "${pet.name}"}) {
-    affected_rows
-    }
-    }
+    final mutationInsertPet = """mutation MyMutation {
+  insert_pets_one(object: {bio: "${pet.bio ?? ""}",avatar_current: {data: {url: "${pet.avatar?.url ?? ""}"}}, dob: "${(pet.dob ?? "").toString()}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId!}, pet_type_id: ${pet.petTypeId!}}) {
+    id
+  }
+}
     """;
     final data = await _hasuraConnect.mutation(mutationInsertPet);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pets"] as Map;

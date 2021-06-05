@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
@@ -21,15 +22,23 @@ class UserDatasource {
         Pet(
           id: 0,
           name: "Vàng",
-          dob: DateTime.now().subtract(Duration(days: 100)),
-          avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+          dob: DateTime.now().subtract(const Duration(days: 100)),
+          avatar: Media(
+            id: 0,
+            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+            type: MediaType.image,
+          ),
           bio: "Thích chơi ngu lấy tiếng",
         ),
         Pet(
           id: 1,
-          dob: DateTime.now().subtract(Duration(days: 200)),
+          dob: DateTime.now().subtract(const Duration(days: 200)),
           name: "Đỏ",
-          avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+          avatar: Media(
+            id: 0,
+            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+            type: MediaType.image,
+          ),
           bio: "Siêu ngốc",
         ),
       ],

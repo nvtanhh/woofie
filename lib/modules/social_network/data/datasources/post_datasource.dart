@@ -29,8 +29,22 @@ class PostDatasource {
           avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
       isLiked: false,
       pets: [
-        Pet(id: 0, name: "Vàng", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
-        Pet(id: 1, name: "Đỏ", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
+        Pet(
+            id: 0,
+            name: "Vàng",
+            avatar: Media(
+              id: 0,
+              url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+              type: MediaType.image,
+            )),
+        Pet(
+            id: 1,
+            name: "Đỏ",
+            avatar: Media(
+              id: 0,
+              url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+              type: MediaType.image,
+            )),
       ],
     );
     post.medias = <Media>[
@@ -111,19 +125,41 @@ class PostDatasource {
             Pet(
                 id: 0,
                 name: "Vàng",
-                avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+                avatar: Media(
+                  id: 0,
+                  url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+                  type: MediaType.image,
+                ),
                 bio: "Siêu ngu"),
             Pet(
                 id: 1,
                 name: "Đỏ",
-                avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+                avatar: Media(
+                  id: 0,
+                  url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+                  type: MediaType.image,
+                ),
                 bio: "Siêu ngốc"),
           ],
           bio: "Người chơi hệ lười"),
       isLiked: false,
       pets: [
-        Pet(id: 0, name: "Vàng", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
-        Pet(id: 1, name: "Đỏ", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
+        Pet(
+            id: 0,
+            name: "Vàng",
+            avatar: Media(
+              id: 0,
+              url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+              type: MediaType.image,
+            )),
+        Pet(
+            id: 1,
+            name: "Đỏ",
+            avatar: Media(
+              id: 0,
+              url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+              type: MediaType.image,
+            )),
       ],
     );
     post.medias = <Media>[
@@ -168,19 +204,41 @@ class PostDatasource {
             Pet(
                 id: petId,
                 name: "Vàng",
-                avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+                avatar: Media(
+                  id: 0,
+                  url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+                  type: MediaType.image,
+                ),
                 bio: "Siêu ngu"),
             Pet(
                 id: 0,
                 name: "Đỏ",
-                avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+                avatar: Media(
+                  id: 0,
+                  url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+                  type: MediaType.image,
+                ),
                 bio: "Siêu ngốc"),
           ],
           bio: "Người chơi hệ lười"),
       isLiked: false,
       pets: [
-        Pet(id: petId, name: "Vàng", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
-        Pet(id: 0, name: "Đỏ", avatar: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg"),
+        Pet(
+            id: petId,
+            name: "Vàng",
+            avatar: Media(
+              id: 0,
+              url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+              type: MediaType.image,
+            )),
+        Pet(
+            id: 0,
+            name: "Đỏ",
+            avatar: Media(
+              id: 0,
+              url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+              type: MediaType.image,
+            )),
       ],
     );
     post.medias = <Media>[
