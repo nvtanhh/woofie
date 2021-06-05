@@ -75,7 +75,9 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                 thickness: 3.0,
               ),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 10.w,),
+            padding: EdgeInsets.symmetric(
+              horizontal: 10.w,
+            ),
             builder: TimelineTileBuilder.connected(
               indicatorBuilder: (context, index) {
                 return OutlinedDotIndicator(

@@ -12,12 +12,7 @@ class JwtInterceptor extends Interceptor {
   JwtInterceptor(this.auth);
 
   @override
-  Future onError(HasuraError request) async {
-    await Fluttertoast.showToast(
-      msg: request.message,
-    );
-    printError(info: request.message);
-  }
+  Future onError(HasuraError request) async {}
 
   @override
   Future onResponse(Response data) async {

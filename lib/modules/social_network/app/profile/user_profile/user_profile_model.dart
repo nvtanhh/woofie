@@ -5,6 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
+import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -24,6 +26,7 @@ class UserProfileModel extends BaseViewModel {
   final GetPostOfUserUsecase _getPostOfUserUsecase;
   final BottomSheetService _bottomSheetService;
   final LikePostUsecase _likePostUsecase;
+  final LogoutUsecase _logoutUsecase;
   late List<Post> posts;
   final RxBool _isLoaded = RxBool(false);
   CancelableOperation? _cancelableOperationLoadInit, _cancelableOperationLoadMorePost;
@@ -33,6 +36,7 @@ class UserProfileModel extends BaseViewModel {
     this._getPostOfUserUsecase,
     this._bottomSheetService,
     this._likePostUsecase,
+    this._logoutUsecase,
   );
 
   @override
@@ -109,5 +113,10 @@ class UserProfileModel extends BaseViewModel {
     _cancelableOperationLoadMorePost?.cancel();
     pagingController.dispose();
     super.disposeState();
+  }
+
+  Future onTabLogout() async {
+    await _logoutUsecase.call();
+    await Get.offAll(() => WelcomeWidget());
   }
 }

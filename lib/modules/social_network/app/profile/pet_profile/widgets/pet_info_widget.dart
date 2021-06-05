@@ -38,7 +38,7 @@ class PetInfoWidget extends StatelessWidget {
           height: 5.h,
         ),
         MWAvatar(
-          avatarUrl: pet.avatar,
+          avatarUrl: pet.avatar?.url,
           customSize: 80.w,
           borderRadius: 15.r,
         ),
