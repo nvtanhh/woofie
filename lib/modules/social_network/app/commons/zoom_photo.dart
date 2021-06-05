@@ -148,7 +148,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
 
   void _setBackToOrginalPosition() {
     setState(() {
-      _offset = Tween<Offset>(begin: Offset(_posX, _posY), end: Offset(0.0, 0.0)).chain(CurveTween(curve: Curves.easeInOutSine)).animate(_controller)
+      _offset = Tween<Offset>(begin: Offset(_posX, _posY), end: const Offset(0.0, 0.0)).chain(CurveTween(curve: Curves.easeInOutSine)).animate(_controller)
         ..addListener(() {
           _posX = _offset.value.dx;
           _posY = _offset.value.dy;

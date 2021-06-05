@@ -15,9 +15,7 @@ class HasuraDatasource {
   pet_owners_aggregate(where: {owner_id: {_eq: $userId}}) {
     aggregate {
       count(columns: owner_id)
-    }
-  }
-}
+    }}}
     """;
     final data = await _hasuraConnect.query(queryCountPetFromUser);
     try {
@@ -43,11 +41,12 @@ class HasuraDatasource {
     }
     email
     id
-    name
     phone_number
     uid
-  }
-  }
+    dob
+    bio
+    }
+    }
     """;
     final data = await _hasuraConnect.query(queryGetUser);
     final listUser = GetMapFromHasura.getMap(data as Map)["users"] as List;

@@ -37,7 +37,10 @@
     "male": "Đực",
     "female": "Cái",
     "age": "Tuổi",
-    "gender": "Giới tính"
+    "gender": "Giới tính",
+    "age_invalid": "Tuổi không hợp lệ!",
+    "name_invalid": "Tên không hợp lệ!",
+    "pet_description": "Mô tả thú cưng"
   },
   "new_feed": {
     "with": "cùng với",
@@ -87,7 +90,8 @@
     "other_information": "Thông tin khác",
     "origin_information": "Thông tin xuất xứ",
     "pet_owners": "Các đời chủ nuôi",
-    "now": "Hiện tại"
+    "now": "Hiện tại",
+    "logout": "Đăng xuất"
   },
   "year": "năm",
   "month": "tháng",

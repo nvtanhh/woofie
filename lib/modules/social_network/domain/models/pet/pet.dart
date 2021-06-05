@@ -7,6 +7,7 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 part 'pet.g.dart';
@@ -25,8 +26,8 @@ class Pet {
   Gender? gender;
   @JsonKey(name: "dob")
   DateTime? dob;
-  @JsonKey(name: "avatar")
-  String? avatar;
+  @JsonKey(name: "avatar_current")
+  Media? avatar;
   @JsonKey(name: "id_owner")
   String? ownerId;
   @JsonKey(name: "owner")

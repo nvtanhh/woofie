@@ -6,21 +6,22 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/register/register_widget.dart';
-import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_email_password_usecase.dart';
+import 'package:meowoof/modules/auth/domain/usecases/save_user_to_local_usecase.dart';
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
 import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
 
 @injectable
 class LoginWidgetModel extends BaseViewModel {
   final LoginWithEmailPasswordUsecase _loginWithEmailPasswordUsecase;
   final CheckUserHavePetUsecase _checkUserHavePetUsecase;
-  final UserStorage _userStorage;
   final GetUserUsecase _getUserUsecase;
+  final SaveUserToLocalUsecase _saveUserToLocalUsecase;
   final RxBool _showPassword = RxBool(false);
   final emailEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
@@ -30,8 +31,8 @@ class LoginWidgetModel extends BaseViewModel {
   LoginWidgetModel(
     this._loginWithEmailPasswordUsecase,
     this._checkUserHavePetUsecase,
-    @Named("current_user_storage") this._userStorage,
     this._getUserUsecase,
+    this._saveUserToLocalUsecase,
   );
 
   void onEyeClick() {
@@ -65,13 +66,23 @@ class LoginWidgetModel extends BaseViewModel {
         () async {
           await login();
           if (user != null) {
-            final haUser = await _getUserUsecase.call(user!.uid);
-            _userStorage.set(haUser!);
-            final status = await _checkUserHavePetUsecase.call(haUser.id);
-            if (!status) {
-              await Get.offAll(() => AddPetWidget());
+            final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
+            if (haUser != null) {
+              await _saveUserToLocalUsecase.call(haUser);
+              final status = await _checkUserHavePetUsecase.call(haUser.id);
+              if (!status) {
+                await Get.offAll(() => const AddPetWidget());
+              } else {
+                await Get.offAll(() => HomeMenuWidget());
+              }
             } else {
-              await Get.offAll(() => HomeMenuWidget());
+              Get.snackbar(
+                "Error",
+                "User not found!",
+                duration: const Duration(seconds: 4),
+                backgroundColor: UIColor.primary,
+                colorText: UIColor.white,
+              );
             }
           }
         },

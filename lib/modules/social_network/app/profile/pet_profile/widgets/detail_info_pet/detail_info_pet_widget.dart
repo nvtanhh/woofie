@@ -132,6 +132,5 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
   DetailInfoPetWidgetModel createViewModel() => injector<DetailInfoPetWidgetModel>();
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

@@ -37,7 +37,10 @@
     "male": "Male",
     "female": "Female",
     "age": "Age",
-    "gender": "Gender"
+    "gender": "Gender",
+    "age_invalid": "Name invalid!",
+    "name_invalid": "Age invalid!",
+    "pet_description": "Pet description"
   },
   "new_feed": {
     "with": "with",
@@ -73,7 +76,7 @@
     "post": "Posts",
     "follow": "Follow",
     "un_follow": "UnFollow",
-    "information":"Information",
+    "information": "Information",
     "medical_record": "Medical record",
     "weight": "Weight",
     "worm_flush": "Worm flushed",
@@ -87,7 +90,8 @@
     "other_information": "Other information",
     "origin_information": "Origin information",
     "pet_owners": "Pet owners",
-    "now": "Now"
+    "now": "Now",
+    "logout": "Logout"
   },
   "year": "year",
   "month": "month",

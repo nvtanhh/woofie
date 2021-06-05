@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
@@ -13,9 +12,6 @@ class JwtInterceptor extends Interceptor {
 
   @override
   Future onError(HasuraError request) async {
-    await Fluttertoast.showToast(
-      msg: request.message,
-    );
     printError(info: request.message);
   }
 
@@ -40,7 +36,7 @@ class JwtInterceptor extends Interceptor {
         printInfo(info: jwtToken.substring((jwtToken.length / 2).floor(), jwtToken.length));
         return request;
       } catch (e) {
-        return null;
+        await Get.offAll(WelcomeWidget());
       }
     } else {
       await Get.offAll(WelcomeWidget());

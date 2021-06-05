@@ -8,6 +8,7 @@ import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -39,8 +40,23 @@ class SavePostModel extends BaseViewModel {
         avatarUrl:
             'https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/162354720_1147808662336518_1297648803267744126_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=P68qZDEZZXIAX826eFN&_nc_ht=scontent.fhan2-3.fna&oh=e10ef4fe2b17089b3f9071aa6d611366&oe=60CEC5D6',
         pets: [
-          Pet(id: 1, name: "Vàng", avatar: 'https://p0.pikist.com/photos/657/191/cat-animal-eyes-kitten-head-cute-nature-predator-look-feline.jpg'),
-          Pet(id: 2, name: "Đỏ", avatar: 'https://p0.pikist.com/photos/389/595/animal-cat-cute-domestic-eyes-face-feline-fur-head.jpg'),
+          Pet(
+            id: 1,
+            name: "Vàng",
+            avatar: Media(
+              id: 0,
+              url: 'https://p0.pikist.com/photos/657/191/cat-animal-eyes-kitten-head-cute-nature-predator-look-feline.jpg',
+              type: MediaType.image,
+            ),
+          ),
+          Pet(
+              id: 2,
+              name: "Đỏ",
+              avatar: Media(
+                id: 0,
+                url: 'https://p0.pikist.com/photos/389/595/animal-cat-cute-domestic-eyes-face-feline-fur-head.jpg',
+                type: MediaType.image,
+              )),
         ],
       );
     }
