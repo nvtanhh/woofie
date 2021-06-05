@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
@@ -21,11 +25,13 @@ class AddPetWidgetModel extends BaseViewModel {
   final RxInt _currentStepAddPet = RxInt(1);
   final RxInt _indexPetTypeSelected = RxInt(-1);
   final RxInt _indexPetBreedSelected = RxInt(-1);
+  final ToastService _toastService;
   PetType? petTypeSelected;
   PetBreed? petBreedSelected;
   late Pet pet;
+  bool? isAddMore;
 
-  AddPetWidgetModel(this._getPetTypesUsecase, this._getPetBreedUsecase, this._addPetUsecase);
+  AddPetWidgetModel(this._getPetTypesUsecase, this._getPetBreedUsecase, this._addPetUsecase, this._toastService);
 
   @override
   void initState() {
@@ -72,11 +78,32 @@ class AddPetWidgetModel extends BaseViewModel {
     }
   }
 
+  bool validate() {
+    if (pet.name == null || pet.name?.isEmpty == true) {
+      _toastService.warning(message: LocaleKeys.add_pet_name_invalid.trans(), context: Get.context!);
+      return false;
+    }
+    if (pet.dob == null) {
+      _toastService.warning(message: LocaleKeys.add_pet_age_invalid.trans(), context: Get.context!);
+      return false;
+    }
+    return true;
+  }
+
   void onDone() {
+    if (!validate()) return;
     call(
-      () => _addPetUsecase.call(pet),
-      onSuccess: () {},
-      onFailure: (err) {},
+      () async => pet = await _addPetUsecase.call(pet),
+      onSuccess: () {
+        if (isAddMore == true) {
+          Get.back(result: pet);
+        } else {
+          Get.offAll(() => HomeMenuWidget());
+        }
+      },
+      onFailure: (err) {
+        printInfo(info: err.toString());
+      },
     );
   }
 
@@ -85,7 +112,10 @@ class AddPetWidgetModel extends BaseViewModel {
     return;
   }
 
-  void onAgeChange(String age) {}
+  void onAgeChange(DateTime? age) {
+    pet.dob = age;
+    return;
+  }
 
   void onAvatarChange(File avatar) {}
 
@@ -93,7 +123,10 @@ class AddPetWidgetModel extends BaseViewModel {
     pet.gender = gender;
     return;
   }
-
+  void onBioChange(String bio) {
+    pet.bio = bio;
+    return;
+  }
   List<PetType> get petTypes => _petTypes.toList();
 
   set petTypes(List<PetType> value) {
@@ -123,4 +156,5 @@ class AddPetWidgetModel extends BaseViewModel {
   set indexPetBreedSelected(int value) {
     _indexPetBreedSelected.value = value;
   }
+
 }

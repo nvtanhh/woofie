@@ -37,7 +37,10 @@
     "male": "Đực",
     "female": "Cái",
     "age": "Tuổi",
-    "gender": "Giới tính"
+    "gender": "Giới tính",
+    "age_invalid": "Tuổi không hợp lệ!",
+    "name_invalid": "Tên không hợp lệ!",
+    "pet_description": "Mô tả thú cưng"
   },
   "new_feed": {
     "with": "cùng với",

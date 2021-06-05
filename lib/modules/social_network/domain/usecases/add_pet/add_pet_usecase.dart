@@ -8,7 +8,7 @@ class AddPetUsecase {
 
   AddPetUsecase(this._addPetRepository);
 
-  Future<bool> call(Pet pet) {
+  Future<Pet> call(Pet pet) {
     return _addPetRepository.addPet(pet);
   }
 }

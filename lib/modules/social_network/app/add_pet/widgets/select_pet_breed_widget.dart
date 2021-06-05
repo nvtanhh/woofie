@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -16,6 +17,7 @@ class SelectPetBreedWidget extends StatelessWidget {
     required this.petBreeds,
     required this.selectedIndex,
     required this.onSelectedIndex,
+    
   }) : super(key: key);
 
   @override
@@ -42,21 +44,24 @@ class SelectPetBreedWidget extends StatelessWidget {
                 return InkWell(
                   onTap: () => onSelectedIndex(index),
                   child: Container(
-                    height: 80.h,
-                    margin: EdgeInsets.symmetric(vertical: 10.0.h),
+                    margin: EdgeInsets.symmetric(vertical: 10.h),
                     child: Row(
                       children: [
                         Container(
                           width: 70.w,
                           height: 80.0.h,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: UIColor.white,
-                              border: Border.all(color: index == selectedIndex ? UIColor.accent2 : UIColor.white),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                petBreeds[index].avatar ?? "",
-                              ))),
+                            borderRadius: BorderRadius.circular(10.r),
+                            color: UIColor.white,
+                            border: Border.all(color: index == selectedIndex ? UIColor.accent2 : UIColor.white),
+                          ),
+                          child: ImageWithPlaceHolderWidget(
+                            width: 70.w,
+                            height: 80.h,
+                            imageUrl: petBreeds[index].avatar??"",
+                            radius: 10.r,
+                            fit: BoxFit.scaleDown,
+                          ),
                         ),
                         SizedBox(
                           width: 17.w,

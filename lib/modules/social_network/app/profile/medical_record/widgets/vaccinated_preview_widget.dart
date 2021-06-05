@@ -78,12 +78,12 @@ class VaccinatedPreviewWidget extends StatelessWidget {
         )
       ];
     }
-    List<Widget> list = [];
+    final List<Widget> list = [];
     list.add(header);
     list.add(SizedBox(
       height: 10.h,
     ));
-    for (var vaccinate in vaccinates) {
+    for (final vaccinate in vaccinates) {
       list.add(SizedBox(
         height: 50.h,
         child: Row(
@@ -129,7 +129,7 @@ class VaccinatedPreviewWidget extends StatelessWidget {
       ));
     }
     list.add(
-      MWIcon(
+      const MWIcon(
         MWIcons.arrowDown,
       ),
     );

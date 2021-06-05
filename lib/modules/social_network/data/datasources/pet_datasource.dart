@@ -1,6 +1,7 @@
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
+import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
@@ -11,8 +12,12 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushe
 @lazySingleton
 class PetDatasource {
   final HasuraConnect _hasuraConnect;
+  final UserStorage _userStorage;
 
-  PetDatasource(this._hasuraConnect);
+  PetDatasource(
+    this._hasuraConnect,
+    @Named("current_user_storage") this._userStorage,
+  );
 
   Future<List<PetType>> getPetTypes() async {
     const queryGetPetTypes = """
@@ -44,20 +49,31 @@ class PetDatasource {
     return listPetType.map((e) => PetBreed.fromJson(e as Map<String, dynamic>)).toList();
   }
 
-  Future<bool> addPet(Pet pet) async {
-    final mutationInsertPet = """mutation MyMutation {
-  insert_pets_one(object: {bio: "${pet.bio ?? ""}",avatar_current: {data: {url: "${pet.avatar?.url ?? ""}"}}, dob: "${(pet.dob ?? "").toString()}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId!}, pet_type_id: ${pet.petTypeId!}}) {
+  Future<Pet> addPet(Pet pet) async {
+    final userId = _userStorage.get()?.id;
+    if (userId == null) {
+      throw "Error";
+    }
+    final mutationInsertPet = """
+    mutation MyMutation {
+  insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_id: $userId}}, avatar_current: {data: {url: "${pet.avatar?.url ?? ""}"}}}) {
     id
+    name
+    dob
+    bio
+    avatar_current {
+      id
+      url
+      type
+    }
+    pet_breed_id
+    pet_type_id
   }
 }
     """;
     final data = await _hasuraConnect.mutation(mutationInsertPet);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pets"] as Map;
-    if ((affectedRows["affected_rows"] as int) >= 1) {
-      return true;
-    } else {
-      return false;
-    }
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pets_one"] as Map;
+    return Pet.fromJson(affectedRows as Map<String, dynamic>);
   }
 
   Future<List<PetVaccinated>> getVaccinates(int idPet, int limit, int offset) async {

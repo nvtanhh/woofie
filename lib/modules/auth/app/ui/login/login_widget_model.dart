@@ -15,6 +15,7 @@ import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
+
 @injectable
 class LoginWidgetModel extends BaseViewModel {
   final LoginWithEmailPasswordUsecase _loginWithEmailPasswordUsecase;
@@ -30,7 +31,8 @@ class LoginWidgetModel extends BaseViewModel {
   LoginWidgetModel(
     this._loginWithEmailPasswordUsecase,
     this._checkUserHavePetUsecase,
-    this._getUserUsecase, this._saveUserToLocalUsecase,
+    this._getUserUsecase,
+    this._saveUserToLocalUsecase,
   );
 
   void onEyeClick() {
@@ -69,11 +71,11 @@ class LoginWidgetModel extends BaseViewModel {
               await _saveUserToLocalUsecase.call(haUser);
               final status = await _checkUserHavePetUsecase.call(haUser.id);
               if (!status) {
-                await Get.offAll(() => AddPetWidget());
+                await Get.offAll(() => const AddPetWidget());
               } else {
                 await Get.offAll(() => HomeMenuWidget());
               }
-            }else{
+            } else {
               Get.snackbar(
                 "Error",
                 "User not found!",

@@ -6,7 +6,7 @@ import 'package:meowoof/modules/social_network/app/profile/user_profile/user_pro
 import 'package:suga_core/suga_core.dart';
 
 class HomeMenuWidgetModel extends BaseViewModel {
-  List<Widget> listScreen = [NewFeedWidget(), ExploreWidget(), Container(), UserProfile()];
+  List<Widget> listScreen = [NewFeedWidget(), ExploreWidget(), Container(), const UserProfile()];
   late TabController tabController;
   final RxInt _currentTab = RxInt(0);
 
