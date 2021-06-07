@@ -14,6 +14,7 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
   late Function onAddWeightClick;
   late Function onAddWormFlushedClick;
   late Function onAddVaccinatedClick;
+  late Function(Pet) updatePet;
   final RxBool _isLoaded = RxBool(false);
   final GetDetailInfoPetUsecase _getDetailInfoPetUsecase;
 
@@ -26,13 +27,20 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
   }
 
   Future _loadPetDetailInfo() async {
-    try {
-      pet = await _getDetailInfoPetUsecase.call(pet.id);
-      _isLoaded.value = true;
-    } catch (e) {
-      printError(info: e.toString());
-      _isLoaded.value = false;
-    }
+    printInfo(info: "Load data");
+    await call(
+      () async {
+        pet = await _getDetailInfoPetUsecase.call(pet.id);
+      },
+      onSuccess: () {
+        _isLoaded.value = true;
+        updatePet(pet);
+      },
+      onFailure: (err) {
+        _isLoaded.value = false;
+      },
+      showLoading: false,
+    );
   }
 
   void onTabWeightChart() {

@@ -1,5 +1,6 @@
 import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -22,6 +23,7 @@ class Weight extends StatefulWidget {
   final Pet pet;
   final bool isMyPet;
   final bool? addData;
+
   const Weight({
     Key? key,
     required this.pet,
@@ -38,6 +40,10 @@ class _WeightState extends BaseViewState<Weight, WeightModel> {
   void loadArguments() {
     viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
+    viewModel.listWeightChart = widget.pet.petWeights ?? [];
+    if (widget.addData == true) {
+      SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.addWeightPress());
+    }
     super.loadArguments();
   }
 
@@ -66,19 +72,30 @@ class _WeightState extends BaseViewState<Weight, WeightModel> {
               SizedBox(
                 height: 10.h,
               ),
-              WeightChartPreviewWidget(
-                width: Get.width,
-                height: 180.h,
-                weights: viewModel.pet.petWeights ?? [],
-                isMyPet: viewModel.isMyPet,
-                onAddClick: viewModel.onAddClick,
+              Obx(
+                () {
+                  // ignore: unnecessary_null_comparison
+                  if (viewModel.listWeightChart != null) {
+                    return WeightChartPreviewWidget(
+                      width: Get.width,
+                      height: 180.h,
+                      weights: viewModel.listWeightChart,
+                      isMyPet: viewModel.isMyPet,
+                      onAddClick: () => viewModel.addWeightPress(),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
               ),
               SizedBox(
                 height: 20.h,
               ),
               if (viewModel.isMyPet)
                 MWButton(
-                  onPressed: () => viewModel.addWeight(),
+                  onPressed: () => viewModel.addWeightPress(),
                   minWidth: Get.width,
                   borderRadius: BorderRadius.circular(10.r),
                   child: Text(
@@ -91,6 +108,7 @@ class _WeightState extends BaseViewState<Weight, WeightModel> {
               ),
               Expanded(
                 child: PagedListView<int, PetWeight>(
+                  key: viewModel.gloalKey,
                   builderDelegate: PagedChildBuilderDelegate(
                     itemBuilder: (context, petWeight, index) {
                       if ((viewModel.pagingController.itemList?.length ?? 0) - 1 >= index + 1) {
@@ -102,7 +120,7 @@ class _WeightState extends BaseViewState<Weight, WeightModel> {
                           style: UITextStyle.text_header_14_w600,
                         ),
                         subtitle: Text(
-                          FormatHelper.formatDateTime(petWeight.createdAt, pattern: "MM/yyyy"),
+                          FormatHelper.formatDateTime(petWeight.date, pattern: "MM/yyyy"),
                           style: UITextStyle.text_secondary_10_w600,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -130,11 +148,17 @@ class _WeightState extends BaseViewState<Weight, WeightModel> {
                           ),
                         ),
                         trailing: Text(
-                          calcAgeFromWeight(viewModel.pet.dob, petWeight.createdAt),
+                          calcAgeFromWeight(viewModel.pet.dob, petWeight.date),
                           style: UITextStyle.text_secondary_12_w500,
                         ),
                       );
                     },
+                    noItemsFoundIndicatorBuilder: (_) => Center(
+                      child: Text(
+                        LocaleKeys.profile_not_have_data.trans(),
+                        style: UITextStyle.text_body_14_w600,
+                      ),
+                    ),
                   ),
                   pagingController: viewModel.pagingController,
                 ),

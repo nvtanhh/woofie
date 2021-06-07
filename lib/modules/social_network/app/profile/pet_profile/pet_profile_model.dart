@@ -14,7 +14,6 @@ class PetProfileModel extends BaseViewModel {
   final Rx<bool?> _isMyPet = Rx<bool?>(null);
   late TabController tabController;
   final RxInt _tabIndex = RxInt(0);
-
   void onPetBlock(Pet pet) {}
 
   void followPet(Pet pet) {}
@@ -26,9 +25,14 @@ class PetProfileModel extends BaseViewModel {
     return;
   }
 
+  void updatePet(Pet mypet) {
+    pet = mypet;
+    return;
+  }
+
   void onAddVaccinatedClick() {
     Get.to(
-      () => VaccinatedWidget(
+      VaccinatedWidget(
         petId: pet.id,
         isMyPet: isMyPet!,
         addData: true,
@@ -38,7 +42,7 @@ class PetProfileModel extends BaseViewModel {
 
   void onAddWeightClick() {
     Get.to(
-      () => Weight(
+      Weight(
         pet: pet,
         isMyPet: isMyPet!,
         addData: true,
@@ -48,7 +52,7 @@ class PetProfileModel extends BaseViewModel {
 
   void onAddWormFlushedClick() {
     Get.to(
-      () => WormFlushedWidget(
+      WormFlushedWidget(
         petId: pet.id,
         isMyPet: isMyPet!,
         addData: true,

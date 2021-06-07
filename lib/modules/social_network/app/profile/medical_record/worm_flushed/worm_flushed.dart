@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
@@ -30,8 +31,8 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
   void loadArguments() {
     viewModel.petId = widget.petId;
     viewModel.isMyPet = widget.isMyPet;
-    if (widget.addData != null && widget.addData == true) {
-      viewModel.showDialogAddWieght();
+    if (widget.addData == true) {
+      SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }
     super.loadArguments();
   }
@@ -55,7 +56,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h),
                 child: MWButton(
-                  onPressed: () => null,
+                  onPressed: () => viewModel.showDialogAddWeight(),
                   minWidth: 50.w,
                   child: Text(
                     LocaleKeys.profile_add.trans(),
@@ -90,6 +91,8 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                 Color? color;
                 if (index + 1 < viewModel.wormFlushes.length - 1) {
                   color = UIColor.primary;
+                } else {
+                  viewModel.getWormFlushes();
                 }
                 return SolidLineConnector(
                   indent: connectorType == ConnectorType.start ? 0 : 2.0,
@@ -105,7 +108,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                   children: [
                     Text(
                       FormatHelper.formatDateTime(
-                        viewModel.wormFlushes[index].createdAt,
+                        viewModel.wormFlushes[index].date,
                         pattern: "dd/MM/yyyy",
                       ),
                       style: UITextStyle.text_header_14_w600,
@@ -123,7 +126,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                   ],
                 ),
               ),
-              itemExtentBuilder: (_, __) {
+              itemExtentBuilder: (_, index) {
                 return 100.h;
               },
               itemCount: viewModel.wormFlushes.length,

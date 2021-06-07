@@ -12,10 +12,21 @@ class PetWormFlushed {
   int? petId;
   @JsonKey(name: "description")
   String? description;
+  @JsonKey(name: "date")
+  DateTime? date;
   @JsonKey(name: "created_at")
   DateTime? createdAt;
+  @JsonKey(name: "updated_at")
+  DateTime? updatedAt;
 
-  PetWormFlushed({required this.id, this.description, this.createdAt, this.petId});
+  PetWormFlushed({
+    required this.id,
+    this.description,
+    this.createdAt,
+    this.petId,
+    this.date,
+    this.updatedAt,
+  });
 
   factory PetWormFlushed.fromJson(Map<String, dynamic> json) => _$PetWormFlushedFromJson(json);
 

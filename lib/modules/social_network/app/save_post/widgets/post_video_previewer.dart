@@ -37,7 +37,7 @@ class PostVideoPreviewer extends StatelessWidget {
               );
             })
         : FutureBuilder<String?>(
-            future: injector<MediaService>().getVideoThumbnailFromUrl(postVideo!.url),
+            future: injector<MediaService>().getVideoThumbnailFromUrl(postVideo?.url ?? ""),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const SizedBox();
               return _wrapImageWidgetForThumbnail(

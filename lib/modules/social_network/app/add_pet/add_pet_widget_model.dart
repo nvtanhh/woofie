@@ -123,10 +123,12 @@ class AddPetWidgetModel extends BaseViewModel {
     pet.gender = gender;
     return;
   }
+
   void onBioChange(String bio) {
     pet.bio = bio;
     return;
   }
+
   List<PetType> get petTypes => _petTypes.toList();
 
   set petTypes(List<PetType> value) {
@@ -156,5 +158,4 @@ class AddPetWidgetModel extends BaseViewModel {
   set indexPetBreedSelected(int value) {
     _indexPetBreedSelected.value = value;
   }
-
 }

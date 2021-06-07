@@ -36,7 +36,7 @@ class PostImagePreviewer extends StatelessWidget {
                 fit: BoxFit.cover,
               )
             : ExtendedImage.network(
-                postMedia!.url,
+                postMedia!.url ?? "",
                 fit: BoxFit.cover,
                 retries: 0,
               ),

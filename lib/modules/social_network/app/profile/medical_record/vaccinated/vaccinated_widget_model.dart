@@ -17,16 +17,18 @@ class VaccinatedWidgetModel extends BaseViewModel {
 
   @override
   void initState() {
-    _getWormFlushes();
+    getVaccinates();
     super.initState();
   }
 
-  void showDialogAddWieght() {}
+  void showDialogAddWeight() {}
 
-  Future _getWormFlushes() async {
+  Future getVaccinates() async {
+    printInfo(info: _vaccinates.length.toString());
     _vaccinates.addAll(
       await _getVaccinatesUsecase.call(
         petId,
+        offset: _vaccinates.length,
       ),
     );
   }

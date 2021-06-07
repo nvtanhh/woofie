@@ -116,7 +116,7 @@ class VaccinatedPreviewWidget extends StatelessWidget {
                     height: 5.h,
                   ),
                   Text(
-                    FormatHelper.formatDateTime(vaccinate.createdAt, pattern: "dd/MM/yyyy"),
+                    FormatHelper.formatDateTime(vaccinate.date, pattern: "dd/MM/yyyy"),
                     style: UITextStyle.text_secondary_10_w600,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

@@ -36,7 +36,7 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
     viewModel.petId = widget.petId;
     viewModel.isMyPet = widget.isMyPet;
     if (widget.addData != null && widget.addData == true) {
-      viewModel.showDialogAddWieght();
+      viewModel.showDialogAddWeight();
     }
     super.loadArguments();
   }
@@ -80,7 +80,7 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
               oppositeContentsBuilder: (context, index) => Padding(
                 padding: EdgeInsets.only(right: 10.w),
                 child: Text(
-                  FormatHelper.formatDateTime(viewModel.vaccinates[index].createdAt, pattern: "dd/MM/yyyy"),
+                  FormatHelper.formatDateTime(viewModel.vaccinates[index].date, pattern: "dd/MM/yyyy"),
                   style: UITextStyle.text_secondary_12_w500,
                 ),
               ),
@@ -112,6 +112,8 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
                 Color? color;
                 if (index + 1 < viewModel.vaccinates.length - 1) {
                   color = UIColor.primary;
+                } else {
+                  viewModel.getVaccinates();
                 }
                 return SolidLineConnector(
                   indent: connectorType == ConnectorType.start ? 0 : 2.0,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
@@ -20,7 +21,7 @@ class User {
   String? phoneNumber;
   @JsonKey(name: "email")
   String? email;
-  @JsonKey(name: "pets")
+  @JsonKey(name: "pet_owners", fromJson: petsFromJson)
   List<Pet>? pets;
   @JsonKey(name: "avatar_current")
   Media? avatar;
@@ -28,6 +29,7 @@ class User {
   String? avatarUrl;
   @JsonKey(name: "dob")
   DateTime? dob;
+
   User({required this.id, this.uid, this.name, this.phoneNumber, this.email, this.pets, this.avatar, this.avatarUrl, this.bio, this.dob});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -37,4 +39,8 @@ class User {
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   String toJsonString() => json.encode(toJson());
+
+  static List<Pet>? petsFromJson(List<dynamic>? list) {
+    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
+  }
 }
