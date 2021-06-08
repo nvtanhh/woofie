@@ -4,6 +4,9 @@ import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccin
 import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_detail_info_pet_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -27,7 +30,6 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
   }
 
   Future _loadPetDetailInfo() async {
-    printInfo(info: "Load data");
     await call(
       () async {
         pet = await _getDetailInfoPetUsecase.call(pet.id);
@@ -48,6 +50,7 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
       () => Weight(
         pet: pet,
         isMyPet: isMyPet,
+        onAddWeight: onAddWeight,
       ),
     );
   }
@@ -57,6 +60,7 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
       () => WormFlushedWidget(
         petId: pet.id,
         isMyPet: isMyPet,
+        onAddWormFlushed: onAddWormFlush,
       ),
     );
   }
@@ -65,9 +69,27 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
     Get.to(
       () => VaccinatedWidget(
         petId: pet.id,
-        isMyPet: isMyPet,
+        isMyPet: isMyPet,onAddVaccinated: onAddVaccinated,
       ),
     );
+  }
+
+  void onAddWeight(PetWeight petWeight) {
+    pet.petWeights?.insert(0, petWeight);
+    if ((pet.petWeights?.length ?? 0) > 2) pet.petWeights?.removeLast();
+    updatePet(pet);
+  }
+
+  void onAddWormFlush(PetWormFlushed petWormFlushed) {
+    pet.petWormFlushes?.insert(0, petWormFlushed);
+    if ((pet.petWormFlushes?.length ?? 0) > 2) pet.petWormFlushes?.removeLast();
+    updatePet(pet);
+  }
+
+  void onAddVaccinated(PetVaccinated petVaccinated) {
+    pet.petVaccinates?.insert(0, petVaccinated);
+    if ((pet.petVaccinates?.length ?? 0) > 2) pet.petVaccinates?.removeLast();
+    updatePet(pet);
   }
 
   bool get isLoaded => _isLoaded.value;

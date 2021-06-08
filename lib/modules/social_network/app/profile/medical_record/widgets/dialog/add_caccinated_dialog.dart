@@ -8,18 +8,19 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/pick_date_widget.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
-class AddWormFlushedDialog extends StatelessWidget {
+class AddVaccinatedDialog extends StatelessWidget {
   final RxDouble weight = RxDouble(1);
   final _descriptionEditController = TextEditingController(text: "");
+  final _vaccineNameEditController = TextEditingController(text: "");
   double maxWeight = 20;
   double doubleValueParse = 0;
-  PetWormFlushed petWormFlushed = PetWormFlushed(id: 0);
+  PetVaccinated petVaccinated = PetVaccinated(id: 0);
 
-  AddWormFlushedDialog({
+  AddVaccinatedDialog({
     Key? key,
   }) : super(key: key);
   ToastService toastService = injector<ToastService>();
@@ -32,7 +33,7 @@ class AddWormFlushedDialog extends StatelessWidget {
       elevation: 0,
       child: Container(
         width: 400.w,
-        height: 300.h,
+        height: 400.h,
         decoration: BoxDecoration(
           color: UIColor.white,
           borderRadius: BorderRadius.circular(20.r),
@@ -49,7 +50,7 @@ class AddWormFlushedDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        LocaleKeys.profile_worm_flush.trans(),
+                        LocaleKeys.profile_vaccinated.trans(),
                         style: UITextStyle.text_header_18_w700,
                       ),
                     ],
@@ -59,7 +60,7 @@ class AddWormFlushedDialog extends StatelessWidget {
                   ),
                   Text(
                     LocaleKeys.profile_select_date.trans(),
-                    style: UITextStyle.text_header_18_w700,
+                    style: UITextStyle.text_header_18_w600,
                   ),
                   SizedBox(
                     height: 10.h,
@@ -69,8 +70,25 @@ class AddWormFlushedDialog extends StatelessWidget {
                     height: 10.h,
                   ),
                   Text(
+                    LocaleKeys.profile_vaccine_name.trans(),
+                    style: UITextStyle.text_header_18_w600,
+                  ),
+                  TextField(
+                    controller: _vaccineNameEditController,
+                    decoration: InputDecoration(
+                      border: outSizeBorder,
+                      enabledBorder: outSizeBorder,
+                      focusedBorder: outSizeBorder,
+                      contentPadding: EdgeInsets.all(5.w),
+                      suffixIcon: const MWIcon(MWIcons.edit,color: UIColor.accent,),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
                     LocaleKeys.profile_description.trans(),
-                    style: UITextStyle.text_header_18_w700,
+                    style: UITextStyle.text_header_18_w600,
                   ),
                   TextField(
                     controller: _descriptionEditController,
@@ -79,7 +97,7 @@ class AddWormFlushedDialog extends StatelessWidget {
                       enabledBorder: outSizeBorder,
                       focusedBorder: outSizeBorder,
                       contentPadding: EdgeInsets.all(5.w),
-                      suffix: const MWIcon(MWIcons.edit),
+                      suffixIcon: const MWIcon(MWIcons.edit,color: UIColor.accent,),
                     ),
                   )
                 ],
@@ -96,18 +114,18 @@ class AddWormFlushedDialog extends StatelessWidget {
                   },
                   child: Text(
                     LocaleKeys.profile_cancel.trans(),
-                    style: UITextStyle.white_18_w500,
+                    style: UITextStyle.white_16_w500,
                   ),
                 ),
                 MWButton(
                   onPressed: () {
                     if (validate()) {
-                      Get.back(result: petWormFlushed);
+                      Get.back(result: petVaccinated);
                     }
                   },
                   child: Text(
                     LocaleKeys.profile_add.trans(),
-                    style: UITextStyle.white_18_w500,
+                    style: UITextStyle.white_16_w500,
                   ),
                 ),
               ],
@@ -119,8 +137,13 @@ class AddWormFlushedDialog extends StatelessWidget {
   }
 
   bool validate() {
-    petWormFlushed.description = _descriptionEditController.text;
-    if (petWormFlushed.date == null) {
+    petVaccinated.description = _descriptionEditController.text;
+    petVaccinated.name = _vaccineNameEditController.text;
+    if (petVaccinated.name == null || petVaccinated.name?.isEmpty == true) {
+      toastService.warning(message: LocaleKeys.profile_vaccinate_name_invalid.trans(), context: Get.context!);
+      return false;
+    }
+    if (petVaccinated.date == null) {
       toastService.warning(message: LocaleKeys.profile_date_invalid.trans(), context: Get.context!);
       return false;
     }
@@ -128,7 +151,7 @@ class AddWormFlushedDialog extends StatelessWidget {
   }
 
   void onDateSelected(DateTime date) {
-    petWormFlushed.date = date;
+    petVaccinated.date = date;
     return;
   }
 }

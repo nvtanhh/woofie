@@ -44,7 +44,7 @@ class WormFlushedPreviewWidget extends StatelessWidget {
       ),
       padding: EdgeInsets.all(10.w),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: genData(),
       ),
     );

@@ -102,5 +102,6 @@
   },
   "year": "năm",
   "month": "tháng",
-  "day": "ngày"
+  "day": "ngày",
+  "error": "Đã có lỗi xảy ra.Hãy thử lại"
 }

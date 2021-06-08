@@ -10,6 +10,7 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed_model.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
@@ -19,8 +20,15 @@ class WormFlushedWidget extends StatefulWidget {
   final int petId;
   final bool isMyPet;
   final bool? addData;
+  final Function(PetWormFlushed)? onAddWormFlushed;
 
-  const WormFlushedWidget({Key? key, required this.petId, required this.isMyPet, this.addData}) : super(key: key);
+  const WormFlushedWidget({
+    Key? key,
+    required this.petId,
+    required this.isMyPet,
+    this.addData,
+    this.onAddWormFlushed,
+  }) : super(key: key);
 
   @override
   _WormFlushedWidgetState createState() => _WormFlushedWidgetState();
@@ -31,6 +39,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
   void loadArguments() {
     viewModel.petId = widget.petId;
     viewModel.isMyPet = widget.isMyPet;
+    viewModel.onAddWormFlushed =widget.onAddWormFlushed;
     if (widget.addData == true) {
       SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }
@@ -81,6 +90,9 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
             ),
             builder: TimelineTileBuilder.connected(
               indicatorBuilder: (context, index) {
+                if (index == viewModel.wormFlushes.length - 1) {
+                  viewModel.getWormFlushes();
+                }
                 return OutlinedDotIndicator(
                   color: UIColor.primary,
                   borderWidth: 5,
@@ -91,8 +103,6 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                 Color? color;
                 if (index + 1 < viewModel.wormFlushes.length - 1) {
                   color = UIColor.primary;
-                } else {
-                  viewModel.getWormFlushes();
                 }
                 return SolidLineConnector(
                   indent: connectorType == ConnectorType.start ? 0 : 2.0,

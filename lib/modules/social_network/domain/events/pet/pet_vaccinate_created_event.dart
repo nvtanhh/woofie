@@ -1,7 +1,7 @@
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 
-class PetWormFlushCreatedEvent{
-  final PetWeight _petWeight;
+class PetVaccinateCreatedEvent{
+  final PetVaccinated _petVaccinated;
 
-  PetWormFlushCreatedEvent(this._petWeight);
+  PetVaccinateCreatedEvent(this._petVaccinated);
 }

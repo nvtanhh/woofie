@@ -102,5 +102,6 @@
   },
   "year": "year",
   "month": "month",
-  "day": "day"
+  "day": "day",
+  "error": "Error. Try late"
 }

@@ -23,12 +23,13 @@ class Weight extends StatefulWidget {
   final Pet pet;
   final bool isMyPet;
   final bool? addData;
-
+  final Function(PetWeight)? onAddWeight;
   const Weight({
     Key? key,
     required this.pet,
     required this.isMyPet,
     this.addData,
+    this.onAddWeight,
   }) : super(key: key);
 
   @override
@@ -40,6 +41,7 @@ class _WeightState extends BaseViewState<Weight, WeightModel> {
   void loadArguments() {
     viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
+    viewModel.onAddWeight = widget.onAddWeight;
     viewModel.listWeightChart = widget.pet.petWeights ?? [];
     if (widget.addData == true) {
       SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.addWeightPress());
@@ -73,22 +75,13 @@ class _WeightState extends BaseViewState<Weight, WeightModel> {
                 height: 10.h,
               ),
               Obx(
-                () {
-                  // ignore: unnecessary_null_comparison
-                  if (viewModel.listWeightChart != null) {
-                    return WeightChartPreviewWidget(
-                      width: Get.width,
-                      height: 180.h,
-                      weights: viewModel.listWeightChart,
-                      isMyPet: viewModel.isMyPet,
-                      onAddClick: () => viewModel.addWeightPress(),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
+                () =>WeightChartPreviewWidget(
+                  width: Get.width,
+                  height: 180.h,
+                  weights: viewModel.listWeightChart,
+                  isMyPet: viewModel.isMyPet,
+                  onAddClick: () => viewModel.addWeightPress(),
+                ),
               ),
               SizedBox(
                 height: 20.h,

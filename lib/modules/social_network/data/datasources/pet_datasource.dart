@@ -122,10 +122,29 @@ class PetDatasource {
   }
 
   Future<PetVaccinated> addVaccinated(PetVaccinated petVaccinated) async {
+    final manution = """
+mutation MyMutation {
+  insert_pet_vaccinateds_one(object: {vaccine_name: "${petVaccinated.name}", pet_id: ${petVaccinated.petId}, date: "${petVaccinated.date.toString()}", description: "${petVaccinated.description ?? ""}"}) {
+    id
+  }
+}
+""";
+    final data = await _hasuraConnect.mutation(manution);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pet_vaccinateds_one"] as Map;
+    petVaccinated.id = affectedRows["id"] as int;
     return petVaccinated;
   }
 
   Future<PetWormFlushed> addWormFlushed(PetWormFlushed petWormFlushed) async {
+    final manution = """
+    mutation MyMutation {
+  insert_pet_worm_flusheds_one(object: {date: "${petWormFlushed.date.toString()}", description: "${petWormFlushed.description}", pet_id: ${petWormFlushed.petId!}}) {
+    id
+  }}
+""";
+    final data = await _hasuraConnect.mutation(manution);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pet_worm_flusheds_one"] as Map;
+    petWormFlushed.id = affectedRows["id"] as int;
     return petWormFlushed;
   }
 
@@ -156,21 +175,21 @@ class PetDatasource {
     id
     name
     pet_vaccinateds(limit: 2, order_by: {created_at: desc, date: desc}) {
-      created_at
       description
       id
       vaccine_name
+      date
     }
     pet_weights(limit: 6, order_by: {created_at: desc, date: desc}) {
-      created_at
       id
       weight
       description
+      date
     }
     pet_worm_flusheds(limit: 2, order_by: {created_at: desc, date: desc}) {
-      created_at
       description
       id
+      date
     }
     pet_breed {
       name

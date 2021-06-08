@@ -20,9 +20,9 @@ class WeightModel extends BaseViewModel {
   late List<PetWeight> petWeights;
   int nextPageKey = 0;
   final RxList<PetWeight> _listWeightChart = <PetWeight>[].obs;
-  bool loadFormServer = true;
   PetWeight? petWeightNew;
   final gloalKey = GlobalKey();
+  Function(PetWeight)? onAddWeight;
 
   WeightModel(
     this._addWeightUsecase,
@@ -40,13 +40,8 @@ class WeightModel extends BaseViewModel {
   }
 
   Future _loadMorePost(int pageKey) async {
-    printInfo(info: "pageKey:$pageKey");
-    printInfo(info: "nextPageKey:$nextPageKey");
     try {
-      if (loadFormServer) {
-        petWeights = await _getWeightsUsecase.call(pet.id, offset: pageKey);
-      }
-      loadFormServer = true;
+      petWeights = await _getWeightsUsecase.call(pet.id, offset: pageKey);
       final isLastPage = petWeights.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(petWeights);
@@ -60,6 +55,7 @@ class WeightModel extends BaseViewModel {
   }
 
   Future addWeightPress() async {
+    petWeightNew = null;
     petWeightNew = await Get.dialog(
       AddWeightDialog(),
     ) as PetWeight?;
@@ -73,16 +69,15 @@ class WeightModel extends BaseViewModel {
         petWeightNew?.id = pet.id;
       },
       onSuccess: () {
+        onAddWeight?.call(petWeightNew!);
         pagingController.itemList?.insert.call(0, petWeightNew!);
-        petWeights = pagingController.itemList ?? [];
-        pagingController.notifyListeners();
         if ((pagingController.itemList?.length ?? 0) > 6) {
-          listWeightChart.assignAll(pagingController.itemList?.sublist.call(0, 5) ?? listWeightChart);
-          _listWeightChart.refresh();
+          petWeights = pagingController.itemList?.sublist(0, 6) ?? [];
+          listWeightChart = petWeights;
         } else {
-          listWeightChart.assignAll(pagingController.itemList ?? []);
-          _listWeightChart.refresh();
+          listWeightChart = pagingController.itemList ?? [];
         }
+        pagingController.notifyListeners();
       },
       onFailure: (err) {},
     );
