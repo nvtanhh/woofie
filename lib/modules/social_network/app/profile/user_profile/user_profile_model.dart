@@ -51,14 +51,19 @@ class UserProfileModel extends BaseViewModel {
 
   Future initData() async {
     await Future.wait([_getUserProfile(), _loadMorePost(nextPageKey)]);
-    pagingController.addPageRequestListener((pageKey) {
-      _cancelableOperationLoadMorePost = CancelableOperation.fromFuture(_loadMorePost(pageKey));
-    });
+    pagingController.addPageRequestListener(
+      (pageKey) {
+        _cancelableOperationLoadMorePost = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+      },
+    );
     isLoaded = true;
   }
 
   Future _getUserProfile() async {
-    return call(() async => user = await _getUseProfileUseacse.call(user!.id), showLoading: false);
+    return call(
+      () async => user = await _getUseProfileUseacse.call(user!.id),
+      showLoading: false,
+    );
   }
 
   Future _loadMorePost(int pageKey) async {

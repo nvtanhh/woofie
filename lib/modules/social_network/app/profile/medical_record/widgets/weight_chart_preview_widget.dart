@@ -32,7 +32,7 @@ class WeightChartPreviewWidget extends StatelessWidget {
     for (var i = 0; i < weights.length; i++) {
       showIndexes.add(i);
       allSpots.add(
-        FlSpot(i.toDouble(), weights[i].weight ?? 0),
+        FlSpot(i.toDouble(), weights[weights.length - i - 1].weight ?? 0),
       );
     }
     tooltipsOnBar = LineChartBarData(
@@ -133,7 +133,7 @@ class WeightChartPreviewWidget extends StatelessWidget {
                       bottomTitles: SideTitles(
                           showTitles: true,
                           getTitles: (val) {
-                            return FormatHelper.formatDateTime(weights[val.toInt()].createdAt, pattern: "MM/yyyy");
+                            return FormatHelper.formatDateTime(weights[val.toInt()].date, pattern: "MM/yyyy");
                           },
                           getTextStyles: (value) => UITextStyle.text_body_10_w500),
                     ),

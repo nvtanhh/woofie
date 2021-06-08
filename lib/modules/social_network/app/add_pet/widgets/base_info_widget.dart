@@ -237,7 +237,8 @@ class BaseInfoWidget extends StatelessWidget {
                   ),
                   hintText: "Cute thân thiện",
                   hintStyle: UITextStyle.second_14_medium,
-                ),onChanged: onBioChange,
+                ),
+                onChanged: onBioChange,
               )
             ],
           )

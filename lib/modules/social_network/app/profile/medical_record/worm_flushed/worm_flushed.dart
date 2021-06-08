@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
@@ -9,6 +10,7 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed_model.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
@@ -18,8 +20,15 @@ class WormFlushedWidget extends StatefulWidget {
   final int petId;
   final bool isMyPet;
   final bool? addData;
+  final Function(PetWormFlushed)? onAddWormFlushed;
 
-  const WormFlushedWidget({Key? key, required this.petId, required this.isMyPet, this.addData}) : super(key: key);
+  const WormFlushedWidget({
+    Key? key,
+    required this.petId,
+    required this.isMyPet,
+    this.addData,
+    this.onAddWormFlushed,
+  }) : super(key: key);
 
   @override
   _WormFlushedWidgetState createState() => _WormFlushedWidgetState();
@@ -30,8 +39,9 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
   void loadArguments() {
     viewModel.petId = widget.petId;
     viewModel.isMyPet = widget.isMyPet;
-    if (widget.addData != null && widget.addData == true) {
-      viewModel.showDialogAddWieght();
+    viewModel.onAddWormFlushed =widget.onAddWormFlushed;
+    if (widget.addData == true) {
+      SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }
     super.loadArguments();
   }
@@ -55,7 +65,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h),
                 child: MWButton(
-                  onPressed: () => null,
+                  onPressed: () => viewModel.showDialogAddWeight(),
                   minWidth: 50.w,
                   child: Text(
                     LocaleKeys.profile_add.trans(),
@@ -80,6 +90,9 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
             ),
             builder: TimelineTileBuilder.connected(
               indicatorBuilder: (context, index) {
+                if (index == viewModel.wormFlushes.length - 1) {
+                  viewModel.getWormFlushes();
+                }
                 return OutlinedDotIndicator(
                   color: UIColor.primary,
                   borderWidth: 5,
@@ -105,7 +118,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                   children: [
                     Text(
                       FormatHelper.formatDateTime(
-                        viewModel.wormFlushes[index].createdAt,
+                        viewModel.wormFlushes[index].date,
                         pattern: "dd/MM/yyyy",
                       ),
                       style: UITextStyle.text_header_14_w600,
@@ -123,7 +136,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                   ],
                 ),
               ),
-              itemExtentBuilder: (_, __) {
+              itemExtentBuilder: (_, index) {
                 return 100.h;
               },
               itemCount: viewModel.wormFlushes.length,

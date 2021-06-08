@@ -17,7 +17,6 @@ class SelectPetBreedWidget extends StatelessWidget {
     required this.petBreeds,
     required this.selectedIndex,
     required this.onSelectedIndex,
-    
   }) : super(key: key);
 
   @override
@@ -58,7 +57,7 @@ class SelectPetBreedWidget extends StatelessWidget {
                           child: ImageWithPlaceHolderWidget(
                             width: 70.w,
                             height: 80.h,
-                            imageUrl: petBreeds[index].avatar??"",
+                            imageUrl: petBreeds[index].avatar ?? "",
                             radius: 10.r,
                             fit: BoxFit.scaleDown,
                           ),

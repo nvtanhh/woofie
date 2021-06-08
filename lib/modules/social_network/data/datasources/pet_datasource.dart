@@ -26,7 +26,8 @@ class PetDatasource {
       id
       name
       descriptions
-      avatar}}
+      avatar
+      }}
     """;
     final data = await _hasuraConnect.query(queryGetPetTypes);
     final listPetType = GetMapFromHasura.getMap(data as Map)["pet_types"] as List;
@@ -41,8 +42,7 @@ class PetDatasource {
     id
     id_pet_type
     name
-    }
-    }
+    }}
     """;
     final data = await _hasuraConnect.query(queryGetPetBreeds);
     final listPetType = GetMapFromHasura.getMap(data as Map)["pet_breeds"] as List;
@@ -68,8 +68,7 @@ class PetDatasource {
     }
     pet_breed_id
     pet_type_id
-  }
-}
+  }}
     """;
     final data = await _hasuraConnect.mutation(mutationInsertPet);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pets_one"] as Map;
@@ -77,71 +76,128 @@ class PetDatasource {
   }
 
   Future<List<PetVaccinated>> getVaccinates(int idPet, int limit, int offset) async {
-    return [
-      PetVaccinated(
-        id: 0,
-        name: "Tiêm ngừa dại",
-        createdAt: DateTime(2021, 5, 15),
-        description: "mato",
-      ),
-      PetVaccinated(
-        id: 1,
-        name: "Tiêm ngừa uốn ván",
-        createdAt: DateTime(2021, 2, 15),
-        description: "mato",
-      ),
-      PetVaccinated(
-        id: 3,
-        name: "Tiêm ngừa ngừa ngu",
-        createdAt: DateTime(2021, 1, 15),
-        description: "Mato",
-      ),
-    ];
+    final query = """
+    query MyQuery {
+  pet_vaccinateds(limit: $limit, offset: $offset, where: {pet_id: {_eq: $idPet}}, order_by: {created_at: desc, date: desc}) {
+     created_at
+    description
+    date
+    id
+    vaccine_name
+  }}
+""";
+    final data = await _hasuraConnect.query(query);
+    final petVaccinates = GetMapFromHasura.getMap(data as Map)["pet_vaccinateds"] as List;
+    return petVaccinates.map((e) => PetVaccinated.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<List<PetWeight>> getWeights(int idPet, int limit, int offset) async {
-    return [
-      PetWeight(id: 0, createdAt: DateTime(2021, 5, 15), description: "ac", weight: 5),
-      PetWeight(id: 1, createdAt: DateTime(2021, 4, 15), description: "ac", weight: 3),
-      PetWeight(id: 2, createdAt: DateTime(2021, 3, 15), description: "ac", weight: 4),
-      PetWeight(id: 3, createdAt: DateTime(2021, 4, 15), description: "ac", weight: 5),
-    ];
+    final query = """
+    query MyQuery {
+  pet_weights(limit: $limit, offset: $offset, where: {pet_id: {_eq: $idPet}}, order_by: {created_at: desc, date: desc}) {
+    id
+    description
+    date
+    created_at
+    weight
+  }}
+""";
+    final data = await _hasuraConnect.query(query);
+    final petWeights = GetMapFromHasura.getMap(data as Map)["pet_weights"] as List;
+    return petWeights.map((e) => PetWeight.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<List<PetWormFlushed>> getWormFlushes(int idPet, int limit, int offset) async {
-    return [
-      PetWormFlushed(
-        id: 0,
-        description: "Sau khi xổ giun bé bị ói nhiều",
-        createdAt: DateTime(2021, 5, 15),
-      ),
-      PetWormFlushed(
-        id: 1,
-        description: "Sau khi xổ giun bé bị ói nhiều",
-        createdAt: DateTime(2021, 4, 15),
-      ),
-      PetWormFlushed(
-        id: 2,
-        description: "Sau khi xổ giun bé bị ói nhiều",
-        createdAt: DateTime(2021, 3, 15),
-      ),
-      PetWormFlushed(
-        id: 3,
-        description: "",
-        createdAt: DateTime(2021, 2, 15),
-      ),
-    ];
+    final query = """
+    query MyQuery {
+  pet_worm_flusheds(limit: $limit, offset: $offset, where: {pet_id: {_eq: $idPet}}, order_by: {created_at: desc, date: desc}) {
+    created_at
+    date
+    description
+    id}}
+""";
+    final data = await _hasuraConnect.query(query);
+    final petWormFlushes = GetMapFromHasura.getMap(data as Map)["pet_worm_flusheds"] as List;
+    return petWormFlushes.map((e) => PetWormFlushed.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<PetVaccinated> addVaccinated(PetVaccinated petVaccinated) async {
+    final manution = """
+mutation MyMutation {
+  insert_pet_vaccinateds_one(object: {vaccine_name: "${petVaccinated.name}", pet_id: ${petVaccinated.petId}, date: "${petVaccinated.date.toString()}", description: "${petVaccinated.description ?? ""}"}) {
+    id
+  }
+}
+""";
+    final data = await _hasuraConnect.mutation(manution);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pet_vaccinateds_one"] as Map;
+    petVaccinated.id = affectedRows["id"] as int;
     return petVaccinated;
   }
 
   Future<PetWormFlushed> addWormFlushed(PetWormFlushed petWormFlushed) async {
+    final manution = """
+    mutation MyMutation {
+  insert_pet_worm_flusheds_one(object: {date: "${petWormFlushed.date.toString()}", description: "${petWormFlushed.description}", pet_id: ${petWormFlushed.petId!}}) {
+    id
+  }}
+""";
+    final data = await _hasuraConnect.mutation(manution);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pet_worm_flusheds_one"] as Map;
+    petWormFlushed.id = affectedRows["id"] as int;
     return petWormFlushed;
   }
 
   Future<PetWeight> addWeight(PetWeight petWeight) async {
+    final manution = """
+    mutation MyMutation {
+  insert_pet_weights_one(object: {date: "${petWeight.date.toString()}", weight: "${petWeight.weight}", pet_id: ${petWeight.petId!}}) {
+    id
+  }}
+""";
+    final data = await _hasuraConnect.mutation(manution);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pet_weights_one"] as Map;
+    petWeight.id = affectedRows["id"] as int;
     return petWeight;
+  }
+
+  Future<Pet> getDetailInfoPet(int idPet) async {
+    final query = """
+    query MyQuery {
+  pets(limit: 1, where: {id: {_eq: $idPet}}) {
+    avatar_current {
+      url
+      id
+    }
+    bio
+    dob
+    gender
+    id
+    name
+    pet_vaccinateds(limit: 2, order_by: {created_at: desc, date: desc}) {
+      description
+      id
+      vaccine_name
+      date
+    }
+    pet_weights(limit: 6, order_by: {created_at: desc, date: desc}) {
+      id
+      weight
+      description
+      date
+    }
+    pet_worm_flusheds(limit: 2, order_by: {created_at: desc, date: desc}) {
+      description
+      id
+      date
+    }
+    pet_breed {
+      name
+      id
+    }}}
+    """;
+    final data = await _hasuraConnect.query(query);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["pets"] as List;
+    return Pet.fromJson(affectedRows[0] as Map<String, dynamic>);
   }
 }

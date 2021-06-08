@@ -32,9 +32,13 @@ class CardDetailWidget extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          Text(
-            value,
-            style: UITextStyle.text_header_14_w600,
+          Flexible(
+            child: Text(
+              value,
+              style: UITextStyle.text_header_14_w600,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),

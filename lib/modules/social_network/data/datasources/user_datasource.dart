@@ -1,10 +1,14 @@
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
+import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class UserDatasource {
+  final HasuraConnect _hasuraConnect;
+
+  UserDatasource(this._hasuraConnect);
+
   Future followPet(int petID) async {
     return;
   }
@@ -14,36 +18,37 @@ class UserDatasource {
   }
 
   Future<User> getUserProfile(int userId) async {
-    return User(
-      id: userId,
-      avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
-      name: "Bao Nguyen",
-      pets: [
-        Pet(
-          id: 0,
-          name: "Vàng",
-          dob: DateTime.now().subtract(const Duration(days: 100)),
-          avatar: Media(
-            id: 0,
-            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-            type: MediaType.image,
-          ),
-          bio: "Thích chơi ngu lấy tiếng",
-        ),
-        Pet(
-          id: 1,
-          dob: DateTime.now().subtract(const Duration(days: 200)),
-          name: "Đỏ",
-          avatar: Media(
-            id: 0,
-            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-            type: MediaType.image,
-          ),
-          bio: "Siêu ngốc",
-        ),
-      ],
-      bio: "Người chơi hệ lười",
-    );
+    final query = """
+    query MyQuery {
+  users(where: {id: {_eq: $userId}}) {
+    avatar_current {
+      id
+      type
+      url
+    }
+    id
+    dob
+    email
+    name
+    phone_number
+    bio
+    pet_owners {
+      pet {
+        id
+        bio
+        name
+        avatar_current {
+          id
+          url
+        }
+      }
+    }
+  }
+}
+""";
+    final data = await _hasuraConnect.query(query);
+    final listUser = GetMapFromHasura.getMap(data as Map)["users"] as List;
+    return User.fromJson(listUser[0] as Map<String, dynamic>);
   }
 
   Future reportUser(int userID) async {

@@ -64,40 +64,7 @@ class ProfileRepository {
   }
 
   Future<Pet> getDetailInfoPet(int idPet) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return Pet(
-        id: 0,
-        name: "Vàng",
-        avatar: Media(
-          id: 0,
-          url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-          type: MediaType.image,
-        ),
-        bio: "Helo",
-        dob: DateTime(2019, 5, 4),
-        gender: Gender.male,
-        petWeights: [
-          PetWeight(
-            id: 0,
-            createdAt: DateTime.now().subtract(const Duration(days: 3)),
-            weight: 2,
-          ),
-          PetWeight(
-            id: 1,
-            createdAt: DateTime.now().subtract(const Duration(days: 2)),
-            weight: 3,
-          ),
-          PetWeight(
-            id: 2,
-            createdAt: DateTime.now().subtract(const Duration(days: 1)),
-            weight: 2,
-          ),
-          PetWeight(
-            id: 3,
-            createdAt: DateTime.now(),
-            weight: 4,
-          ),
-        ]);
+    return _petDatasource.getDetailInfoPet(idPet);
   }
 
   Future followPet(int petID) {

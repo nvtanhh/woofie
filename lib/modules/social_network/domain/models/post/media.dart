@@ -9,14 +9,14 @@ class Media {
   @JsonKey(name: "id")
   int id;
   @JsonKey(name: "url")
-  String url;
+  String? url;
   @JsonKey(name: "type")
-  MediaType type;
+  MediaType? type;
 
   Media({
     required this.id,
-    required this.url,
-    required this.type,
+    this.url,
+    this.type,
   });
 
   factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);

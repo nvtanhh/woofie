@@ -10,6 +10,7 @@ import 'package:meowoof/core/ui/toast.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/splash/app/ui/splash_widget.dart';
 import 'package:meowoof/theme/ui_color.dart';
+import 'package:meowoof/theme/ui_text_style.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,6 +58,10 @@ class MyApp extends StatelessWidget {
               ),
             ),
             scaffoldBackgroundColor: UIColor.white,
+            sliderTheme: SliderThemeData(
+              valueIndicatorColor: UIColor.primary,
+              valueIndicatorTextStyle: UITextStyle.primary_14_w600,
+            ),
           ),
           builder: (BuildContext context, Widget? child) {
             return FlutterEasyLoading(child: child);
