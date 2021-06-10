@@ -69,7 +69,8 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
     Get.to(
       () => VaccinatedWidget(
         petId: pet.id,
-        isMyPet: isMyPet,onAddVaccinated: onAddVaccinated,
+        isMyPet: isMyPet,
+        onAddVaccinated: onAddVaccinated,
       ),
     );
   }

@@ -39,7 +39,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
   void loadArguments() {
     viewModel.petId = widget.petId;
     viewModel.isMyPet = widget.isMyPet;
-    viewModel.onAddWormFlushed =widget.onAddWormFlushed;
+    viewModel.onAddWormFlushed = widget.onAddWormFlushed;
     if (widget.addData == true) {
       SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }
