@@ -80,7 +80,10 @@ class AddVaccinatedDialog extends StatelessWidget {
                       enabledBorder: outSizeBorder,
                       focusedBorder: outSizeBorder,
                       contentPadding: EdgeInsets.all(5.w),
-                      suffixIcon: const MWIcon(MWIcons.edit,color: UIColor.accent,),
+                      suffixIcon: const MWIcon(
+                        MWIcons.edit,
+                        color: UIColor.accent,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -97,7 +100,10 @@ class AddVaccinatedDialog extends StatelessWidget {
                       enabledBorder: outSizeBorder,
                       focusedBorder: outSizeBorder,
                       contentPadding: EdgeInsets.all(5.w),
-                      suffixIcon: const MWIcon(MWIcons.edit,color: UIColor.accent,),
+                      suffixIcon: const MWIcon(
+                        MWIcons.edit,
+                        color: UIColor.accent,
+                      ),
                     ),
                   )
                 ],

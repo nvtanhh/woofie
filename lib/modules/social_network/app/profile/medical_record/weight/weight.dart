@@ -75,7 +75,7 @@ class _WeightState extends BaseViewState<Weight, WeightModel> {
                 height: 10.h,
               ),
               Obx(
-                () =>WeightChartPreviewWidget(
+                () => WeightChartPreviewWidget(
                   width: Get.width,
                   height: 180.h,
                   weights: viewModel.listWeightChart,
