@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/aggregate/object_aggregate.dart';
+import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
@@ -33,6 +34,8 @@ class Post {
   List<Pet>? pets;
   @JsonKey(name: "medias")
   List<Media>? medias;
+  @JsonKey(name: "location_post")
+  Location? location;
   @JsonKey(name: "post_reacts_aggregate")
   ObjectAggregate? postReactsAggregate;
   @JsonKey(name: "comments_aggregate")
@@ -51,6 +54,7 @@ class Post {
     this.isLiked,
     this.comments,
     this.pets,
+    this.location,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
