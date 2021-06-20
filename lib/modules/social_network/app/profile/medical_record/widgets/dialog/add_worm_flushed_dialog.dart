@@ -12,6 +12,7 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushe
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
+// ignore: must_be_immutable
 class AddWormFlushedDialog extends StatelessWidget {
   final RxDouble weight = RxDouble(1);
   final _descriptionEditController = TextEditingController(text: "");

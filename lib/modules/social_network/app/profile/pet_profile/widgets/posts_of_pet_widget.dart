@@ -8,6 +8,7 @@ import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_sh
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_posts_of_pet_usecase.dart';
 
+// ignore: must_be_immutable
 class PostsOfPetWidget extends StatelessWidget {
   final int idPet;
   final int pageSize = 10;

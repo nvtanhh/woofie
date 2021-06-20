@@ -31,14 +31,14 @@ class Setting extends StatelessWidget {
             style: UITextStyle.text_header_14_w600,
           ),
           ListTile(
-            leading: MWIcon(MWIcons.language),
+            leading: const MWIcon(MWIcons.language),
             title: Text(
               LocaleKeys.setting_application.trans(),
               style: UITextStyle.text_body_14_w500,
             ),
           ),
           ListTile(
-            leading: MWIcon(MWIcons.notificaiton),
+            leading: const MWIcon(MWIcons.notificaiton),
             title: Text(
               LocaleKeys.setting_notification.trans(),
               style: UITextStyle.text_body_14_w500,
