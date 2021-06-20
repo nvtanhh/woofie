@@ -8,6 +8,7 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 
 @lazySingleton
 class PetDatasource {
@@ -199,5 +200,33 @@ mutation MyMutation {
     final data = await _hasuraConnect.query(query);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["pets"] as List;
     return Pet.fromJson(affectedRows[0] as Map<String, dynamic>);
+  }
+
+  Future<List<Pet>> searchPet(String keyWord, int offset, int limit) async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (keyWord.isEmpty) {
+      return const <Pet>[];
+    } else {
+      return <Pet>[
+        Pet(
+          id: 0,
+          name: "Vàng",
+          avatar: Media(
+            id: 0,
+            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+            type: MediaType.image,
+          ),
+        ),
+        Pet(
+          id: 1,
+          name: "Đỏ",
+          avatar: Media(
+            id: 0,
+            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
+            type: MediaType.image,
+          ),
+        ),
+      ];
+    }
   }
 }
