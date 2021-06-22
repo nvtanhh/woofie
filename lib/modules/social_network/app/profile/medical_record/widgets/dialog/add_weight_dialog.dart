@@ -11,6 +11,7 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
+// ignore: must_be_immutable
 class AddWeightDialog extends StatelessWidget {
   final RxDouble weight = RxDouble(1);
   final _weightEditController = TextEditingController(text: "0.5");
