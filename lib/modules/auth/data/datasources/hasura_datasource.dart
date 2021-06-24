@@ -9,12 +9,12 @@ class HasuraDatasource {
 
   HasuraDatasource(this._hasuraConnect);
 
-  Future<bool> checkUseHavePet(int userId) async {
+  Future<bool> checkUseHavePet(String userUUID) async {
     final queryCountPetFromUser = """
    query MyQuery {
-  pet_owners_aggregate(where: {owner_id: {_eq: $userId}}) {
+  pet_owners_aggregate(where: {owner_uuid: {_eq: "$userUUID"}}) {
     aggregate {
-      count(columns: owner_id)
+      count(columns: owner_uuid)
     }}}
     """;
     final data = await _hasuraConnect.query(queryCountPetFromUser);
@@ -30,10 +30,10 @@ class HasuraDatasource {
     }
   }
 
-  Future<User?> getUser(String uid) async {
+  Future<User?> getUser(String uuid) async {
     final queryGetUser = """
    query MyQuery {
-   users(where: {uid: {_eq: "$uid"}}) {
+   users(where: {uuid: {_eq: "$uuid"}}) {
     avatar_current {
       type
       url
@@ -42,7 +42,7 @@ class HasuraDatasource {
     email
     id
     phone_number
-    uid
+    uuid
     dob
     bio
     }

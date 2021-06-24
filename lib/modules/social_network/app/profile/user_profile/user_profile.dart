@@ -10,6 +10,7 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile_model.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/info_user_widget.dart';
+import 'package:meowoof/modules/social_network/app/setting/setting.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -73,18 +74,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
           ),
         ),
         endDrawer: Drawer(
-          child: Column(
-            children: [
-              ListTile(
-                leading: const MWIcon(MWIcons.logout),
-                title: Text(
-                  LocaleKeys.profile_logout.trans(),
-                  style: UITextStyle.text_body_18_w500,
-                ),
-                onTap: () => viewModel.onTabLogout(),
-              )
-            ],
-          ),
+          child: Setting(),
         ),
       ),
     );

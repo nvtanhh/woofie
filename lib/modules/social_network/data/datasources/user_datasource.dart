@@ -32,6 +32,7 @@ class UserDatasource {
     name
     phone_number
     bio
+    uuid
     pet_owners {
       pet {
         id

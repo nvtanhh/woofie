@@ -20,8 +20,8 @@ class Post {
   bool? isClosed;
   @JsonKey(name: "created_at")
   DateTime? createdAt;
-  @JsonKey(name: "creator_id")
-  int? creatorId;
+  @JsonKey(name: "creator_uuid")
+  int? creatorUUID;
   @JsonKey(name: "type")
   PostType type;
   @JsonKey(name: "user")
@@ -47,7 +47,7 @@ class Post {
     required this.id,
     required this.creator,
     required this.type,
-    this.creatorId,
+    this.creatorUUID,
     this.content,
     this.isClosed,
     this.createdAt,

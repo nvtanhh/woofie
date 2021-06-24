@@ -31,8 +31,8 @@ class ProfileRepository {
     return _userDatasource.getUserProfile(userId);
   }
 
-  Future<List<Post>> getPostOfUser(int useId, int offset, int limit) async {
-    return _postDatasource.getPostOfUser(useId, offset, limit);
+  Future<List<Post>> getPostOfUser(String userUUID, int offset, int limit) async {
+    return _postDatasource.getPostOfUser(userUUID, offset, limit);
   }
 
   Future<List<PetVaccinated>> getVaccinates(int idPet, int limit, int offset) async {

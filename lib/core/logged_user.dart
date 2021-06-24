@@ -20,6 +20,6 @@ class LoggedInUser {
   User? get loggedInUser => _loggedInUser;
 
   bool isMyPost(Post post) {
-    return post.creatorId == _loggedInUser?.id;
+    return post.creatorUUID == _loggedInUser?.uuid;
   }
 }

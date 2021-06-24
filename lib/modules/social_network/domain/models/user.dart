@@ -10,8 +10,8 @@ part 'user.g.dart';
 class User {
   @JsonKey(name: "id")
   int id;
-  @JsonKey(name: "uid")
-  String? uid;
+  @JsonKey(name: "uuid")
+  String? uuid;
   @JsonKey(name: "name")
   String? name;
   @JsonKey(name: "bio")
@@ -29,7 +29,7 @@ class User {
   @JsonKey(name: "dob")
   DateTime? dob;
 
-  User({required this.id, this.uid, this.name, this.phoneNumber, this.email, this.pets, this.avatar, this.avatarUrl, this.bio, this.dob});
+  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.pets, this.avatar, this.avatarUrl, this.bio, this.dob});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
