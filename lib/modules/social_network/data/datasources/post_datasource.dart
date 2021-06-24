@@ -85,10 +85,10 @@ class PostDatasource {
     const String content =
         "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.";
 
-    final Comment comment = Comment(id: 1, content: content, creatorId: user.id, postId: postId);
+    final Comment comment = Comment(id: 1, content: content, creatorUUID: " user.id", postId: postId);
     comment.isLiked = true;
 
-    final Comment comment2 = Comment(id: 2, content: content, creatorId: user.id, postId: postId);
+    final Comment comment2 = Comment(id: 2, content: content, creatorUUID: "user.id", postId: postId);
     comment2.createdAt = DateTime.now().subtract(
       const Duration(seconds: 120),
     );
@@ -110,13 +110,13 @@ class PostDatasource {
     return true;
   }
 
-  Future<List<Post>> getPostOfUser(int useId, int offset, int limit) async {
+  Future<List<Post>> getPostOfUser(String userUUID, int offset, int limit) async {
     final query = """
     query MyQuery {
-  posts(limit: $limit, offset: $offset, where: {creator_id: {_eq: $useId}}, order_by: {created_at: asc}) {
+  posts(limit: $limit, offset: $offset, where: {creator_uuid: {_eq: "$userUUID"}}, order_by: {created_at: asc}) {
     content
     created_at
-    creator_id
+    creator_uuid
     id
     is_liked
     medias {
@@ -155,7 +155,7 @@ query MyQuery {
   posts(limit: $limit, offset: $offset, where: {post_pets: {pet_id: {_eq: $petId}}}, order_by: {created_at: asc}) {
     content
     created_at
-    creator_id
+    creator_uuid
     id
     is_closed
     is_liked

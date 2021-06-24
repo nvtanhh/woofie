@@ -60,7 +60,7 @@ class WelcomeWidgetModel extends BaseViewModel {
       final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
       if (haUser != null) {
         await _saveUserToLocalUsecase.call(haUser);
-        status = await _checkUserHavePetUsecase.call(haUser.id);
+        status = await _checkUserHavePetUsecase.call(haUser.uuid!);
       } else {
         return;
       }

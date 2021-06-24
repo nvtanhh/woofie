@@ -109,6 +109,10 @@
     "application": "Application",
     "notification": "Notification",
     "other_setting": "Other",
-    "logout": "Logout"
+    "logout": "Logout",
+    "language": "Language ({})",
+    "vietnamese": "Vietnamese",
+    "english": "English",
+    "rate_feedback": "Rate and feedback"
   }
 }

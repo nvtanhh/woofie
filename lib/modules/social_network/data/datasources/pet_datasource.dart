@@ -51,13 +51,13 @@ class PetDatasource {
   }
 
   Future<Pet> addPet(Pet pet) async {
-    final userId = _userStorage.get()?.id;
-    if (userId == null) {
+    final userUUID = _userStorage.get()?.uuid;
+    if (userUUID == null) {
       throw "Error";
     }
     final mutationInsertPet = """
     mutation MyMutation {
-  insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_id: $userId}}, avatar_current: {data: {url: "${pet.avatar?.url ?? ""}"}}}) {
+  insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar_current: {data: {url: "${pet.avatar?.url ?? ""}"}}}) {
     id
     name
     dob

@@ -109,6 +109,10 @@
     "application": "Ứng dụng",
     "notification": "Thông báo",
     "other_setting": "Khác",
-    "logout": "Đăng xuất"
+    "logout": "Đăng xuất",
+    "language": "Ngôn ngữ ({})",
+    "vietnamese": "Tiếng việt",
+    "english": "Tiếng Anh",
+    "rate_feedback": "Đánh giá và phản hồi"
   }
 }

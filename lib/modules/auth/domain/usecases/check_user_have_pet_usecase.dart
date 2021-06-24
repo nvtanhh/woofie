@@ -6,7 +6,7 @@ class CheckUserHavePetUsecase {
   final AuthRepository _authRepository;
 
   CheckUserHavePetUsecase(this._authRepository);
-  Future<bool> call(int userId) {
+  Future<bool> call(String userId) {
     return _authRepository.checkUserHavePet(userId);
   }
 }
