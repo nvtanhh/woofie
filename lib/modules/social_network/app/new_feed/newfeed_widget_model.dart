@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
@@ -18,7 +19,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   final LikePostUsecase _likePostUsecase;
   late PagingController<int, Post> pagingController;
   final int pageSize = 10;
-
+  CancelableOperation? cancelableOperation;
   NewFeedWidgetModel(this._getPostsUsecase, this._likePostUsecase) {
     pagingController = PagingController(firstPageKey: 0);
   }
@@ -27,7 +28,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   void initState() {
     pagingController.addPageRequestListener(
       (pageKey) {
-        _loadMorePost(pageKey);
+        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     super.initState();
@@ -72,7 +73,7 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   @override
   void disposeState() {
-    pagingController.removeListener(() {});
+    cancelableOperation?.cancel();
     pagingController.dispose();
     super.disposeState();
   }
@@ -82,7 +83,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   void onPostDeleted(Post post) {
-    injector<ToastService>().success(message: 'Post delted!', context: Get.context!);
+    injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
   }
 
   Future onWantsCreateNewPost() async {

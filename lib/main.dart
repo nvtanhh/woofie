@@ -3,13 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meowoof/core/ui/toast.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/splash/app/ui/splash_widget.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
+import 'package:meowoof/theme/ui_text_style.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,10 +54,14 @@ class MyApp extends StatelessWidget {
               backgroundColor: UIColor.white,
               elevation: 0,
               iconTheme: const IconThemeData(
-                color: UIColor.text_header,
+                color: UIColor.textHeader,
               ),
             ),
             scaffoldBackgroundColor: UIColor.white,
+            sliderTheme: SliderThemeData(
+              valueIndicatorColor: UIColor.primary,
+              valueIndicatorTextStyle: UITextStyle.primary_14_w600,
+            ),
           ),
           builder: (BuildContext context, Widget? child) {
             return FlutterEasyLoading(child: child);

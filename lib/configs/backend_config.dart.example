@@ -1,6 +1,6 @@
 class BackendConfig {
   static const String BASE_URL = "";
-  static const String BASE_HASURA_URL = "http://203.113.148.132:22030/v1/graphql";
+  static const String BASE_HASURA_URL = "https://203.113.148.132:22030/v1/graphql";
 
   static const int CONNECT_TIMEOUT = 30000;
   static const int RECEIVE_TIMEOUT = 30000;

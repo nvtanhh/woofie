@@ -10,30 +10,26 @@ part 'user.g.dart';
 class User {
   @JsonKey(name: "id")
   int id;
-  @JsonKey(name: "uid")
-  String? uid;
+  @JsonKey(name: "uuid")
+  String? uuid;
   @JsonKey(name: "name")
   String? name;
+  @JsonKey(name: "bio")
+  String? bio;
   @JsonKey(name: "phone_number")
   String? phoneNumber;
   @JsonKey(name: "email")
   String? email;
-  @JsonKey(name: "pets")
+  @JsonKey(name: "pet_owners", fromJson: petsFromJson)
   List<Pet>? pets;
   @JsonKey(name: "avatar_current")
   Media? avatar;
   @JsonKey(name: "avatar_url")
   String? avatarUrl;
-  User({
-    required this.id,
-    this.uid,
-    this.name,
-    this.phoneNumber,
-    this.email,
-    this.pets,
-    this.avatar,
-    this.avatarUrl,
-  });
+  @JsonKey(name: "dob")
+  DateTime? dob;
+
+  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.pets, this.avatar, this.avatarUrl, this.bio, this.dob});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
@@ -42,4 +38,8 @@ class User {
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   String toJsonString() => json.encode(toJson());
+
+  static List<Pet>? petsFromJson(List<dynamic>? list) {
+    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
+  }
 }

@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
+import 'package:meowoof/core/ui/button.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/media_button.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:meowoof/theme/button.dart';
-import 'package:meowoof/theme/icon.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
@@ -78,8 +78,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(
-              bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
           child: _mediaWrapper(),
         ),
       ],
@@ -105,8 +104,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                                 key: ObjectKey(file),
                                 mediaFile: file,
                                 onRemove: () => viewModel.onRemoveMedia(file),
-                                onImageEdited: (editedFile) =>
-                                    viewModel.onImageEdited(file, editedFile),
+                                onImageEdited: (editedFile) => viewModel.onImageEdited(file, editedFile),
                               ))
                           .toList(),
                     ),
@@ -123,7 +121,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         onTap: () => Get.back(),
         child: const MWIcon(
           MWIcons.back,
-          color: UIColor.text_header,
+          color: UIColor.textHeader,
         ),
       ),
       title: Text(
@@ -142,10 +140,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 onPressed: () {},
                 isDisabled: viewModel.isDisable,
                 borderRadius: BorderRadius.circular(5.r),
-                textStyle: UITextStyle.heading_16_medium.apply(
-                    color: viewModel.isDisable
-                        ? UIColor.text_body
-                        : UIColor.white),
+                textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.textBody : UIColor.white),
                 child: Text(
                   widget.post == null ? 'Post' : 'Update',
                 ),
@@ -164,7 +159,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MWAvatar(
-            avatarUrl: viewModel.user.avatarUrl,
+            avatarUrl: viewModel.user?.avatar?.url,
             borderRadius: 10.r,
           ),
           SizedBox(width: 15.w),
@@ -177,7 +172,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                     children: [
                       Text.rich(
                         TextSpan(
-                          text: viewModel.user.name,
+                          text: viewModel.user?.name ?? "",
                           children: _buildPetTags(),
                           style: UITextStyle.heading_16_semiBold,
                         ),
@@ -192,8 +187,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                             children: [
                               MWIcon(MWIcons.petTag, customSize: 20),
                               SizedBox(width: 5.w),
-                              Text('Tag your pet',
-                                  style: UITextStyle.second_14_medium),
+                              Text('Tag your pet', style: UITextStyle.second_14_medium),
                             ],
                           ),
                         ),
@@ -229,15 +223,12 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
     if (viewModel.taggedPets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(
-          text: " ${LocaleKeys.new_feed_with.trans()} ",
-          style: UITextStyle.heading_16_reg),
+      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < viewModel.taggedPets.length; i++) {
       inLineSpan.add(
         TextSpan(
-          text:
-              "${viewModel.taggedPets[i].name}${i != viewModel.taggedPets.length - 1 ? ", " : " "}",
+          text: "${viewModel.taggedPets[i].name}${i != viewModel.taggedPets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
           recognizer: TapGestureRecognizer()..onTap = viewModel.onTagPet,
         ),

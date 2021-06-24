@@ -25,7 +25,7 @@ class PetCardItem extends StatelessWidget {
           color: Colors.white,
           boxShadow: const [
             BoxShadow(
-              color: UIColor.box_shadow_color,
+              color: UIColor.boxShadowColor,
               blurRadius: 15,
             ),
           ],
@@ -34,7 +34,7 @@ class PetCardItem extends StatelessWidget {
         child: Column(
           children: [
             MWAvatar(
-              avatarUrl: pet.avatar,
+              avatarUrl: pet.avatar?.url,
               size: MWAvatarSize.large,
               borderRadius: 10,
             ),

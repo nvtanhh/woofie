@@ -13,7 +13,7 @@ class DivideWidget extends StatelessWidget {
         Expanded(
           child: Container(
             height: 2.0.h,
-            color: UIColor.silver_sand,
+            color: UIColor.silverSand,
             margin: EdgeInsets.only(right: 10.w),
           ),
         ),
@@ -24,7 +24,7 @@ class DivideWidget extends StatelessWidget {
         Expanded(
           child: Container(
             height: 2.0.h,
-            color: UIColor.silver_sand,
+            color: UIColor.silverSand,
             margin: EdgeInsets.only(left: 10.w),
           ),
         ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +22,6 @@ class MWAvatar extends StatelessWidget {
   static const double AVATAR_SIZE_MEDIUM = 45.0;
   static const double AVATAR_SIZE_LARGE = 70.0;
   static const double AVATAR_SIZE_EXTRA_LARGE = 100;
-  static final AssetGenImage DEFAULT_AVATAR_ASSET = Assets.resources.images.fallbacks.avatarFallback;
   static const double avatarBorderRadius = 60;
 
   static double getAvatarSize(MWAvatarSize size) {
@@ -70,10 +70,10 @@ class MWAvatar extends StatelessWidget {
         fit: BoxFit.cover,
         height: avatarSize.w,
         width: avatarSize.w,
-        placeholder: DEFAULT_AVATAR_ASSET,
+        placeholder: Assets.resources.images.fallbacks.avatarFallback,
         image: FileImage(avatarFile!),
       );
-    } else if (avatarUrl != null) {
+    } else if (avatarUrl != null && avatarUrl!.isNotEmpty) {
       finalAvatarImage = ExtendedImage.network(
         avatarUrl!,
         height: avatarSize.w,
@@ -106,7 +106,7 @@ class MWAvatar extends StatelessWidget {
   }
 
   Widget _getAvatarPlaceholder(double avatarSize) {
-    return DEFAULT_AVATAR_ASSET.image(
+    return Assets.resources.images.fallbacks.avatarFallback.image(
       height: avatarSize.w,
       width: avatarSize.w,
     );

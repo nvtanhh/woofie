@@ -31,7 +31,7 @@ class AuthRepository {
     return _authDatasource.registerWithEmailPassword(email, password);
   }
 
-  Future<bool> checkUserHavePet(int userId) {
+  Future<bool> checkUserHavePet(String userId) {
     return _hasuraDatasource.checkUseHavePet(userId);
   }
 

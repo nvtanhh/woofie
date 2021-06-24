@@ -3,7 +3,7 @@ description: Social network for pet
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -130,6 +130,9 @@ dependencies:
   # A Flutter plugin for Android and iOS supports cropping images.
   image_cropper: ^1.4.0
 
+  # A package provides calculate a person's age and the time remaining to their next birthday in years, months and days.
+  age_calculator: ^1.0.0
+
   #   Being able to compare objects in Dart often involves having to override the == operator as well as hashCode.
   equatable: ^2.0.2
 
@@ -139,7 +142,13 @@ dependencies:
   # A Flutter Geocoding plugin which provides easy geocoding and reverse-geocoding features.
   geocoding: ^2.0.0
 
+  # Contains utility classes in the style of dart:async to work with asynchronous computations.
+  async: ^2.5.0
+  # A library to draw fantastic charts in Flutter
+  fl_chart: ^0.36.1
 
+  #A powerful & easy to use timeline package for Flutter!
+  timelines: ^0.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -171,3 +180,5 @@ flutter:
     - resources/google_fonts/
     - resources/images/
     - resources/images/fallbacks/
+    - resources/images/explore/
+    - resources/images/profile/

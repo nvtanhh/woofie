@@ -77,13 +77,13 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
                                   borderSide: const BorderSide(
-                                    color: UIColor.silver_sand,
+                                    color: UIColor.silverSand,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
                                   borderSide: const BorderSide(
-                                    color: UIColor.silver_sand,
+                                    color: UIColor.silverSand,
                                   ),
                                 ),
                                 prefixIcon: Row(
@@ -94,7 +94,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                     ),
                                     const Icon(
                                       Icons.person_outline,
-                                      color: UIColor.text_header,
+                                      color: UIColor.textHeader,
                                     ),
                                     SizedBox(
                                       width: 12.0.w,
@@ -102,7 +102,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                     Container(
                                       height: 30.h,
                                       width: 1.0.w,
-                                      color: UIColor.text_secondary,
+                                      color: UIColor.textSecondary,
                                     ),
                                     SizedBox(
                                       width: 12.0.w,
@@ -121,13 +121,13 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
                                   borderSide: const BorderSide(
-                                    color: UIColor.silver_sand,
+                                    color: UIColor.silverSand,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
                                   borderSide: const BorderSide(
-                                    color: UIColor.silver_sand,
+                                    color: UIColor.silverSand,
                                   ),
                                 ),
                                 prefixIcon: Row(
@@ -138,7 +138,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                     ),
                                     const Icon(
                                       Icons.email_outlined,
-                                      color: UIColor.text_header,
+                                      color: UIColor.textHeader,
                                     ),
                                     SizedBox(
                                       width: 12.0.w,
@@ -146,7 +146,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                     Container(
                                       height: 30.h,
                                       width: 1.0.w,
-                                      color: UIColor.text_secondary,
+                                      color: UIColor.textSecondary,
                                     ),
                                     SizedBox(
                                       width: 12.0.w,
@@ -166,13 +166,13 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.r),
                                     borderSide: const BorderSide(
-                                      color: UIColor.silver_sand,
+                                      color: UIColor.silverSand,
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.r),
                                     borderSide: const BorderSide(
-                                      color: UIColor.silver_sand,
+                                      color: UIColor.silverSand,
                                     ),
                                   ),
                                   prefixIcon: Row(
@@ -183,7 +183,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                       ),
                                       const Icon(
                                         Icons.lock_open_outlined,
-                                        color: UIColor.text_header,
+                                        color: UIColor.textHeader,
                                       ),
                                       SizedBox(
                                         width: 12.0.w,
@@ -191,7 +191,7 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                       Container(
                                         height: 30.h,
                                         width: 1.0.w,
-                                        color: UIColor.text_secondary,
+                                        color: UIColor.textSecondary,
                                       ),
                                       SizedBox(
                                         width: 12.0.w,

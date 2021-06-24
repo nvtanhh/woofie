@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meowoof/theme/icon.dart';
+import 'package:meowoof/core/ui/icon.dart';
 
 class MWCheckbox extends StatelessWidget {
   final bool value;

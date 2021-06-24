@@ -68,7 +68,7 @@ class _WelcomeWidgetState extends BaseViewState<WelcomeWidget, WelcomeWidgetMode
                       ButtonLoginWithWidget(
                         width: 150.w,
                         height: 74.h,
-                        backgroundColor: UIColor.blue_yonder,
+                        backgroundColor: UIColor.blueYonder,
                         callBack: viewModel.onLoginWithFbClick,
                         target: "Facebook",
                       ),

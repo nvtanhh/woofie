@@ -28,7 +28,7 @@ class PostHeader extends StatelessWidget {
     final User user = post.creator;
 
     return ListTile(
-      contentPadding: const EdgeInsets.only(),
+      contentPadding: EdgeInsets.zero,
       leading: MWAvatar(
         avatarUrl: user.avatarUrl,
         borderRadius: 10.r,

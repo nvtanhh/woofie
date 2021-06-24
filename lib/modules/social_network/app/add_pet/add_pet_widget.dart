@@ -14,11 +14,20 @@ import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
 class AddPetWidget extends StatefulWidget {
+  final bool? isAddMore;
+
+  const AddPetWidget({Key? key, this.isAddMore}) : super(key: key);
   @override
   _AddPetWidgetState createState() => _AddPetWidgetState();
 }
 
 class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> {
+  @override
+  void loadArguments() {
+    viewModel.isAddMore = widget.isAddMore;
+    super.loadArguments();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -64,6 +73,7 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                       onGenderChange: viewModel.onGenderChange,
                       onAvatarChange: viewModel.onAvatarChange,
                       onNameChange: viewModel.onNameChange,
+                      onBioChange: viewModel.onBioChange,
                     );
                   default:
                     return Container();

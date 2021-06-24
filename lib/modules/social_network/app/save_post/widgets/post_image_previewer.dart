@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meowoof/core/services/media_service.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
-import 'package:meowoof/theme/icon.dart';
 
 class PostImagePreviewer extends StatelessWidget {
   final Media? postMedia;
@@ -36,7 +36,7 @@ class PostImagePreviewer extends StatelessWidget {
                 fit: BoxFit.cover,
               )
             : ExtendedImage.network(
-                postMedia!.url,
+                postMedia!.url ?? "",
                 fit: BoxFit.cover,
                 retries: 0,
               ),

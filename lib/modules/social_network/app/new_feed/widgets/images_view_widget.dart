@@ -32,13 +32,13 @@ class ImagesViewWidget extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (medias[index].type == MediaType.image || medias[index].type == MediaType.gif) {
                     return ImageWithPlaceHolderWidget(
-                      imageUrl: medias[index].url,
+                      imageUrl: medias[index].url ?? "",
                       radius: 20.r,
                       fit: BoxFit.cover,
                     );
                   } else if (medias[index].type == MediaType.video) {
                     return BetterPlayer.network(
-                      medias[index].url,
+                      medias[index].url ?? "",
                     );
                   } else {
                     return const SizedBox();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:meowoof/theme/icon.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
@@ -78,30 +78,30 @@ class PostTypeChoseWidget extends StatelessWidget {
   Color _getBoderColorByType(PostType? type) {
     switch (type) {
       case PostType.activity:
-        return UIColor.text_secondary;
+        return UIColor.textSecondary;
       case PostType.adop:
-        return UIColor.adoption_color;
+        return UIColor.adoptionColor;
       case PostType.mating:
-        return UIColor.mating_color;
+        return UIColor.matingColor;
       case PostType.lose:
         return UIColor.danger;
       default:
-        return UIColor.text_secondary;
+        return UIColor.textSecondary;
     }
   }
 
   Color _getTextColorByType(PostType type) {
     switch (type) {
       case PostType.activity:
-        return UIColor.text_body;
+        return UIColor.textBody;
       case PostType.adop:
-        return UIColor.adoption_color;
+        return UIColor.adoptionColor;
       case PostType.mating:
-        return UIColor.mating_color;
+        return UIColor.matingColor;
       case PostType.lose:
         return UIColor.danger;
       default:
-        return UIColor.text_body;
+        return UIColor.textBody;
     }
   }
 
@@ -110,9 +110,9 @@ class PostTypeChoseWidget extends StatelessWidget {
       case PostType.activity:
         return UIColor.white;
       case PostType.adop:
-        return UIColor.adoption_color_bg;
+        return UIColor.adoptionColorBg;
       case PostType.mating:
-        return UIColor.mating_color_bg;
+        return UIColor.matingColorBg;
       case PostType.lose:
         return UIColor.danger.withOpacity(.1);
       default:

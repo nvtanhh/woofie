@@ -15,8 +15,8 @@ class Comment {
   String content;
   @JsonKey(name: "post_id")
   int postId;
-  @JsonKey(name: "creator_id")
-  int creatorId;
+  @JsonKey(name: "creator_uuid")
+  String creatorUUID;
   @JsonKey(name: "is_liked")
   bool? isLiked;
   @JsonKey(name: "user")
@@ -32,7 +32,7 @@ class Comment {
     required this.id,
     required this.content,
     required this.postId,
-    required this.creatorId,
+    required this.creatorUUID,
     this.isLiked,
     this.creator,
     this.commentReactsAggregate,
