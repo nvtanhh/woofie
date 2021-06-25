@@ -44,9 +44,11 @@ class _SettingState extends BaseViewState<Setting, SettingModel> {
               ListTile(
                 onTap: () => viewModel.language(),
                 leading: const MWIcon(MWIcons.language),
-                title: Text(
-                  LocaleKeys.setting_language.trans(args: [""]),
-                  style: UITextStyle.text_body_14_w500,
+                title: Obx(
+                  () => Text(
+                    LocaleKeys.setting_language.trans(args: [viewModel.defineLanguage(viewModel.currentLanguage)]),
+                    style: UITextStyle.text_body_14_w500,
+                  ),
                 ),
               ),
               ListTile(
