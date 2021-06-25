@@ -45,6 +45,7 @@ class HasuraDatasource {
     uuid
     dob
     bio
+    name
     }
     }
     """;

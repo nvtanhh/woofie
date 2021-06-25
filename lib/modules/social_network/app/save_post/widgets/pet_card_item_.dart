@@ -38,7 +38,7 @@ class PetCardItem extends StatelessWidget {
               size: MWAvatarSize.large,
               borderRadius: 10,
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Text(pet.name!, style: UITextStyle.heading_18_semiBold),
             // const SizedBox(height: 5),
             Text(pet.petBreed?.name ?? 'Yellow cat', style: UITextStyle.body_12_medium),
