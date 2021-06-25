@@ -2,12 +2,10 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/user_datasource.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 

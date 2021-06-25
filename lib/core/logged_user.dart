@@ -20,6 +20,7 @@ class LoggedInUser {
   User? get loggedInUser => _loggedInUser;
 
   bool isMyPost(Post post) {
+    // ignore: unrelated_type_equality_checks
     return post.creatorUUID == _loggedInUser?.uuid;
   }
 }

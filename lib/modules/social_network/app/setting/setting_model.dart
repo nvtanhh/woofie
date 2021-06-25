@@ -36,7 +36,6 @@ class SettingModel extends BaseViewModel {
 
   Future language() async {
     final languageUpdate = await Get.to(() => LanguageWidget());
-    printInfo(info: languageUpdate as String);
     if (languageUpdate != null) {
       currentLanguage = languageUpdate as String;
     }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/pet_card_item_.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TagPetBottomSheetWidget extends StatelessWidget {
   final RxList<Pet> taggedPets;
