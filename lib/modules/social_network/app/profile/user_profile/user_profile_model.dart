@@ -63,6 +63,9 @@ class UserProfileModel extends BaseViewModel {
     return call(
       () async => user = await _getUseProfileUseacse.call(user!.id),
       showLoading: false,
+      onSuccess: (){
+        printInfo(info: user?.pets.toString()??"dadw");
+      }
     );
   }
 
@@ -80,6 +83,7 @@ class UserProfileModel extends BaseViewModel {
         pagingController.appendPage(posts, nextPageKey);
       }
     } catch (error) {
+      printInfo(info: "post: ${error.toString()}");
       pagingController.error = error;
     }
   }

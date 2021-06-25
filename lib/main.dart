@@ -28,7 +28,12 @@ Future main() async {
   );
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('vi')],
+      supportedLocales: const [
+        Locale('vi'),
+        Locale(
+          'en',
+        )
+      ],
       path: 'resources/langs',
       fallbackLocale: const Locale('vi'),
       child: MyApp(),
