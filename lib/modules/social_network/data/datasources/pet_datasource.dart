@@ -229,4 +229,24 @@ mutation MyMutation {
       ];
     }
   }
+
+  Future<List<Pet>> getPetsOfUser(String userUUID) async {
+    final query = """
+    query MyQuery {
+  pets(where: {pet_owners: {owner_uuid: {_eq: "$userUUID"}}}) {
+    avatar_current {
+      type
+      url
+      id
+    }
+    bio
+    id
+    name
+  }
+}
+    """;
+    final data = await _hasuraConnect.query(query);
+    final list = GetMapFromHasura.getMap(data as Map)["pets"] as List;
+    return list.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
+  }
 }

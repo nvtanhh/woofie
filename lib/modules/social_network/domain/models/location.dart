@@ -4,10 +4,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'location.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Location {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   @JsonKey(name: "name")
   String? name;
   @JsonKey(name: "long")
@@ -16,7 +16,7 @@ class Location {
   double? lat;
 
   Location({
-    required this.id,
+    this.id,
     this.name,
     this.long,
     this.lat,
