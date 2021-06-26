@@ -70,9 +70,10 @@ class WelcomeWidgetModel extends BaseViewModel {
       } else {
         Get.offAll(() => HomeMenuWidget());
       }
-    }, onFailure: (err) {
-      _firebaseAuth.currentUser?.getIdToken(true);
-      checkUserHavePetForNavigator();
+    }, onFailure: (err) async {
+      await Future.delayed(const Duration(seconds: 1));
+      await _firebaseAuth.currentUser?.getIdToken(true);
+      await checkUserHavePetForNavigator();
     });
   }
 }

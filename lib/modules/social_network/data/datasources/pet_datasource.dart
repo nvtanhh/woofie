@@ -175,6 +175,7 @@ mutation MyMutation {
     gender
     id
     name
+    is_following
     pet_vaccinateds(limit: 2, order_by: {created_at: desc, date: desc}) {
       description
       id

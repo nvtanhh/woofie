@@ -19,31 +19,6 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
   late Function onAddVaccinatedClick;
   late Function(Pet) updatePet;
   final RxBool _isLoaded = RxBool(false);
-  final GetDetailInfoPetUsecase _getDetailInfoPetUsecase;
-
-  DetailInfoPetWidgetModel(this._getDetailInfoPetUsecase);
-
-  @override
-  void initState() {
-    _loadPetDetailInfo();
-    super.initState();
-  }
-
-  Future _loadPetDetailInfo() async {
-    await call(
-      () async {
-        pet = await _getDetailInfoPetUsecase.call(pet.id);
-      },
-      onSuccess: () {
-        _isLoaded.value = true;
-        updatePet(pet);
-      },
-      onFailure: (err) {
-        _isLoaded.value = false;
-      },
-      showLoading: false,
-    );
-  }
 
   void onTabWeightChart() {
     Get.to(

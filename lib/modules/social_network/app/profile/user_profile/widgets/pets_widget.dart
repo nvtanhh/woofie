@@ -55,7 +55,47 @@ class PetsWidget extends StatelessWidget {
         SizedBox(
           height: 180.h,
           child: pets.isEmpty
-              ? Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
+              ? isMyPets
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 160.w,
+                          height: 180.h,
+                          margin: EdgeInsets.all(5.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: UIColor.dimGray,
+                                blurRadius: 5,
+                                offset: Offset(2, 0),
+                                spreadRadius: 2,
+                              ),
+                            ],
+                            color: UIColor.white,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(LocaleKeys.add_pet_do_not_have_pet.trans()),
+                              IconButton(
+                                onPressed: () => obPressAddPet(),
+                                icon: const Icon(
+                                  Icons.add_box_outlined,
+                                  color: UIColor.textBody,
+                                ),
+                              ),
+                              Text(
+                                LocaleKeys.profile_add_pet.trans(),
+                                style: UITextStyle.text_body_12_w600,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  : Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
               : Obx(
                   () => ListView.builder(
                     itemBuilder: (context, index) {

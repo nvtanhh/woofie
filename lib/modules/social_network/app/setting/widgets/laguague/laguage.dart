@@ -34,13 +34,16 @@ class _LanguageState extends BaseViewState<LanguageWidget, LanguageWidgetModel> 
               value: 'vi',
               groupValue: viewModel.currentLanguage,
               onChanged: (_) => viewModel.onLangSelected(_),
-              title: Text( LocaleKeys.setting_vietnamese.trans(),style: UITextStyle.text_body_14_w500),
+              title: Text(LocaleKeys.setting_vietnamese.trans(), style: UITextStyle.text_body_14_w500),
             ),
             RadioListTile<String>(
               value: 'en',
               groupValue: viewModel.currentLanguage,
               onChanged: (_) => viewModel.onLangSelected(_),
-              title: Text( LocaleKeys.setting_english.trans(),style: UITextStyle.text_body_14_w500,),
+              title: Text(
+                LocaleKeys.setting_english.trans(),
+                style: UITextStyle.text_body_14_w500,
+              ),
             )
           ],
         ),

@@ -137,7 +137,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
             child: Obx(
               () => MWButton(
                 minWidth: 35.w,
-                onPressed: ()=>viewModel.createPost(),
+                onPressed: () => viewModel.createPost(),
                 isDisabled: viewModel.isDisable,
                 borderRadius: BorderRadius.circular(5.r),
                 textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.textBody : UIColor.white),

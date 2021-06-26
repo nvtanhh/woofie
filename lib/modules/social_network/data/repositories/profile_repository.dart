@@ -76,4 +76,8 @@ class ProfileRepository {
   Future reportUser(int userID) {
     return _userDatasource.reportUser(userID);
   }
+
+  Future<bool> deletePost(int idPost) {
+    return _postDatasource.deletePost(idPost);
+  }
 }

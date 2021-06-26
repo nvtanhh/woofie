@@ -191,7 +191,9 @@ query MyQuery {
 
   Future<Post> createPost(Post post) async {
     final listPetTag = post.pets?.map((e) => {"pet_id": e.id}).toList() ?? [];
-    final location = post.location == null ? "" : 'location_post: {data: {long: "${post.location?.long}", lat: "${post.location?.lat}", name: "${post.location?.name}"}},';
+    final location = post.location == null
+        ? ""
+        : 'location_post: {data: {long: "${post.location?.long}", lat: "${post.location?.lat}", name: "${post.location?.name}"}},';
     final manution = """
   mutation MyMutation {
   insert_posts_one(object: {content: "${post.content}", creator_uuid: "${post.creatorUUID}",$location medias: {data: ${post.medias?.toString() ?? "[]"}, type: "${post.type.index}", post_pets: {data: $listPetTag}}) {
@@ -203,5 +205,9 @@ query MyQuery {
     final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
     post.id = affectedRows["id"] as int;
     return post;
+  }
+
+  Future<bool> deletePost(int idPost) async {
+    return true;
   }
 }
