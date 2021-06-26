@@ -21,6 +21,7 @@ class WelcomeWidgetModel extends BaseViewModel {
   final GetUserUsecase _getUserUsecase;
   final FirebaseAuth _firebaseAuth;
   final SaveUserToLocalUsecase _saveUserToLocalUsecase;
+
   WelcomeWidgetModel(
     this._loginWithGoogleUsecase,
     this._loginWithFacebookUsecase,
@@ -56,24 +57,30 @@ class WelcomeWidgetModel extends BaseViewModel {
 
   Future checkUserHavePetForNavigator() async {
     bool status = false;
-    await call(() async {
-      final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
-      if (haUser != null) {
-        await _saveUserToLocalUsecase.call(haUser);
-        status = await _checkUserHavePetUsecase.call(haUser.uuid!);
-      } else {
-        return;
-      }
-    }, onSuccess: () {
-      if (!status) {
-        Get.offAll(() => const AddPetWidget());
-      } else {
-        Get.offAll(() => HomeMenuWidget());
-      }
-    }, onFailure: (err) async {
-      await Future.delayed(const Duration(seconds: 1));
-      await _firebaseAuth.currentUser?.getIdToken(true);
-      await checkUserHavePetForNavigator();
-    });
+    await call(
+      () async {
+        await Future.delayed(const Duration(
+          seconds: 2,
+        ));
+        final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
+        if (haUser != null) {
+          await _saveUserToLocalUsecase.call(haUser);
+          status = await _checkUserHavePetUsecase.call(haUser.uuid!);
+        } else {
+          return;
+        }
+      },
+      onSuccess: () {
+        if (!status) {
+          Get.offAll(() => const AddPetWidget());
+        } else {
+          Get.offAll(() => HomeMenuWidget());
+        }
+      },
+      onFailure: (err) {
+        _firebaseAuth.currentUser?.getIdToken(true);
+        checkUserHavePetForNavigator();
+      },
+    );
   }
 }
