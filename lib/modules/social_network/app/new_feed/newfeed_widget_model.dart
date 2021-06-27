@@ -6,21 +6,29 @@ import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/save_post/save_post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_post_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class NewFeedWidgetModel extends BaseViewModel {
   final BottomSheetService bottomSheetService = injector<BottomSheetService>();
   final GetPostsUsecase _getPostsUsecase;
+  final DeletePostUsecase _deletePostUsecase;
   List<Post> posts = [];
   final LikePostUsecase _likePostUsecase;
   late PagingController<int, Post> pagingController;
   final int pageSize = 10;
   CancelableOperation? cancelableOperation;
-  NewFeedWidgetModel(this._getPostsUsecase, this._likePostUsecase) {
+
+  NewFeedWidgetModel(
+    this._getPostsUsecase,
+    this._likePostUsecase,
+    this._deletePostUsecase,
+  ) {
     pagingController = PagingController(firstPageKey: 0);
   }
 
@@ -79,11 +87,26 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   void onPostEdited(Post post) {
-    injector<ToastService>().success(message: 'Post edited', context: Get.context!);
+    Get.to(CreatePost(
+      post: post,
+    ));
   }
 
   void onPostDeleted(Post post) {
-    injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
+    bool isSuccess = false;
+    call(
+      () async {
+        isSuccess = await _deletePostUsecase.call(post.id);
+      },
+      onSuccess: () {
+        if (isSuccess) {
+          injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
+        }
+      },
+      onFailure: (err) {
+        injector<ToastService>().success(message: err.toString(), context: Get.context!);
+      },
+    );
   }
 
   Future onWantsCreateNewPost() async {

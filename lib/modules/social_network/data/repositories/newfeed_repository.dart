@@ -18,8 +18,8 @@ class NewFeedRepository {
     this._commentDatasource,
   );
 
-  Future<List<Post>> getPosts() {
-    return _postDatasource.getPosts();
+  Future<List<Post>> getPosts({int limit = 10, int offset = 0, DateTime? lastValue}) {
+    return _postDatasource.getPosts(limit: limit, offset: offset, lastValue: lastValue);
   }
 
   Future<List<Comment>> getCommentInPost(int postId, int limit, int offset) {
@@ -44,5 +44,9 @@ class NewFeedRepository {
 
   Future<bool> likeComment(int idComment) {
     return _commentDatasource.likeComment(idComment);
+  }
+
+  Future<bool> deletePost(int post) {
+    return _postDatasource.deletePost(post);
   }
 }
