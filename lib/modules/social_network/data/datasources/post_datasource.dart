@@ -133,6 +133,7 @@ class PostDatasource {
   }
 }
 """;
+    print(manution);
     final data = await _hasuraConnect.mutation(manution);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
     post.id = affectedRows["id"] as int;

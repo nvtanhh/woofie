@@ -3,10 +3,10 @@ import 'package:meowoof/modules/auth/data/repositories/auth_repository.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
-class GetUserUsecase {
+class GetUserWithUuidUsecase {
   final AuthRepository _authRepository;
 
-  GetUserUsecase(this._authRepository);
+  GetUserWithUuidUsecase(this._authRepository);
 
   Future<User?> call(String uid) {
     return _authRepository.getUser(uid);

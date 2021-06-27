@@ -29,33 +29,33 @@ class UserDatasource {
   Future<User> getUserProfile(int userId) async {
     final query = """
     query MyQuery {
-  users(where: {id: {_eq: $userId}}) {
-    avatar {
-      id
-      type
-      url
-    }
-    id
-    dob
-    email
-    name
-    phone_number
-    bio
-    uuid
-    pet_owners {
-      pet {
+      users(where: {id: {_eq: $userId}}) {
         id
-        bio
+        uuid
         name
         avatar {
           id
           url
+          type
+        }
+        bio
+        email
+        dob
+        phone_number
+        current_pets {
+          id
+          name
+          gender
+          bio
+          avatar {
+            id
+            type
+            url
+          }
         }
       }
     }
-  }
-}
-""";
+    """;
     final data = await _hasuraConnect.query(query);
     final listUser = GetMapFromHasura.getMap(data as Map)["users"] as List;
     return User.fromJson(listUser[0] as Map<String, dynamic>);

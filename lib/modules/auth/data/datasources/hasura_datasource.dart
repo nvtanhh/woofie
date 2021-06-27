@@ -32,21 +32,32 @@ class HasuraDatasource {
 
   Future<User?> getUser(String uuid) async {
     final queryGetUser = """
-   query MyQuery {
-   users(where: {uuid: {_eq: "$uuid"}}) {
-    avatar {
-      type
-      url
-      id
-    }
-    email
-    id
-    phone_number
-    uuid
-    dob
-    bio
-    name
-    }
+    query MyQuery {
+      users(where: {uuid: {_eq: "$uuid"}}) {
+        id
+        uuid
+        name
+        avatar {
+          id
+          url
+          type
+        }
+        bio
+        email
+        dob
+        phone_number
+        current_pets {
+          id
+          name
+          gender
+          bio
+          avatar {
+            id
+            type
+            url
+          }
+        }
+      }
     }
     """;
     final data = await _hasuraConnect.query(queryGetUser);

@@ -149,6 +149,11 @@ dependencies:
 
   #A powerful & easy to use timeline package for Flutter!
   timelines: ^0.1.0
+
+  # A simple library to implement application caching
+  dcache: ^0.4.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
