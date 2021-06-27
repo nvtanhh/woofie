@@ -16,8 +16,7 @@ class RegisterWidget extends StatefulWidget {
   _RegisterWidgetState createState() => _RegisterWidgetState();
 }
 
-class _RegisterWidgetState
-    extends BaseViewState<RegisterWidget, RegisterWidgetModel> {
+class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -74,8 +73,7 @@ class _RegisterWidgetState
                             controller: viewModel.nameEditingController,
                             validator: (name) => viewModel.nameValidate(name),
                             decoration: InputDecoration(
-                                hintText:
-                                    LocaleKeys.register_name_account.trans(),
+                                hintText: LocaleKeys.register_name_account.trans(),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
                                   borderSide: const BorderSide(
@@ -117,8 +115,7 @@ class _RegisterWidgetState
                           ),
                           TextFormField(
                             controller: viewModel.emailEditingController,
-                            validator: (email) =>
-                                viewModel.emailValidate(email),
+                            validator: (email) => viewModel.emailValidate(email),
                             decoration: InputDecoration(
                                 hintText: LocaleKeys.login_email.trans(),
                                 border: OutlineInputBorder(
@@ -163,8 +160,7 @@ class _RegisterWidgetState
                           Obx(
                             () => TextFormField(
                               controller: viewModel.passwordEditingController,
-                              validator: (password) =>
-                                  viewModel.passwordValidate(password),
+                              validator: (password) => viewModel.passwordValidate(password),
                               decoration: InputDecoration(
                                   hintText: LocaleKeys.login_password.trans(),
                                   border: OutlineInputBorder(
@@ -206,9 +202,7 @@ class _RegisterWidgetState
                                     onTap: viewModel.onEyeClick,
                                     child: Obx(
                                       () => Icon(
-                                        !viewModel.showPassword
-                                            ? Icons.visibility_off_rounded
-                                            : Icons.visibility_rounded,
+                                        !viewModel.showPassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                                       ),
                                     ),
                                   )),

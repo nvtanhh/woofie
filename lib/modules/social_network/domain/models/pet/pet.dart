@@ -26,7 +26,7 @@ class Pet {
   Gender? gender;
   @JsonKey(name: "dob")
   DateTime? dob;
-  @JsonKey(name: "avatar_current")
+  @JsonKey(name: "avatar")
   Media? avatar;
   @JsonKey(name: "id_owner")
   String? ownerId;

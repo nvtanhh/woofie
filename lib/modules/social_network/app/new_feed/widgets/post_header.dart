@@ -25,12 +25,12 @@ class PostHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User user = post.creator;
+    final User user = post.creator!;
 
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: MWAvatar(
-        avatarUrl: user.avatarUrl,
+        avatarUrl: user.avatar?.url,
         borderRadius: 10.r,
       ),
       title: Text.rich(

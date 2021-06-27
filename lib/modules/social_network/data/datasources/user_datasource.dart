@@ -30,7 +30,7 @@ class UserDatasource {
     final query = """
     query MyQuery {
   users(where: {id: {_eq: $userId}}) {
-    avatar_current {
+    avatar {
       id
       type
       url
@@ -47,7 +47,7 @@ class UserDatasource {
         id
         bio
         name
-        avatar_current {
+        avatar {
           id
           url
         }

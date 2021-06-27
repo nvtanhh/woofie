@@ -57,12 +57,12 @@ class PetDatasource {
     }
     final mutationInsertPet = """
     mutation MyMutation {
-  insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar_current: {data: {url: "${pet.avatar?.url ?? ""}"}}}) {
+  insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar: {data: {url: "${pet.avatar?.url ?? ""}"}}}) {
     id
     name
     dob
     bio
-    avatar_current {
+    avatar {
       id
       url
       type
@@ -166,7 +166,7 @@ mutation MyMutation {
     final query = """
     query MyQuery {
   pets(limit: 1, where: {id: {_eq: $idPet}}) {
-    avatar_current {
+    avatar {
       url
       id
     }
@@ -235,7 +235,7 @@ mutation MyMutation {
     final query = """
     query MyQuery {
   pets(where: {pet_owners: {owner_uuid: {_eq: "$userUUID"}}}) {
-    avatar_current {
+    avatar {
       type
       url
       id

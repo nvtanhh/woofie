@@ -38,7 +38,7 @@ class PostItemInListView extends StatelessWidget {
             InfoUserPostWidget(
               pets: post.pets!,
               postCreatedAt: post.createdAt!,
-              user: post.creator,
+              user: post.creator!,
             ),
             ImagesViewWidget(
               medias: post.medias ?? [],

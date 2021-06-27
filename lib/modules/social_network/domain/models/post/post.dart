@@ -21,11 +21,11 @@ class Post {
   @JsonKey(name: "created_at")
   DateTime? createdAt;
   @JsonKey(name: "creator_uuid")
-  int? creatorUUID;
+  String? creatorUUID;
   @JsonKey(name: "type")
   PostType type;
   @JsonKey(name: "user")
-  User creator;
+  User? creator;
   @JsonKey(name: "is_liked")
   bool? isLiked;
   @JsonKey(name: "comments")
@@ -38,14 +38,9 @@ class Post {
   Location? location;
   @JsonKey(name: "post_reacts_aggregate")
   ObjectAggregate? postReactsAggregate;
-  @JsonKey(name: "comments_aggregate")
-  ObjectAggregate? commentsAggregate;
-  @JsonKey(name: "medias_aggregate")
-  ObjectAggregate? mediasAggregate;
-
   Post({
     required this.id,
-    required this.creator,
+    this.creator,
     required this.type,
     this.creatorUUID,
     this.content,
@@ -56,6 +51,11 @@ class Post {
     this.pets,
     this.location,
   });
+  @JsonKey(name: "comments_aggregate")
+  ObjectAggregate? commentsAggregate;
+
+  @JsonKey(name: "medias_aggregate")
+  ObjectAggregate? mediasAggregate;
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 
