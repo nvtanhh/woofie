@@ -51,10 +51,10 @@ class SavePostModel extends BaseViewModel {
   Future getPetsOfUser() async {
     printInfo(info: user!.uuid!);
     await call(
-      () async => user?.pets = await _getPetsOfUserUsecase.call(user!.uuid!),
+      () async => user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
       showLoading: false,
       onSuccess: () {
-        printInfo(info: user?.pets.toString() ?? "deo co gif");
+        printInfo(info: user?.currentPets.toString() ?? "deo co gif");
       },
     );
   }
@@ -135,7 +135,7 @@ class SavePostModel extends BaseViewModel {
 
   void onTagPet() {
     injector<BottomSheetService>().showTagPetBottomSheet(
-      userPets: _user?.pets ?? [],
+      userPets: _user?.currentPets ?? [],
       taggedPets: _taggedPets,
       onPetChosen: _onTaggedPetChosen,
     );

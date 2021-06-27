@@ -35,7 +35,7 @@ class AuthRepository {
     return _hasuraDatasource.checkUseHavePet(userId);
   }
 
-  Future<hasura_user.User?> getUser(String uid) {
-    return _hasuraDatasource.getUser(uid);
+  Future<hasura_user.User?> getUser(String uuid) {
+    return _hasuraDatasource.getUser(uuid);
   }
 }

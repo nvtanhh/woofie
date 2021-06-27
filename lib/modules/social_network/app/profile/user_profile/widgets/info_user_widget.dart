@@ -94,7 +94,7 @@ class InfoUserWidget extends StatelessWidget {
           height: 10.h,
         ),
         PetsWidget(
-          pets: user.pets ?? [],
+          pets: user.currentPets ?? [],
           onFollow: isMe ? null : onFollowPet,
           isMyPets: isMe,
         ),

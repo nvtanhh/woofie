@@ -27,6 +27,8 @@ class PostDatasource {
         id: 1,
         name: "Bảo Nguyễn",
         avatar: Media(id: 1, url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg", type: MediaType.image),
+        // avatarUrl:
+        //     "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       ),
       isLiked: false,
       pets: [
