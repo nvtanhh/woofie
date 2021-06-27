@@ -72,8 +72,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                         children: [
                           TextFormField(
                             controller: viewModel.emailEditingController,
-                            validator: (email) =>
-                                viewModel.emailValidate(email),
+                            validator: (email) => viewModel.emailValidate(email),
                             decoration: InputDecoration(
                                 hintText: LocaleKeys.login_email.trans(),
                                 border: OutlineInputBorder(
@@ -118,8 +117,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                           Obx(
                             () => TextFormField(
                               controller: viewModel.passwordEditingController,
-                              validator: (password) =>
-                                  viewModel.passwordValidate(password),
+                              validator: (password) => viewModel.passwordValidate(password),
                               decoration: InputDecoration(
                                 hintText: LocaleKeys.login_password.trans(),
                                 border: OutlineInputBorder(
@@ -161,9 +159,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                   onTap: viewModel.onEyeClick,
                                   child: Obx(
                                     () => Icon(
-                                      !viewModel.showPassword
-                                          ? Icons.visibility_off_rounded
-                                          : Icons.visibility_rounded,
+                                      !viewModel.showPassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                                     ),
                                   ),
                                 ),

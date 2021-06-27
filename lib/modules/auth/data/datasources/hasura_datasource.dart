@@ -34,7 +34,7 @@ class HasuraDatasource {
     final queryGetUser = """
    query MyQuery {
    users(where: {uuid: {_eq: "$uuid"}}) {
-    avatar_current {
+    avatar {
       type
       url
       id

@@ -24,10 +24,10 @@ class PostDatasource {
       content:
           "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.",
       creator: User(
-          id: 1,
-          name: "Bảo Nguyễn",
-          avatar: Media(id: 1, url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg", type: MediaType.image),
-          avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
+        id: 1,
+        name: "Bảo Nguyễn",
+        avatar: Media(id: 1, url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg", type: MediaType.image),
+      ),
       isLiked: false,
       pets: [
         Pet(
@@ -70,44 +70,51 @@ class PostDatasource {
     return <Post>[post];
   }
 
-  Future<List<Comment>> getPostComments(int postId) async {
-    await Future.delayed(const Duration(seconds: 1));
-    final User user = User(
-      id: 2,
-      avatar: Media(
-        id: 5,
-        type: MediaType.image,
-        url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
-      ),
-      avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
-      name: "Bao Nguyen",
-    );
-    const String content =
-        "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.";
-
-    final Comment comment = Comment(id: 1, content: content, creatorUUID: " user.id", postId: postId);
-    comment.isLiked = true;
-
-    final Comment comment2 = Comment(id: 2, content: content, creatorUUID: "user.id", postId: postId);
-    comment2.createdAt = DateTime.now().subtract(
-      const Duration(seconds: 120),
-    );
-    comment2.isLiked = false;
-
-    final list = <Comment>[comment, comment2];
-    list.add(list[0]);
-    list.add(list[1]);
-    list.add(list[0]);
-    list.add(list[1]);
-    list.add(list[0]);
-    list.add(list[1]);
-    list.add(list[0]);
-    list.add(list[1]);
-    return list;
+  Future<List<Comment>> getPostComments(int postId, int limit, int offset) async {
+    final query = """
+    query MyQuery {
+  comments(where: {post_id: {_eq: $postId}}, order_by: {created_at: desc}, offset: $offset, limit: $limit) {
+    comment_reacts_aggregate {
+      aggregate {
+        count
+      }
+    }
+    comment_tag_users {
+      user {
+        name
+        uuid
+        id
+      }
+    }
+    content
+    id
+    is_liked
+    created_at
+    user {
+      avatar
+      id
+      name
+      uuid
+    }
+  }
+}
+    """;
+    final data = await _hasuraConnect.query(query);
+    final listPost = GetMapFromHasura.getMap(data as Map)["comments"] as List;
+    return listPost.map((e) => Comment.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<bool> likePost(int idPost) async {
-    return true;
+    final mutation = """
+    mutation MyMutation {
+  likePost(post_id: "$idPost") {
+    id
+  }
+  }
+""";
+    final data = await _hasuraConnect.mutation(mutation);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["likePost"] as Map;
+    return (affectedRows["id"] as String).isNotEmpty;
   }
 
   Future<List<Post>> getPostOfUser(String userUUID, int offset, int limit) async {
@@ -196,11 +203,12 @@ query MyQuery {
         : 'location_post: {data: {long: "${post.location?.long}", lat: "${post.location?.lat}", name: "${post.location?.name}"}},';
     final manution = """
   mutation MyMutation {
-  insert_posts_one(object: {content: "${post.content}", creator_uuid: "${post.creatorUUID}",$location medias: {data: ${post.medias?.toString() ?? "[]"}, type: "${post.type.index}", post_pets: {data: $listPetTag}}) {
+  insert_posts_one(object: {content: "${post.content}",$location medias: {data: ${post.medias?.toString() ?? "[]"}}, type: "${post.type.index}", post_pets: {data: $listPetTag}}) {
     id
   }
 }
 """;
+    print(manution);
     final data = await _hasuraConnect.mutation(manution);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
     post.id = affectedRows["id"] as int;

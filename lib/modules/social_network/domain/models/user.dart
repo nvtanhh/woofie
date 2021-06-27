@@ -22,14 +22,12 @@ class User {
   String? email;
   @JsonKey(name: "pet_owners", fromJson: petsFromJson)
   List<Pet>? pets;
-  @JsonKey(name: "avatar_current")
+  @JsonKey(name: "avatar")
   Media? avatar;
-  @JsonKey(name: "avatar_url")
-  String? avatarUrl;
   @JsonKey(name: "dob")
   DateTime? dob;
 
-  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.pets, this.avatar, this.avatarUrl, this.bio, this.dob});
+  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.pets, this.avatar, this.bio, this.dob});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
