@@ -27,8 +27,8 @@ class AuthRepository {
     return _authDatasource.loginWithEmailPassword(email, password);
   }
 
-  Future<User?> registerWithEmailPassword(String email, String password) {
-    return _authDatasource.registerWithEmailPassword(email, password);
+  Future<User?> registerWithEmailPassword(String email, String password, String name) {
+    return _authDatasource.registerWithEmailPassword(email, password, name);
   }
 
   Future<bool> checkUserHavePet(String userId) {

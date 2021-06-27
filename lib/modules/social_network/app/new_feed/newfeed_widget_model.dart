@@ -22,6 +22,8 @@ class NewFeedWidgetModel extends BaseViewModel {
   final LikePostUsecase _likePostUsecase;
   late PagingController<int, Post> pagingController;
   final int pageSize = 10;
+  int nextPageKey = 0;
+  DateTime? dateTimeValueLast;
   CancelableOperation? cancelableOperation;
 
   NewFeedWidgetModel(
@@ -44,12 +46,13 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      final newItems = await _getPostsUsecase.call();
+      final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = pageKey + newItems.length;
+        nextPageKey = pageKey + newItems.length;
+        dateTimeValueLast = newItems.last.createdAt;
         pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {

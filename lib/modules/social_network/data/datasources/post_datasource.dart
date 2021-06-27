@@ -41,7 +41,11 @@ class PostDatasource {
     is_liked
     created_at
     user {
-      avatar
+      avatar {
+        url
+        type
+        id
+      }
       id
       name
       uuid
@@ -96,13 +100,25 @@ class PostDatasource {
       pet {
         id
         name
+        bio
       }
+    }
+    user {
+      bio
+      id
+      name
+      avatar {
+        type
+        url
+      }
+      uuid
     }
   }
 }
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["posts"] as List;
+    print(listPost.toString());
     return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
   }
 
@@ -133,7 +149,6 @@ class PostDatasource {
   }
 }
 """;
-    print(manution);
     final data = await _hasuraConnect.mutation(manution);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
     post.id = affectedRows["id"] as int;

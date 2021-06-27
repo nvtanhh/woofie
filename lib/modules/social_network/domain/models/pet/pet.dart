@@ -32,8 +32,8 @@ class Pet extends UpdatableModel {
   DateTime? dob;
   @JsonKey(name: "avatar")
   Media? avatar;
-  @JsonKey(name: "current_owner_id")
-  String? currentOwnerId;
+  @JsonKey(name: "current_owner_uuid")
+  String? currentOwnerUuid;
   @JsonKey(name: "current_owner")
   User? currentOwner;
   @JsonKey(name: "pet_owners", fromJson: allOwnersFromJson)
@@ -58,7 +58,7 @@ class Pet extends UpdatableModel {
     this.gender,
     this.dob,
     this.avatar,
-    this.currentOwnerId,
+    this.currentOwnerUuid,
     this.currentOwner,
     this.allOwners,
     this.petType,
@@ -107,7 +107,7 @@ class Pet extends UpdatableModel {
       avatar = Media.fromJson(json['avatar'] as Map<String, dynamic>);
     }
     if (json['current_owner_id'] != null) {
-      currentOwnerId = json['current_owner_id'] as String;
+      currentOwnerUuid = json['current_owner_id'] as String;
     }
     if (json['current_owner'] != null) {
       currentOwner = User.fromJson(json['current_owner'] as Map<String, dynamic>);

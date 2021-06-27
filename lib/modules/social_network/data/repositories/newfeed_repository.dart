@@ -5,6 +5,7 @@ import 'package:meowoof/modules/social_network/data/datasources/post_datasource.
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class NewFeedRepository {
@@ -38,8 +39,8 @@ class NewFeedRepository {
     return _postDatasource.createPost(post);
   }
 
-  Future<Comment?> createComment(int postId, String content) {
-    return _commentDatasource.createComment(postId, content);
+  Future<Comment?> createComment(int postId, String content,List<User> userTag) {
+    return _commentDatasource.createComment(postId, content,userTag);
   }
 
   Future<bool> likeComment(int idComment) {

@@ -22,6 +22,8 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   late int postId;
   late PagingController<int, Comment> pagingController;
   final int pageSize = 10;
+  final List<User> tagUsers = [];
+  int nextPageKey = 0;
 
   CommentBottomSheetWidgetModel(
     this._getCommentInPostUsecase,
@@ -35,11 +37,11 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   void _loadComments(int pageKey) {
     call(
       () async {
-        _comments = await _getCommentInPostUsecase.call(postId);
+        _comments = await _getCommentInPostUsecase.call(postId, offset: nextPageKey);
         if (_comments.length < pageSize) {
           pagingController.appendLastPage(_comments);
         } else {
-          final nextPageKey = pageKey + _comments.length;
+          nextPageKey = pageKey + _comments.length;
           pagingController.appendPage(_comments, nextPageKey);
         }
       },
@@ -74,9 +76,12 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   void onSendComment() {
     call(
       () async {
-        final Comment? comment = await _createCommentUsecase.call(postId, commentEditingController.text);
+        final Comment? comment = await _createCommentUsecase.call(postId, commentEditingController.text, tagUsers);
         if (comment != null) {
-          _comments.insert(0, comment);
+          pagingController.itemList?.insert(0, comment);
+          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+          pagingController.notifyListeners();
+          commentEditingController.clear();
         }
       },
       showLoading: false,

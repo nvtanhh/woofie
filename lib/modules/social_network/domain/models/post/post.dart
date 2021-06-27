@@ -6,6 +6,7 @@ import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
+import 'package:meowoof/modules/social_network/domain/models/post_pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 part 'post.g.dart';
@@ -30,7 +31,7 @@ class Post {
   bool? isLiked;
   @JsonKey(name: "comments")
   List<Comment>? comments;
-  @JsonKey(name: "post_pets")
+  @JsonKey(name: "post_pets", fromJson: allPetsFromJson)
   List<Pet>? pets;
   @JsonKey(name: "medias")
   List<Media>? medias;
@@ -51,6 +52,10 @@ class Post {
     this.pets,
     this.location,
   });
+  static List<Pet>? allPetsFromJson(List<dynamic>? list) {
+    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
+  }
+
   @JsonKey(name: "comments_aggregate")
   ObjectAggregate? commentsAggregate;
 

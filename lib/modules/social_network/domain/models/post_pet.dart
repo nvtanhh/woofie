@@ -10,15 +10,15 @@ class PostPet {
   int? id;
   int? postId;
   int? petId;
-  List<Post>? posts;
-  List<Pet>? pets;
+  Post? post;
+  Pet? pet;
 
   PostPet({
     this.id,
     this.postId,
     this.petId,
-    this.posts,
-    this.pets,
+    this.post,
+    this.pet,
   });
   factory PostPet.fromJson(Map<String, dynamic> json) => _$PostPetFromJson(json);
 
