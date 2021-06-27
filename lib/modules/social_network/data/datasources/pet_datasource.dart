@@ -57,7 +57,7 @@ class PetDatasource {
     }
     final mutationInsertPet = """
     mutation MyMutation {
-  insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar: {data: {url: "${pet.avatar?.url ?? ""}"}}}) {
+    insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar: {data: {url: "${pet.avatar?.url ?? ""}"}},current_owner_uuid:"$userUUID"}) {
     id
     name
     dob
@@ -233,16 +233,16 @@ mutation MyMutation {
 
   Future<List<Pet>> getPetsOfUser(String userUUID) async {
     final query = """
-    query MyQuery {
-  pets(where: {pet_owners: {owner_uuid: {_eq: "$userUUID"}}}) {
+query MyQuery {
+  pets(where: {current_owner_uuid: {_eq: "$userUUID"}}) {
+    bio
+    name
+    id
     avatar {
-      type
       url
+      type
       id
     }
-    bio
-    id
-    name
   }
 }
     """;

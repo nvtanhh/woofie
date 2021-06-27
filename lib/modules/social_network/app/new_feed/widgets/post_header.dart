@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -65,9 +68,14 @@ class PostHeader extends StatelessWidget {
         TextSpan(
           text: "${pets[i].name}${i != pets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
+          recognizer:TapGestureRecognizer()..onTap = () => openProfilePet(pets[i]),
         ),
       );
     }
     return inLineSpan;
+  }
+
+  void openProfilePet(Pet pet) {
+    Get.to(()=>PetProfile(pet: pet));
   }
 }

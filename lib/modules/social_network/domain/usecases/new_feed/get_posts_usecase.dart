@@ -8,7 +8,7 @@ class GetPostsUsecase {
 
   GetPostsUsecase(this._newFeedRepository);
 
-  Future<List<Post>> call() {
-    return _newFeedRepository.getPosts();
+  Future<List<Post>> call({int limit = 10, int offset = 0, DateTime? lastValue}) {
+    return _newFeedRepository.getPosts(limit: limit, offset: offset, lastValue: lastValue);
   }
 }

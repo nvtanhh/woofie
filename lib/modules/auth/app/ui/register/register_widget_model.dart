@@ -51,7 +51,7 @@ class RegisterWidgetModel extends BaseViewModel {
     if (formKey.currentState?.validate() == true) {
       call(
         () async {
-          user = await _registerUsecase.call(emailEditingController.text, passwordEditingController.text);
+          user = await _registerUsecase.call(emailEditingController.text, passwordEditingController.text, nameEditingController.text);
         },
         onSuccess: () {
           Fluttertoast.showToast(msg: "Đăng ký thành công");

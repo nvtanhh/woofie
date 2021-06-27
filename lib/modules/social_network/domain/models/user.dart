@@ -8,7 +8,7 @@ import 'package:meowoof/modules/social_network/domain/models/updatable_model.dar
 part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class User extends UpdatableModel {
+class User extends UpdatableModel<User> {
   @JsonKey(name: "id")
   int id;
   @JsonKey(name: "uuid")

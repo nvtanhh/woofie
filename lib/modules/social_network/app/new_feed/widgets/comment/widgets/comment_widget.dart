@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:timeago/timeago.dart' as time_ago;
@@ -57,7 +59,7 @@ class CommentWidget extends StatelessWidget {
                 decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
                 child: Text.rich(
                   TextSpan(
-                    text: comment.content,
+                    text: "",
                     children: createTagUser(),
                     style: UITextStyle.text_body_14_w400,
                   ),
@@ -100,15 +102,19 @@ class CommentWidget extends StatelessWidget {
     onLikeCommentClick(comment.id);
   }
 
+  bool isLastList(int index, int length) {
+    return index == length;
+  }
+
   List<InlineSpan> createTagUser() {
-    if (comment.commentTagUser == null) return [];
     final List<InlineSpan> inLineSpan = [];
     for (var i = 0; i < (comment.commentTagUser?.length ?? 0); i++) {
-      inLineSpan.add(
+      inLineSpan.insert(
+        0,
         TextSpan(
-          text: "${comment.commentTagUser?[i].user?.name ?? ""}${i != (comment.commentTagUser?.length ?? 0) - 1 ? ", " : " "}",
+          text: "${comment.commentTagUser?[i].user?.name ?? ""}${isLastList(i, (comment.commentTagUser?.length ?? 0) - 1) ? " " : ", "}",
           style: UITextStyle.text_header_16_w600,
-          recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(comment.commentTagUser?[i].user?.id ?? 0),
+          recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(comment.commentTagUser![i].user!),
         ),
       );
     }
@@ -121,7 +127,11 @@ class CommentWidget extends StatelessWidget {
     return inLineSpan;
   }
 
-  void openProfileUser(int idUser) {
-    printInfo(info: "GO to profile user");
+  void openProfileUser(User user) {
+    Get.to(
+      () => UserProfile(
+        user: user,
+      ),
+    );
   }
 }

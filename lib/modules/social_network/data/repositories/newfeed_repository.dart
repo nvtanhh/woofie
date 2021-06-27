@@ -5,6 +5,7 @@ import 'package:meowoof/modules/social_network/data/datasources/post_datasource.
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class NewFeedRepository {
@@ -18,8 +19,8 @@ class NewFeedRepository {
     this._commentDatasource,
   );
 
-  Future<List<Post>> getPosts() {
-    return _postDatasource.getPosts();
+  Future<List<Post>> getPosts({int limit = 10, int offset = 0, DateTime? lastValue}) {
+    return _postDatasource.getPosts(limit: limit, offset: offset, lastValue: lastValue);
   }
 
   Future<List<Comment>> getCommentInPost(int postId, int limit, int offset) {
@@ -38,11 +39,15 @@ class NewFeedRepository {
     return _postDatasource.createPost(post);
   }
 
-  Future<Comment?> createComment(int postId, String content) {
-    return _commentDatasource.createComment(postId, content);
+  Future<Comment?> createComment(int postId, String content,List<User> userTag) {
+    return _commentDatasource.createComment(postId, content,userTag);
   }
 
   Future<bool> likeComment(int idComment) {
     return _commentDatasource.likeComment(idComment);
+  }
+
+  Future<bool> deletePost(int post) {
+    return _postDatasource.deletePost(post);
   }
 }

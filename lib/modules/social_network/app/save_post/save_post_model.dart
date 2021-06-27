@@ -21,7 +21,7 @@ import 'package:suga_core/suga_core.dart';
 class SavePostModel extends BaseViewModel {
   final GetPetsOfUserUsecase _getPetsOfUserUsecase;
   final CreatePostUsecase _createPostUsecase;
-  final TextEditingController contentController = TextEditingController();
+  late TextEditingController contentController;
   User? _user;
   late final Rx<PostType> _postType = PostType.activity.obs;
   final RxList<MediaFile> _files = <MediaFile>[].obs;
@@ -39,17 +39,16 @@ class SavePostModel extends BaseViewModel {
   void initState() {
     super.initState();
     _user = injector<LoggedInUser>().loggedInUser;
-
     _postType.value = post != null ? post!.type : PostType.activity;
-
     contentController.addListener(onTextChanged);
     _files.stream.listen(onFilesChanged);
+    _taggedPets.addAll(post?.pets ?? []);
+    contentController = TextEditingController();
+    contentController.text = post?.content ?? "";
     getPetsOfUser();
-    // _taggedPets.addAll(_user.pets ?? []);
   }
 
   Future getPetsOfUser() async {
-    printInfo(info: user!.uuid!);
     await call(
       () async => user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
       showLoading: false,
@@ -192,5 +191,10 @@ class SavePostModel extends BaseViewModel {
     call(
       () async => post = await _createPostUsecase.call(post!),
     );
+  }
+  @override
+  void disposeState() {
+    contentController.dispose();
+    super.disposeState();
   }
 }
