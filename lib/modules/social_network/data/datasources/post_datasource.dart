@@ -24,10 +24,12 @@ class PostDatasource {
       content:
           "Một năm rồi cơ. Bây giờ xịn hơn rồi. Cũng có mấy ngàn người xài cơ mà  vẫn không như mong muốn. Mà cay cái là làm cho sinh viên trường mà đăng bài giới thiệu trên mấy trang trường thì bị từ chối.",
       creator: User(
-          id: 1,
-          name: "Bảo Nguyễn",
-          avatar: Media(id: 1, url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg", type: MediaType.image),
-          avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg"),
+        id: 1,
+        name: "Bảo Nguyễn",
+        avatar: Media(id: 1, url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg", type: MediaType.image),
+        // avatarUrl:
+        //     "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
+      ),
       isLiked: false,
       pets: [
         Pet(
@@ -79,7 +81,7 @@ class PostDatasource {
         type: MediaType.image,
         url: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       ),
-      avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
+      // avatarUrl: "https://i.pinimg.com/564x/5b/eb/0d/5beb0d404c196e15b2882fb55a8554d6.jpg",
       name: "Bao Nguyen",
     );
     const String content =

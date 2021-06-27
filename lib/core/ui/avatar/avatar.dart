@@ -48,15 +48,16 @@ class MWAvatar extends StatelessWidget {
     return avatarSize;
   }
 
-  const MWAvatar(
-      {this.avatarUrl,
-      this.size = MWAvatarSize.medium,
-      this.onPressed,
-      this.avatarFile,
-      this.borderWidth,
-      this.isZoomable = false,
-      this.borderRadius,
-      this.customSize});
+  const MWAvatar({
+    this.avatarUrl,
+    this.size = MWAvatarSize.medium,
+    this.onPressed,
+    this.avatarFile,
+    this.borderWidth,
+    this.isZoomable = false,
+    this.borderRadius,
+    this.customSize,
+  });
 
   @override
   Widget build(BuildContext context) {

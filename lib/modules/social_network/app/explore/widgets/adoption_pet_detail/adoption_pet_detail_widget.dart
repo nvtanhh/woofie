@@ -135,7 +135,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                       ListTile(
                         contentPadding: const EdgeInsets.symmetric(),
                         leading: MWAvatar(
-                          avatarUrl: viewModel.post.creator.avatarUrl,
+                          avatarUrl: viewModel.post.creator.avatar?.url,
                           borderRadius: 10.r,
                         ),
                         title: Text(
