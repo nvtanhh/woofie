@@ -30,27 +30,28 @@ class UserDatasource {
     final query = """
     query MyQuery {
       users(where: {id: {_eq: $userId}}) {
+        id
+        uuid
+        name
         avatar {
           id
-          type
           url
+          type
         }
-        id
-        dob
-        email
-        name
-        phone_number
         bio
-        uuid
+        email
+        dob
+        phone_number
         current_pets {
           id
-            bio
-            name
-            avatar {
-              id
-              type
-              url
-            }
+          name
+          gender
+          bio
+          avatar {
+            id
+            type
+            url
+          }
         }
       }
     }

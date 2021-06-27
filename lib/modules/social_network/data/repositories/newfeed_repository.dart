@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/social_network/data/datasources/comment_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -9,14 +10,20 @@ import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 class NewFeedRepository {
   final PostDatasource _postDatasource;
   final PetDatasource _petDatasource;
-  NewFeedRepository(this._postDatasource, this._petDatasource);
+  final CommentDatasource _commentDatasource;
+
+  NewFeedRepository(
+    this._postDatasource,
+    this._petDatasource,
+    this._commentDatasource,
+  );
 
   Future<List<Post>> getPosts() {
     return _postDatasource.getPosts();
   }
 
-  Future<List<Comment>> getCommentInPost(int postId) {
-    return _postDatasource.getPostComments(postId);
+  Future<List<Comment>> getCommentInPost(int postId, int limit, int offset) {
+    return _postDatasource.getPostComments(postId, limit, offset);
   }
 
   Future<bool> likePost(int idPost) {
@@ -29,5 +36,13 @@ class NewFeedRepository {
 
   Future<Post> createPost(Post post) {
     return _postDatasource.createPost(post);
+  }
+
+  Future<Comment?> createComment(int postId, String content) {
+    return _commentDatasource.createComment(postId, content);
+  }
+
+  Future<bool> likeComment(int idComment) {
+    return _commentDatasource.likeComment(idComment);
   }
 }

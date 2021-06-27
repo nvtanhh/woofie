@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
@@ -8,6 +8,7 @@ import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -31,14 +32,14 @@ class SavePostModel extends BaseViewModel {
   Placemark? currentPlacemark;
   RxBool isLoadingAddress = false.obs;
   Position? currentPosition;
+
   SavePostModel(this._getPetsOfUserUsecase, this._createPostUsecase);
 
   @override
   void initState() {
     super.initState();
-    try {
-      _user = post != null ? post!.creator : injector<LoggedInUser>().loggedInUser;
-    } catch (error) {}
+    _user = injector<LoggedInUser>().loggedInUser;
+
     _postType.value = post != null ? post!.type : PostType.activity;
 
     contentController.addListener(onTextChanged);
@@ -48,6 +49,7 @@ class SavePostModel extends BaseViewModel {
   }
 
   Future getPetsOfUser() async {
+    printInfo(info: user!.uuid!);
     await call(
       () async => user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
       showLoading: false,
@@ -172,6 +174,21 @@ class SavePostModel extends BaseViewModel {
   }
 
   void createPost() {
+    post = Post(
+      id: 0,
+      creator: user,
+      type: postType,
+      content: contentController.text,
+      pets: taggedPets,
+      creatorUUID: user?.uuid,
+      location: currentPosition == null
+          ? null
+          : Location(
+              long: currentPosition!.longitude,
+              lat: currentPosition!.longitude,
+              name: currentAddress.value,
+            ),
+    );
     call(
       () async => post = await _createPostUsecase.call(post!),
     );

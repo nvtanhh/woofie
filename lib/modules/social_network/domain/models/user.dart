@@ -23,39 +23,27 @@ class User extends UpdatableModel {
   String? email;
   @JsonKey(name: "current_pets")
   List<Pet>? currentPets;
-  @JsonKey(name: "all_pets", fromJson: petsFromJson)
+  @JsonKey(name: "all_pets", fromJson: allPetsFromJson)
   List<Pet>? allPets;
   @JsonKey(name: "avatar")
   Media? avatar;
   @JsonKey(name: "dob")
   DateTime? dob;
 
-  User(
-      {required this.id,
-      this.uuid,
-      this.name,
-      this.phoneNumber,
-      this.email,
-      this.currentPets,
-      this.avatar,
-      this.bio,
-      this.dob});
+  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
   }
 
-  factory User.fromJsonString(String jsonString) =>
-      User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory User.fromJsonString(String jsonString) => User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   String toJsonString() => json.encode(toJson());
 
-  static List<Pet>? petsFromJson(List<dynamic>? list) {
-    return list
-        ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
-        .toList();
+  static List<Pet>? allPetsFromJson(List<dynamic>? list) {
+    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
   }
 
   @override
@@ -69,8 +57,11 @@ class User extends UpdatableModel {
     if (json['email'] != null) {
       email = json['email'] as String;
     }
-    if (json['pets'] != null) {
-      currentPets = User.petsFromJson(json['pets'] as List?);
+    if (json['current_pets'] != null) {
+      currentPets = (json['current_pets'] as List<dynamic>?)?.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
+    }
+    if (json['all_pet'] != null) {
+      currentPets = allPetsFromJson(json['current_pets'] as List?);
     }
     if (json['avtar'] != null) {
       avatar = Media.fromJson(json['avatar'] as Map<String, dynamic>);
