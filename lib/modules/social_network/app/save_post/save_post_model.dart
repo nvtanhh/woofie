@@ -192,6 +192,7 @@ class SavePostModel extends BaseViewModel {
       () async => post = await _createPostUsecase.call(post!),
     );
   }
+
   @override
   void disposeState() {
     contentController.dispose();

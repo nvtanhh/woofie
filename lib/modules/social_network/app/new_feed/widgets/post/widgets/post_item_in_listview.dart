@@ -68,7 +68,7 @@ class PostItemInListView extends StatelessWidget {
                       width: 5.w,
                     ),
                     Obx(
-                          () => Text(
+                      () => Text(
                         "${countLike.value}",
                         style: UITextStyle.black_14_w600,
                       ),

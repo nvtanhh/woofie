@@ -63,7 +63,7 @@ class User extends UpdatableModel<User> {
     if (json['all_pet'] != null) {
       currentPets = allPetsFromJson(json['current_pets'] as List?);
     }
-    if (json['avtar'] != null) {
+    if (json['avatar'] != null) {
       avatar = Media.fromJson(json['avatar'] as Map<String, dynamic>);
     }
     if (json['bio'] != null) {
