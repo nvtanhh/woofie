@@ -77,6 +77,7 @@ class WeightModel extends BaseViewModel {
         } else {
           listWeightChart = pagingController.itemList ?? [];
         }
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         pagingController.notifyListeners();
       },
       onFailure: (err) {},
