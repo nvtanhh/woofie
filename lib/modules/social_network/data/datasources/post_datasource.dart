@@ -130,7 +130,9 @@ class PostDatasource {
   medias { id type url }
   post_reacts_aggregate { aggregate { count } } 
   type post_pets { pet { name id } }
-  comments_aggregate { aggregate { count } } } }
+  comments_aggregate { aggregate { count } }
+  user { uuid name id }
+   } }
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["posts"] as List;

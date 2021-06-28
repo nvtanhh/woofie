@@ -68,7 +68,7 @@ class PostHeader extends StatelessWidget {
         TextSpan(
           text: "${pets[i].name}${i != pets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
-          recognizer:TapGestureRecognizer()..onTap = () => openProfilePet(pets[i]),
+          recognizer: TapGestureRecognizer()..onTap = () => openProfilePet(pets[i]),
         ),
       );
     }
@@ -76,6 +76,6 @@ class PostHeader extends StatelessWidget {
   }
 
   void openProfilePet(Pet pet) {
-    Get.to(()=>PetProfile(pet: pet));
+    Get.to(() => PetProfile(pet: pet));
   }
 }

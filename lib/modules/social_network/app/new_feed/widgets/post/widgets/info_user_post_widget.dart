@@ -86,7 +86,7 @@ class InfoUserPostWidget extends StatelessWidget {
         TextSpan(
           text: "${pets[i].name}${i != pets.length - 1 ? ", " : " "}",
           style: UITextStyle.text_header_16_w600,
-          recognizer:TapGestureRecognizer()..onTap = () => openProfilePet(pets[i]),
+          recognizer: TapGestureRecognizer()..onTap = () => openProfilePet(pets[i]),
         ),
       );
     }
@@ -104,6 +104,6 @@ class InfoUserPostWidget extends StatelessWidget {
   }
 
   void openProfilePet(Pet pet) {
-    Get.to(()=>PetProfile(pet: pet));
+    Get.to(() => PetProfile(pet: pet));
   }
 }

@@ -39,8 +39,8 @@ class NewFeedRepository {
     return _postDatasource.createPost(post);
   }
 
-  Future<Comment?> createComment(int postId, String content,List<User> userTag) {
-    return _commentDatasource.createComment(postId, content,userTag);
+  Future<Comment?> createComment(int postId, String content, List<User> userTag) {
+    return _commentDatasource.createComment(postId, content, userTag);
   }
 
   Future<bool> likeComment(int idComment) {

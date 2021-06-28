@@ -9,7 +9,7 @@ class CreateCommentUsecase {
 
   CreateCommentUsecase(this._newFeedRepository);
 
-  Future<Comment?> call(int postId, String content,List<User> userTag) {
-    return _newFeedRepository.createComment(postId, content,userTag);
+  Future<Comment?> call(int postId, String content, List<User> userTag) {
+    return _newFeedRepository.createComment(postId, content, userTag);
   }
 }
