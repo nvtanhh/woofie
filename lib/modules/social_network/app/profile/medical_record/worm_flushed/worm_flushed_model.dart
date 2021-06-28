@@ -71,7 +71,6 @@ class WormFlushedWidgetModel extends BaseViewModel {
       showLoading: false,
       onSuccess: () {
         _wormFlushes.addAll(receiveWormFlushed);
-        printInfo(info: _wormFlushes.length.toString());
       },
       onFailure: (err) {
         printError(info: err.toString());

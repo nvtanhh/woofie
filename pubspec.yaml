@@ -153,6 +153,8 @@ dependencies:
   # A simple library to implement application caching
   dcache: ^0.4.0
 
+  # effectively enabling headless execution of Dart code in the background.
+  workmanager: ^0.4.0
 
 dev_dependencies:
   flutter_test:

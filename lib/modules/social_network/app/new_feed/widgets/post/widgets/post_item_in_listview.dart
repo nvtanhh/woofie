@@ -108,7 +108,7 @@ class PostItemInListView extends StatelessWidget {
   }
 
   void likeClick() {
-    if (isLiked.value) {
+    if (!isLiked.value) {
       countLike.value++;
     } else {
       countLike.value--;
