@@ -1,13 +1,8 @@
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
-import 'package:meowoof/modules/social_network/domain/models/aggregate/aggregate.dart';
-import 'package:meowoof/modules/social_network/domain/models/aggregate/object_aggregate.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class PostDatasource {
@@ -68,7 +63,7 @@ class PostDatasource {
 """;
     final data = await _hasuraConnect.mutation(mutation);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["likePost"] as Map;
-    return (affectedRows["id"] as String).isNotEmpty;
+    return int.tryParse("${affectedRows["id"]}") != null;
   }
 
   Future<List<Post>> getPostOfUser(String userUUID, int offset, int limit) async {
@@ -118,7 +113,6 @@ class PostDatasource {
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["posts"] as List;
-    print(listPost.toString());
     return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
   }
 

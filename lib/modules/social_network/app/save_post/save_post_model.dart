@@ -7,6 +7,7 @@ import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
+import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -32,18 +33,23 @@ class SavePostModel extends BaseViewModel {
   Placemark? currentPlacemark;
   RxBool isLoadingAddress = false.obs;
   Position? currentPosition;
+  final ToastService _toastService;
 
-  SavePostModel(this._getPetsOfUserUsecase, this._createPostUsecase);
+  SavePostModel(
+    this._getPetsOfUserUsecase,
+    this._createPostUsecase,
+    this._toastService,
+  );
 
   @override
   void initState() {
     super.initState();
     _user = injector<LoggedInUser>().loggedInUser;
     _postType.value = post != null ? post!.type : PostType.activity;
-    contentController.addListener(onTextChanged);
     _files.stream.listen(onFilesChanged);
     _taggedPets.addAll(post?.pets ?? []);
     contentController = TextEditingController();
+    contentController.addListener(onTextChanged);
     contentController.text = post?.content ?? "";
     getPetsOfUser();
   }
@@ -69,7 +75,10 @@ class SavePostModel extends BaseViewModel {
       }
       await _getCurrentAddress();
       if (isResetDisable) _isDisable.value = false;
+      return;
     }
+    currentPosition = null;
+    return;
   }
 
   Future onMediasPicked(List<MediaFile> pickedFiles) async {
@@ -190,6 +199,9 @@ class SavePostModel extends BaseViewModel {
     );
     call(
       () async => post = await _createPostUsecase.call(post!),
+      onSuccess: () {
+        _toastService.success(message: "Add post success", context: Get.context!);
+      },
     );
   }
 

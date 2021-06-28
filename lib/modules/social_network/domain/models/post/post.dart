@@ -6,7 +6,6 @@ import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
-import 'package:meowoof/modules/social_network/domain/models/post_pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 part 'post.g.dart';

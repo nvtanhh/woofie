@@ -16,7 +16,9 @@ part 'pet.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Pet extends UpdatableModel {
+  @override
   @JsonKey(name: "id")
+  // ignore: overridden_fields
   int id;
   @JsonKey(name: "name")
   String? name;
