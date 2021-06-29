@@ -6,14 +6,15 @@ import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
+import 'package:meowoof/modules/social_network/domain/models/updatable_model.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 part 'post.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Post {
+class Post extends UpdatableModel {
   @JsonKey(name: "id")
-  int id;
+  final int id;
   @JsonKey(name: "content")
   String? content;
   @JsonKey(name: "is_closed")
@@ -34,8 +35,10 @@ class Post {
   List<Pet>? pets;
   @JsonKey(name: "medias")
   List<Media>? medias;
-  @JsonKey(name: "location_post")
+  @JsonKey(name: "location")
   Location? location;
+  @JsonKey(name: "status", fromJson: PostStatus.parse)
+  PostStatus? status;
   @JsonKey(name: "post_reacts_aggregate")
   ObjectAggregate? postReactsAggregate;
   Post({
@@ -51,8 +54,11 @@ class Post {
     this.pets,
     this.location,
   });
+
   static List<Pet>? allPetsFromJson(List<dynamic>? list) {
-    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
+    return list
+        ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
+        .toList();
   }
 
   @JsonKey(name: "comments_aggregate")
@@ -61,13 +67,67 @@ class Post {
   @JsonKey(name: "medias_aggregate")
   ObjectAggregate? mediasAggregate;
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
-
-  factory Post.fromJsonString(String jsonString) => Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Post.fromJsonString(String jsonString) =>
+      Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
 
   String toJsonString() => json.encode(toJson());
+
+  static final factory = PostFactory();
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return factory.fromJson(json);
+  }
+
+  @override
+  void updateFromJson(Map json) {
+    if (json['user'] != null) {
+      creator = User.fromJson(json['user'] as Map<String, dynamic>);
+    }
+    if (json['type'] != null) {
+      type = _$enumDecode(_$PostTypeEnumMap, json['type']);
+    }
+    if (json['creator_uuid'] != null) {
+      creatorUUID = json['creator_uuid'] as String;
+    }
+    if (json['content'] != null) {
+      content = json['content'] as String;
+    }
+    if (json['is_closed'] != null) {
+      isClosed = json['is_closed'] as bool;
+    }
+    if (json['created_at'] != null) {
+      createdAt = DateTime.parse(json['created_at'] as String);
+    }
+    if (json['is_liked'] != null) {
+      isLiked = json['is_liked'] as bool;
+    }
+    if (json['comments'] != null) {
+      comments = (json['comments'] as List<dynamic>?)
+          ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
+    if (json['post_pets'] != null) {
+      pets = allPetsFromJson(json['post_pets'] as List?);
+    }
+    if (json['status'] != null) {
+      status = PostStatus.parse(json['status'] as String);
+    }
+    if (json['location'] != null) {
+      location = Location.fromJson(json['location'] as Map<String, dynamic>);
+    }
+    if (json['medias'] != null) {
+      medias = (json['medias'] as List<dynamic>?)
+          ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
+  }
+}
+
+class PostFactory extends UpdatableModelFactory<Post> {
+  @override
+  Post makeFromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 }
 
 enum PostType {
@@ -79,4 +139,39 @@ enum PostType {
   mating,
   @JsonValue(3)
   lose,
+}
+
+class PostStatus {
+  final String code;
+
+  const PostStatus._internal(this.code);
+
+  @override
+  String toString() => code;
+
+  static const draft = PostStatus._internal('D');
+  static const published = PostStatus._internal('P');
+
+  static const _values = <PostStatus>[draft, published];
+
+  static List<PostStatus> values() => _values;
+
+  static PostStatus? parse(String? code) {
+    if (code == null) return null;
+
+    PostStatus? postStatus;
+    for (final type in _values) {
+      if (code == type.code) {
+        postStatus = type;
+        break;
+      }
+    }
+
+    if (postStatus == null) {
+      // ignore: avoid_print
+      print('Unsupported post status type: $code');
+    }
+
+    return postStatus;
+  }
 }
