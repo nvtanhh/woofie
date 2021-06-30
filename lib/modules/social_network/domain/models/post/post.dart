@@ -32,12 +32,14 @@ class Post extends UpdatableModel {
   @JsonKey(name: "comments")
   List<Comment>? comments;
   @JsonKey(name: "post_pets", fromJson: allPetsFromJson)
-  List<Pet>? pets;
+  List<Pet>? taggegPets;
   @JsonKey(name: "medias")
   List<Media>? medias;
   @JsonKey(name: "location")
   Location? location;
-  @JsonKey(name: "status", fromJson: PostStatus.parse)
+  @JsonKey(
+    name: "status",
+  )
   PostStatus? status;
   @JsonKey(name: "post_reacts_aggregate")
   ObjectAggregate? postReactsAggregate;
@@ -51,7 +53,7 @@ class Post extends UpdatableModel {
     this.createdAt,
     this.isLiked,
     this.comments,
-    this.pets,
+    this.taggegPets,
     this.location,
   });
 
@@ -109,10 +111,10 @@ class Post extends UpdatableModel {
           .toList();
     }
     if (json['post_pets'] != null) {
-      pets = allPetsFromJson(json['post_pets'] as List?);
+      taggegPets = allPetsFromJson(json['post_pets'] as List?);
     }
     if (json['status'] != null) {
-      status = PostStatus.parse(json['status'] as String);
+      status = _$enumDecodeNullable(_$PostStatusEnumMap, json['status']);
     }
     if (json['location'] != null) {
       location = Location.fromJson(json['location'] as Map<String, dynamic>);
@@ -141,37 +143,44 @@ enum PostType {
   lose,
 }
 
-class PostStatus {
-  final String code;
-
-  const PostStatus._internal(this.code);
-
-  @override
-  String toString() => code;
-
-  static const draft = PostStatus._internal('D');
-  static const published = PostStatus._internal('P');
-
-  static const _values = <PostStatus>[draft, published];
-
-  static List<PostStatus> values() => _values;
-
-  static PostStatus? parse(String? code) {
-    if (code == null) return null;
-
-    PostStatus? postStatus;
-    for (final type in _values) {
-      if (code == type.code) {
-        postStatus = type;
-        break;
-      }
-    }
-
-    if (postStatus == null) {
-      // ignore: avoid_print
-      print('Unsupported post status type: $code');
-    }
-
-    return postStatus;
-  }
+enum PostStatus {
+  @JsonValue(0)
+  draft,
+  @JsonValue(1)
+  published,
 }
+
+// class PostStatus {
+//   final String code;
+
+//   const PostStatus._internal(this.code);
+
+//   @override
+//   String toString() => code;
+
+//   static const draft = PostStatus._internal('D');
+//   static const published = PostStatus._internal('P');
+
+//   static const _values = <PostStatus>[draft, published];
+
+//   static List<PostStatus> values() => _values;
+
+//   static PostStatus? parse(String? code) {
+//     if (code == null) return null;
+
+//     PostStatus? postStatus;
+//     for (final type in _values) {
+//       if (code == type.code) {
+//         postStatus = type;
+//         break;
+//       }
+//     }
+
+//     if (postStatus == null) {
+//       // ignore: avoid_print
+//       print('Unsupported post status type: $code');
+//     }
+
+//     return postStatus;
+//   }
+// }

@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
@@ -6,7 +7,9 @@ import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/save_post/new_post_uploader.dart';
 import 'package:meowoof/modules/social_network/app/save_post/save_post.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
@@ -25,6 +28,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   int nextPageKey = 0;
   DateTime? dateTimeValueLast;
   CancelableOperation? cancelableOperation;
+  RxList<Widget> prependedWidgets = <Widget>[].obs;
 
   NewFeedWidgetModel(
     this._getPostsUsecase,
@@ -38,7 +42,8 @@ class NewFeedWidgetModel extends BaseViewModel {
   void initState() {
     pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        cancelableOperation =
+            CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     super.initState();
@@ -46,7 +51,8 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
+      final newItems = await _getPostsUsecase.call(
+          offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
@@ -103,16 +109,29 @@ class NewFeedWidgetModel extends BaseViewModel {
       },
       onSuccess: () {
         if (isSuccess) {
-          injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
+          injector<ToastService>()
+              .success(message: 'Post deleted!', context: Get.context!);
         }
       },
       onFailure: (err) {
-        injector<ToastService>().success(message: err.toString(), context: Get.context!);
+        injector<ToastService>()
+            .success(message: err.toString(), context: Get.context!);
       },
     );
   }
 
-  Future onWantsCreateNewPost() async {
-    await injector<NavigationService>().navigateToSavePost();
+  Future onWantsToCreateNewPost() async {
+    NewPostData? newPostData =
+        await injector<NavigationService>().navigateToSavePost();
+    if (newPostData != null) {
+      _prepenedNewPostUploadingWidget(newPostData);
+    }
+  }
+
+  void _prepenedNewPostUploadingWidget(NewPostData newPostData) {
+    final NewPostUploader newPostUploaderWidget =
+        NewPostUploader(data: newPostData);
+
+    prependedWidgets.add(newPostUploaderWidget);
   }
 }

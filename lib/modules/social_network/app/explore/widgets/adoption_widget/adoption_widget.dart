@@ -18,7 +18,8 @@ class AdoptionWidget extends StatefulWidget {
   _AdoptionWidgetState createState() => _AdoptionWidgetState();
 }
 
-class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetModel> {
+class _AdoptionWidgetState
+    extends BaseViewState<AdoptionWidget, AdoptionWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,7 +49,7 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) {
                     return PetItemWidget(
-                      pet: item.pets![0],
+                      pet: item.taggegPets![0],
                       onClick: () => viewModel.onItemClick(item),
                     );
                   },
@@ -60,7 +61,8 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
                       PetItemShimmerWidget(),
                     ],
                   ),
-                  newPageProgressIndicatorBuilder: (_) => PetItemShimmerWidget(),
+                  newPageProgressIndicatorBuilder: (_) =>
+                      PetItemShimmerWidget(),
                 ),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,

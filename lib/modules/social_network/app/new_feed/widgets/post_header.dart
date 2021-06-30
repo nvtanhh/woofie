@@ -57,18 +57,21 @@ class PostHeader extends StatelessWidget {
   }
 
   List<InlineSpan> createTagPet() {
-    final List<Pet> pets = post.pets!;
+    final List<Pet> pets = post.taggegPets!;
     if (pets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
+      TextSpan(
+          text: " ${LocaleKeys.new_feed_with.trans()} ",
+          style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < pets.length; i++) {
       inLineSpan.add(
         TextSpan(
           text: "${pets[i].name}${i != pets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
-          recognizer: TapGestureRecognizer()..onTap = () => openProfilePet(pets[i]),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => openProfilePet(pets[i]),
         ),
       );
     }
