@@ -1,4 +1,5 @@
 # Custom
+.fvm/
 lib/configs/*_config.dart
 *.g.dart
 injector.config.dart

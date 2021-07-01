@@ -9,8 +9,17 @@ class UserDatasource {
 
   UserDatasource(this._hasuraConnect);
 
-  Future followPet(int petID) async {
-    return;
+  Future<String?> followPet(int petID) async {
+    final manution = """
+  mutation MyMutation {
+  follow(pet_id:"$petID") {
+    id
+  }
+  }
+""";
+    final data = await _hasuraConnect.mutation(manution);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["follow"] as Map;
+    return affectedRows["id"] as String;
   }
 
   Future blockUser(int userID) async {
@@ -20,32 +29,33 @@ class UserDatasource {
   Future<User> getUserProfile(int userId) async {
     final query = """
     query MyQuery {
-  users(where: {id: {_eq: $userId}}) {
-    avatar_current {
-      id
-      type
-      url
-    }
-    id
-    dob
-    email
-    name
-    phone_number
-    bio
-    pet_owners {
-      pet {
+      users(where: {id: {_eq: $userId}}) {
         id
-        bio
+        uuid
         name
-        avatar_current {
+        avatar {
           id
           url
+          type
+        }
+        bio
+        email
+        dob
+        phone_number
+        current_pets {
+          id
+          name
+          gender
+          bio
+          avatar {
+            id
+            type
+            url
+          }
         }
       }
     }
-  }
-}
-""";
+    """;
     final data = await _hasuraConnect.query(query);
     final listUser = GetMapFromHasura.getMap(data as Map)["users"] as List;
     return User.fromJson(listUser[0] as Map<String, dynamic>);

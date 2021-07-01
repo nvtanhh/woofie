@@ -10,31 +10,37 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushe
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
+import '../updatable_model.dart';
+
 part 'pet.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Pet {
+class Pet extends UpdatableModel {
+  @override
   @JsonKey(name: "id")
+  // ignore: overridden_fields
   int id;
   @JsonKey(name: "name")
   String? name;
   @JsonKey(name: "bio")
   String? bio;
-  @JsonKey(name: "id_pet_type")
+  @JsonKey(name: "pet_type_id")
   int? petTypeId;
+  @JsonKey(name: "pet_type")
+  PetType? petType;
   @JsonKey(name: "gender")
   Gender? gender;
   @JsonKey(name: "dob")
   DateTime? dob;
-  @JsonKey(name: "avatar_current")
+  @JsonKey(name: "avatar")
   Media? avatar;
-  @JsonKey(name: "id_owner")
-  String? ownerId;
-  @JsonKey(name: "owner")
-  User? owner;
-  @JsonKey(name: "pet_type")
-  PetType? petType;
-  @JsonKey(name: "id_pet_breed")
+  @JsonKey(name: "current_owner_uuid")
+  String? currentOwnerUuid;
+  @JsonKey(name: "current_owner")
+  User? currentOwner;
+  @JsonKey(name: "pet_owners", fromJson: allOwnersFromJson)
+  List<User>? allOwners;
+  @JsonKey(name: "pet_breed_id")
   int? petBreedId;
   @JsonKey(name: "pet_breed")
   PetBreed? petBreed;
@@ -54,8 +60,9 @@ class Pet {
     this.gender,
     this.dob,
     this.avatar,
-    this.ownerId,
-    this.owner,
+    this.currentOwnerUuid,
+    this.currentOwner,
+    this.allOwners,
     this.petType,
     this.petBreed,
     this.petBreedId,
@@ -79,4 +86,65 @@ class Pet {
 
   @override
   int get hashCode => id.hashCode;
+
+  static List<User>? allOwnersFromJson(List<dynamic>? list) {
+    return list?.map((e) => User.fromJson(e["owner"] as Map<String, dynamic>)).toList();
+  }
+
+  static final factory = PetFactory();
+
+  @override
+  void updateFromJson(Map json) {
+    if (json['name'] != null) {
+      name = json['name'] as String;
+    }
+    if (json['pet_type_id'] != null) petTypeId = json['pet_type_id'] as int;
+    if (json['gender'] != null) {
+      gender = _$enumDecodeNullable(_$GenderEnumMap, json['gender']);
+    }
+    if (json['dob'] != null) {
+      dob = json['dob'] == null ? null : DateTime.parse(json['dob'] as String);
+    }
+    if (json['avatar'] != null) {
+      avatar = Media.fromJson(json['avatar'] as Map<String, dynamic>);
+    }
+    if (json['current_owner_id'] != null) {
+      currentOwnerUuid = json['current_owner_id'] as String;
+    }
+    if (json['current_owner'] != null) {
+      currentOwner = User.fromJson(json['current_owner'] as Map<String, dynamic>);
+    }
+    if (json['pet_owners'] != null) {
+      allOwners = allOwnersFromJson(json['pet_owners'] as List<dynamic>);
+    }
+    if (json['pet_type'] != null) {
+      petType = PetType.fromJson(json['pet_type'] as Map<String, dynamic>);
+    }
+    if (json['pet_breed'] != null) {
+      petBreed = PetBreed.fromJson(json['pet_breed'] as Map<String, dynamic>);
+    }
+    if (json['pet_breed_id'] != null) {
+      petBreedId = json['pet_breed_id'] as int;
+    }
+    if (json['bio'] != null) {
+      bio = json['bio'] as String;
+    }
+    if (json['is_following'] != null) {
+      isFollowing = json['is_following'] as bool;
+    }
+    if (json['pet_vaccinateds'] != null) {
+      petVaccinates = (json['pet_vaccinateds'] as List<dynamic>?)?.map((e) => PetVaccinated.fromJson(e as Map<String, dynamic>)).toList();
+    }
+    if (json['pet_worm_flusheds'] != null) {
+      petWormFlushes = (json['pet_worm_flusheds'] as List<dynamic>?)?.map((e) => PetWormFlushed.fromJson(e as Map<String, dynamic>)).toList();
+    }
+    if (json['pet_weights'] != null) {
+      petWeights = (json['pet_weights'] as List<dynamic>?)?.map((e) => PetWeight.fromJson(e as Map<String, dynamic>)).toList();
+    }
+  }
+}
+
+class PetFactory extends UpdatableModelFactory<Pet> {
+  @override
+  Pet makeFromJson(Map<String, dynamic> json) => _$PetFromJson(json);
 }

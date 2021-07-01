@@ -50,89 +50,80 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
-    return Obx(
-      () {
-        if (viewModel.isLoaded) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CardDetailWidget(
+              title: LocaleKeys.explore_gender.trans(),
+              value: FormatHelper.genderPet(viewModel.pet.gender),
+            ),
+            CardDetailWidget(
+              title: LocaleKeys.explore_age.trans(),
+              value: DateTimeHelper.calcAge(viewModel.pet.dob),
+            ),
+            CardDetailWidget(
+              title: LocaleKeys.explore_breed.trans(),
+              value: viewModel.pet.petBreed?.name ?? "",
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        Text(
+          LocaleKeys.profile_medical_record.trans(),
+          style: UITextStyle.text_header_18_w600,
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        InkWell(
+          onTap: () => viewModel.onTabWeightChart(),
+          child: WeightChartPreviewWidget(
+            width: Get.width,
+            height: 175.h,
+            isMyPet: viewModel.isMyPet,
+            onAddClick: viewModel.isMyPet ? viewModel.onAddWeightClick : () => null,
+            weights: viewModel.pet.petWeights ?? [],
+          ),
+        ),
+        SizedBox(
+          height: 20.h,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CardDetailWidget(
-                    title: LocaleKeys.explore_gender.trans(),
-                    value: FormatHelper.genderPet(viewModel.pet.gender),
-                  ),
-                  CardDetailWidget(
-                    title: LocaleKeys.explore_age.trans(),
-                    value: DateTimeHelper.calcAge(viewModel.pet.dob),
-                  ),
-                  CardDetailWidget(
-                    title: LocaleKeys.explore_breed.trans(),
-                    value: viewModel.pet.petBreed?.name ?? "",
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Text(
-                LocaleKeys.profile_medical_record.trans(),
-                style: UITextStyle.text_header_18_w600,
-              ),
-              SizedBox(
-                height: 10.h,
+              InkWell(
+                onTap: () => viewModel.onTabWormFlushed(),
+                child: WormFlushedPreviewWidget(
+                  width: 160.w,
+                  height: 188.h,
+                  wormFlushed: viewModel.pet.petWormFlushes ?? [],
+                  isMyPet: viewModel.isMyPet,
+                  onAddClick: viewModel.isMyPet ? viewModel.onAddWormFlushedClick : () => null,
+                ),
               ),
               InkWell(
-                onTap: () => viewModel.onTabWeightChart(),
-                child: WeightChartPreviewWidget(
-                  width: Get.width,
-                  height: 175.h,
+                onTap: () => viewModel.onTabVaccinated(),
+                child: VaccinatedPreviewWidget(
+                  width: 160.w,
+                  height: 188.h,
+                  vaccinates: viewModel.pet.petVaccinates ?? [],
                   isMyPet: viewModel.isMyPet,
-                  onAddClick: viewModel.isMyPet ? viewModel.onAddWeightClick : () => null,
-                  weights: viewModel.pet.petWeights ?? [],
+                  onAddClick: viewModel.isMyPet ? viewModel.onAddVaccinatedClick : () => null,
                 ),
               ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () => viewModel.onTabWormFlushed(),
-                      child: WormFlushedPreviewWidget(
-                        width: 160.w,
-                        height: 188.h,
-                        wormFlushed: viewModel.pet.petWormFlushes ?? [],
-                        isMyPet: viewModel.isMyPet,
-                        onAddClick: viewModel.isMyPet ? viewModel.onAddWormFlushedClick : () => null,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () => viewModel.onTabVaccinated(),
-                      child: VaccinatedPreviewWidget(
-                        width: 160.w,
-                        height: 188.h,
-                        vaccinates: viewModel.pet.petVaccinates ?? [],
-                        isMyPet: viewModel.isMyPet,
-                        onAddClick: viewModel.isMyPet ? viewModel.onAddVaccinatedClick : () => null,
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ],
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+          ),
+        )
+      ],
     );
   }
 

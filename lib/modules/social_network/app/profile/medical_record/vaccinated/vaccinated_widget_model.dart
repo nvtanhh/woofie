@@ -76,7 +76,6 @@ class VaccinatedWidgetModel extends BaseViewModel {
       showLoading: false,
       onSuccess: () {
         _vaccinates.addAll(receivePetVaccinated);
-        printInfo(info: _vaccinates.length.toString());
       },
       onFailure: (err) {
         _toastService.error(message: LocaleKeys.error.trans(), context: Get.context!);

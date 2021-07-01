@@ -51,18 +51,18 @@ class PetDatasource {
   }
 
   Future<Pet> addPet(Pet pet) async {
-    final userId = _userStorage.get()?.id;
-    if (userId == null) {
+    final userUUID = _userStorage.get()?.uuid;
+    if (userUUID == null) {
       throw "Error";
     }
     final mutationInsertPet = """
     mutation MyMutation {
-  insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_id: $userId}}, avatar_current: {data: {url: "${pet.avatar?.url ?? ""}"}}}) {
+    insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar: {data: {url: "${pet.avatar?.url ?? ""}"}},current_owner_uuid:"$userUUID"}) {
     id
     name
     dob
     bio
-    avatar_current {
+    avatar {
       id
       url
       type
@@ -166,7 +166,7 @@ mutation MyMutation {
     final query = """
     query MyQuery {
   pets(limit: 1, where: {id: {_eq: $idPet}}) {
-    avatar_current {
+    avatar {
       url
       id
     }
@@ -175,6 +175,7 @@ mutation MyMutation {
     gender
     id
     name
+    is_following
     pet_vaccinateds(limit: 2, order_by: {created_at: desc, date: desc}) {
       description
       id
@@ -228,5 +229,25 @@ mutation MyMutation {
         ),
       ];
     }
+  }
+
+  Future<List<Pet>> getPetsOfUser(String userUUID) async {
+    final query = """
+query MyQuery {
+  pets(where: {current_owner_uuid: {_eq: "$userUUID"}}) {
+    bio
+    name
+    id
+    avatar {
+      url
+      type
+      id
+    }
+  }
+}
+    """;
+    final data = await _hasuraConnect.query(query);
+    final list = GetMapFromHasura.getMap(data as Map)["pets"] as List;
+    return list.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
   }
 }

@@ -27,15 +27,15 @@ class AuthRepository {
     return _authDatasource.loginWithEmailPassword(email, password);
   }
 
-  Future<User?> registerWithEmailPassword(String email, String password) {
-    return _authDatasource.registerWithEmailPassword(email, password);
+  Future<User?> registerWithEmailPassword(String email, String password, String name) {
+    return _authDatasource.registerWithEmailPassword(email, password, name);
   }
 
-  Future<bool> checkUserHavePet(int userId) {
+  Future<bool> checkUserHavePet(String userId) {
     return _hasuraDatasource.checkUseHavePet(userId);
   }
 
-  Future<hasura_user.User?> getUser(String uid) {
-    return _hasuraDatasource.getUser(uid);
+  Future<hasura_user.User?> getUser(String uuid) {
+    return _hasuraDatasource.getUser(uuid);
   }
 }

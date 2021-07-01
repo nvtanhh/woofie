@@ -2,12 +2,10 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/user_datasource.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
@@ -31,8 +29,8 @@ class ProfileRepository {
     return _userDatasource.getUserProfile(userId);
   }
 
-  Future<List<Post>> getPostOfUser(int useId, int offset, int limit) async {
-    return _postDatasource.getPostOfUser(useId, offset, limit);
+  Future<List<Post>> getPostOfUser(String userUUID, int offset, int limit) async {
+    return _postDatasource.getPostOfUser(userUUID, offset, limit);
   }
 
   Future<List<PetVaccinated>> getVaccinates(int idPet, int limit, int offset) async {
@@ -77,5 +75,9 @@ class ProfileRepository {
 
   Future reportUser(int userID) {
     return _userDatasource.reportUser(userID);
+  }
+
+  Future<bool> deletePost(int idPost) {
+    return _postDatasource.deletePost(idPost);
   }
 }

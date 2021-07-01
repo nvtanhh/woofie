@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:hasura_connect/hasura_connect.dart';
@@ -8,7 +10,9 @@ import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 class JwtInterceptor extends Interceptor {
   final FirebaseAuth auth;
 
-  JwtInterceptor(this.auth);
+  JwtInterceptor(this.auth) {
+    HttpOverrides.global = MyHttpOverrides();
+  }
 
   @override
   Future onError(HasuraError request) async {
@@ -48,4 +52,15 @@ class JwtInterceptor extends Interceptor {
 
   @override
   Future<void>? onTryAgain(HasuraConnect connect) {}
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = ((X509Certificate cert, String host, int port) {
+        final isValidHost = ["203.113.148.132"].contains(host); // <-- allow only hosts in array
+        return isValidHost;
+      });
+  }
 }

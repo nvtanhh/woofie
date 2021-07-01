@@ -5,6 +5,8 @@ import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccin
 import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/follow_pet_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/get_detail_info_pet_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -14,9 +16,43 @@ class PetProfileModel extends BaseViewModel {
   final Rx<bool?> _isMyPet = Rx<bool?>(null);
   late TabController tabController;
   final RxInt _tabIndex = RxInt(0);
+  final GetDetailInfoPetUsecase _getDetailInfoPetUsecase;
+  final FollowPetUsecase _followPetUsecase;
+
+  PetProfileModel(
+    this._getDetailInfoPetUsecase,
+    this._followPetUsecase,
+  );
+
+  @override
+  void initState() {
+    _loadPetDetailInfo();
+    super.initState();
+  }
+
+  Future _loadPetDetailInfo() async {
+    await call(
+      () async {
+        pet = await _getDetailInfoPetUsecase.call(pet.id);
+      },
+      onSuccess: () {
+        _isLoaded.value = true;
+      },
+      onFailure: (err) {
+        _isLoaded.value = false;
+      },
+      showLoading: false,
+    );
+  }
+
   void onPetBlock(Pet pet) {}
 
-  void followPet(Pet pet) {}
+  void followPet(Pet pet) {
+    call(
+      () => _followPetUsecase.call(pet.id),
+      onSuccess: () {},
+    );
+  }
 
   void onPetReport(Pet pet) {}
 

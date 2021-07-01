@@ -6,6 +6,7 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/commons/shimmer_page.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile_model.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/detail_info_pet/detail_info_pet_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/pet_info_widget.dart';
@@ -47,59 +48,65 @@ class _PetProfileState extends BaseViewState<PetProfile, PetProfileModel> with T
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Obx(
-                  () => PetInfoWidget(
-                    pet: viewModel.pet,
-                    isMyPet: viewModel.isMyPet ?? false,
-                    onPetBlock: viewModel.onPetBlock,
-                    followPet: viewModel.followPet,
-                    onPetReport: viewModel.onPetReport,
-                  ),
-                ),
-                TabBar(
-                  tabs: [
-                    Tab(
-                      child: Text(
-                        LocaleKeys.profile_information.trans(),
-                        style: UITextStyle.text_body_14_w600,
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        LocaleKeys.profile_post.trans(),
-                        style: UITextStyle.text_body_14_w600,
-                      ),
-                    )
-                  ],
-                  indicatorColor: UIColor.primary,
-                  controller: viewModel.tabController,
-                  onTap: viewModel.onTabChange,
-                ),
-                SizedBox(
-                  height: 15.h,
-                ),
-                SizedBox(
-                  height: Get.height * 0.8,
-                  child: TabBarView(
-                    controller: viewModel.tabController,
-                    // physics: const NeverScrollableScrollPhysics(),
+            child: Obx(
+              () {
+                if (viewModel.isLoaded) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      DetailInfoPetWidget(
+                      PetInfoWidget(
                         pet: viewModel.pet,
                         isMyPet: viewModel.isMyPet ?? false,
-                        onAddVaccinatedClick: viewModel.onAddVaccinatedClick,
-                        onAddWeightClick: viewModel.onAddWeightClick,
-                        onAddWormFlushedClick: viewModel.onAddWormFlushedClick,
-                        updatePet: viewModel.updatePet,
+                        onPetBlock: viewModel.onPetBlock,
+                        followPet: viewModel.followPet,
+                        onPetReport: viewModel.onPetReport,
                       ),
-                      PostsOfPetWidget(idPet: viewModel.pet.id),
+                      TabBar(
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              LocaleKeys.profile_information.trans(),
+                              style: UITextStyle.text_body_14_w600,
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              LocaleKeys.profile_post.trans(),
+                              style: UITextStyle.text_body_14_w600,
+                            ),
+                          )
+                        ],
+                        indicatorColor: UIColor.primary,
+                        controller: viewModel.tabController,
+                        onTap: viewModel.onTabChange,
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      SizedBox(
+                        height: Get.height * 0.8,
+                        child: TabBarView(
+                          controller: viewModel.tabController,
+                          // physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            DetailInfoPetWidget(
+                              pet: viewModel.pet,
+                              isMyPet: viewModel.isMyPet ?? false,
+                              onAddVaccinatedClick: viewModel.onAddVaccinatedClick,
+                              onAddWeightClick: viewModel.onAddWeightClick,
+                              onAddWormFlushedClick: viewModel.onAddWormFlushedClick,
+                              updatePet: viewModel.updatePet,
+                            ),
+                            PostsOfPetWidget(idPet: viewModel.pet.id),
+                          ],
+                        ),
+                      )
                     ],
-                  ),
-                )
-              ],
+                  );
+                } else {
+                  return ShimmerPage();
+                }
+              },
             ),
           ),
         ),

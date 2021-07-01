@@ -103,5 +103,16 @@
   "year": "year",
   "month": "month",
   "day": "day",
-  "error": "Error. Try late"
+  "error": "Error. Try late",
+  "setting": {
+    "setting": "Setting",
+    "application": "Application",
+    "notification": "Notification",
+    "other_setting": "Other",
+    "logout": "Logout",
+    "language": "Language ({})",
+    "vietnamese": "Vietnamese",
+    "english": "English",
+    "rate_feedback": "Rate and feedback"
+  }
 }

@@ -8,9 +8,11 @@ import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_sh
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_posts_of_pet_usecase.dart';
 
+// ignore: must_be_immutable
 class PostsOfPetWidget extends StatelessWidget {
   final int idPet;
   final int pageSize = 10;
+  int nextPageKey = 0;
   List<Post> _post = [];
   final PagingController<int, Post> _pagingController = PagingController<int, Post>(firstPageKey: 0);
   final GetPostsOfPetUsecase _getPostsOfPetUsecase = injector<GetPostsOfPetUsecase>();
@@ -21,13 +23,14 @@ class PostsOfPetWidget extends StatelessWidget {
   }) : super(key: key);
 
   Future _loadMorePost(int pageKey) async {
+    _post = [];
     try {
-      _post = await _getPostsOfPetUsecase.call(idPet);
+      _post = await _getPostsOfPetUsecase.call(idPet, offset: nextPageKey);
       final isLastPage = _post.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(_post);
       } else {
-        final nextPageKey = pageKey + _post.length;
+        nextPageKey = pageKey + _post.length;
         _pagingController.appendPage(_post, nextPageKey);
       }
     } catch (error) {

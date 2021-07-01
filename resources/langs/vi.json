@@ -76,7 +76,7 @@
     "post": "Bài viết",
     "follow": "Theo dõi",
     "un_follow": "Bỏ theo dõi",
-    "information":"Thông tin",
+    "information": "Thông tin",
     "medical_record": "Hồ sơ sức khỏe",
     "weight": "Cân nặng",
     "worm_flush": "Xổ giun",
@@ -103,5 +103,16 @@
   "year": "năm",
   "month": "tháng",
   "day": "ngày",
-  "error": "Đã có lỗi xảy ra.Hãy thử lại"
+  "error": "Đã có lỗi xảy ra.Hãy thử lại",
+  "setting": {
+    "setting": "Cài đặt",
+    "application": "Ứng dụng",
+    "notification": "Thông báo",
+    "other_setting": "Khác",
+    "logout": "Đăng xuất",
+    "language": "Ngôn ngữ ({})",
+    "vietnamese": "Tiếng việt",
+    "english": "Tiếng Anh",
+    "rate_feedback": "Đánh giá và phản hồi"
+  }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PetCardItem extends StatelessWidget {
   final Pet pet;
@@ -38,7 +38,7 @@ class PetCardItem extends StatelessWidget {
               size: MWAvatarSize.large,
               borderRadius: 10,
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Text(pet.name!, style: UITextStyle.heading_18_semiBold),
             // const SizedBox(height: 5),
             Text(pet.petBreed?.name ?? 'Yellow cat', style: UITextStyle.body_12_medium),

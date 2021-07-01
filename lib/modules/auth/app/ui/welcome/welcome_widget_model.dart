@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
-import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
+import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_facebook_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_google_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/save_user_to_local_usecase.dart';
@@ -18,9 +18,10 @@ class WelcomeWidgetModel extends BaseViewModel {
   final LoginWithFacebookUsecase _loginWithFacebookUsecase;
   final CheckUserHavePetUsecase _checkUserHavePetUsecase;
   User? user;
-  final GetUserUsecase _getUserUsecase;
+  final GetUserWithUuidUsecase _getUserUsecase;
   final FirebaseAuth _firebaseAuth;
   final SaveUserToLocalUsecase _saveUserToLocalUsecase;
+
   WelcomeWidgetModel(
     this._loginWithGoogleUsecase,
     this._loginWithFacebookUsecase,
@@ -56,23 +57,30 @@ class WelcomeWidgetModel extends BaseViewModel {
 
   Future checkUserHavePetForNavigator() async {
     bool status = false;
-    await call(() async {
-      final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
-      if (haUser != null) {
-        await _saveUserToLocalUsecase.call(haUser);
-        status = await _checkUserHavePetUsecase.call(haUser.id);
-      } else {
-        return;
-      }
-    }, onSuccess: () {
-      if (!status) {
-        Get.offAll(() => const AddPetWidget());
-      } else {
-        Get.offAll(() => HomeMenuWidget());
-      }
-    }, onFailure: (err) {
-      _firebaseAuth.currentUser?.getIdToken(true);
-      checkUserHavePetForNavigator();
-    });
+    await call(
+      () async {
+        await Future.delayed(const Duration(
+          seconds: 2,
+        ));
+        final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
+        if (haUser != null) {
+          await _saveUserToLocalUsecase.call(haUser);
+          status = await _checkUserHavePetUsecase.call(haUser.uuid!);
+        } else {
+          return;
+        }
+      },
+      onSuccess: () {
+        if (!status) {
+          Get.offAll(() => const AddPetWidget());
+        } else {
+          Get.offAll(() => HomeMenuWidget());
+        }
+      },
+      onFailure: (err) {
+        _firebaseAuth.currentUser?.getIdToken(true);
+        checkUserHavePetForNavigator();
+      },
+    );
   }
 }

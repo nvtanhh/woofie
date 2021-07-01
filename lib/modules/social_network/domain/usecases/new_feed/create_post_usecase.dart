@@ -3,12 +3,12 @@ import 'package:meowoof/modules/social_network/data/repositories/newfeed_reposit
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 
 @lazySingleton
-class GetPostsUsecase {
+class CreatePostUsecase {
   final NewFeedRepository _newFeedRepository;
 
-  GetPostsUsecase(this._newFeedRepository);
+  CreatePostUsecase(this._newFeedRepository);
 
-  Future<List<Post>> call({int limit = 10, int offset = 0, DateTime? lastValue}) {
-    return _newFeedRepository.getPosts(limit: limit, offset: offset, lastValue: lastValue);
+  Future<Post> call(Post post) {
+    return _newFeedRepository.createPost(post);
   }
 }

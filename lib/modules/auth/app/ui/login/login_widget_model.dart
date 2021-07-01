@@ -7,7 +7,7 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/register/register_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
-import 'package:meowoof/modules/auth/domain/usecases/get_user_usecase.dart';
+import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_email_password_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/save_user_to_local_usecase.dart';
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
@@ -20,7 +20,7 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasur
 class LoginWidgetModel extends BaseViewModel {
   final LoginWithEmailPasswordUsecase _loginWithEmailPasswordUsecase;
   final CheckUserHavePetUsecase _checkUserHavePetUsecase;
-  final GetUserUsecase _getUserUsecase;
+  final GetUserWithUuidUsecase _getUserWithUuidUsecase;
   final SaveUserToLocalUsecase _saveUserToLocalUsecase;
   final RxBool _showPassword = RxBool(false);
   final emailEditingController = TextEditingController();
@@ -31,7 +31,7 @@ class LoginWidgetModel extends BaseViewModel {
   LoginWidgetModel(
     this._loginWithEmailPasswordUsecase,
     this._checkUserHavePetUsecase,
-    this._getUserUsecase,
+    this._getUserWithUuidUsecase,
     this._saveUserToLocalUsecase,
   );
 
@@ -66,10 +66,10 @@ class LoginWidgetModel extends BaseViewModel {
         () async {
           await login();
           if (user != null) {
-            final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
+            final hasura_user.User? haUser = await _getUserWithUuidUsecase.call(user!.uid);
             if (haUser != null) {
               await _saveUserToLocalUsecase.call(haUser);
-              final status = await _checkUserHavePetUsecase.call(haUser.id);
+              final status = await _checkUserHavePetUsecase.call(haUser.uuid!);
               if (!status) {
                 await Get.offAll(() => const AddPetWidget());
               } else {

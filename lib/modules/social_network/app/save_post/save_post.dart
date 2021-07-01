@@ -137,7 +137,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
             child: Obx(
               () => MWButton(
                 minWidth: 35.w,
-                onPressed: () {},
+                onPressed: () => viewModel.createPost(),
                 isDisabled: viewModel.isDisable,
                 borderRadius: BorderRadius.circular(5.r),
                 textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.textBody : UIColor.white),
@@ -159,7 +159,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MWAvatar(
-            avatarUrl: viewModel.user?.avatarUrl,
+            avatarUrl: viewModel.user?.avatar?.url,
             borderRadius: 10.r,
           ),
           SizedBox(width: 15.w),
@@ -242,7 +242,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
 
     return viewModel.isLoadingAddress.value
         ? _buildLoadingAddressWidget()
-        : viewModel.currentAdress.value.isNotEmpty
+        : viewModel.currentAddress.value.isNotEmpty
             ? Row(children: [
                 const MWIcon(
                   MWIcons.location,
@@ -252,7 +252,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 const SizedBox(width: 5),
                 Expanded(
                   child: Text(
-                    viewModel.currentAdress.value,
+                    viewModel.currentAddress.value,
                     style: UITextStyle.body_10_medium,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

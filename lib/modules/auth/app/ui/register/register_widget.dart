@@ -202,11 +202,11 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                     onTap: viewModel.onEyeClick,
                                     child: Obx(
                                       () => Icon(
-                                        viewModel.showPassword ? Icons.remove_red_eye_outlined : Icons.remove_red_eye,
+                                        !viewModel.showPassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                                       ),
                                     ),
                                   )),
-                              obscureText: viewModel.showPassword,
+                              obscureText: !viewModel.showPassword,
                             ),
                           ),
                         ],

@@ -7,7 +7,6 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/profile/get_detail_info_pet_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -19,31 +18,6 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
   late Function onAddVaccinatedClick;
   late Function(Pet) updatePet;
   final RxBool _isLoaded = RxBool(false);
-  final GetDetailInfoPetUsecase _getDetailInfoPetUsecase;
-
-  DetailInfoPetWidgetModel(this._getDetailInfoPetUsecase);
-
-  @override
-  void initState() {
-    _loadPetDetailInfo();
-    super.initState();
-  }
-
-  Future _loadPetDetailInfo() async {
-    await call(
-      () async {
-        pet = await _getDetailInfoPetUsecase.call(pet.id);
-      },
-      onSuccess: () {
-        _isLoaded.value = true;
-        updatePet(pet);
-      },
-      onFailure: (err) {
-        _isLoaded.value = false;
-      },
-      showLoading: false,
-    );
-  }
 
   void onTabWeightChart() {
     Get.to(

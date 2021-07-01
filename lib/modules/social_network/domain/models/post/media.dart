@@ -4,17 +4,17 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'media.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Media {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   @JsonKey(name: "url")
   String? url;
   @JsonKey(name: "type")
   MediaType? type;
 
   Media({
-    required this.id,
+    this.id,
     this.url,
     this.type,
   });
@@ -28,6 +28,7 @@ class Media {
   String toJsonString() => json.encode(toJson());
 
   bool get isVideo => type == MediaType.video;
+
   bool get isImage => type == MediaType.image;
 }
 

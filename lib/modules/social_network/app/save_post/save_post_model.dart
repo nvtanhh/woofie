@@ -1,70 +1,67 @@
 import 'package:flutter/cupertino.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoding/geocoding.dart' hide Location;
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
+import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_post_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_pets_of_user_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class SavePostModel extends BaseViewModel {
-  final TextEditingController contentController = TextEditingController();
-
-  late User? _user;
+  final GetPetsOfUserUsecase _getPetsOfUserUsecase;
+  final CreatePostUsecase _createPostUsecase;
+  late TextEditingController contentController;
+  User? _user;
   late final Rx<PostType> _postType = PostType.activity.obs;
   final RxList<MediaFile> _files = <MediaFile>[].obs;
   final RxBool _isDisable = true.obs;
   final RxList<Pet> _taggedPets = <Pet>[].obs;
   Post? post;
-  RxString currentAdress = ''.obs;
+  RxString currentAddress = ''.obs;
   Placemark? currentPlacemark;
   RxBool isLoadingAddress = false.obs;
+  Position? currentPosition;
+  final ToastService _toastService;
+
+  SavePostModel(
+    this._getPetsOfUserUsecase,
+    this._createPostUsecase,
+    this._toastService,
+  );
 
   @override
   void initState() {
     super.initState();
-    try {
-      _user = post != null ? post!.creator : injector<LoggedInUser>().loggedInUser;
-    } catch (error) {
-      _user = User(
-        id: 7,
-        name: 'Tanh Nguyen',
-        avatarUrl:
-            'https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/162354720_1147808662336518_1297648803267744126_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=P68qZDEZZXIAX826eFN&_nc_ht=scontent.fhan2-3.fna&oh=e10ef4fe2b17089b3f9071aa6d611366&oe=60CEC5D6',
-        pets: [
-          Pet(
-            id: 1,
-            name: "Vàng",
-            avatar: Media(
-              id: 0,
-              url: 'https://p0.pikist.com/photos/657/191/cat-animal-eyes-kitten-head-cute-nature-predator-look-feline.jpg',
-              type: MediaType.image,
-            ),
-          ),
-          Pet(
-              id: 2,
-              name: "Đỏ",
-              avatar: Media(
-                id: 0,
-                url: 'https://p0.pikist.com/photos/389/595/animal-cat-cute-domestic-eyes-face-feline-fur-head.jpg',
-                type: MediaType.image,
-              )),
-        ],
-      );
-    }
+    _user = injector<LoggedInUser>().loggedInUser;
     _postType.value = post != null ? post!.type : PostType.activity;
-
-    contentController.addListener(onTextChanged);
     _files.stream.listen(onFilesChanged);
-    // _taggedPets.addAll(_user.pets ?? []);
+    _taggedPets.addAll(post?.pets ?? []);
+    contentController = TextEditingController();
+    contentController.addListener(onTextChanged);
+    contentController.text = post?.content ?? "";
+    getPetsOfUser();
+  }
+
+  Future getPetsOfUser() async {
+    await call(
+      () async => user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
+      showLoading: false,
+      onSuccess: () {
+        printInfo(info: user?.currentPets.toString() ?? "deo co gif");
+      },
+    );
   }
 
   Future onPostTypeChosen(PostType chosenType) async {
@@ -78,7 +75,10 @@ class SavePostModel extends BaseViewModel {
       }
       await _getCurrentAddress();
       if (isResetDisable) _isDisable.value = false;
+      return;
     }
+    currentPosition = null;
+    return;
   }
 
   Future onMediasPicked(List<MediaFile> pickedFiles) async {
@@ -143,7 +143,7 @@ class SavePostModel extends BaseViewModel {
 
   void onTagPet() {
     injector<BottomSheetService>().showTagPetBottomSheet(
-      userPets: _user?.pets ?? [],
+      userPets: _user?.currentPets ?? [],
       taggedPets: _taggedPets,
       onPetChosen: _onTaggedPetChosen,
     );
@@ -162,22 +162,52 @@ class SavePostModel extends BaseViewModel {
     if (await locationService.isPermissionDenied()) {
       await _showDialogAlert();
     }
-
     try {
       isLoadingAddress.value = true;
       currentPlacemark = await locationService.getCurrentPlacemark();
       final String address = (currentPlacemark!.street!.isNotEmpty ? '${currentPlacemark!.street!}, ' : '') +
           (currentPlacemark!.locality!.isNotEmpty ? '${currentPlacemark!.locality!}, ' : '') +
           (currentPlacemark!.subAdministrativeArea!.isNotEmpty ? '${currentPlacemark!.subAdministrativeArea!}, ' : '');
-      currentAdress.value = address.trim().substring(0, address.length - 2);
+      currentAddress.value = address.trim().substring(0, address.length - 2);
     } catch (error) {
-      currentAdress.value = error.toString();
+      currentAddress.value = error.toString();
     } finally {
       isLoadingAddress.value = false;
     }
+    currentPosition = await locationService.determinePosition();
   }
 
   Future _showDialogAlert() async {
     await injector<DialogService>().showPermisstionDialog();
+  }
+
+  void createPost() {
+    post = Post(
+      id: 0,
+      creator: user,
+      type: postType,
+      content: contentController.text,
+      pets: taggedPets,
+      creatorUUID: user?.uuid,
+      location: currentPosition == null
+          ? null
+          : Location(
+              long: currentPosition!.longitude,
+              lat: currentPosition!.longitude,
+              name: currentAddress.value,
+            ),
+    );
+    call(
+      () async => post = await _createPostUsecase.call(post!),
+      onSuccess: () {
+        _toastService.success(message: "Add post success", context: Get.context!);
+      },
+    );
+  }
+
+  @override
+  void disposeState() {
+    contentController.dispose();
+    super.disposeState();
   }
 }
