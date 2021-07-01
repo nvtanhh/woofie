@@ -3,11 +3,22 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 
 class MediaFile {
-  final File file;
+  File file;
   final FileType? type;
 
-  const MediaFile(this.file, this.type);
+  MediaFile(this.file, this.type);
 
   bool get isImage => type == FileType.image;
   bool get isVideo => type == FileType.video;
+
+  void delete() {
+    if (file.existsSync()) file.delete();
+  }
+}
+
+class MediaFileUploader {
+  final String uploadedUrl;
+  final String type;
+
+  MediaFileUploader(this.uploadedUrl, this.type);
 }

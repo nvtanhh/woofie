@@ -156,6 +156,12 @@ dependencies:
   # effectively enabling headless execution of Dart code in the background.
   workmanager: ^0.4.0
 
+  # Compresses image as native plugin
+  flutter_image_compress: ^1.0.0
+
+  # FFmpeg plugin for Flutter
+  flutter_ffmpeg: ^0.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

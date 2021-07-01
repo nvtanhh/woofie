@@ -15,6 +15,8 @@ part 'post.g.dart';
 class Post extends UpdatableModel {
   @JsonKey(name: "id")
   final int id;
+  @JsonKey(name: "uuid")
+  final String uuid;
   @JsonKey(name: "content")
   String? content;
   @JsonKey(name: "is_closed")
@@ -43,8 +45,10 @@ class Post extends UpdatableModel {
   PostStatus? status;
   @JsonKey(name: "post_reacts_aggregate")
   ObjectAggregate? postReactsAggregate;
+
   Post({
     required this.id,
+    required this.uuid,
     this.creator,
     required this.type,
     this.creatorUUID,

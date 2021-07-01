@@ -179,20 +179,21 @@ class PostDatasource {
     return affectedRows >= 1;
   }
 
-  Future<Post> createDraftPost(NewPostData post) async {
+  Future<Post> createDraftPost(NewPostData newPostData) async {
     const draftPostStatus = 0;
 
     final listPetTag =
-        post.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
+        newPostData.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
 
-    final location = post.location == null
+    final location = newPostData.location == null
         ? ""
-        : 'location: {data: {long: "${post.location?.long}", lat: "${post.location?.lat}", name: "${post.location?.name}"}},';
+        : 'location: {data: {long: "${newPostData.location?.long}", lat: "${newPostData.location?.lat}", name: "${newPostData.location?.name}"}},';
 
     final manution = """
     mutation MyMutation {
-      insert_posts_one(object: {content: "${post.content}", type: "${post.type.index}", $location status: "$draftPostStatus", creator_uuid: "${post.creatorUuid}}", post_pets: {data: $listPetTag}}) {
+      insert_posts_one(object: {uuid: "${newPostData.newPostUuid}", content: "${newPostData.content}", type: "${newPostData.type.index}", $location status: "$draftPostStatus", creator_uuid: "${newPostData.creatorUuid}}", post_pets: {data: $listPetTag}}) {
         id
+        uuid
         content
         type
         status
@@ -210,4 +211,10 @@ class PostDatasource {
     GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
     return Post.fromJson(data as Map<String, dynamic>);
   }
+
+  Future publishPost(int postId) async {}
+
+  Future<PostStatus?> getPostStatus(int postId) async {}
+
+  Future<Post?> getPublishedPost(int postId) async {}
 }

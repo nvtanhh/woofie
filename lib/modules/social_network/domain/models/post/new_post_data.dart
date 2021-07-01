@@ -6,6 +6,7 @@ import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:uuid/uuid.dart';
 
 class NewPostData {
   String content;
@@ -19,10 +20,13 @@ class NewPostData {
   late List<MediaFile> remainingMediaToCompress;
   List<MediaFile> compressedMedia = [];
   List<MediaFile> remainingCompressedMediaToUpload = [];
+  List<MediaFileUploader> remainingCompressedMediaToAddToPost = [];
   bool postPublishRequested = false;
   late File mediaThumbnail;
 
   String creatorUuid = injector<LoggedInUser>().loggedInUser!.uuid!;
+
+  late String newPostUuid;
   // late String _cachedKey;
 
   NewPostData(
@@ -32,6 +36,7 @@ class NewPostData {
       this.taggegPets,
       this.location}) {
     remainingMediaToCompress = mediaFiles ?? [];
+    newPostUuid = const Uuid().v4();
   }
 
   bool hasMedia() {

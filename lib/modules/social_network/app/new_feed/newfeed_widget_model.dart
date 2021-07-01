@@ -129,9 +129,21 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   void _prepenedNewPostUploadingWidget(NewPostData newPostData) {
-    final NewPostUploader newPostUploaderWidget =
-        NewPostUploader(data: newPostData);
+    final NewPostUploader newPostUploaderWidget = NewPostUploader(
+      data: newPostData,
+      onPostPublished: _onNewPostDataUploaderPostPublished,
+      onCancelled: _onNewPostDataUploaderCancelled,
+    );
 
     prependedWidgets.add(newPostUploaderWidget);
+  }
+
+  void _onNewPostDataUploaderPostPublished(
+      Post publishedPost, NewPostData newPostData) {
+    // _timelinePostsStreamController.addPostToTop(publishedPost);
+    // _removeNewPostData(newPostData);
+  }
+  void _onNewPostDataUploaderCancelled(NewPostData newPostData) {
+    // _removeNewPostData(newPostData);
   }
 }

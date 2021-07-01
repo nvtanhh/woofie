@@ -22,7 +22,7 @@ class ExploreRepository {
   }
 
   Future<Post> getDetailPost(int postId) async {
-    return Post(id: 0, creator: User(id: 0), type: PostType.activity);
+    return Post(id: 0, uuid: '', creator: User(id: 0), type: PostType.activity);
   }
 
   Future<List<Service>> searchService(String keyWord) async {
@@ -34,7 +34,8 @@ class ExploreRepository {
         Service(
           id: 0,
           name: "Animal Emergency",
-          logo: "https://animalemergencyhospital.net/wp-content/uploads/2021/04/animal-emergency-hospital.png",
+          logo:
+              "https://animalemergencyhospital.net/wp-content/uploads/2021/04/animal-emergency-hospital.png",
         ),
         Service(
           id: 1,
@@ -44,7 +45,8 @@ class ExploreRepository {
         Service(
           id: 2,
           name: "Bệnh Viện Thú Y Petcare",
-          logo: "https://petcare.vn/wp-content/uploads/2016/06/petcarevn_logo.png",
+          logo:
+              "https://petcare.vn/wp-content/uploads/2016/06/petcarevn_logo.png",
         ),
       ];
     }

@@ -7,8 +7,15 @@ import 'package:suga_core/suga_core.dart';
 
 class NewPostUploader extends StatefulWidget {
   final NewPostData data;
+  final Function(Post, NewPostData) onPostPublished;
+  final Function(NewPostData) onCancelled;
 
-  const NewPostUploader({Key? key, required this.data}) : super(key: key);
+  const NewPostUploader({
+    Key? key,
+    required this.data,
+    required this.onPostPublished,
+    required this.onCancelled,
+  }) : super(key: key);
 
   @override
   _NewPostUploaderState createState() => _NewPostUploaderState();
@@ -22,6 +29,8 @@ class _NewPostUploaderState
   @override
   void loadArguments() {
     viewModel.data = widget.data;
+    viewModel.onPostPublished = widget.onPostPublished;
+    viewModel.onCancelled = widget.onCancelled;
     super.loadArguments();
   }
 
