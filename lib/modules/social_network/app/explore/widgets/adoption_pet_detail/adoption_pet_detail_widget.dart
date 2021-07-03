@@ -33,7 +33,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
   @override
   void loadArguments() {
     viewModel.post = widget.post;
-    viewModel.pet = widget.post.pets?[0];
+    viewModel.pet = widget.post.taggegPets?[0];
     super.loadArguments();
   }
 

@@ -17,8 +17,7 @@ class ExploreRepository {
     return [];
   }
 
-  Future<List<Post>> getPostsByType(
-      PostType postType, int distance, int limit, int offset) async {
+  Future<List<Post>> getPostsByType(PostType postType, int distance, int limit, int offset) async {
     return _postDatasource.getPostByType(postType, distance, limit, offset);
   }
 
@@ -35,8 +34,7 @@ class ExploreRepository {
         Service(
           id: 0,
           name: "Animal Emergency",
-          logo:
-              "https://animalemergencyhospital.net/wp-content/uploads/2021/04/animal-emergency-hospital.png",
+          logo: "https://animalemergencyhospital.net/wp-content/uploads/2021/04/animal-emergency-hospital.png",
         ),
         Service(
           id: 1,
@@ -46,8 +44,7 @@ class ExploreRepository {
         Service(
           id: 2,
           name: "Bệnh Viện Thú Y Petcare",
-          logo:
-              "https://petcare.vn/wp-content/uploads/2016/06/petcarevn_logo.png",
+          logo: "https://petcare.vn/wp-content/uploads/2016/06/petcarevn_logo.png",
         ),
       ];
     }

@@ -13,7 +13,7 @@ class CreatePostUsecase {
   Future<Post> call(Post post) async {
     final newPost = await _newFeedRepository.createPost(post);
     newPost.creator = post.creator;
-    newPost.pets = post.pets;
+    newPost.taggegPets = post.taggegPets;
     _eventBus.fire(PostCreatedEvent(newPost));
     return newPost;
   }
