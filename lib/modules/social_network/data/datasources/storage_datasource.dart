@@ -27,10 +27,8 @@ class StorageDatasource {
     this._httpieService,
   );
 
-  Future<String?> getPresignedUrlForPostMedia(
-      String objectName, String postUuid) async {
-    final String subFolder =
-        _urlParser.parse(POST_MEDIA_SUBFOLDER, {'post_uuid': postUuid});
+  Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {
+    final String subFolder = _urlParser.parse(POST_MEDIA_SUBFOLDER, {'post_uuid': postUuid});
 
     return _getPresignedUrl('$subFolder/$objectName');
   }
@@ -44,8 +42,7 @@ class StorageDatasource {
     }
     """;
     final data = await _hasuraConnect.mutation(query);
-    final result =
-        GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
+    final result = GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
     return result['url'] as String;
   }
 
@@ -60,8 +57,7 @@ class StorageDatasource {
   Future addMediaToPost(List<MediaFileUploader> medias, int postId) async {
     late String mediasData;
     if (medias.isNotEmpty) {
-      mediasData =
-          medias.map((e) => _mediaToJson(e, postId)).toList().toString();
+      mediasData = medias.map((e) => _mediaToJson(e, postId)).toList().toString();
     } else {
       mediasData = '[]';
     }

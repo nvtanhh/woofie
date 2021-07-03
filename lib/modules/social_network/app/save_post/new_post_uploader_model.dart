@@ -159,8 +159,7 @@ class NewPostUploaderModel extends BaseViewModel {
   }
 
   Future _compressPostMedia() async {
-    return Future.wait(
-        data.remainingMediaToCompress.map(_compressPostMediaItem));
+    return Future.wait(data.remainingMediaToCompress.map(_compressPostMediaItem));
 
     // for (final file in data.remainingMediaToCompress) {
     //   await _compressPostMediaItem(file);
@@ -169,12 +168,10 @@ class NewPostUploaderModel extends BaseViewModel {
 
   Future _compressPostMediaItem(MediaFile postMediaItem) async {
     if (postMediaItem.isImage) {
-      postMediaItem.file =
-          await _mediaService.compressImage(postMediaItem.file);
+      postMediaItem.file = await _mediaService.compressImage(postMediaItem.file);
       data.compressedMedia.add(postMediaItem);
     } else if (postMediaItem.isVideo) {
-      postMediaItem.file =
-          await _mediaService.compressVideo(postMediaItem.file);
+      postMediaItem.file = await _mediaService.compressVideo(postMediaItem.file);
       data.compressedMedia.add(postMediaItem);
     } else {
       printError(info: 'Unsupported media type for compression');
@@ -193,26 +190,22 @@ class NewPostUploaderModel extends BaseViewModel {
     final String postUuid = data.createdDraftPost!.uuid;
     // get presigned URL
     printInfo(info: 'Getting presigned URL');
-    final String? preSignedUrl =
-        await _getPresignedUrlUsecase.call(fileName, postUuid);
+    final String? preSignedUrl = await _getPresignedUrlUsecase.call(fileName, postUuid);
     // upload media to s3
     String? uploadedMediaUrl;
     if (preSignedUrl != null) {
       printInfo(info: 'Uploading media to s3');
-      uploadedMediaUrl =
-          await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
+      uploadedMediaUrl = await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
     }
     if (uploadedMediaUrl != null) {
-      final MediaFileUploader mediaFileUploader = MediaFileUploader(
-          uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
+      final MediaFileUploader mediaFileUploader = MediaFileUploader(uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
       data.uploadedMediasToAddToPost.add(mediaFileUploader);
       data.compressedMedia.remove(mediaFile);
     }
   }
 
   Future _addMediaToPost() async {
-    return _addPostMediaUsecase.call(
-        data.uploadedMediasToAddToPost, data.createdDraftPost!.id);
+    return _addPostMediaUsecase.call(data.uploadedMediasToAddToPost, data.createdDraftPost!.id);
   }
 
   Future<Post?> _publishPost() async {
@@ -226,8 +219,7 @@ class NewPostUploaderModel extends BaseViewModel {
   }
 
   Future<void> _getPublishedPost() async {
-    final Post? publishedPost =
-        await _getPublishedPostUsecase.call(data.createdDraftPost!.id);
+    final Post? publishedPost = await _getPublishedPostUsecase.call(data.createdDraftPost!.id);
     if (publishedPost != null) onPostPublished(publishedPost, data);
 
     unawaited(_removeMediaFromCache());
@@ -284,13 +276,11 @@ class NewPostUploaderModel extends BaseViewModel {
     if (data.createdDraftPost != null) {
       printInfo(info: 'Deleting post');
       try {
-        final bool isPostDeleted =
-            await _deletePostUsecase.call(data.createdDraftPost!.id);
+        final bool isPostDeleted = await _deletePostUsecase.call(data.createdDraftPost!.id);
         if (isPostDeleted) printInfo(info: 'Successfully deleted post');
       } catch (error) {
         // If it doesnt work, will get cleaned up by a scheduled job
-        printError(
-            info: 'Failed to delete post wit error: ${error.toString()}');
+        printError(info: 'Failed to delete post wit error: ${error.toString()}');
       }
     }
 
@@ -300,8 +290,7 @@ class NewPostUploaderModel extends BaseViewModel {
   }
 
   void onWantsToRetry() {
-    if (status.value == PostUploaderStatus.creatingPost ||
-        status.value == PostUploaderStatus.addingPostMedia) return;
+    if (status.value == PostUploaderStatus.creatingPost || status.value == PostUploaderStatus.addingPostMedia) return;
 
     printInfo(info: 'Retrying');
     _startUpload();
