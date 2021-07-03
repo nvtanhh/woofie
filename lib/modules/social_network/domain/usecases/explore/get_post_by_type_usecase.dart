@@ -8,7 +8,7 @@ class GetPostAdoptionUsecase {
 
   GetPostAdoptionUsecase(this._exploreRepository);
 
-  Future<List<Post>> call(PostType postType) {
-    return _exploreRepository.getPostsAdoption(postType);
+  Future<List<Post>> call() {
+    return _exploreRepository.getPostsAdoption();
   }
 }
