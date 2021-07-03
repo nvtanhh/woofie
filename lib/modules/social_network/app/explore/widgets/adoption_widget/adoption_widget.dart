@@ -18,8 +18,7 @@ class AdoptionWidget extends StatefulWidget {
   _AdoptionWidgetState createState() => _AdoptionWidgetState();
 }
 
-class _AdoptionWidgetState
-    extends BaseViewState<AdoptionWidget, AdoptionWidgetModel> {
+class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -61,8 +60,7 @@ class _AdoptionWidgetState
                       PetItemShimmerWidget(),
                     ],
                   ),
-                  newPageProgressIndicatorBuilder: (_) =>
-                      PetItemShimmerWidget(),
+                  newPageProgressIndicatorBuilder: (_) => PetItemShimmerWidget(),
                 ),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,

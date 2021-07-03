@@ -18,7 +18,7 @@ class MediaFile {
 
 class MediaFileUploader {
   final String uploadedUrl;
-  final String type;
+  final int type;
 
   MediaFileUploader(this.uploadedUrl, this.type);
 }

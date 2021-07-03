@@ -22,9 +22,7 @@ class NewPostData {
   List<MediaFile> remainingCompressedMediaToUpload = [];
   List<MediaFileUploader> remainingCompressedMediaToAddToPost = [];
   bool postPublishRequested = false;
-  late File mediaThumbnail;
-
-  String creatorUuid = injector<LoggedInUser>().loggedInUser!.uuid!;
+  File? mediaThumbnail;
 
   late String newPostUuid;
   // late String _cachedKey;

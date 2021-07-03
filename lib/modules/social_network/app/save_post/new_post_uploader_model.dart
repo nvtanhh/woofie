@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:file_picker/src/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
@@ -10,13 +11,15 @@ import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/add_post_media_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/create_draft_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/get_post_status_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/save_post/get_presign_url_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/save_post/get_presigned_url_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/get_published_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/publish_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
+import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -29,16 +32,19 @@ class NewPostUploaderModel extends BaseViewModel {
   final UploadMediaUsecase _uploadMediaUsecase;
   final AddPostMediaUsecase _addPostMediaUsecase;
   final PublishUsecase _publishUsecase;
-  final GetPostStatusUsecase _getPostStatusUsecase;
+  // final GetPostStatusUsecase _getPostStatusUsecase;
   final GetPublishedPostUsecase _getPublishedPostUsecase;
+  final DeletePostUsecase _deletePostUsecase;
 
   late NewPostData data;
   Rx<PostUploaderStatus> status = PostUploaderStatus.idle.obs;
   RxString statusMessage = ''.obs;
 
+  final double mediaPreviewSize = 40;
+
   late Timer? _checkPostStatusTimer;
 
-  CancelableOperation? _getPostStatusOperation;
+  // CancelableOperation? _getPostStatusOperation;
   CancelableOperation? _uploadPostOperation;
 
   late Function(NewPostData) onCancelled;
@@ -52,8 +58,9 @@ class NewPostUploaderModel extends BaseViewModel {
     this._uploadMediaUsecase,
     this._addPostMediaUsecase,
     this._publishUsecase,
-    this._getPostStatusUsecase,
+    // this._getPostStatusUsecase,
     this._getPublishedPostUsecase,
+    this._deletePostUsecase,
   );
 
   @override
@@ -69,60 +76,75 @@ class NewPostUploaderModel extends BaseViewModel {
     status.value = uploadStatus;
   }
 
-  void _setStatusMessage(String message) {}
+  // ignore: use_setters_to_change_properties
+  void _setStatusMessage(String message) {
+    statusMessage.value = message;
+  }
 
-  Future _startUpload() async {
-    if (data.createdDraftPost == null) {
-      _setStatus(PostUploaderStatus.creatingPost);
-      _setStatusMessage('Creating post...');
-      data.createdDraftPost = await _createDraftPost();
-    }
+  void _startUpload() {
+    _uploadPostOperation = CancelableOperation.fromFuture(_uploadPost());
+  }
 
-    if (data.remainingMediaToCompress.isNotEmpty) {
-      _setStatusMessage('Compressing media...');
-      _setStatus(PostUploaderStatus.compressingPostMedia);
-      await _compressPostMedia();
-    }
+  Future _uploadPost() async {
+    try {
+      if (data.createdDraftPost == null) {
+        _setStatus(PostUploaderStatus.creatingPost);
+        _setStatusMessage('Creating post...');
+        data.createdDraftPost = await _createDraftPost();
+      }
 
-    if (data.remainingCompressedMediaToUpload.isNotEmpty) {
-      _setStatusMessage('Uploading media...');
-      _setStatus(PostUploaderStatus.addingPostMedia);
-      await _addPostMedia();
-    }
+      if (data.remainingMediaToCompress.isNotEmpty) {
+        _setStatusMessage('Compressing media...');
+        _setStatus(PostUploaderStatus.compressingPostMedia);
+        await _compressPostMedia();
+      }
 
-    if (!data.postPublishRequested) {
-      _setStatusMessage('Publishing post...');
-      _setStatus(PostUploaderStatus.publishing);
-      await _publishPost();
-      data.postPublishRequested = true;
-    }
+      if (data.remainingCompressedMediaToUpload.isNotEmpty) {
+        _setStatusMessage('Uploading media...');
+        _setStatus(PostUploaderStatus.addingPostMedia);
+        await _addPostMedia();
+      }
 
-    _setStatusMessage('Processing post...');
-    _setStatus(PostUploaderStatus.processing);
-    _ensurePostStatusTimerIsCancelled();
+      late Post? publishedPost;
+      if (!data.postPublishRequested) {
+        _setStatusMessage('Publishing post...');
+        _setStatus(PostUploaderStatus.publishing);
+        publishedPost = await _publishPost();
+        data.postPublishRequested = true;
+      }
 
-    if (data.createdDraftPostStatus != PostStatus.published) {
-      _checkPostStatusTimer =
-          Timer.periodic(const Duration(seconds: 1), (timer) async {
-        if (_getPostStatusOperation != null) return;
-        _getPostStatusOperation = CancelableOperation.fromFuture(
-          _getPostStatusUsecase.call(data.createdDraftPost!.id),
-        );
-        final PostStatus status =
-            await _getPostStatusOperation!.value as PostStatus;
-        printInfo(
-            info:
-                ' Polling for post published status, got status: ${status.toString()}');
-        data.createdDraftPostStatus = status;
-        if (data.createdDraftPostStatus == PostStatus.published) {
-          printInfo(info: 'Received post status is published');
-          _checkPostStatusTimer!.cancel();
-          unawaited(_getPublishedPost());
-        }
-        _getPostStatusOperation = null;
-      });
-    } else {
-      unawaited(_getPublishedPost());
+      _setStatusMessage('Processing post...');
+      _setStatus(PostUploaderStatus.processing);
+      // _ensurePostStatusTimerIsCancelled();
+
+      if (publishedPost != null) _onPostPublished(publishedPost);
+
+      // if (data.createdDraftPostStatus != PostStatus.published) {
+      //   _checkPostStatusTimer =
+      //       Timer.periodic(const Duration(seconds: 1), (timer) async {
+      //     if (_getPostStatusOperation != null) return;
+      //     _getPostStatusOperation = CancelableOperation.fromFuture(
+      //       _getPostStatusUsecase.call(data.createdDraftPost!.id),
+      //     );
+      //     final PostStatus status =
+      //         await _getPostStatusOperation!.value as PostStatus;
+      //     printInfo(
+      //         info:
+      //             'Polling for post published status, got status: ${status.toString()}');
+      //     data.createdDraftPostStatus = status;
+      //     if (data.createdDraftPostStatus == PostStatus.published) {
+      //       printInfo(info: 'Received post status is published');
+      //       _checkPostStatusTimer!.cancel();
+      //       unawaited(_getPublishedPost());
+      //     }
+      //     _getPostStatusOperation = null;
+      //   });
+      // } else {
+      //   unawaited(_getPublishedPost());
+      // }
+    } catch (error) {
+      _setStatus(PostUploaderStatus.failed);
+      _setStatusMessage('Upload failded.');
     }
   }
 
@@ -134,9 +156,14 @@ class NewPostUploaderModel extends BaseViewModel {
     }
   }
 
-  Future _compressPostMedia() {
-    return Future.wait(
-        data.remainingMediaToCompress.map(_compressPostMediaItem).toList());
+  Future _compressPostMedia() async {
+    return Future.wait(data.remainingMediaToCompress
+        .map((file) async => _compressPostMediaItem)
+        .toList());
+
+    // for (final file in data.remainingMediaToCompress) {
+    //   await _compressPostMediaItem(file);
+    // }
   }
 
   Future _compressPostMediaItem(MediaFile postMediaItem) async {
@@ -155,8 +182,9 @@ class NewPostUploaderModel extends BaseViewModel {
   }
 
   Future _addPostMedia() async {
-    await Future.wait(
-        data.remainingCompressedMediaToUpload.map(_storeMediaItem).toList());
+    await Future.wait(data.remainingCompressedMediaToUpload
+        .map((file) async => _storeMediaItem)
+        .toList());
     await _addMediaToPost();
     data.remainingCompressedMediaToAddToPost.clear();
   }
@@ -170,22 +198,29 @@ class NewPostUploaderModel extends BaseViewModel {
     // upload media to s3
     String? uploadedMediaUrl;
     if (preSignedUrl != null) {
-      uploadedMediaUrl =
-          await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
+      try {
+        uploadedMediaUrl =
+            await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
+      } catch (error) {
+        printError(
+          info: error.toString(),
+        );
+      }
     }
     if (uploadedMediaUrl != null) {
-      final MediaFileUploader mediaFileUploader =
-          MediaFileUploader(uploadedMediaUrl, mediaFile.type.toString());
+      final MediaFileUploader mediaFileUploader = MediaFileUploader(
+          uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
       data.remainingCompressedMediaToAddToPost.add(mediaFileUploader);
+      data.remainingCompressedMediaToUpload.remove(mediaFile);
     }
-    data.remainingCompressedMediaToUpload.remove(mediaFile);
   }
 
   Future _addMediaToPost() {
-    return _addPostMediaUsecase.call(data.remainingCompressedMediaToAddToPost);
+    return _addPostMediaUsecase.call(
+        data.remainingCompressedMediaToAddToPost, data.createdDraftPost!.id);
   }
 
-  Future _publishPost() async {
+  Future<Post?> _publishPost() async {
     return _publishUsecase.call(data.createdDraftPost!.id);
   }
 
@@ -217,5 +252,81 @@ class NewPostUploaderModel extends BaseViewModel {
 
   void _deleteMediaFile(MediaFile file) {
     file.delete();
+  }
+
+  Future<File?> getMediaThumbnail() async {
+    if (data.mediaThumbnail != null) {
+      return data.mediaThumbnail!;
+    }
+
+    final File mediaToPreview = data.mediaFiles!.first.file;
+    File? mediaThumbnail;
+
+    final String? mediaMime = lookupMimeType(mediaToPreview.path);
+    if (mediaMime != null) {
+      final String mediaMimeType = mediaMime.split('/')[0];
+
+      if (mediaMimeType == 'image') {
+        mediaThumbnail = mediaToPreview;
+      } else if (mediaMimeType == 'video') {
+        mediaThumbnail = await _mediaService.getVideoThumbnail(mediaToPreview);
+      } else {
+        printError(info: 'Unsupported media type for preview thumbnail');
+      }
+
+      data.mediaThumbnail = mediaThumbnail;
+
+      return mediaThumbnail;
+    }
+  }
+
+  Future onWantsToCancel() async {
+    if (status.value == PostUploaderStatus.cancelling) return;
+    _setStatus(PostUploaderStatus.cancelling);
+    _setStatusMessage('Cancelling');
+
+    // Delete post
+    if (data.createdDraftPost != null) {
+      printInfo(info: 'Deleting post');
+      try {
+        final bool isPostDeleted =
+            await _deletePostUsecase.call(data.createdDraftPost!.id);
+        if (isPostDeleted) printInfo(info: 'Successfully deleted post');
+      } catch (error) {
+        // If it doesnt work, will get cleaned up by a scheduled job
+        printError(
+            info: 'Failed to delete post wit error: ${error.toString()}');
+      }
+    }
+
+    _setStatus(PostUploaderStatus.cancelled);
+    onCancelled(data);
+    unawaited(_removeMediaFromCache());
+  }
+
+  void onWantsToRetry() {
+    if (status.value == PostUploaderStatus.creatingPost ||
+        status.value == PostUploaderStatus.addingPostMedia) return;
+
+    printInfo(info: 'Retrying');
+    _startUpload();
+  }
+
+  int _convertToMediaTypeCode(FileType? type) {
+    if (type != null) {
+      switch (type) {
+        case FileType.image:
+          return 0;
+        case FileType.video:
+          return 1;
+        default:
+      }
+    }
+    throw Exception('Unsupported media type for post');
+  }
+
+  void _onPostPublished(Post publishedPost) {
+    onPostPublished(publishedPost, data);
+    unawaited(_removeMediaFromCache());
   }
 }

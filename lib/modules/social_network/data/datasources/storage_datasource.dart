@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/core/helpers/url_parser.dart';
+import 'package:meowoof/core/services/httpie.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 
 @injectable
@@ -13,23 +16,70 @@ class StorageDatasource {
 
   final UrlParser _urlParser;
 
-  StorageDatasource(this._urlParser);
+  final HasuraConnect _hasuraConnect;
 
-  Future<String?> _getPresignedUrl(String objectName) async {
-    return '';
-  }
+  final HttpieService _httpieService;
 
-  Future<String?> getPresignedUrlForPostMedia(
-      String objectName, String postUuid) async {
-    final String subFolder =
-        _urlParser.parse(POST_MEDIA_SUBFOLDER, {'post_uuid': postUuid});
+  StorageDatasource(
+    this._urlParser,
+    this._hasuraConnect,
+    this._httpieService,
+  );
+
+  Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {
+    final String subFolder = _urlParser.parse(POST_MEDIA_SUBFOLDER, {'post_uuid': postUuid});
 
     return _getPresignedUrl('$subFolder/$objectName');
   }
 
-  Future<String?> putObjectByPresignedUrl(String url, File object) async {
-    return '';
+  Future<String?> _getPresignedUrl(String objectName) async {
+    final String query = """
+    mutation MyMutation {
+      get_presigned_url(fileName: "$objectName") {
+        url
+      }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(query);
+    final result = GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
+    return result['url'] as String;
   }
 
-  Future addMediaToPost(List<MediaFileUploader> medias) async {}
+  Future<bool?> putObjectByPresignedUrl(String url, File object) async {
+    final response = await _httpieService.put(url, body: object);
+    if (response.statusCode == 200) {
+      return true;
+    }
+    throw Exception('Put object to s3 failed');
+  }
+
+  Future addMediaToPost(List<MediaFileUploader> medias, int postId) async {
+    late String mediasData;
+    if (medias.isEmpty) {
+      mediasData = medias.map((e) => _mediaToJson(e, postId)).toList().toString();
+    } else {
+      mediasData = '[]';
+    }
+
+    final String query = """
+    mutation MyMutation {
+      insert_medias(objects: $mediasData) {
+        affected_rows
+      }
+    }
+    """;
+
+    final data = await _hasuraConnect.mutation(query);
+    final result = GetMapFromHasura.getMap(data as Map)["insert_medias"] as Map;
+    final int affectedRows = result['affected_rows'] as int;
+    if (affectedRows == medias.length) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  String _mediaToJson(MediaFileUploader e, int id) {
+    return '{post_id: $id, url: "${e.uploadedUrl}", type: ${e.type}}';
+  }
 }

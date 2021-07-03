@@ -166,12 +166,12 @@ class PostDatasource {
 
   Future<bool> deletePost(int idPost) async {
     final manution = """
-  mutation MyMutation {
-  delete_posts(where: {id: {_eq: $idPost}}) {
-    affected_rows
-  }
-  }
-  """;
+    mutation MyMutation {
+      delete_posts(where: {id: {_eq: $idPost}}) {
+        affected_rows
+      }
+    }
+    """;
     final data = await _hasuraConnect.mutation(manution);
     final deletePosts =
         GetMapFromHasura.getMap(data as Map)["delete_posts"] as Map;
@@ -189,9 +189,9 @@ class PostDatasource {
         ? ""
         : 'location: {data: {long: "${newPostData.location?.long}", lat: "${newPostData.location?.lat}", name: "${newPostData.location?.name}"}},';
 
-    final manution = """
+    final String manution = """
     mutation MyMutation {
-      insert_posts_one(object: {uuid: "${newPostData.newPostUuid}", content: "${newPostData.content}", type: "${newPostData.type.index}", $location status: "$draftPostStatus", creator_uuid: "${newPostData.creatorUuid}}", post_pets: {data: $listPetTag}}) {
+      insert_posts_one(object: {uuid: "${newPostData.newPostUuid}", content: "${newPostData.content}", type: ${newPostData.type.index}, $location status: $draftPostStatus, post_pets: {data: $listPetTag}}) {
         id
         uuid
         content
@@ -208,13 +208,55 @@ class PostDatasource {
     """;
 
     final data = await _hasuraConnect.mutation(manution);
-    GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
-    return Post.fromJson(data as Map<String, dynamic>);
+    final jsonBody =
+        GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
+    return Post.fromJson(jsonBody as Map<String, dynamic>);
   }
 
-  Future publishPost(int postId) async {}
+  Future<Post?> publishPost(int postId) async {
+    final String query = """
+    mutation MyMutation {
+      update_posts_by_pk(pk_columns: {id: $postId}, _set: {status: 1}) {
+        id
+        uuid
+        content
+        type
+        user {
+          id
+          name
+          avatar {
+            id
+            url
+            type
+          }
+        }
+        post_pets {
+          pet {
+            id
+            name
+            avatar {
+              id
+              url
+              type
+            }
+          }
+        }
+        location {
+          id
+          lat
+          long
+          name
+        }
+      }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(query);
+    final postJson =
+        GetMapFromHasura.getMap(data as Map)["update_posts_by_pk"] as Map;
+    return Post.fromJson(postJson as Map<String, dynamic>);
+  }
 
-  Future<PostStatus?> getPostStatus(int postId) async {}
+  Future<PostStatus?> getPostStatusWithId(int postId) async {}
 
-  Future<Post?> getPublishedPost(int postId) async {}
+  Future<Post?> getPostWithId(int postId) async {}
 }

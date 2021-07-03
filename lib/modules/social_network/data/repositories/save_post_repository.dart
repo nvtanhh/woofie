@@ -23,22 +23,27 @@ class SavePostRepository {
   }
 
   Future<String?> putObjectByPresignedUrl(String url, File object) async {
-    return _storageDatasource.putObjectByPresignedUrl(url, object);
+    final bool? isSuccessed = await _storageDatasource.putObjectByPresignedUrl(url, object);
+    if (isSuccessed != null && isSuccessed) {
+      return url.substring(0, url.indexOf('?') + 1);
+    } else {
+      return null;
+    }
   }
 
-  Future addMediaToPost(List<MediaFileUploader> medias) {
-    return _storageDatasource.addMediaToPost(medias);
+  Future addMediaToPost(List<MediaFileUploader> medias, int id) {
+    return _storageDatasource.addMediaToPost(medias, id);
   }
 
-  Future publishPost(int postId) {
+  Future<Post?> publishPost(int postId) {
     return _postDatasource.publishPost(postId);
   }
 
   Future<PostStatus?> getPostStatus(int postId) {
-    return _postDatasource.getPostStatus(postId);
+    return _postDatasource.getPostStatusWithId(postId);
   }
 
   Future<Post?> getPublishedPost(int postId) {
-    return _postDatasource.getPublishedPost(postId);
+    return _postDatasource.getPostWithId(postId);
   }
 }

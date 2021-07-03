@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -29,6 +31,9 @@ class NewFeedWidgetModel extends BaseViewModel {
   DateTime? dateTimeValueLast;
   CancelableOperation? cancelableOperation;
   RxList<Widget> prependedWidgets = <Widget>[].obs;
+  RxList<NewPostData> newPostsData = <NewPostData>[].obs;
+
+  final HashMap _prependedWidgetsRemover = HashMap<String, VoidCallback>();
 
   NewFeedWidgetModel(
     this._getPostsUsecase,
@@ -40,19 +45,18 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   @override
   void initState() {
+    super.initState();
     pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation =
-            CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
-    super.initState();
+    // newPostsData.listen(_onNewPostDataChanged);
   }
 
   Future _loadMorePost(int pageKey) async {
     try {
-      final newItems = await _getPostsUsecase.call(
-          offset: nextPageKey, lastValue: dateTimeValueLast);
+      final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
@@ -109,21 +113,19 @@ class NewFeedWidgetModel extends BaseViewModel {
       },
       onSuccess: () {
         if (isSuccess) {
-          injector<ToastService>()
-              .success(message: 'Post deleted!', context: Get.context!);
+          injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
         }
       },
       onFailure: (err) {
-        injector<ToastService>()
-            .success(message: err.toString(), context: Get.context!);
+        injector<ToastService>().success(message: err.toString(), context: Get.context!);
       },
     );
   }
 
   Future onWantsToCreateNewPost() async {
-    NewPostData? newPostData =
-        await injector<NavigationService>().navigateToSavePost();
+    final NewPostData? newPostData = await injector<NavigationService>().navigateToSavePost();
     if (newPostData != null) {
+      newPostsData.add(newPostData);
       _prepenedNewPostUploadingWidget(newPostData);
     }
   }
@@ -136,14 +138,30 @@ class NewFeedWidgetModel extends BaseViewModel {
     );
 
     prependedWidgets.add(newPostUploaderWidget);
+    _prependedWidgetsRemover[newPostData.newPostUuid] = _removeNewPostDataWidget(newPostUploaderWidget);
   }
 
-  void _onNewPostDataUploaderPostPublished(
-      Post publishedPost, NewPostData newPostData) {
-    // _timelinePostsStreamController.addPostToTop(publishedPost);
-    // _removeNewPostData(newPostData);
+  void _onNewPostDataUploaderPostPublished(Post publishedPost, NewPostData newPostData) {
+    // Add to the top of timeline
+    _removeNewPostData(newPostData);
   }
+
   void _onNewPostDataUploaderCancelled(NewPostData newPostData) {
-    // _removeNewPostData(newPostData);
+    _removeNewPostData(newPostData);
+  }
+
+  void _removeNewPostData(NewPostData newPostData) {
+    newPostsData.remove(newPostData);
+    _prependedWidgetsRemover[newPostData.newPostUuid]();
+  }
+
+  // void _onNewPostDataChanged(List<NewPostData> list) {
+  //   list.forEach(_prepenedNewPostUploadingWidget);
+  // }
+
+  VoidCallback _removeNewPostDataWidget(NewPostUploader newPostUploaderWidget) {
+    return () {
+      prependedWidgets.remove(newPostUploaderWidget);
+    };
   }
 }

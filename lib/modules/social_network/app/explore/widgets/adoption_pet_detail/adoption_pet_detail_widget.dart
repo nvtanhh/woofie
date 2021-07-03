@@ -19,15 +19,13 @@ import 'package:suga_core/suga_core.dart';
 class AdoptionPetDetailWidget extends StatefulWidget {
   final Post post;
 
-  const AdoptionPetDetailWidget({Key? key, required this.post})
-      : super(key: key);
+  const AdoptionPetDetailWidget({Key? key, required this.post}) : super(key: key);
 
   @override
   _AdoptionPetDetailState createState() => _AdoptionPetDetailState();
 }
 
-class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
-    AdoptionPetDetailWidgetModel> {
+class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, AdoptionPetDetailWidgetModel> {
   @override
   void loadArguments() {
     viewModel.post = widget.post;
@@ -46,9 +44,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
             alignment: Alignment.topCenter,
             children: [
               ImageWithPlaceHolderWidget(
-                imageUrl: viewModel.post.medias?[0].url ??
-                    viewModel.pet?.avatar?.url ??
-                    "",
+                imageUrl: viewModel.post.medias?[0].url ?? viewModel.pet?.avatar?.url ?? "",
                 height: Get.height / 2,
                 width: Get.width,
                 fit: BoxFit.cover,
@@ -116,9 +112,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                           ),
                           CardDetailWidget(
                             title: LocaleKeys.explore_breed.trans(),
-                            value: viewModel.post.taggegPets?[0].gender
-                                    .toString() ??
-                                "",
+                            value: viewModel.post.taggegPets?[0].gender.toString() ?? "",
                           ),
                         ],
                       ),
@@ -150,8 +144,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                         ),
                         subtitle: Text(
                           LocaleKeys.explore_owner_pet.trans(),
-                          style: GoogleFonts.montserrat(
-                              textStyle: UITextStyle.text_body_14_w500),
+                          style: GoogleFonts.montserrat(textStyle: UITextStyle.text_body_14_w500),
                         ),
                         trailing: ButtonWidget(
                           width: 96.w,
@@ -214,6 +207,5 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
   }
 
   @override
-  AdoptionPetDetailWidgetModel createViewModel() =>
-      injector<AdoptionPetDetailWidgetModel>();
+  AdoptionPetDetailWidgetModel createViewModel() => injector<AdoptionPetDetailWidgetModel>();
 }

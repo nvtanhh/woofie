@@ -13,11 +13,15 @@ import 'package:meowoof/core/helpers/file_helper.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:get/get.dart';
 
 @lazySingleton
 class MediaService {
   String defaultThumbnailCacheUrl = '/thumbnailCache';
+  Map _thumbnail_cache = {};
+  static const Uuid _uuid = Uuid();
 
   Future<Uint8List?> getVideoThumbnailFromFile(File videoFile) async {
     return VideoThumbnail.thumbnailData(
@@ -85,6 +89,9 @@ class MediaService {
       quality: 80,
     );
     if (compressedImageData != null) {
+      printInfo(
+          info:
+              'Compressed image from ${image.lengthSync()} ==> ${compressedImageData.length}');
       final String imageName = basename(image.path);
       final tempPath = await _getTempPath();
       final String thumbnailPath = '$tempPath/$imageName';
@@ -130,5 +137,22 @@ class MediaService {
     mediaCacheDir = await mediaCacheDir.create();
 
     return mediaCacheDir.path;
+  }
+
+  Future<File?> getVideoThumbnail(File videoFile) async {
+    final Uint8List? thumbnailData = await getVideoThumbnailFromFile(videoFile);
+    if (thumbnailData != null) {
+      final String videoExtension = basename(videoFile.path);
+      final String tmpImageName = 'thumbnail_${_uuid.v4()}_$videoExtension';
+      final tempPath = await _getTempPath();
+      final String thumbnailPath = '$tempPath/$tmpImageName';
+      final file = File(thumbnailPath);
+      _thumbnail_cache[videoFile.path] = file;
+      file.writeAsBytesSync(thumbnailData);
+
+      return file;
+    } else {
+      return null;
+    }
   }
 }
