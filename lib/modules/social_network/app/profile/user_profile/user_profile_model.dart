@@ -78,7 +78,15 @@ class UserProfileModel extends BaseViewModel {
     try {
       posts = await _getPostOfUserUsecase.call(user!.uuid!, offset: nextPageKey, limit: pageSize);
       if (pagingController.itemList == null) {
-        posts.insert(0, Post(id: 0, creator: User(id: 0), type: PostType.activity));
+        posts.insert(
+          0,
+          Post(
+            id: 0,
+            uuid: '',
+            creator: User(id: 0),
+            type: PostType.activity,
+          ),
+        );
       }
       final isLastPage = posts.length < pageSize;
       if (isLastPage) {

@@ -7,7 +7,7 @@ class DeletePostUsecase {
 
   DeletePostUsecase(this._profileRepository);
 
-  Future<bool> call(int idPost) {
-    return _profileRepository.deletePost(idPost);
+  Future<bool> call(int postId) {
+    return _profileRepository.deletePost(postId);
   }
 }

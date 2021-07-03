@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
@@ -27,6 +28,11 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
       appBar: _buildAppBar(),
       body: Column(
         children: [
+          Expanded(
+            child: Obx(
+              () => Column(children: viewModel.prependedWidgets),
+            ),
+          ),
           Expanded(
             child: PagedListView<int, Post>(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
@@ -70,7 +76,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
               child: SizedBox(),
             ),
             InkWell(
-              onTap: viewModel.onWantsCreateNewPost,
+              onTap: viewModel.onWantsToCreateNewPost,
               child: MWIcon(MWIcons.add),
             ),
             SizedBox(

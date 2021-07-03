@@ -137,6 +137,9 @@ class MWIcons {
   static const block = MWIconData(nativeIcon: Icons.person_remove_alt_1_outlined);
   static const doubleArrow = MWIconData(nativeIcon: Icons.double_arrow_outlined);
   static const calendar = MWIconData(nativeIcon: Icons.calendar_today_outlined);
+  static const cancel = MWIconData(nativeIcon: Icons.close);
+  static const retry = MWIconData(nativeIcon: Icons.refresh);
+
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);
