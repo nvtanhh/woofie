@@ -19,8 +19,7 @@ class NewPostData {
   late PostStatus createdDraftPostStatus;
   late List<MediaFile> remainingMediaToCompress;
   List<MediaFile> compressedMedia = [];
-  List<MediaFile> remainingCompressedMediaToUpload = [];
-  List<MediaFileUploader> remainingCompressedMediaToAddToPost = [];
+  List<MediaFileUploader> uploadedMediasToAddToPost = [];
   bool postPublishRequested = false;
   File? mediaThumbnail;
 

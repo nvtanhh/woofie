@@ -16,6 +16,7 @@ import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_post_usecase.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -48,7 +49,8 @@ class NewFeedWidgetModel extends BaseViewModel {
     super.initState();
     pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        cancelableOperation =
+            CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     // newPostsData.listen(_onNewPostDataChanged);
@@ -56,7 +58,8 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
+      final newItems = await _getPostsUsecase.call(
+          offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
@@ -113,17 +116,20 @@ class NewFeedWidgetModel extends BaseViewModel {
       },
       onSuccess: () {
         if (isSuccess) {
-          injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
+          injector<ToastService>()
+              .success(message: 'Post deleted!', context: Get.context!);
         }
       },
       onFailure: (err) {
-        injector<ToastService>().success(message: err.toString(), context: Get.context!);
+        injector<ToastService>()
+            .success(message: err.toString(), context: Get.context!);
       },
     );
   }
 
   Future onWantsToCreateNewPost() async {
-    final NewPostData? newPostData = await injector<NavigationService>().navigateToSavePost();
+    final NewPostData? newPostData =
+        await injector<NavigationService>().navigateToSavePost();
     if (newPostData != null) {
       newPostsData.add(newPostData);
       _prepenedNewPostUploadingWidget(newPostData);
@@ -138,10 +144,13 @@ class NewFeedWidgetModel extends BaseViewModel {
     );
 
     prependedWidgets.add(newPostUploaderWidget);
-    _prependedWidgetsRemover[newPostData.newPostUuid] = _removeNewPostDataWidget(newPostUploaderWidget);
+    _prependedWidgetsRemover[newPostData.newPostUuid] =
+        _removeNewPostDataWidget(newPostUploaderWidget);
   }
 
-  void _onNewPostDataUploaderPostPublished(Post publishedPost, NewPostData newPostData) {
+  void _onNewPostDataUploaderPostPublished(
+      Post publishedPost, NewPostData newPostData) {
+    _showSnackbarCreatePostSuccessful();
     // Add to the top of timeline
     _removeNewPostData(newPostData);
   }
@@ -155,13 +164,19 @@ class NewFeedWidgetModel extends BaseViewModel {
     _prependedWidgetsRemover[newPostData.newPostUuid]();
   }
 
-  // void _onNewPostDataChanged(List<NewPostData> list) {
-  //   list.forEach(_prepenedNewPostUploadingWidget);
-  // }
-
   VoidCallback _removeNewPostDataWidget(NewPostUploader newPostUploaderWidget) {
     return () {
       prependedWidgets.remove(newPostUploaderWidget);
     };
+  }
+
+  void _showSnackbarCreatePostSuccessful() {
+    Get.snackbar(
+      "Congrats 🎉",
+      "Create new post successful",
+      duration: const Duration(seconds: 2),
+      backgroundColor: UIColor.accent2,
+      colorText: UIColor.white,
+    );
   }
 }

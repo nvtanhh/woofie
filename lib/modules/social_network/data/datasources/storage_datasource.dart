@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
@@ -10,9 +11,9 @@ import 'package:meowoof/modules/social_network/domain/models/post/media_file.dar
 @injectable
 class StorageDatasource {
   // ignore: constant_identifier_names
-  static const String POST_MEDIA_SUBFOLDER = 'medias/{post_uuid}';
+  static const String POST_MEDIA_SUBFOLDER = '{post_uuid}';
   // ignore: constant_identifier_names
-  static const String AVATAR_SUBFOLDER = 'avatars/{user_uuid}';
+  static const String AVATAR_SUBFOLDER = '{user_uuid}';
 
   final UrlParser _urlParser;
 
@@ -26,8 +27,10 @@ class StorageDatasource {
     this._httpieService,
   );
 
-  Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {
-    final String subFolder = _urlParser.parse(POST_MEDIA_SUBFOLDER, {'post_uuid': postUuid});
+  Future<String?> getPresignedUrlForPostMedia(
+      String objectName, String postUuid) async {
+    final String subFolder =
+        _urlParser.parse(POST_MEDIA_SUBFOLDER, {'post_uuid': postUuid});
 
     return _getPresignedUrl('$subFolder/$objectName');
   }
@@ -41,12 +44,13 @@ class StorageDatasource {
     }
     """;
     final data = await _hasuraConnect.mutation(query);
-    final result = GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
+    final result =
+        GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
     return result['url'] as String;
   }
 
   Future<bool?> putObjectByPresignedUrl(String url, File object) async {
-    final response = await _httpieService.put(url, body: object);
+    final response = await _httpieService.putBinary(url, object);
     if (response.statusCode == 200) {
       return true;
     }
@@ -55,8 +59,9 @@ class StorageDatasource {
 
   Future addMediaToPost(List<MediaFileUploader> medias, int postId) async {
     late String mediasData;
-    if (medias.isEmpty) {
-      mediasData = medias.map((e) => _mediaToJson(e, postId)).toList().toString();
+    if (medias.isNotEmpty) {
+      mediasData =
+          medias.map((e) => _mediaToJson(e, postId)).toList().toString();
     } else {
       mediasData = '[]';
     }

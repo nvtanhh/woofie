@@ -64,7 +64,9 @@ class NewPostUploaderModel extends BaseViewModel {
   );
 
   @override
-  void disposeState() {}
+  void disposeState() {
+    _uploadPostOperation?.cancel();
+  }
 
   @override
   void initState() {
@@ -99,7 +101,7 @@ class NewPostUploaderModel extends BaseViewModel {
         await _compressPostMedia();
       }
 
-      if (data.remainingCompressedMediaToUpload.isNotEmpty) {
+      if (data.compressedMedia.isNotEmpty) {
         _setStatusMessage('Uploading media...');
         _setStatus(PostUploaderStatus.addingPostMedia);
         await _addPostMedia();
@@ -157,9 +159,8 @@ class NewPostUploaderModel extends BaseViewModel {
   }
 
   Future _compressPostMedia() async {
-    return Future.wait(data.remainingMediaToCompress
-        .map((file) async => _compressPostMediaItem)
-        .toList());
+    return Future.wait(
+        data.remainingMediaToCompress.map(_compressPostMediaItem));
 
     // for (final file in data.remainingMediaToCompress) {
     //   await _compressPostMediaItem(file);
@@ -182,42 +183,36 @@ class NewPostUploaderModel extends BaseViewModel {
   }
 
   Future _addPostMedia() async {
-    await Future.wait(data.remainingCompressedMediaToUpload
-        .map((file) async => _storeMediaItem)
-        .toList());
+    await Future.wait(data.compressedMedia.map(_storeMediaItem));
     await _addMediaToPost();
-    data.remainingCompressedMediaToAddToPost.clear();
+    data.uploadedMediasToAddToPost.clear();
   }
 
   Future _storeMediaItem(MediaFile mediaFile) async {
     final String fileName = basename(mediaFile.file.path);
     final String postUuid = data.createdDraftPost!.uuid;
     // get presigned URL
+    printInfo(info: 'Getting presigned URL');
     final String? preSignedUrl =
         await _getPresignedUrlUsecase.call(fileName, postUuid);
     // upload media to s3
     String? uploadedMediaUrl;
     if (preSignedUrl != null) {
-      try {
-        uploadedMediaUrl =
-            await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
-      } catch (error) {
-        printError(
-          info: error.toString(),
-        );
-      }
+      printInfo(info: 'Uploading media to s3');
+      uploadedMediaUrl =
+          await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
     }
     if (uploadedMediaUrl != null) {
       final MediaFileUploader mediaFileUploader = MediaFileUploader(
           uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
-      data.remainingCompressedMediaToAddToPost.add(mediaFileUploader);
-      data.remainingCompressedMediaToUpload.remove(mediaFile);
+      data.uploadedMediasToAddToPost.add(mediaFileUploader);
+      data.compressedMedia.remove(mediaFile);
     }
   }
 
-  Future _addMediaToPost() {
+  Future _addMediaToPost() async {
     return _addPostMediaUsecase.call(
-        data.remainingCompressedMediaToAddToPost, data.createdDraftPost!.id);
+        data.uploadedMediasToAddToPost, data.createdDraftPost!.id);
   }
 
   Future<Post?> _publishPost() async {
