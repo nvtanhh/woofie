@@ -26,13 +26,12 @@ class PostItem extends StatelessWidget {
     required this.onPostDeleted,
     this.onCommentClick,
     this.onPostClick,
-  }) : super(key: key) {
-    isLiked.value = post.isLiked ?? false;
-    countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
-  }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    isLiked.value = post.isLiked ?? false;
+    countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
     return InkWell(
       onTap: () => onPostClick?.call(post),
       child: Column(
@@ -61,6 +60,8 @@ class PostItem extends StatelessWidget {
     }
     isLiked.value = !isLiked.value;
     onLikeClick(post.id);
+    post.isLiked = isLiked.value;
+    post.postReactsAggregate?.aggregate.count = countLike.value;
   }
 
   Widget _buildPostActions() {
@@ -72,9 +73,11 @@ class PostItem extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () => likeClick(),
-                child: MWIcon(
-                  MWIcons.react,
-                  size: MWIconSize.small,
+                child: Obx(
+                  () => MWIcon(
+                    isLiked.value ? MWIcons.react : MWIcons.unReact,
+                    size: MWIconSize.small,
+                  ),
                 ),
               ),
               SizedBox(

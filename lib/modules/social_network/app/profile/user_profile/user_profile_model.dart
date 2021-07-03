@@ -112,14 +112,17 @@ class UserProfileModel extends BaseViewModel {
     );
   }
 
-  void onPostDeleted(Post post) {
+  void onPostDeleted(Post post, int index) {
     bool result = false;
     call(() async => result = await _deletePostUsecase.call(post.id), onSuccess: () {
       if (result) {
-        _toastService.success(message: "Success", context: Get.context!);
+        _toastService.success(message: "Post deleted!", context: Get.context!);
+        pagingController.itemList?.removeAt(index);
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        pagingController.notifyListeners();
       }
     }, onFailure: (err) {
-      _toastService.success(message: err.toString(), context: Get.context!);
+      _toastService.error(message: err.toString(), context: Get.context!);
     });
   }
 
@@ -131,10 +134,11 @@ class UserProfileModel extends BaseViewModel {
 
   void onUserReport(User user) {}
 
-  void onPostClick(Post post) {
-    Get.to(
+  Future onPostClick(Post post) async {
+    await Get.to(
       () => PostDetail(post: post),
     );
+    pagingController.notifyListeners();
   }
 
   bool get isLoaded => _isLoaded.value;

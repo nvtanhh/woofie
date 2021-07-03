@@ -141,10 +141,14 @@ class MWIcons {
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);
   static final react = MWIconData(assetImageFile: Assets.resources.icons.icReact);
+  static final unReact = MWIconData(assetImageFile: Assets.resources.icons.icUnreact);
   static final comment = MWIconData(assetImageFile: Assets.resources.icons.icComment);
   static final petTag = MWIconData(assetImageFile: Assets.resources.icons.icTagPet);
   static final otherInformation = MWIconData(assetImageFile: Assets.resources.icons.icOtherInfomation);
   static final petOwners = MWIconData(assetImageFile: Assets.resources.icons.icPetOwners);
+  static final icAdoption = MWIconData(assetImageFile: Assets.resources.images.explore.icAdoption);
+  static final icMatting = MWIconData(assetImageFile: Assets.resources.images.explore.icMatting);
+  static final icLose = MWIconData(assetImageFile: Assets.resources.images.explore.icLose);
 }
 
 enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }

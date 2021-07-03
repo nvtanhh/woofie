@@ -69,7 +69,7 @@ class PostDatasource {
   Future<List<Post>> getPostOfUser(String userUUID, int offset, int limit) async {
     final query = """
     query MyQuery {
-  posts(limit: $limit, offset: $offset, where: {creator_uuid: {_eq: "$userUUID"}}, order_by: {created_at: asc}) {
+  posts(limit: $limit, offset: $offset, where: {creator_uuid: {_eq: "$userUUID"}}, order_by: {created_at: desc}) {
     content
     created_at
     creator_uuid
@@ -137,18 +137,26 @@ class PostDatasource {
     final listPetTag = post.pets?.map((e) => {"pet_id": e.id}).toList() ?? [];
     final location = post.location == null
         ? ""
-        : 'location_post: {data: {long: "${post.location?.long}", lat: "${post.location?.lat}", name: "${post.location?.name}"}},';
+        : 'location: {data: {long: "${post.location?.long}", lat: "${post.location?.lat}", name: "${post.location?.name ?? ""}"}},';
     final manution = """
   mutation MyMutation {
-  insert_posts_one(object: {content: "${post.content}",$location medias: {data: ${post.medias?.toString() ?? "[]"}}, type: "${post.type.index}", post_pets: {data: $listPetTag}}) {
+  insert_posts_one(object: {content: "${post.content?.trim()}",$location medias: {data: ${post.medias?.toString() ?? "[]"}}, type: "${post.type.index}", post_pets: {data: $listPetTag}}) {
+     content
+    created_at
+    distance_user_to_post
     id
-  }
-}
+    medias {
+      id
+      type
+      url
+    }
+    status
+    type
+  }}
 """;
     final data = await _hasuraConnect.mutation(manution);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
-    post.id = affectedRows["id"] as int;
-    return post;
+    return Post.fromJson(affectedRows as Map<String, dynamic>);
   }
 
   Future<bool> deletePost(int idPost) async {
@@ -163,5 +171,64 @@ class PostDatasource {
     final deletePosts = GetMapFromHasura.getMap(data as Map)["delete_posts"] as Map;
     final affectedRows = deletePosts["affected_rows"] as int;
     return affectedRows >= 1;
+  }
+
+  Future<List<Post>> getPostByType(PostType postType, int distance, int limit, int offset) async {
+    final query = """
+query MyQuery {
+  get_posts_by_type(args: {post_type: ${postType.index}, distance_kms: $distance }, order_by: {created_at: desc}, limit: $limit, offset: $offset) {
+    id
+    type
+    post_pets {
+      pet {
+        avatar {
+          type
+          url
+          id
+        }
+        pet_breed {
+          name
+          id
+        }
+        id
+        dob
+        gender
+        name
+      }
+    }
+    distance_user_to_post
+  }
+}
+    """;
+    final data = await _hasuraConnect.query(query);
+    final listPost = GetMapFromHasura.getMap(data as Map)["get_posts_by_type"] as List;
+    return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  Future<Post> getDetailPost(int postId) async {
+    final query = """
+    query MyQuery {
+  posts_by_pk(id: $postId) {
+    content
+    created_at
+    distance_user_to_post
+    id
+    medias {
+      id
+      type
+      url
+    }
+    status
+    type
+    location {
+      id
+      name
+    }
+  }
+}
+    """;
+    final data = await _hasuraConnect.query(query);
+    final post = GetMapFromHasura.getMap(data as Map)["posts_by_pk"] as Map<String, dynamic>;
+    return Post.fromJson(post);
   }
 }

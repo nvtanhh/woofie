@@ -10,10 +10,14 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class ImagesViewWidget extends StatelessWidget {
   final List<Media> medias;
+  final double? height;
+  final BoxFit? fit;
 
   ImagesViewWidget({
     Key? key,
     required this.medias,
+    this.height,
+    this.fit,
   }) : super(key: key);
   final PageController _pageController = PageController();
   final RxInt indexPage = RxInt(0);
@@ -22,7 +26,7 @@ class ImagesViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (medias.isNotEmpty) {
       return Container(
-        height: 400.h,
+        height: height ?? 400.h,
         margin: EdgeInsets.only(top: 10.h, bottom: 15.h),
         child: Stack(
           children: [

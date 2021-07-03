@@ -39,27 +39,10 @@ class Post extends UpdatableModel {
   Location? location;
   @JsonKey(name: "status", fromJson: PostStatus.parse)
   PostStatus? status;
+  @JsonKey(name: "distance_user_to_post")
+  double? distanceUserToPost;
   @JsonKey(name: "post_reacts_aggregate")
   ObjectAggregate? postReactsAggregate;
-  Post({
-    required this.id,
-    this.creator,
-    required this.type,
-    this.creatorUUID,
-    this.content,
-    this.isClosed,
-    this.createdAt,
-    this.isLiked,
-    this.comments,
-    this.pets,
-    this.location,
-  });
-
-  static List<Pet>? allPetsFromJson(List<dynamic>? list) {
-    return list
-        ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
-        .toList();
-  }
 
   @JsonKey(name: "comments_aggregate")
   ObjectAggregate? commentsAggregate;
@@ -67,8 +50,25 @@ class Post extends UpdatableModel {
   @JsonKey(name: "medias_aggregate")
   ObjectAggregate? mediasAggregate;
 
-  factory Post.fromJsonString(String jsonString) =>
-      Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  Post(
+      {required this.id,
+      this.creator,
+      required this.type,
+      this.creatorUUID,
+      this.content,
+      this.isClosed,
+      this.createdAt,
+      this.isLiked,
+      this.comments,
+      this.pets,
+      this.location,
+      this.distanceUserToPost});
+
+  static List<Pet>? allPetsFromJson(List<dynamic>? list) {
+    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
+  }
+
+  factory Post.fromJsonString(String jsonString) => Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
 
@@ -104,9 +104,7 @@ class Post extends UpdatableModel {
       isLiked = json['is_liked'] as bool;
     }
     if (json['comments'] != null) {
-      comments = (json['comments'] as List<dynamic>?)
-          ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
-          .toList();
+      comments = (json['comments'] as List<dynamic>?)?.map((e) => Comment.fromJson(e as Map<String, dynamic>)).toList();
     }
     if (json['post_pets'] != null) {
       pets = allPetsFromJson(json['post_pets'] as List?);
@@ -118,9 +116,19 @@ class Post extends UpdatableModel {
       location = Location.fromJson(json['location'] as Map<String, dynamic>);
     }
     if (json['medias'] != null) {
-      medias = (json['medias'] as List<dynamic>?)
-          ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
-          .toList();
+      medias = (json['medias'] as List<dynamic>?)?.map((e) => Media.fromJson(e as Map<String, dynamic>)).toList();
+    }
+    if (json['distance_user_to_post'] != null) {
+      distanceUserToPost = json['distance_user_to_post'] as double;
+    }
+    if (json['post_reacts_aggregate'] != null) {
+      postReactsAggregate = ObjectAggregate.fromJson(json["post_reacts_aggregate"] as Map<String, dynamic>);
+    }
+    if (json['comments_aggregate'] != null) {
+      commentsAggregate = ObjectAggregate.fromJson(json["comments_aggregate"] as Map<String, dynamic>);
+    }
+    if (json['medias_aggregate'] != null) {
+      mediasAggregate = ObjectAggregate.fromJson(json["medias_aggregate"] as Map<String, dynamic>);
     }
   }
 }
@@ -155,6 +163,8 @@ class PostStatus {
   static const _values = <PostStatus>[draft, published];
 
   static List<PostStatus> values() => _values;
+
+  Map<String, dynamic> toJson() => {"status": code};
 
   static PostStatus? parse(String? code) {
     if (code == null) return null;
