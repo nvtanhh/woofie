@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/images_view_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/info_user_post_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -21,13 +22,12 @@ class PostItemInListView extends StatelessWidget {
     this.onCommentClick,
     required this.onLikeClick,
     this.onPostClick,
-  }) : super(key: key) {
-    isLiked.value = post.isLiked ?? false;
-    countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
-  }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    isLiked.value = post.isLiked ?? false;
+    countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
     return InkWell(
       onTap: () => onPostClick?.call(post),
       child: Column(
@@ -58,10 +58,11 @@ class PostItemInListView extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () => likeClick(),
-                      child: Assets.resources.icons.icReact.image(
-                        width: 24.w,
-                        height: 24.w,
-                        fit: BoxFit.fill,
+                      child: Obx(
+                        () => MWIcon(
+                          isLiked.value ? MWIcons.react : MWIcons.unReact,
+                          size: MWIconSize.small,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -115,5 +116,7 @@ class PostItemInListView extends StatelessWidget {
     }
     isLiked.value = !isLiked.value;
     onLikeClick(post.id);
+    post.isLiked = isLiked.value;
+    post.postReactsAggregate?.aggregate.count = countLike.value;
   }
 }

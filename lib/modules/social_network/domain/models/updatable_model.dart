@@ -33,7 +33,7 @@ abstract class UpdatableModelFactory<T extends UpdatableModel> {
   SimpleCache<int, T>? cache;
 
   UpdatableModelFactory({this.cache}) {
-    cache ??= SimpleCache(storage: UpdatableModelSimpleStorage(size: 10));
+    cache ??= SimpleCache(storage: UpdatableModelSimpleStorage(size: 50));
   }
 
   T fromJson(Map<String, dynamic> json) {
@@ -46,7 +46,8 @@ abstract class UpdatableModelFactory<T extends UpdatableModel> {
 
       if (item != null) {
         item.update(json);
-        return item as T;
+        addToCache(item as T);
+        return item;
       }
     }
 

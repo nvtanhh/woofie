@@ -52,7 +52,7 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                   style: UITextStyle.text_header_18_w700,
                 ),
                 InkWell(
-                  onTap: () => Get.to(AdoptionWidget()),
+                  onTap: () => viewModel.onAdoptionClick(),
                   child: SizedBox(
                     height: 120.h,
                     child: Stack(
@@ -106,114 +106,120 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                 SizedBox(
                   height: 10.h,
                 ),
-                SizedBox(
-                  height: 120.h,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Container(
-                        height: 95.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.r),
-                          color: UIColor.lavenderBlush,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              width: (Get.width * 0.75).w,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    LocaleKeys.explore_matting.trans(),
-                                    style: UITextStyle.charm_18_w600,
-                                  ),
-                                  SizedBox(
-                                    height: 5.h,
-                                  ),
-                                  Text(
-                                    "Ngày tháng đẹp biết bao nhiêu. ",
-                                    style: UITextStyle.text_body_10_w500,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    "Hẹn nhau 1 tách trà chiều mew mew!!!",
-                                    style: UITextStyle.text_body_10_w500,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
+                InkWell(
+                  onTap: () => viewModel.onMattingClick(),
+                  child: SizedBox(
+                    height: 120.h,
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Container(
+                          height: 95.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: UIColor.lavenderBlush,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SizedBox(
+                                width: (Get.width * 0.75).w,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      LocaleKeys.explore_matting.trans(),
+                                      style: UITextStyle.charm_18_w600,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      "Ngày tháng đẹp biết bao nhiêu. ",
+                                      style: UITextStyle.text_body_10_w500,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      "Hẹn nhau 1 tách trà chiều mew mew!!!",
+                                      style: UITextStyle.text_body_10_w500,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                          ],
+                              SizedBox(
+                                width: 20.w,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        left: 10.w,
-                        bottom: 10.h,
-                        child: Assets.resources.images.explore.matting.image(
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    ],
+                        Positioned(
+                          left: 10.w,
+                          bottom: 10.h,
+                          child: Assets.resources.images.explore.matting.image(
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: 10.h,
                 ),
-                SizedBox(
-                  height: 120.h,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Container(
-                        height: 95.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.r),
-                          color: UIColor.whiteSmoke,
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            SizedBox(
-                              width: (Get.width * 0.6).w,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    LocaleKeys.explore_lost_pet.trans(),
-                                    style: UITextStyle.persian_red_18_w600,
-                                  ),
-                                  SizedBox(
-                                    height: 5.h,
-                                  ),
-                                  Text(
-                                    "Bé đi đâu rồi",
-                                    style: UITextStyle.text_body_10_w500,
-                                  )
-                                ],
+                InkWell(
+                  onTap: () => viewModel.onLoseClick(),
+                  child: SizedBox(
+                    height: 120.h,
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Container(
+                          height: 95.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: UIColor.whiteSmoke,
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20.w,
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                width: (Get.width * 0.6).w,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      LocaleKeys.explore_lost_pet.trans(),
+                                      style: UITextStyle.persian_red_18_w600,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      "Bé đi đâu rồi",
+                                      style: UITextStyle.text_body_10_w500,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        right: 10.w,
-                        bottom: 10.h,
-                        child: Assets.resources.images.explore.lostPet.image(
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    ],
+                        Positioned(
+                          right: 10.w,
+                          bottom: 10.h,
+                          child: Assets.resources.images.explore.lostPet.image(
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(

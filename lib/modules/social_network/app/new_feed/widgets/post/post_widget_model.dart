@@ -6,6 +6,7 @@ import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_comment_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_comment_in_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -19,12 +20,17 @@ class PostWidgetModel extends BaseViewModel {
   final LikePostUsecase _likePostUsecase;
   final GetCommentInPostUsecase _getCommentInPostUsecase;
   final int pageSize = 10;
+  int nextPageKey = 0;
   late PagingController<int, Comment> pagingController;
+  final CreateCommentUsecase _createCommentUsecase;
+  final List<User> tagUsers = [];
+  List<Comment> comments = [];
 
   PostWidgetModel(
     @Named("current_user_storage") this._userStorage,
     this._likePostUsecase,
     this._getCommentInPostUsecase,
+    this._createCommentUsecase,
   ) {
     pagingController = PagingController(firstPageKey: 0);
   }
@@ -51,19 +57,22 @@ class PostWidgetModel extends BaseViewModel {
   void _loadComments(int pageKey) {
     call(
       () async {
-        post.comments = await _getCommentInPostUsecase.call(post.id);
-        if (pagingController.itemList?.isEmpty == true) {
-          post.comments?.insert(0, Comment(id: 0, content: "content", postId: 0, creatorUUID: "0"));
+        comments = await _getCommentInPostUsecase.call(post.id, offset: nextPageKey);
+        if (pagingController.itemList == null || pagingController.itemList?.isEmpty == true) {
+          comments.insert(0, Comment(id: 0, content: "content", postId: 0, creatorUUID: "0"));
         }
-        if ((post.comments?.length ?? 0) < pageSize) {
-          pagingController.appendLastPage(post.comments ?? []);
+        if (comments.length < pageSize) {
+          pagingController.appendLastPage(comments);
         } else {
-          final nextPageKey = pageKey + (post.comments?.length ?? 0);
-          pagingController.appendPage(post.comments ?? [], nextPageKey);
+          nextPageKey = pageKey + comments.length;
+          pagingController.appendPage(comments, nextPageKey);
         }
       },
       showLoading: false,
       onSuccess: () {},
+      onFailure: (err) {
+        pagingController.error = err;
+      },
     );
   }
 
@@ -74,11 +83,31 @@ class PostWidgetModel extends BaseViewModel {
     );
   }
 
-  void onSendComment() {}
+  void onSendComment() {
+    call(
+      () async {
+        final Comment? comment = await _createCommentUsecase.call(post.id, commentEditingController.text, tagUsers);
+        if (comment != null) {
+          pagingController.itemList?.insert(1, comment);
+          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+          pagingController.notifyListeners();
+          commentEditingController.clear();
+        }
+      },
+      showLoading: false,
+    );
+  }
+
+  Future onRefresh() async {
+    nextPageKey = 0;
+    pagingController.refresh();
+  }
 
   @override
   void disposeState() {
     commentEditingController.dispose();
+    pagingController.dispose();
+    user.close();
     super.disposeState();
   }
 }

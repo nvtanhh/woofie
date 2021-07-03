@@ -17,12 +17,12 @@ class ExploreRepository {
     return [];
   }
 
-  Future<List<Post>> getPostsAdoption(PostType postType) async {
-    return [];
+  Future<List<Post>> getPostsByType(PostType postType, int distance, int limit, int offset) async {
+    return _postDatasource.getPostByType(postType, distance, limit, offset);
   }
 
-  Future<Post> getDetailPost(int postId) async {
-    return Post(id: 0, creator: User(id: 0), type: PostType.activity);
+  Future<Post> getDetailPost(int postId) {
+    return _postDatasource.getDetailPost(postId);
   }
 
   Future<List<Service>> searchService(String keyWord) async {

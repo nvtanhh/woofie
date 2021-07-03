@@ -37,7 +37,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                   onCommentClick: viewModel.onCommentClick,
                   onLikeClick: viewModel.onLikeClick,
                   onPostClick: viewModel.onPostClick,
-                  onPostDeleted: viewModel.onPostDeleted,
+                  onPostDeleted: (_) => viewModel.onPostDeleted(_, index),
                   onPostEdited: viewModel.onPostEdited,
                 ),
               ),

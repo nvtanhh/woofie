@@ -59,42 +59,39 @@ class _PostDetailState extends BaseViewState<PostDetail, PostWidgetModel> {
         body: Column(
           children: [
             Expanded(
-              child: PagedListView<int, Comment>(
-                pagingController: viewModel.pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Comment>(
-                  itemBuilder: (context, item, index) {
-                    if (index == 0) {
-                      return PostItemInListView(
-                        post: viewModel.post,
-                        onLikeClick: viewModel.onLikeClick,
+              child: RefreshIndicator(
+                onRefresh: () => viewModel.onRefresh(),
+                child: PagedListView<int, Comment>(
+                  pagingController: viewModel.pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<Comment>(
+                    itemBuilder: (context, item, index) {
+                      if (index == 0) {
+                        return PostItemInListView(
+                          post: viewModel.post,
+                          onLikeClick: viewModel.onLikeClick,
+                        );
+                      }
+                      return CommentWidget(
+                        comment: item,
+                        onLikeCommentClick: viewModel.onLikeCommentClick,
                       );
-                    }
-                    return CommentWidget(
-                      comment: item,
-                      onLikeCommentClick: viewModel.onLikeCommentClick,
-                    );
-                  },
-                  firstPageProgressIndicatorBuilder: (_) => Column(
-                    children: [
-                      PostItemInListView(
-                        post: viewModel.post,
-                        onLikeClick: viewModel.onLikeClick,
-                      ),
-                      ShimmerCommentWidget()
-                    ],
-                  ),
-                  noItemsFoundIndicatorBuilder: (_) => Center(
-                    child: Text(
-                      LocaleKeys.new_feed_no_comments_yet.trans(),
-                      style: UITextStyle.text_secondary_12_w500,
+                    },
+                    firstPageProgressIndicatorBuilder: (_) => Column(
+                      children: [
+                        PostItemInListView(
+                          post: viewModel.post,
+                          onLikeClick: viewModel.onLikeClick,
+                        ),
+                        ShimmerCommentWidget()
+                      ],
                     ),
+                    newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
                   ),
-                  newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
-                ),
-                padding: EdgeInsets.only(
-                  top: 10.h,
-                  left: 10.w,
-                  right: 10.w,
+                  padding: EdgeInsets.only(
+                    top: 10.h,
+                    left: 10.w,
+                    right: 10.w,
+                  ),
                 ),
               ),
             ),

@@ -1,19 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/helpers/datetime_helper.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class PetItemWidget extends StatelessWidget {
   final Pet pet;
   final Function onClick;
+  final double distance;
+  final PostType postType;
 
   const PetItemWidget({
     Key? key,
     required this.pet,
     required this.onClick,
+    required this.distance,
+    required this.postType,
   }) : super(key: key);
 
   @override
@@ -36,6 +45,8 @@ class PetItemWidget extends StatelessWidget {
               fit: BoxFit.cover,
               topLeftRadius: 15.r,
               topRightRadius: 15.r,
+              bottomLeftRadius: 0,
+              bottomRightRadius: 0,
             ),
             Positioned(
               bottom: 0,
@@ -43,77 +54,88 @@ class PetItemWidget extends StatelessWidget {
                 height: 84.h,
                 width: 165.w,
                 decoration: BoxDecoration(
-                  color: UIColor.aliceBlue2,
+                  color: UIColor.white,
                   borderRadius: BorderRadius.circular(15.r),
                   border: Border.all(
-                    color: UIColor.viking,
+                    color: defineColor(postType),
                   ),
                 ),
                 padding: EdgeInsets.symmetric(
                   horizontal: 10.w,
                   vertical: 5.h,
                 ),
-                child: Column(
+                child: Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
                       children: [
-                        Text(
-                          pet.name ?? "",
-                          style: UITextStyle.text_header_14_w700,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on_rounded,
-                          color: UIColor.primary,
-                          size: 15.w,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              pet.name ?? "",
+                              style: UITextStyle.text_header_14_w700,
+                            ),
+                          ],
                         ),
                         SizedBox(
-                          width: 5.w,
+                          height: 5.h,
                         ),
-                        Text(
-                          "0 Km",
-                          style: UITextStyle.text_body_10_w500,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: UIColor.pattensBlue2,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                          padding: EdgeInsets.all(5.w),
-                          child: Text(
-                            pet.gender?.index == 0 ? "Đực" : "Cái",
-                            style: UITextStyle.dodger_blue_10_w500,
-                          ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on_rounded,
+                              color: UIColor.primary,
+                              size: 15.w,
+                            ),
+                            SizedBox(
+                              width: 5.w,
+                            ),
+                            Text(
+                              "$distance Km",
+                              style: UITextStyle.text_body_10_w500,
+                            ),
+                          ],
                         ),
                         SizedBox(
-                          width: 20.w,
+                          height: 5.h,
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: UIColor.whisper,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                          padding: EdgeInsets.all(5.w),
-                          child: Text(
-                            "9 tháng",
-                            style: UITextStyle.dodger_blue_10_w500,
-                          ),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: UIColor.pattensBlue2,
+                                borderRadius: BorderRadius.circular(5.r),
+                              ),
+                              padding: EdgeInsets.all(5.w),
+                              child: Text(
+                                pet.gender?.index == 0 ? LocaleKeys.add_pet_pet_male.trans() : LocaleKeys.add_pet_pet_female.trans(),
+                                style: UITextStyle.dodger_blue_10_w500,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: UIColor.whisper,
+                                borderRadius: BorderRadius.circular(5.r),
+                              ),
+                              padding: EdgeInsets.all(5.w),
+                              child: Text(
+                                DateTimeHelper.calcAge(pet.dob),
+                                style: UITextStyle.dodger_blue_10_w500,
+                              ),
+                            )
+                          ],
                         )
                       ],
+                    ),
+                    Positioned(
+                      right: 0,
+                      child: MWIcon(
+                        defineIcon(postType),
+                        customSize: 24.w,
+                      ),
                     )
                   ],
                 ),
@@ -123,5 +145,31 @@ class PetItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  MWIconData defineIcon(PostType postType) {
+    switch (postType) {
+      case PostType.mating:
+        return MWIcons.icMatting;
+      case PostType.adop:
+        return MWIcons.icAdoption;
+      case PostType.lose:
+        return MWIcons.icLose;
+      default:
+        return MWIcons.icAdoption;
+    }
+  }
+
+  Color defineColor(PostType postType) {
+    switch (postType) {
+      case PostType.mating:
+        return UIColor.matingColor;
+      case PostType.adop:
+        return UIColor.adoptionColor;
+      case PostType.lose:
+        return UIColor.danger;
+      default:
+        return UIColor.accent2;
+    }
   }
 }

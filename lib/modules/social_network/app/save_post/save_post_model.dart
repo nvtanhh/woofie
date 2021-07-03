@@ -186,7 +186,7 @@ class SavePostModel extends BaseViewModel {
       id: 0,
       creator: user,
       type: postType,
-      content: contentController.text,
+      content: contentController.text.replaceAll("\n", "\\n"),
       pets: taggedPets,
       creatorUUID: user?.uuid,
       location: currentPosition == null
@@ -198,9 +198,12 @@ class SavePostModel extends BaseViewModel {
             ),
     );
     call(
-      () async => post = await _createPostUsecase.call(post!),
+      () async => _createPostUsecase.call(post!),
       onSuccess: () {
         _toastService.success(message: "Add post success", context: Get.context!);
+      },
+      onFailure: (err) {
+        printError(info: err.toString());
       },
     );
   }

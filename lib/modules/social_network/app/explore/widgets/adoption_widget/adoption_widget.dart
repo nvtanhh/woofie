@@ -14,11 +14,21 @@ import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
 class AdoptionWidget extends StatefulWidget {
+  final PostType postType;
+
+  const AdoptionWidget({Key? key, required this.postType}) : super(key: key);
+
   @override
   _AdoptionWidgetState createState() => _AdoptionWidgetState();
 }
 
 class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetModel> {
+  @override
+  void loadArguments() {
+    viewModel.postType = widget.postType;
+    super.loadArguments();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,7 +37,7 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
           backgroundColor: UIColor.white,
           elevation: 0,
           title: Text(
-            LocaleKeys.explore_adoption.trans(),
+            defineTitleAppBar(widget.postType),
             style: UITextStyle.text_header_18_w600,
           ),
           centerTitle: true,
@@ -43,33 +53,38 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
         body: Column(
           children: [
             Expanded(
-              child: PagedGridView<int, Post>(
-                pagingController: viewModel.pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Post>(
-                  itemBuilder: (context, item, index) {
-                    return PetItemWidget(
-                      pet: item.pets![0],
-                      onClick: () => viewModel.onItemClick(item),
-                    );
-                  },
-                  firstPageProgressIndicatorBuilder: (_) => Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PetItemShimmerWidget(),
-                      PetItemShimmerWidget(),
-                    ],
+              child: RefreshIndicator(
+                onRefresh: () => viewModel.onRefresh(),
+                child: PagedGridView<int, Post>(
+                  pagingController: viewModel.pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<Post>(
+                    itemBuilder: (context, item, index) {
+                      return PetItemWidget(
+                        pet: item.pets![0],
+                        onClick: () => viewModel.onItemClick(item),
+                        distance: (item.distanceUserToPost ?? 0).toPrecision(1),
+                        postType: item.type,
+                      );
+                    },
+                    firstPageProgressIndicatorBuilder: (_) => Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PetItemShimmerWidget(),
+                        PetItemShimmerWidget(),
+                      ],
+                    ),
+                    newPageProgressIndicatorBuilder: (_) => PetItemShimmerWidget(),
                   ),
-                  newPageProgressIndicatorBuilder: (_) => PetItemShimmerWidget(),
-                ),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 165.w / 213.h,
-                ),
-                padding: EdgeInsets.only(
-                  top: 10.h,
-                  left: 10.w,
-                  right: 10.w,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 165.w / 213.h,
+                  ),
+                  padding: EdgeInsets.only(
+                    top: 10.h,
+                    left: 10.w,
+                    right: 10.w,
+                  ),
                 ),
               ),
             ),
@@ -77,6 +92,19 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
         ),
       ),
     );
+  }
+
+  String defineTitleAppBar(PostType postType) {
+    switch (postType) {
+      case PostType.adop:
+        return LocaleKeys.explore_adoption.trans();
+      case PostType.mating:
+        return LocaleKeys.explore_matting.trans();
+      case PostType.lose:
+        return LocaleKeys.explore_lost_pet.trans();
+      default:
+        return LocaleKeys.explore_adoption.trans();
+    }
   }
 
   @override

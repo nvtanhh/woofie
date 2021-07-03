@@ -170,14 +170,16 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 Obx(
                   () => Row(
                     children: [
-                      Text.rich(
-                        TextSpan(
-                          text: viewModel.user?.name ?? "",
-                          children: _buildPetTags(),
-                          style: UITextStyle.heading_16_semiBold,
+                      Flexible(
+                        child: Text.rich(
+                          TextSpan(
+                            text: viewModel.user?.name ?? "",
+                            children: _buildPetTags(),
+                            style: UITextStyle.heading_16_semiBold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(width: 10),
                       if (viewModel.taggedPets.isEmpty)
