@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:file_picker/src/file_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
@@ -31,7 +31,6 @@ class NewPostUploaderModel extends BaseViewModel {
   final UploadMediaUsecase _uploadMediaUsecase;
   final AddPostMediaUsecase _addPostMediaUsecase;
   final PublishUsecase _publishUsecase;
-  // final GetPostStatusUsecase _getPostStatusUsecase;
   final GetPublishedPostUsecase _getPublishedPostUsecase;
   final DeletePostUsecase _deletePostUsecase;
 
@@ -41,9 +40,6 @@ class NewPostUploaderModel extends BaseViewModel {
 
   final double mediaPreviewSize = 40;
 
-  late Timer? _checkPostStatusTimer;
-
-  // CancelableOperation? _getPostStatusOperation;
   CancelableOperation? _uploadPostOperation;
 
   late Function(NewPostData) onCancelled;
@@ -57,7 +53,6 @@ class NewPostUploaderModel extends BaseViewModel {
     this._uploadMediaUsecase,
     this._addPostMediaUsecase,
     this._publishUsecase,
-    // this._getPostStatusUsecase,
     this._getPublishedPostUsecase,
     this._deletePostUsecase,
   );
@@ -116,33 +111,8 @@ class NewPostUploaderModel extends BaseViewModel {
 
       _setStatusMessage('Processing post...');
       _setStatus(PostUploaderStatus.processing);
-      // _ensurePostStatusTimerIsCancelled();
 
       if (publishedPost != null) _onPostPublished(publishedPost);
-
-      // if (data.createdDraftPostStatus != PostStatus.published) {
-      //   _checkPostStatusTimer =
-      //       Timer.periodic(const Duration(seconds: 1), (timer) async {
-      //     if (_getPostStatusOperation != null) return;
-      //     _getPostStatusOperation = CancelableOperation.fromFuture(
-      //       _getPostStatusUsecase.call(data.createdDraftPost!.id),
-      //     );
-      //     final PostStatus status =
-      //         await _getPostStatusOperation!.value as PostStatus;
-      //     printInfo(
-      //         info:
-      //             'Polling for post published status, got status: ${status.toString()}');
-      //     data.createdDraftPostStatus = status;
-      //     if (data.createdDraftPostStatus == PostStatus.published) {
-      //       printInfo(info: 'Received post status is published');
-      //       _checkPostStatusTimer!.cancel();
-      //       unawaited(_getPublishedPost());
-      //     }
-      //     _getPostStatusOperation = null;
-      //   });
-      // } else {
-      //   unawaited(_getPublishedPost());
-      // }
     } catch (error) {
       _setStatus(PostUploaderStatus.failed);
       _setStatusMessage('Upload failded.');
@@ -159,10 +129,6 @@ class NewPostUploaderModel extends BaseViewModel {
 
   Future _compressPostMedia() async {
     return Future.wait(data.remainingMediaToCompress.map(_compressPostMediaItem));
-
-    // for (final file in data.remainingMediaToCompress) {
-    //   await _compressPostMediaItem(file);
-    // }
   }
 
   Future _compressPostMediaItem(MediaFile postMediaItem) async {
@@ -211,29 +177,10 @@ class NewPostUploaderModel extends BaseViewModel {
     return _publishUsecase.call(data.createdDraftPost!.id);
   }
 
-  void _ensurePostStatusTimerIsCancelled() {
-    if (_checkPostStatusTimer != null && _checkPostStatusTimer!.isActive) {
-      _checkPostStatusTimer!.cancel();
-    }
-  }
-
-  Future<void> _getPublishedPost() async {
-    final Post? publishedPost = await _getPublishedPostUsecase.call(data.createdDraftPost!.id);
-    if (publishedPost != null) onPostPublished(publishedPost, data);
-
-    unawaited(_removeMediaFromCache());
-  }
-
   Future _removeMediaFromCache() async {
     printInfo(info: 'Clearing local cached media for post');
     data.mediaFiles?.forEach(_deleteMediaFile);
     data.compressedMedia.forEach(_deleteMediaFile);
-
-    // if (data?.mediaThumbnail != null &&
-    //     data?.mediaFiles?.first != null &&
-    //     data.mediaThumbnail != data.media.first) {
-    //   data.mediaThumbnail.delete();
-    // }
   }
 
   void _deleteMediaFile(MediaFile file) {
@@ -271,21 +218,34 @@ class NewPostUploaderModel extends BaseViewModel {
     _setStatus(PostUploaderStatus.cancelling);
     _setStatusMessage('Cancelling');
 
-    // Delete post
-    if (data.createdDraftPost != null) {
-      printInfo(info: 'Deleting post');
-      try {
-        final bool isPostDeleted = await _deletePostUsecase.call(data.createdDraftPost!.id);
-        if (isPostDeleted) printInfo(info: 'Successfully deleted post');
-      } catch (error) {
-        // If it doesnt work, will get cleaned up by a scheduled job
-        printError(info: 'Failed to delete post wit error: ${error.toString()}');
-      }
-    }
+    await _deletePostDraftPost();
 
     _setStatus(PostUploaderStatus.cancelled);
     onCancelled(data);
     unawaited(_removeMediaFromCache());
+  }
+
+  Future<bool> _deletePostDraftPost() async {
+    final Post? post = data.createdDraftPost;
+    if (post != null) {
+      bool isSuccess = false;
+      await call(
+        () async {
+          isSuccess = await _deletePostUsecase.call(post.id);
+        },
+        onSuccess: () {
+          if (isSuccess) {
+            printInfo(info: 'Successfully deleted post');
+          }
+          return true;
+        },
+        onFailure: (error) {
+          printError(info: 'Failed to delete post wit error: ${error.toString()}');
+          return false;
+        },
+      );
+    }
+    return true;
   }
 
   void onWantsToRetry() {

@@ -37,7 +37,6 @@ class NewFeedWidgetModel extends BaseViewModel {
   int nextPageKey = 0;
   DateTime? dateTimeValueLast;
   CancelableOperation? cancelableOperation;
-  StreamSubscription? postCreatedSubscription;
   RxList<Widget> prependedWidgets = <Widget>[].obs;
   RxList<NewPostData> newPostsData = <NewPostData>[].obs;
 
@@ -60,17 +59,8 @@ class NewFeedWidgetModel extends BaseViewModel {
         cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
-    registerPostCreatedEvent();
     super.initState();
     // newPostsData.listen(_onNewPostDataChanged);
-  }
-
-  void registerPostCreatedEvent() {
-    postCreatedSubscription = _eventBus.on<PostCreatedEvent>().listen((event) {
-      pagingController.itemList?.insert(0, event.post);
-      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-      pagingController.notifyListeners();
-    });
   }
 
   Future _loadMorePost(int pageKey) async {
@@ -115,8 +105,6 @@ class NewFeedWidgetModel extends BaseViewModel {
   void disposeState() {
     cancelableOperation?.cancel();
     pagingController.dispose();
-    postCreatedSubscription?.cancel();
-
     super.disposeState();
   }
 
@@ -126,7 +114,7 @@ class NewFeedWidgetModel extends BaseViewModel {
         ));
   }
 
-  void onPostDeleted(Post post, int index) {
+  void onDeletePost(Post post, int index) {
     bool isSuccess = false;
     call(
       () async {
@@ -167,15 +155,16 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   void _onNewPostDataUploaderPostPublished(Post publishedPost, NewPostData newPostData) {
     _showSnackbarCreatePostSuccessful();
-    // Add to the top of timeline
-    _removeNewPostData(newPostData);
+    pagingController.itemList?.insert(0, publishedPost);
+    pagingController.notifyListeners();
+    _removeNewPostDataUploader(newPostData);
   }
 
   void _onNewPostDataUploaderCancelled(NewPostData newPostData) {
-    _removeNewPostData(newPostData);
+    _removeNewPostDataUploader(newPostData);
   }
 
-  void _removeNewPostData(NewPostData newPostData) {
+  void _removeNewPostDataUploader(NewPostData newPostData) {
     newPostsData.remove(newPostData);
     _prependedWidgetsRemover[newPostData.newPostUuid]();
   }

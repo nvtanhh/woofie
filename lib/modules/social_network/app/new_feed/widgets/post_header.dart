@@ -16,14 +16,14 @@ import './post/post_actions_popup.dart';
 
 class PostHeader extends StatelessWidget {
   final Post post;
-  final ValueChanged<Post> onPostDeleted;
-  final ValueChanged<Post> onPostEdited;
+  final VoidCallback onDeletePost;
+  final VoidCallback onEditPost;
 
   const PostHeader({
     Key? key,
     required this.post,
-    required this.onPostDeleted,
-    required this.onPostEdited,
+    required this.onDeletePost,
+    required this.onEditPost,
   }) : super(key: key);
 
   @override
@@ -50,8 +50,8 @@ class PostHeader extends StatelessWidget {
       ),
       trailing: PostActionsTrailing(
         post: post,
-        onPostDeleted: onPostDeleted,
-        onPostEdited: onPostEdited,
+        ondeletePost: onDeletePost,
+        onEditPost: onEditPost,
       ),
     );
   }
@@ -61,14 +61,17 @@ class PostHeader extends StatelessWidget {
     if (pets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
+      TextSpan(
+          text: " ${LocaleKeys.new_feed_with.trans()} ",
+          style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < pets.length; i++) {
       inLineSpan.add(
         TextSpan(
           text: "${pets[i].name}${i != pets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
-          recognizer: TapGestureRecognizer()..onTap = () => openProfilePet(pets[i]),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => openProfilePet(pets[i]),
         ),
       );
     }

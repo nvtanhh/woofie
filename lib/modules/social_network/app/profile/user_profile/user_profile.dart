@@ -33,7 +33,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Obx(
             () {
               if (viewModel.isLoaded) {
@@ -53,8 +53,9 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
                       return PostItem(
                         post: post,
                         onLikeClick: viewModel.onLikeClick,
-                        onPostEdited: viewModel.onPostEdited,
-                        onPostDeleted: (_) => viewModel.onPostDeleted(_, index),
+                        onEdidPost: () => viewModel.onPostEdited(post),
+                        onDeletePost: () =>
+                            viewModel.onPostDeleted(post, index),
                         onCommentClick: viewModel.onCommentClick,
                         onPostClick: viewModel.onPostClick,
                       );

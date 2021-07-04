@@ -14,8 +14,10 @@ class PostsOfPetWidget extends StatelessWidget {
   final int pageSize = 10;
   int nextPageKey = 0;
   List<Post> _post = [];
-  final PagingController<int, Post> _pagingController = PagingController<int, Post>(firstPageKey: 0);
-  final GetPostsOfPetUsecase _getPostsOfPetUsecase = injector<GetPostsOfPetUsecase>();
+  final PagingController<int, Post> _pagingController =
+      PagingController<int, Post>(firstPageKey: 0);
+  final GetPostsOfPetUsecase _getPostsOfPetUsecase =
+      injector<GetPostsOfPetUsecase>();
 
   PostsOfPetWidget({
     Key? key,
@@ -54,8 +56,8 @@ class PostsOfPetWidget extends StatelessWidget {
           return PostItem(
             post: post,
             onLikeClick: onLikeClick,
-            onPostEdited: onPostEdited,
-            onPostDeleted: onPostDeleted,
+            onEdidPost: () => onPostEdited(post),
+            onDeletePost: () => onPostDeleted(post),
             onPostClick: onPostClick,
           );
         },
