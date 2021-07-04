@@ -76,6 +76,8 @@ class User extends UpdatableModel<User> {
   }
 
   static final factory = UserFactory();
+
+  bool get isHavePets => currentPets != null && currentPets!.isNotEmpty;
 }
 
 class UserFactory extends UpdatableModelFactory<User> {

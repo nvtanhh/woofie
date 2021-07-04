@@ -1,9 +1,10 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/register/register_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
@@ -14,25 +15,26 @@ import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
 import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @injectable
 class LoginWidgetModel extends BaseViewModel {
   final LoginWithEmailPasswordUsecase _loginWithEmailPasswordUsecase;
-  final CheckUserHavePetUsecase _checkUserHavePetUsecase;
   final GetUserWithUuidUsecase _getUserWithUuidUsecase;
   final SaveUserToLocalUsecase _saveUserToLocalUsecase;
   final RxBool _showPassword = RxBool(false);
   final emailEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  User? user;
+  firebase.User? firebaseUser;
+
+  final LoggedInUser _loggedInUser;
 
   LoginWidgetModel(
     this._loginWithEmailPasswordUsecase,
-    this._checkUserHavePetUsecase,
     this._getUserWithUuidUsecase,
     this._saveUserToLocalUsecase,
+    this._loggedInUser,
   );
 
   void onEyeClick() {
@@ -54,7 +56,7 @@ class LoginWidgetModel extends BaseViewModel {
   }
 
   Future login() async {
-    user = await _loginWithEmailPasswordUsecase.call(
+    firebaseUser = await _loginWithEmailPasswordUsecase.call(
       emailEditingController.text,
       passwordEditingController.text,
     );
@@ -65,12 +67,13 @@ class LoginWidgetModel extends BaseViewModel {
       call(
         () async {
           await login();
-          if (user != null) {
-            final hasura_user.User? haUser = await _getUserWithUuidUsecase.call(user!.uid);
-            if (haUser != null) {
-              await _saveUserToLocalUsecase.call(haUser);
-              final status = await _checkUserHavePetUsecase.call(haUser.uuid!);
-              if (!status) {
+          if (firebaseUser != null) {
+            final User? user = await _getUserWithUuidUsecase.call(firebaseUser!.uid);
+            if (user != null) {
+              await _saveUserToLocalUsecase.call(user);
+              await _loggedInUser.setLoggedUser(user);
+              // final status = await _checkUserHavePetUsecase.call(haUser.uuid!);
+              if (!user.isHavePets) {
                 await Get.offAll(() => const AddPetWidget());
               } else {
                 await Get.offAll(() => HomeMenuWidget());
@@ -89,7 +92,7 @@ class LoginWidgetModel extends BaseViewModel {
         onFailure: (err) {
           Get.snackbar(
             "Error",
-            (err as FirebaseAuthException).code,
+            (err as firebase.FirebaseAuthException).code,
             duration: const Duration(seconds: 4),
             backgroundColor: UIColor.primary,
             colorText: UIColor.white,

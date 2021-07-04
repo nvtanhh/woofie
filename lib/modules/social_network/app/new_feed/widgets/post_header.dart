@@ -57,7 +57,7 @@ class PostHeader extends StatelessWidget {
   }
 
   List<InlineSpan> createTagPet() {
-    final List<Pet> pets = post.pets!;
+    final List<Pet> pets = post.taggegPets!;
     if (pets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(

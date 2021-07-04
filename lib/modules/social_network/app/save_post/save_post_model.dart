@@ -12,6 +12,7 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_post_usecase.dart';
@@ -35,6 +36,8 @@ class SavePostModel extends BaseViewModel {
   Position? currentPosition;
   final ToastService _toastService;
 
+  late bool isPostEditing;
+
   SavePostModel(
     this._getPetsOfUserUsecase,
     this._createPostUsecase,
@@ -47,7 +50,7 @@ class SavePostModel extends BaseViewModel {
     _user = injector<LoggedInUser>().loggedInUser;
     _postType.value = post != null ? post!.type : PostType.activity;
     _files.stream.listen(onFilesChanged);
-    _taggedPets.addAll(post?.pets ?? []);
+    _taggedPets.addAll(post?.taggegPets ?? []);
     contentController = TextEditingController();
     contentController.addListener(onTextChanged);
     contentController.text = post?.content ?? "";
@@ -112,6 +115,7 @@ class SavePostModel extends BaseViewModel {
   }
 
   List<Pet> get taggedPets => _taggedPets.toList();
+  List<MediaFile> get mediaFiles => _files.toList();
 
   set taggedPets(List<Pet> value) {
     _taggedPets.assignAll(value);
@@ -181,14 +185,28 @@ class SavePostModel extends BaseViewModel {
     await injector<DialogService>().showPermisstionDialog();
   }
 
-  void createPost() {
-    post = Post(
-      id: 0,
-      creator: user,
+  @override
+  void disposeState() {
+    contentController.dispose();
+    super.disposeState();
+  }
+
+  void onWantsToContinue() {
+    if (isPostEditing) {
+      _onSavePost();
+    } else {
+      _onCreateNewPost();
+    }
+  }
+
+  void _onSavePost() {}
+
+  void _onCreateNewPost() {
+    final NewPostData newPostData = NewPostData(
+      content: contentController.text,
       type: postType,
-      content: contentController.text.replaceAll("\n", "\\n"),
-      pets: taggedPets,
-      creatorUUID: user?.uuid,
+      taggegPets: taggedPets,
+      mediaFiles: mediaFiles,
       location: currentPosition == null
           ? null
           : Location(
@@ -197,20 +215,15 @@ class SavePostModel extends BaseViewModel {
               name: currentAddress.value,
             ),
     );
-    call(
-      () async => _createPostUsecase.call(post!),
-      onSuccess: () {
-        _toastService.success(message: "Add post success", context: Get.context!);
-      },
-      onFailure: (err) {
-        printError(info: err.toString());
-      },
-    );
-  }
 
-  @override
-  void disposeState() {
-    contentController.dispose();
-    super.disposeState();
+    Get.back(result: newPostData);
+
+    // call(
+    //   () async => post = await _createPostUsecase.call(post!),
+    //   onSuccess: () {
+    //     _toastService.success(
+    //         message: "Add post success", context: Get.context!);
+    //   },
+    // );
   }
 }

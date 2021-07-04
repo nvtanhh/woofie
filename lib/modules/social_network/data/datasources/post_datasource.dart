@@ -2,6 +2,7 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 
 @lazySingleton
@@ -134,7 +135,7 @@ class PostDatasource {
   }
 
   Future<Post> createPost(Post post) async {
-    final listPetTag = post.pets?.map((e) => {"pet_id": e.id}).toList() ?? [];
+    final listPetTag = post.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
     final location = post.location == null
         ? ""
         : 'location: {data: {long: "${post.location?.long}", lat: "${post.location?.lat}", name: "${post.location?.name ?? ""}"}},';
@@ -161,12 +162,12 @@ class PostDatasource {
 
   Future<bool> deletePost(int idPost) async {
     final manution = """
-  mutation MyMutation {
-  delete_posts(where: {id: {_eq: $idPost}}) {
-    affected_rows
-  }
-  }
-  """;
+    mutation MyMutation {
+      delete_posts(where: {id: {_eq: $idPost}}) {
+        affected_rows
+      }
+    }
+    """;
     final data = await _hasuraConnect.mutation(manution);
     final deletePosts = GetMapFromHasura.getMap(data as Map)["delete_posts"] as Map;
     final affectedRows = deletePosts["affected_rows"] as int;
@@ -231,4 +232,82 @@ query MyQuery {
     final post = GetMapFromHasura.getMap(data as Map)["posts_by_pk"] as Map<String, dynamic>;
     return Post.fromJson(post);
   }
+
+  Future<Post> createDraftPost(NewPostData newPostData) async {
+    const draftPostStatus = 0;
+
+    final listPetTag = newPostData.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
+
+    final location = newPostData.location == null
+        ? ""
+        : 'location: {data: {long: "${newPostData.location?.long}", lat: "${newPostData.location?.lat}", name: "${newPostData.location?.name}"}},';
+
+    final String manution = """
+    mutation MyMutation {
+      insert_posts_one(object: {uuid: "${newPostData.newPostUuid}", content: "${newPostData.content}", type: ${newPostData.type.index}, $location status: $draftPostStatus, post_pets: {data: $listPetTag}}) {
+        id
+        uuid
+        content
+        type
+        status
+        location {
+          id
+          lat
+          long
+          name
+        }
+      }
+    }
+    """;
+
+    final data = await _hasuraConnect.mutation(manution);
+    final jsonBody = GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
+    return Post.fromJson(jsonBody as Map<String, dynamic>);
+  }
+
+  Future<Post?> publishPost(int postId) async {
+    final String query = """
+    mutation MyMutation {
+      update_posts_by_pk(pk_columns: {id: $postId}, _set: {status: 1}) {
+        id
+        uuid
+        content
+        type
+        user {
+          id
+          name
+          avatar {
+            id
+            url
+            type
+          }
+        }
+        post_pets {
+          pet {
+            id
+            name
+            avatar {
+              id
+              url
+              type
+            }
+          }
+        }
+        location {
+          id
+          lat
+          long
+          name
+        }
+      }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(query);
+    final postJson = GetMapFromHasura.getMap(data as Map)["update_posts_by_pk"] as Map;
+    return Post.fromJson(postJson as Map<String, dynamic>);
+  }
+
+  Future<PostStatus?> getPostStatusWithId(int postId) async {}
+
+  Future<Post?> getPostWithId(int postId) async {}
 }

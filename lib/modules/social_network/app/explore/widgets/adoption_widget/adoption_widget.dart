@@ -60,7 +60,7 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
                   builderDelegate: PagedChildBuilderDelegate<Post>(
                     itemBuilder: (context, item, index) {
                       return PetItemWidget(
-                        pet: item.pets![0],
+                        pet: item.taggegPets![0],
                         onClick: () => viewModel.onItemClick(item),
                         distance: (item.distanceUserToPost ?? 0).toPrecision(1),
                         postType: item.type,

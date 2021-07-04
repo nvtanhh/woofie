@@ -15,6 +15,8 @@ part 'post.g.dart';
 class Post extends UpdatableModel {
   @JsonKey(name: "id")
   final int id;
+  @JsonKey(name: "uuid")
+  final String uuid;
   @JsonKey(name: "content")
   String? content;
   @JsonKey(name: "is_closed")
@@ -32,41 +34,44 @@ class Post extends UpdatableModel {
   @JsonKey(name: "comments")
   List<Comment>? comments;
   @JsonKey(name: "post_pets", fromJson: allPetsFromJson)
-  List<Pet>? pets;
+  List<Pet>? taggegPets;
   @JsonKey(name: "medias")
   List<Media>? medias;
   @JsonKey(name: "location")
   Location? location;
-  @JsonKey(name: "status", fromJson: PostStatus.parse)
+  @JsonKey(
+    name: "status",
+  )
   PostStatus? status;
   @JsonKey(name: "distance_user_to_post")
   double? distanceUserToPost;
   @JsonKey(name: "post_reacts_aggregate")
   ObjectAggregate? postReactsAggregate;
 
+  Post({
+    required this.id,
+    required this.uuid,
+    this.creator,
+    required this.type,
+    this.creatorUUID,
+    this.content,
+    this.isClosed,
+    this.createdAt,
+    this.isLiked,
+    this.comments,
+    this.taggegPets,
+    this.location,
+  });
+
+  static List<Pet>? allPetsFromJson(List<dynamic>? list) {
+    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
+  }
+
   @JsonKey(name: "comments_aggregate")
   ObjectAggregate? commentsAggregate;
 
   @JsonKey(name: "medias_aggregate")
   ObjectAggregate? mediasAggregate;
-
-  Post(
-      {required this.id,
-      this.creator,
-      required this.type,
-      this.creatorUUID,
-      this.content,
-      this.isClosed,
-      this.createdAt,
-      this.isLiked,
-      this.comments,
-      this.pets,
-      this.location,
-      this.distanceUserToPost});
-
-  static List<Pet>? allPetsFromJson(List<dynamic>? list) {
-    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
-  }
 
   factory Post.fromJsonString(String jsonString) => Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
@@ -107,28 +112,16 @@ class Post extends UpdatableModel {
       comments = (json['comments'] as List<dynamic>?)?.map((e) => Comment.fromJson(e as Map<String, dynamic>)).toList();
     }
     if (json['post_pets'] != null) {
-      pets = allPetsFromJson(json['post_pets'] as List?);
+      taggegPets = allPetsFromJson(json['post_pets'] as List?);
     }
     if (json['status'] != null) {
-      status = PostStatus.parse(json['status'] as String);
+      status = _$enumDecodeNullable(_$PostStatusEnumMap, json['status']);
     }
     if (json['location'] != null) {
       location = Location.fromJson(json['location'] as Map<String, dynamic>);
     }
     if (json['medias'] != null) {
       medias = (json['medias'] as List<dynamic>?)?.map((e) => Media.fromJson(e as Map<String, dynamic>)).toList();
-    }
-    if (json['distance_user_to_post'] != null) {
-      distanceUserToPost = json['distance_user_to_post'] as double;
-    }
-    if (json['post_reacts_aggregate'] != null) {
-      postReactsAggregate = ObjectAggregate.fromJson(json["post_reacts_aggregate"] as Map<String, dynamic>);
-    }
-    if (json['comments_aggregate'] != null) {
-      commentsAggregate = ObjectAggregate.fromJson(json["comments_aggregate"] as Map<String, dynamic>);
-    }
-    if (json['medias_aggregate'] != null) {
-      mediasAggregate = ObjectAggregate.fromJson(json["medias_aggregate"] as Map<String, dynamic>);
     }
   }
 }
@@ -149,39 +142,44 @@ enum PostType {
   lose,
 }
 
-class PostStatus {
-  final String code;
-
-  const PostStatus._internal(this.code);
-
-  @override
-  String toString() => code;
-
-  static const draft = PostStatus._internal('D');
-  static const published = PostStatus._internal('P');
-
-  static const _values = <PostStatus>[draft, published];
-
-  static List<PostStatus> values() => _values;
-
-  Map<String, dynamic> toJson() => {"status": code};
-
-  static PostStatus? parse(String? code) {
-    if (code == null) return null;
-
-    PostStatus? postStatus;
-    for (final type in _values) {
-      if (code == type.code) {
-        postStatus = type;
-        break;
-      }
-    }
-
-    if (postStatus == null) {
-      // ignore: avoid_print
-      print('Unsupported post status type: $code');
-    }
-
-    return postStatus;
-  }
+enum PostStatus {
+  @JsonValue(0)
+  draft,
+  @JsonValue(1)
+  published,
 }
+
+// class PostStatus {
+//   final String code;
+
+//   const PostStatus._internal(this.code);
+
+//   @override
+//   String toString() => code;
+
+//   static const draft = PostStatus._internal('D');
+//   static const published = PostStatus._internal('P');
+
+//   static const _values = <PostStatus>[draft, published];
+
+//   static List<PostStatus> values() => _values;
+
+//   static PostStatus? parse(String? code) {
+//     if (code == null) return null;
+
+//     PostStatus? postStatus;
+//     for (final type in _values) {
+//       if (code == type.code) {
+//         postStatus = type;
+//         break;
+//       }
+//     }
+
+//     if (postStatus == null) {
+//       // ignore: avoid_print
+//       print('Unsupported post status type: $code');
+//     }
+
+//     return postStatus;
+//   }
+// }
