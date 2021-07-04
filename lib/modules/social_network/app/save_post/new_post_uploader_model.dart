@@ -14,7 +14,6 @@ import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/add_post_media_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/create_draft_post_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/save_post/get_post_status_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/get_presigned_url_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/get_published_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/publish_post_usecase.dart';

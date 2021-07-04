@@ -35,20 +35,19 @@ class Notification {
   @JsonKey(name: "created_at")
   DateTime? createdAt;
 
-  Notification({
-    required this.id,
-    this.actorId,
-    this.actor,
-    this.postId,
-    this.post,
-    required this.type,
-    this.petId,
-    this.pet,
-    this.createdAt,
-    this.isRead,
-    this.owner,
-    this.ownerId
-  });
+  Notification(
+      {required this.id,
+      this.actorId,
+      this.actor,
+      this.postId,
+      this.post,
+      required this.type,
+      this.petId,
+      this.pet,
+      this.createdAt,
+      this.isRead,
+      this.owner,
+      this.ownerId});
 
   factory Notification.fromJson(Map<String, dynamic> json) => _$NotificationFromJson(json);
 

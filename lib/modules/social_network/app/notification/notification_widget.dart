@@ -94,7 +94,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
   }
 
   Widget createTitle(User actor, String text, {Pet? pet}) {
-   final List<InlineSpan> inlineSpans = [];
+    final List<InlineSpan> inlineSpans = [];
     inlineSpans.add(
       TextSpan(
         text: text,

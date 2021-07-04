@@ -28,10 +28,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
       appBar: _buildAppBar(),
       body: Column(
         children: [
-          Expanded(
-            child: Obx(
-              () => Column(children: viewModel.prependedWidgets),
-            ),
+          Obx(
+            () => Column(children: viewModel.prependedWidgets),
           ),
           Expanded(
             child: PagedListView<int, Post>(

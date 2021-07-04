@@ -34,6 +34,7 @@ class PostDatasource {
     }
     content
     id
+    uuid
     is_liked
     created_at
     user {
@@ -75,6 +76,7 @@ class PostDatasource {
     created_at
     creator_uuid
     id
+    uuid
     is_liked
     medias {
       id
@@ -114,6 +116,7 @@ class PostDatasource {
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["posts"] as List;
+    print(listPost);
     return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
   }
 
@@ -121,7 +124,7 @@ class PostDatasource {
     final query = """
   query MyQuery {
   posts(limit: $limit, offset: $offset, where: {post_pets: {pet_id: {_eq: $petId}}}, order_by: {created_at: asc}) {
-  content created_at creator_uuid id is_closed is_liked
+  content created_at creator_uuid id is_closed is_liked uuid
   medias { id type url }
   post_reacts_aggregate { aggregate { count } } 
   type post_pets { pet { name id } }
@@ -180,6 +183,7 @@ query MyQuery {
   get_posts_by_type(args: {post_type: ${postType.index}, distance_kms: $distance }, order_by: {created_at: desc}, limit: $limit, offset: $offset) {
     id
     type
+    uuid
     post_pets {
       pet {
         avatar {
@@ -214,6 +218,7 @@ query MyQuery {
     created_at
     distance_user_to_post
     id
+    uuid
     medias {
       id
       type

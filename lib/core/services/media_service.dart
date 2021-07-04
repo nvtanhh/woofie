@@ -35,8 +35,7 @@ class MediaService {
   Future<String?> getVideoThumbnailFromUrl(String url) async {
     final filePath = await VideoThumbnail.thumbnailFile(
       video: url,
-      thumbnailPath:
-          (await getTemporaryDirectory()).path + defaultThumbnailCacheUrl,
+      thumbnailPath: (await getTemporaryDirectory()).path + defaultThumbnailCacheUrl,
       imageFormat: ImageFormat.JPEG,
       maxHeight: 80.h.toInt(),
       quality: 100,
@@ -49,9 +48,7 @@ class MediaService {
   Future<File?> cropImage(File image, {double? ratioX, double? ratioY}) async {
     return ImageCropper.cropImage(
       sourcePath: image.path,
-      aspectRatio: ratioX != null && ratioY != null
-          ? CropAspectRatio(ratioX: ratioX, ratioY: ratioY)
-          : null,
+      aspectRatio: ratioX != null && ratioY != null ? CropAspectRatio(ratioX: ratioX, ratioY: ratioY) : null,
       androidUiSettings: const AndroidUiSettings(
         toolbarColor: Colors.black,
         statusBarColor: Colors.black,
@@ -83,15 +80,12 @@ class MediaService {
 
   Future<File> compressImage(File image) async {
     File resultFile;
-    final Uint8List? compressedImageData =
-        await FlutterImageCompress.compressWithFile(
+    final Uint8List? compressedImageData = await FlutterImageCompress.compressWithFile(
       image.absolute.path,
       quality: 80,
     );
     if (compressedImageData != null) {
-      printInfo(
-          info:
-              'Compressed image from ${image.lengthSync()} ===> ${compressedImageData.length}');
+      printInfo(info: 'Compressed image from ${image.lengthSync()} ===> ${compressedImageData.length}');
       final String imageName = basename(image.path);
       final tempPath = await _getTempPath();
       final String thumbnailPath = '$tempPath/$imageName';
@@ -114,8 +108,8 @@ class MediaService {
     final path = await _getTempPath();
     final String resultFilePath = '$path/$videoName';
 
-    final int exitCode = await _flutterFFmpeg.execute(
-        '-i ${video.path} -filter:v scale=720:-2 -vcodec libx264 -crf 23 -preset veryfast ${resultFilePath}');
+    final int exitCode =
+        await _flutterFFmpeg.execute('-i ${video.path} -filter:v scale=720:-2 -vcodec libx264 -crf 23 -preset veryfast ${resultFilePath}');
 
     if (exitCode == 0) {
       resultFile = File(resultFilePath);
@@ -129,8 +123,7 @@ class MediaService {
 
   Future<String> _getTempPath() async {
     final Directory applicationsDocumentsDir = await getTemporaryDirectory();
-    Directory mediaCacheDir =
-        Directory(join(applicationsDocumentsDir.path, 'mediaCache'));
+    Directory mediaCacheDir = Directory(join(applicationsDocumentsDir.path, 'mediaCache'));
 
     if (await mediaCacheDir.exists()) return mediaCacheDir.path;
 
