@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/images_view_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/info_user_post_widget.dart';

@@ -123,6 +123,18 @@ class Post extends UpdatableModel {
     if (json['medias'] != null) {
       medias = (json['medias'] as List<dynamic>?)?.map((e) => Media.fromJson(e as Map<String, dynamic>)).toList();
     }
+    if (json['distance_user_to_post'] != null) {
+      distanceUserToPost = json['distance_user_to_post'] as double;
+    }
+    if (json['post_reacts_aggregate'] != null) {
+      postReactsAggregate = ObjectAggregate.fromJson(json["post_reacts_aggregate"] as Map<String, dynamic>);
+    }
+    if (json['comments_aggregate'] != null) {
+      commentsAggregate = ObjectAggregate.fromJson(json["comments_aggregate"] as Map<String, dynamic>);
+    }
+    if (json['medias_aggregate'] != null) {
+      mediasAggregate = ObjectAggregate.fromJson(json["medias_aggregate"] as Map<String, dynamic>);
+    }
   }
 }
 
