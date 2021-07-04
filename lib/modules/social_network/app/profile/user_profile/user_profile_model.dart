@@ -26,7 +26,8 @@ class UserProfileModel extends BaseViewModel {
   int nextPageKey = 0;
   bool isMe = false;
   User? user;
-  PagingController<int, Post> pagingController = PagingController(firstPageKey: 0);
+  PagingController<int, Post> pagingController =
+      PagingController(firstPageKey: 0);
   final GetUseProfileUseacse _getUseProfileUseacse;
   final GetPostOfUserUsecase _getPostOfUserUsecase;
   final BottomSheetService _bottomSheetService;
@@ -37,7 +38,8 @@ class UserProfileModel extends BaseViewModel {
   final ToastService _toastService;
   late List<Post> posts;
   final RxBool _isLoaded = RxBool(false);
-  CancelableOperation? _cancelableOperationLoadInit, _cancelableOperationLoadMorePost;
+  CancelableOperation? _cancelableOperationLoadInit,
+      _cancelableOperationLoadMorePost;
 
   UserProfileModel(
     this._getUseProfileUseacse,
@@ -64,19 +66,22 @@ class UserProfileModel extends BaseViewModel {
     await Future.wait([_getUserProfile(), _loadMorePost(nextPageKey)]);
     pagingController.addPageRequestListener(
       (pageKey) {
-        _cancelableOperationLoadMorePost = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        _cancelableOperationLoadMorePost =
+            CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     isLoaded = true;
   }
 
   Future _getUserProfile() async {
-    return call(() async => user = await _getUseProfileUseacse.call(user!.id), showLoading: false, onSuccess: () {});
+    return call(() async => user = await _getUseProfileUseacse.call(user!.id),
+        showLoading: false, onSuccess: () {});
   }
 
   Future _loadMorePost(int pageKey) async {
     try {
-      posts = await _getPostOfUserUsecase.call(user!.uuid!, offset: nextPageKey, limit: pageSize);
+      posts = await _getPostOfUserUsecase.call(
+          userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
       if (pagingController.itemList == null) {
         posts.insert(
           0,
@@ -122,7 +127,8 @@ class UserProfileModel extends BaseViewModel {
 
   void onPostDeleted(Post post, int index) {
     bool result = false;
-    call(() async => result = await _deletePostUsecase.call(post.id), onSuccess: () {
+    call(() async => result = await _deletePostUsecase.call(post.id),
+        onSuccess: () {
       if (result) {
         _toastService.success(message: "Post deleted!", context: Get.context!);
         pagingController.itemList?.removeAt(index);

@@ -29,11 +29,17 @@ class ProfileRepository {
     return _userDatasource.getUserProfile(userId);
   }
 
-  Future<List<Post>> getPostOfUser(String userUUID, int offset, int limit) async {
-    return _postDatasource.getPostOfUser(userUUID, offset, limit);
+  Future<List<Post>> getPostsTimeline(int offset, int limit,
+      {String? userUUID}) async {
+    return _postDatasource.getPostsTimeline(
+      offset,
+      limit,
+      userUUID: userUUID,
+    );
   }
 
-  Future<List<PetVaccinated>> getVaccinates(int idPet, int limit, int offset) async {
+  Future<List<PetVaccinated>> getVaccinates(
+      int idPet, int limit, int offset) async {
     return _petDatasource.getVaccinates(idPet, limit, offset);
   }
 
@@ -41,7 +47,8 @@ class ProfileRepository {
     return _petDatasource.getWeights(idPet, limit, offset);
   }
 
-  Future<List<PetWormFlushed>> getWormFlushes(int idPet, int limit, int offset) async {
+  Future<List<PetWormFlushed>> getWormFlushes(
+      int idPet, int limit, int offset) async {
     return _petDatasource.getWormFlushes(idPet, limit, offset);
   }
 

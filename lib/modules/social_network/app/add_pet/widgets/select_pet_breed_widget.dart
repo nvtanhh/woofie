@@ -22,65 +22,71 @@ class SelectPetBreedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 33.w),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 40.h,
-          ),
-          Text(
-            LocaleKeys.add_pet_select_pet_breed.trans(),
-            style: UITextStyle.text_body_18_w500,
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          SizedBox(
-            height: 520.h,
-            child: ListView.builder(
-              itemCount: petBreeds.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () => onSelectedIndex(index),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 10.h),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 70.w,
-                          height: 80.0.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: UIColor.white,
-                            border: Border.all(color: index == selectedIndex ? UIColor.accent2 : UIColor.white),
-                          ),
-                          child: ImageWithPlaceHolderWidget(
-                            width: 70.w,
-                            height: 80.h,
-                            imageUrl: petBreeds[index].avatar ?? "",
-                            radius: 10.r,
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 17.w,
-                        ),
-                        Expanded(
-                          child: Text(
-                            petBreeds[index].name ?? "",
-                            maxLines: 1,
-                            style: index == selectedIndex ? UITextStyle.accent2_18_w500 : UITextStyle.text_body_18_w500,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 30.h,
             ),
-          ),
-        ],
+            Text(
+              LocaleKeys.add_pet_select_pet_breed.trans(),
+              style: UITextStyle.text_body_18_w500,
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            SizedBox(
+              height: 520.h,
+              child: ListView.builder(
+                itemCount: petBreeds.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () => onSelectedIndex(index),
+                    child: Container(
+                      key: ObjectKey(petBreeds[index]),
+                      margin: EdgeInsets.symmetric(vertical: 15.h),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 70.w,
+                            height: 90.0.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(
+                                color: index == selectedIndex
+                                    ? UIColor.accent2
+                                    : UIColor.white,
+                              ),
+                            ),
+                            child: ImageWithPlaceHolderWidget(
+                              imageUrl: petBreeds[index].avatar ?? "",
+                              radius: 10.r,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 17.w,
+                          ),
+                          Expanded(
+                            child: Text(
+                              petBreeds[index].name ?? "",
+                              maxLines: 1,
+                              style: index == selectedIndex
+                                  ? UITextStyle.accent2_18_w500
+                                  : UITextStyle.text_body_18_w500,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
