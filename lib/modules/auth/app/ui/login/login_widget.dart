@@ -72,44 +72,47 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                         children: [
                           TextFormField(
                             controller: viewModel.emailEditingController,
-                            validator: (email) => viewModel.emailValidate(email),
+                            validator: (email) =>
+                                viewModel.emailValidate(email),
                             decoration: InputDecoration(
-                                hintText: LocaleKeys.login_email.trans(),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: const BorderSide(
-                                    color: UIColor.silverSand,
-                                  ),
+                              hintText: LocaleKeys.login_email.trans(),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                                borderSide: const BorderSide(
+                                  color: UIColor.silverSand,
                                 ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: const BorderSide(
-                                    color: UIColor.silverSand,
-                                  ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                                borderSide: const BorderSide(
+                                  color: UIColor.silverSand,
                                 ),
-                                prefixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(
-                                      width: 18.0.w,
-                                    ),
-                                    const Icon(
-                                      Icons.email_outlined,
-                                      color: UIColor.textHeader,
-                                    ),
-                                    SizedBox(
-                                      width: 12.0.w,
-                                    ),
-                                    Container(
-                                      height: 30.h,
-                                      width: 1.0.w,
-                                      color: UIColor.textSecondary,
-                                    ),
-                                    SizedBox(
-                                      width: 12.0.w,
-                                    ),
-                                  ],
-                                )),
+                              ),
+                              prefixIcon: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(
+                                    width: 18.0.w,
+                                  ),
+                                  const Icon(
+                                    Icons.email_outlined,
+                                    color: UIColor.textHeader,
+                                  ),
+                                  SizedBox(
+                                    width: 12.0.w,
+                                  ),
+                                  Container(
+                                    height: 30.h,
+                                    width: 1.0.w,
+                                    color: UIColor.textSecondary,
+                                  ),
+                                  SizedBox(
+                                    width: 12.0.w,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            textInputAction: TextInputAction.next,
                           ),
                           SizedBox(
                             height: 20.h,
@@ -117,7 +120,8 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                           Obx(
                             () => TextFormField(
                               controller: viewModel.passwordEditingController,
-                              validator: (password) => viewModel.passwordValidate(password),
+                              validator: (password) =>
+                                  viewModel.passwordValidate(password),
                               decoration: InputDecoration(
                                 hintText: LocaleKeys.login_password.trans(),
                                 border: OutlineInputBorder(
@@ -159,12 +163,15 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                   onTap: viewModel.onEyeClick,
                                   child: Obx(
                                     () => Icon(
-                                      !viewModel.showPassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                                      !viewModel.showPassword
+                                          ? Icons.visibility_off_rounded
+                                          : Icons.visibility_rounded,
                                     ),
                                   ),
                                 ),
                               ),
                               obscureText: !viewModel.showPassword,
+                              textInputAction: TextInputAction.go,
                             ),
                           ),
                         ],

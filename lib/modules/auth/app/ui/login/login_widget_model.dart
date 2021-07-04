@@ -7,7 +7,6 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/register/register_widget.dart';
-import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_email_password_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/save_user_to_local_usecase.dart';
@@ -29,6 +28,8 @@ class LoginWidgetModel extends BaseViewModel {
   firebase.User? firebaseUser;
 
   final LoggedInUser _loggedInUser;
+
+  User? _user;
 
   LoginWidgetModel(
     this._loginWithEmailPasswordUsecase,
@@ -68,31 +69,32 @@ class LoginWidgetModel extends BaseViewModel {
         () async {
           await login();
           if (firebaseUser != null) {
-            final User? user = await _getUserWithUuidUsecase.call(firebaseUser!.uid);
-            if (user != null) {
-              await _saveUserToLocalUsecase.call(user);
-              await _loggedInUser.setLoggedUser(user);
-              // final status = await _checkUserHavePetUsecase.call(haUser.uuid!);
-              if (!user.isHavePets) {
-                await Get.offAll(() => const AddPetWidget());
-              } else {
-                await Get.offAll(() => HomeMenuWidget());
-              }
-            } else {
-              Get.snackbar(
-                "Error",
-                "User not found!",
-                duration: const Duration(seconds: 4),
-                backgroundColor: UIColor.primary,
-                colorText: UIColor.white,
-              );
-            }
+            _user = await _getUserWithUuidUsecase.call(firebaseUser!.uid);
           }
         },
-        onFailure: (err) {
+        onSuccess: () async {
+          if (_user != null) {
+            await _saveUserToLocalUsecase.call(_user!);
+            await _loggedInUser.setLoggedUser(_user!);
+            if (!_user!.isHavePets) {
+              await Get.offAll(() => const AddPetWidget());
+            } else {
+              await Get.offAll(() => HomeMenuWidget());
+            }
+          } else {
+            Get.snackbar(
+              "Error",
+              "User not found!",
+              duration: const Duration(seconds: 4),
+              backgroundColor: UIColor.primary,
+              colorText: UIColor.white,
+            );
+          }
+        },
+        onFailure: (error) {
           Get.snackbar(
             "Error",
-            (err as firebase.FirebaseAuthException).code,
+            (error as firebase.FirebaseAuthException).message ?? error.code,
             duration: const Duration(seconds: 4),
             backgroundColor: UIColor.primary,
             colorText: UIColor.white,
