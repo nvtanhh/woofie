@@ -26,9 +26,7 @@ class _SettingState extends BaseViewState<Setting, SettingModel> {
             children: [
               Row(
                 children: [
-                  IconButton(
-                      icon: const MWIcon(MWIcons.back),
-                      onPressed: () => Get.back()),
+                  IconButton(icon: const MWIcon(MWIcons.back), onPressed: () => Get.back()),
                   Expanded(
                     child: Text(
                       LocaleKeys.setting_setting.trans(),
@@ -52,9 +50,7 @@ class _SettingState extends BaseViewState<Setting, SettingModel> {
                 leading: const MWIcon(MWIcons.language),
                 title: Obx(
                   () => Text(
-                    LocaleKeys.setting_language.trans(args: [
-                      viewModel.defineLanguage(viewModel.currentLanguage)
-                    ]),
+                    LocaleKeys.setting_language.trans(args: [viewModel.defineLanguage(viewModel.currentLanguage)]),
                     style: UITextStyle.text_body_14_w500,
                   ),
                 ),

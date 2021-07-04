@@ -54,9 +54,7 @@ class SelectPetBreedWidget extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
                               border: Border.all(
-                                color: index == selectedIndex
-                                    ? UIColor.accent2
-                                    : UIColor.white,
+                                color: index == selectedIndex ? UIColor.accent2 : UIColor.white,
                               ),
                             ),
                             child: ImageWithPlaceHolderWidget(
@@ -72,9 +70,7 @@ class SelectPetBreedWidget extends StatelessWidget {
                             child: Text(
                               petBreeds[index].name ?? "",
                               maxLines: 1,
-                              style: index == selectedIndex
-                                  ? UITextStyle.accent2_18_w500
-                                  : UITextStyle.text_body_18_w500,
+                              style: index == selectedIndex ? UITextStyle.accent2_18_w500 : UITextStyle.text_body_18_w500,
                               overflow: TextOverflow.ellipsis,
                             ),
                           )

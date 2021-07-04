@@ -108,8 +108,7 @@ class BaseInfoWidget extends StatelessWidget {
                                 border: outlineInputBorder(),
                                 enabledBorder: outlineInputBorder(),
                                 focusedBorder: outlineInputBorder(),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 5.h, horizontal: 5.w)),
+                                contentPadding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w)),
                             onChanged: onNameChange,
                           ),
                         ),
@@ -126,20 +125,14 @@ class BaseInfoWidget extends StatelessWidget {
                         Container(
                           height: 40.h,
                           padding: EdgeInsets.only(left: 5.w),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: UIColor.silverSand),
-                              borderRadius: BorderRadius.circular(5.r)),
+                          decoration: BoxDecoration(border: Border.all(color: UIColor.silverSand), borderRadius: BorderRadius.circular(5.r)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Obx(
                                 () => Text(
-                                  _ageData.value.isEmpty
-                                      ? "dd/mm/yyyy"
-                                      : _ageData.value,
-                                  style: _ageData.value.isEmpty
-                                      ? UITextStyle.second_12_medium
-                                      : UITextStyle.text_body_12_w600,
+                                  _ageData.value.isEmpty ? "dd/mm/yyyy" : _ageData.value,
+                                  style: _ageData.value.isEmpty ? UITextStyle.second_12_medium : UITextStyle.text_body_12_w600,
                                 ),
                               ),
                               IconButton(
@@ -171,10 +164,7 @@ class BaseInfoWidget extends StatelessWidget {
                               () => TextButton(
                                 onPressed: () => genderChange(Gender.male),
                                 style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      _genderSelected.value == Gender.male
-                                          ? UIColor.accent2
-                                          : UIColor.textSecondary,
+                                  backgroundColor: _genderSelected.value == Gender.male ? UIColor.accent2 : UIColor.textSecondary,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.r),
                                   ),
@@ -185,10 +175,7 @@ class BaseInfoWidget extends StatelessWidget {
                                   child: Center(
                                     child: Text(
                                       "Duc",
-                                      style:
-                                          _genderSelected.value == Gender.male
-                                              ? UITextStyle.white_12_w500
-                                              : UITextStyle.text_body_12_w600,
+                                      style: _genderSelected.value == Gender.male ? UITextStyle.white_12_w500 : UITextStyle.text_body_12_w600,
                                     ),
                                   ),
                                 ),
@@ -198,10 +185,7 @@ class BaseInfoWidget extends StatelessWidget {
                               () => TextButton(
                                 onPressed: () => genderChange(Gender.female),
                                 style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      _genderSelected.value == Gender.female
-                                          ? UIColor.accent2
-                                          : UIColor.textSecondary,
+                                  backgroundColor: _genderSelected.value == Gender.female ? UIColor.accent2 : UIColor.textSecondary,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.r),
                                   ),
@@ -212,10 +196,7 @@ class BaseInfoWidget extends StatelessWidget {
                                   child: Center(
                                     child: Text(
                                       "Cai",
-                                      style:
-                                          _genderSelected.value == Gender.female
-                                              ? UITextStyle.white_12_w500
-                                              : UITextStyle.text_body_12_w600,
+                                      style: _genderSelected.value == Gender.female ? UITextStyle.white_12_w500 : UITextStyle.text_body_12_w600,
                                     ),
                                   ),
                                 ),
@@ -304,8 +285,7 @@ class BaseInfoWidget extends StatelessWidget {
     if (datePick == null) {
       return;
     } else {
-      _ageData.value =
-          "${FormatHelper.formatDateTime(datePick, pattern: "dd/MM/yyyy")} (${DateTimeHelper.calcAge(datePick)})";
+      _ageData.value = "${FormatHelper.formatDateTime(datePick, pattern: "dd/MM/yyyy")} (${DateTimeHelper.calcAge(datePick)})";
       onAgeChange(datePick);
     }
   }

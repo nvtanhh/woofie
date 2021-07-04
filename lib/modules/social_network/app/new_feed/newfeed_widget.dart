@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,21 +31,26 @@ class _NewFeedWidgetState
       appBar: _buildAppBar(),
       body: Column(
         children: [
+          const SizedBox(height: 10),
           Obx(
             () => Column(children: viewModel.prependedWidgets),
           ),
           Expanded(
-            child: PagedListView<int, Post>(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-              pagingController: viewModel.pagingController,
-              builderDelegate: PagedChildBuilderDelegate<Post>(
-                itemBuilder: (context, item, index) => PostItem(
-                  post: item,
-                  onCommentClick: viewModel.onCommentClick,
-                  onLikeClick: viewModel.onLikeClick,
-                  onPostClick: viewModel.onPostClick,
-                  onDeletePost: () => viewModel.onDeletePost(item, index),
-                  onEdidPost: () => viewModel.onPostEdited(item),
+            child: RefreshIndicator(
+              onRefresh: viewModel.onRefresh,
+              child: PagedListView<int, Post>(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                pagingController: viewModel.pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Post>(
+                  itemBuilder: (context, item, index) => PostItem(
+                    post: item,
+                    onCommentClick: viewModel.onCommentClick,
+                    onLikeClick: viewModel.onLikeClick,
+                    onPostClick: viewModel.onPostClick,
+                    onDeletePost: () => viewModel.onDeletePost(item, index),
+                    onEdidPost: () => viewModel.onPostEdited(item),
+                  ),
                 ),
               ),
             ),
@@ -58,12 +65,12 @@ class _NewFeedWidgetState
 
   PreferredSizeWidget _buildAppBar() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(46.h),
+      preferredSize: Size.fromHeight(48.h),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           children: [
-            SizedBox(width: 45.w, height: 45.h, child: const MWLogo()),
+            SizedBox(width: 45.w, height: 46.h, child: const MWLogo()),
             SizedBox(
               width: 10.w,
             ),

@@ -46,7 +46,10 @@ class PostItem extends StatelessWidget {
           SizedBox(
             height: 13.h,
           ),
-          _buildPostActions(),
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: _buildPostActions(),
+          ),
           SizedBox(
             height: 25.h,
           ),

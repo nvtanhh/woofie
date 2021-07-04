@@ -21,8 +21,7 @@ class AddPetWidget extends StatefulWidget {
   _AddPetWidgetState createState() => _AddPetWidgetState();
 }
 
-class _AddPetWidgetState
-    extends BaseViewState<AddPetWidget, AddPetWidgetModel> {
+class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> {
   @override
   void loadArguments() {
     viewModel.isAddMore = widget.isAddMore;

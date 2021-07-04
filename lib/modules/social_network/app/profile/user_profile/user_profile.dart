@@ -54,8 +54,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
                         post: post,
                         onLikeClick: viewModel.onLikeClick,
                         onEdidPost: () => viewModel.onPostEdited(post),
-                        onDeletePost: () =>
-                            viewModel.onPostDeleted(post, index),
+                        onDeletePost: () => viewModel.onPostDeleted(post, index),
                         onCommentClick: viewModel.onCommentClick,
                         onPostClick: viewModel.onPostClick,
                       );
