@@ -94,11 +94,14 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(
-                        onPressed: viewModel.unknownBreed,
-                        child: Text(
-                          LocaleKeys.add_pet_unknown.trans(),
-                          style: UITextStyle.text_secondary_18_w600,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: TextButton(
+                          onPressed: viewModel.unknownBreed,
+                          child: Text(
+                            LocaleKeys.add_pet_unknown.trans(),
+                            style: UITextStyle.text_secondary_18_w600,
+                          ),
                         ),
                       ),
                       TextButton(
@@ -110,13 +113,13 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                           ),
                         ),
                         child: SizedBox(
-                          height: 67.h,
-                          width: 127.w,
+                          height: 50.h,
+                          width: 100.w,
                           child: Center(
                             child: Text(
                               LocaleKeys.add_pet_continue.trans(),
                               textAlign: TextAlign.center,
-                              style: UITextStyle.text_secondary_18_w600,
+                              style: UITextStyle.text_white_18_w600,
                             ),
                           ),
                         ),

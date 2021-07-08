@@ -17,7 +17,7 @@ import 'package:meowoof/theme/ui_text_style.dart';
 // ignore: must_be_immutable
 class BaseInfoWidget extends StatelessWidget {
   final Rx<Gender> _genderSelected = Rx<Gender>(Gender.male);
-  final Rx<File?> _imageFile = Rx<File?>(null);
+  final Rxn<File?> _imageFile = Rxn<File?>();
   final picker = ImagePicker();
   final _nameEditingController = TextEditingController();
   final _bioEditingController = TextEditingController();
@@ -40,7 +40,7 @@ class BaseInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         children: [
           SizedBox(
@@ -66,7 +66,7 @@ class BaseInfoWidget extends StatelessWidget {
                         child: Obx(
                           () => Container(
                             decoration: BoxDecoration(
-                              color: UIColor.aliceBlue,
+                              color: Colors.transparent,
                               image: DecorationImage(
                                 image: image(_imageFile.value),
                                 fit: BoxFit.contain,
@@ -74,11 +74,6 @@ class BaseInfoWidget extends StatelessWidget {
                             ),
                             width: 100.w,
                             height: 135.h,
-                            child: Icon(
-                              Icons.image,
-                              size: 30.w,
-                              color: UIColor.textSecondary,
-                            ),
                           ),
                         ),
                       ),
@@ -118,7 +113,7 @@ class BaseInfoWidget extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 12.h,
+                          height: 15.h,
                         ),
                         Text(
                           LocaleKeys.add_pet_age.trans(),
@@ -153,7 +148,7 @@ class BaseInfoWidget extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 5.h,
+                          height: 15.h,
                         ),
                         Text(
                           LocaleKeys.add_pet_gender.trans(),
@@ -217,6 +212,7 @@ class BaseInfoWidget extends StatelessWidget {
             ),
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 LocaleKeys.add_pet_pet_description.trans(),

@@ -74,42 +74,44 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                             controller: viewModel.emailEditingController,
                             validator: (email) => viewModel.emailValidate(email),
                             decoration: InputDecoration(
-                                hintText: LocaleKeys.login_email.trans(),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: const BorderSide(
-                                    color: UIColor.silverSand,
-                                  ),
+                              hintText: LocaleKeys.login_email.trans(),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                                borderSide: const BorderSide(
+                                  color: UIColor.silverSand,
                                 ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: const BorderSide(
-                                    color: UIColor.silverSand,
-                                  ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                                borderSide: const BorderSide(
+                                  color: UIColor.silverSand,
                                 ),
-                                prefixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(
-                                      width: 18.0.w,
-                                    ),
-                                    const Icon(
-                                      Icons.email_outlined,
-                                      color: UIColor.textHeader,
-                                    ),
-                                    SizedBox(
-                                      width: 12.0.w,
-                                    ),
-                                    Container(
-                                      height: 30.h,
-                                      width: 1.0.w,
-                                      color: UIColor.textSecondary,
-                                    ),
-                                    SizedBox(
-                                      width: 12.0.w,
-                                    ),
-                                  ],
-                                )),
+                              ),
+                              prefixIcon: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(
+                                    width: 18.0.w,
+                                  ),
+                                  const Icon(
+                                    Icons.email_outlined,
+                                    color: UIColor.textHeader,
+                                  ),
+                                  SizedBox(
+                                    width: 12.0.w,
+                                  ),
+                                  Container(
+                                    height: 30.h,
+                                    width: 1.0.w,
+                                    color: UIColor.textSecondary,
+                                  ),
+                                  SizedBox(
+                                    width: 12.0.w,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            textInputAction: TextInputAction.next,
                           ),
                           SizedBox(
                             height: 20.h,
@@ -165,6 +167,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                 ),
                               ),
                               obscureText: !viewModel.showPassword,
+                              textInputAction: TextInputAction.go,
                             ),
                           ),
                         ],

@@ -130,6 +130,9 @@ class UITextStyle {
   static TextStyle text_secondary_18_w600 = GoogleFonts.montserrat(
     textStyle: TextStyle(color: UIColor.textSecondary, fontSize: 18.0.sp, fontWeight: FontWeight.w600),
   );
+  static TextStyle text_white_18_w600 = GoogleFonts.montserrat(
+    textStyle: TextStyle(color: UIColor.white, fontSize: 18.0.sp, fontWeight: FontWeight.w600),
+  );
   static TextStyle text_secondary_12_w500 = GoogleFonts.montserrat(
     textStyle: TextStyle(color: UIColor.textSecondary, fontSize: 12.0.sp, fontWeight: FontWeight.w500),
   );

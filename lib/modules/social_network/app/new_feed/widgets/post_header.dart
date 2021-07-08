@@ -16,14 +16,14 @@ import './post/post_actions_popup.dart';
 
 class PostHeader extends StatelessWidget {
   final Post post;
-  final ValueChanged<Post> onPostDeleted;
-  final ValueChanged<Post> onPostEdited;
+  final VoidCallback onDeletePost;
+  final VoidCallback onEditPost;
 
   const PostHeader({
     Key? key,
     required this.post,
-    required this.onPostDeleted,
-    required this.onPostEdited,
+    required this.onDeletePost,
+    required this.onEditPost,
   }) : super(key: key);
 
   @override
@@ -50,8 +50,8 @@ class PostHeader extends StatelessWidget {
       ),
       trailing: PostActionsTrailing(
         post: post,
-        onPostDeleted: onPostDeleted,
-        onPostEdited: onPostEdited,
+        ondeletePost: onDeletePost,
+        onEditPost: onEditPost,
       ),
     );
   }

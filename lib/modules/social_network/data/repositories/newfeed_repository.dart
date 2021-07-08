@@ -20,7 +20,7 @@ class NewFeedRepository {
   );
 
   Future<List<Post>> getPosts({int limit = 10, int offset = 0, DateTime? lastValue}) {
-    return _postDatasource.getPosts(limit: limit, offset: offset, lastValue: lastValue);
+    return _postDatasource.getPostsTimeline(offset, limit);
   }
 
   Future<List<Comment>> getCommentInPost(int postId, int limit, int offset) {

@@ -22,6 +22,7 @@ class _SettingState extends BaseViewState<Setting, SettingModel> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -37,9 +38,12 @@ class _SettingState extends BaseViewState<Setting, SettingModel> {
               SizedBox(
                 height: 20.h,
               ),
-              Text(
-                LocaleKeys.setting_application.trans(),
-                style: UITextStyle.text_header_14_w600,
+              Padding(
+                padding: const EdgeInsets.only(left: 16, bottom: 10),
+                child: Text(
+                  LocaleKeys.setting_application.trans(),
+                  style: UITextStyle.text_header_14_w600,
+                ),
               ),
               ListTile(
                 onTap: () => viewModel.language(),
@@ -59,9 +63,13 @@ class _SettingState extends BaseViewState<Setting, SettingModel> {
                   style: UITextStyle.text_body_14_w500,
                 ),
               ),
-              Text(
-                LocaleKeys.setting_other_setting.trans(),
-                style: UITextStyle.text_header_14_w600,
+              SizedBox(height: 10.h),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, bottom: 10),
+                child: Text(
+                  LocaleKeys.setting_other_setting.trans(),
+                  style: UITextStyle.text_header_14_w600,
+                ),
               ),
               ListTile(
                 leading: const MWIcon(MWIcons.feedback),

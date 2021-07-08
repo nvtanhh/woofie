@@ -76,7 +76,7 @@ class UserProfileModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      posts = await _getPostOfUserUsecase.call(user!.uuid!, offset: nextPageKey, limit: pageSize);
+      posts = await _getPostOfUserUsecase.call(userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
       if (pagingController.itemList == null) {
         posts.insert(
           0,

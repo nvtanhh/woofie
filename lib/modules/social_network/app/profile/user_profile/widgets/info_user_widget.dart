@@ -47,9 +47,9 @@ class InfoUserWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: 5.h,
-        ),
+        // SizedBox(
+        //   height: 5.h,
+        // ),
         MWAvatar(
           avatarUrl: user.avatar?.url,
           customSize: 80.w,

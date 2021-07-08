@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,28 +23,34 @@ class NewFeedWidget extends StatefulWidget {
   _NewFeedWidgetState createState() => _NewFeedWidgetState();
 }
 
-class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
+class _NewFeedWidgetState
+    extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
       body: Column(
         children: [
+          const SizedBox(height: 10),
           Obx(
             () => Column(children: viewModel.prependedWidgets),
           ),
           Expanded(
-            child: PagedListView<int, Post>(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-              pagingController: viewModel.pagingController,
-              builderDelegate: PagedChildBuilderDelegate<Post>(
-                itemBuilder: (context, item, index) => PostItem(
-                  post: item,
-                  onCommentClick: viewModel.onCommentClick,
-                  onLikeClick: viewModel.onLikeClick,
-                  onPostClick: viewModel.onPostClick,
-                  onPostDeleted: (_) => viewModel.onPostDeleted(_, index),
-                  onPostEdited: viewModel.onPostEdited,
+            child: RefreshIndicator(
+              onRefresh: viewModel.onRefresh,
+              child: PagedListView<int, Post>(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                pagingController: viewModel.pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Post>(
+                  itemBuilder: (context, item, index) => PostItem(
+                    post: item,
+                    onCommentClick: viewModel.onCommentClick,
+                    onLikeClick: viewModel.onLikeClick,
+                    onPostClick: viewModel.onPostClick,
+                    onDeletePost: () => viewModel.onDeletePost(item, index),
+                    onEdidPost: () => viewModel.onPostEdited(item),
+                  ),
                 ),
               ),
             ),
@@ -57,18 +65,19 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
 
   PreferredSizeWidget _buildAppBar() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(46.h),
+      preferredSize: Size.fromHeight(48.h),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           children: [
-            SizedBox(width: 45.w, height: 45.h, child: const MWLogo()),
+            SizedBox(width: 45.w, height: 46.h, child: const MWLogo()),
             SizedBox(
               width: 10.w,
             ),
             Text(
               LocaleKeys.app_name.trans(),
-              style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w700),
+              style: GoogleFonts.montserrat(
+                  textStyle: UITextStyle.text_header_24_w700),
             ),
             const Expanded(
               child: SizedBox(),

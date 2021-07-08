@@ -54,8 +54,8 @@ class PostsOfPetWidget extends StatelessWidget {
           return PostItem(
             post: post,
             onLikeClick: onLikeClick,
-            onPostEdited: onPostEdited,
-            onPostDeleted: onPostDeleted,
+            onEdidPost: () => onPostEdited(post),
+            onDeletePost: () => onPostDeleted(post),
             onPostClick: onPostClick,
           );
         },

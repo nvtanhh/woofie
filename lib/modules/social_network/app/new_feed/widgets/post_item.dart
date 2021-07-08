@@ -15,15 +15,15 @@ class PostItem extends StatelessWidget {
   final Function(Post)? onPostClick;
   final RxBool isLiked = RxBool(false);
   final RxInt countLike = RxInt(0);
-  final Function(Post) onPostEdited;
-  final Function(Post) onPostDeleted;
+  final VoidCallback onEdidPost;
+  final VoidCallback onDeletePost;
 
   PostItem({
     Key? key,
     required this.post,
     required this.onLikeClick,
-    required this.onPostEdited,
-    required this.onPostDeleted,
+    required this.onEdidPost,
+    required this.onDeletePost,
     this.onCommentClick,
     this.onPostClick,
   }) : super(key: key);
@@ -39,14 +39,20 @@ class PostItem extends StatelessWidget {
         children: [
           PostHeader(
             post: post,
-            onPostDeleted: onPostDeleted,
-            onPostEdited: onPostEdited,
+            onDeletePost: onDeletePost,
+            onEditPost: onEdidPost,
           ),
           PostBody(post: post),
           SizedBox(
             height: 13.h,
           ),
-          _buildPostActions()
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: _buildPostActions(),
+          ),
+          SizedBox(
+            height: 25.h,
+          ),
         ],
       ),
     );

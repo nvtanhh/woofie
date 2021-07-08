@@ -68,55 +68,56 @@ class PostDatasource {
     return int.tryParse("${affectedRows["id"]}") != null;
   }
 
-  Future<List<Post>> getPostOfUser(String userUUID, int offset, int limit) async {
+  Future<List<Post>> getPostsTimeline(int offset, int limit, {String? userUUID}) async {
+    final String userFilter = (userUUID != null) ? 'where: {creator_uuid: {_eq: "$userUUID"}}, ' : '';
+
     final query = """
     query MyQuery {
-  posts(limit: $limit, offset: $offset, where: {creator_uuid: {_eq: "$userUUID"}}, order_by: {created_at: desc}) {
-    content
-    created_at
-    creator_uuid
-    id
-    uuid
-    is_liked
-    medias {
-      id
-      type
-      url
-    }
-    type
-    post_reacts_aggregate {
-      aggregate {
-        count
-      }
-    }
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    post_pets {
-      pet {
+      posts(limit: $limit, offset: $offset, $userFilter order_by: {created_at: desc}) {
+        content
+        created_at
+        creator_uuid
         id
-        name
-        bio
-      }
-    }
-    user {
-      bio
-      id
-      name
-      avatar {
+        uuid
+        is_liked
+        medias {
+          id
+          type
+          url
+        }
         type
-        url
+        post_reacts_aggregate {
+          aggregate {
+            count
+          }
+        }
+        comments_aggregate {
+          aggregate {
+            count
+          }
+        }
+        post_pets {
+          pet {
+            id
+            name
+            bio
+          }
+        }
+        user {
+          bio
+          id
+          name
+          avatar {
+            type
+            url
+          }
+          uuid
+        }
       }
-      uuid
     }
-  }
-}
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["posts"] as List;
-    print(listPost);
     return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
   }
 
@@ -304,6 +305,7 @@ query MyQuery {
           long
           name
         }
+        created_at
       }
     }
     """;

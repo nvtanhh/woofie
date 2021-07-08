@@ -27,7 +27,7 @@ class ImagesViewWidget extends StatelessWidget {
     if (medias.isNotEmpty) {
       return Container(
         height: height ?? 400.h,
-        margin: EdgeInsets.only(top: 10.h, bottom: 15.h),
+        margin: EdgeInsets.only(top: 5.h, bottom: 15.h),
         child: Stack(
           children: [
             ClipRRect(

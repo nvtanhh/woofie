@@ -11,6 +11,7 @@ class PostBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ImagesViewWidget(
           medias: post.medias ?? [],
@@ -22,6 +23,7 @@ class PostBody extends StatelessWidget {
             maxLines: 4,
             style: UITextStyle.body_14_reg,
             overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.left,
           ),
         ),
       ],

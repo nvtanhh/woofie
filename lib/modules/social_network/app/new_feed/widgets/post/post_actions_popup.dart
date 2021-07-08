@@ -8,9 +8,14 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class PostActionsTrailing extends StatelessWidget {
   final Post post;
-  final ValueChanged<Post> onPostDeleted;
-  final ValueChanged<Post> onPostEdited;
-  const PostActionsTrailing({Key? key, required this.post, required this.onPostDeleted, required this.onPostEdited}) : super(key: key);
+  final VoidCallback ondeletePost;
+  final VoidCallback onEditPost;
+  const PostActionsTrailing({
+    Key? key,
+    required this.post,
+    required this.ondeletePost,
+    required this.onEditPost,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +29,10 @@ class PostActionsTrailing extends StatelessWidget {
       onSelected: (PostTrailingAction action) {
         switch (action) {
           case PostTrailingAction.edit:
-            onPostEdited(post);
+            onEditPost();
             break;
           case PostTrailingAction.delete:
-            onPostDeleted(post);
+            ondeletePost();
             break;
           default:
         }
