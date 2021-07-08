@@ -14,6 +14,7 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
+import 'package:timeago/timeago.dart' as time_ago;
 
 class NotificationWidget extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                   style: UITextStyle.text_header_24_w600,
                 ),
                 InkWell(
-                  onTap: ()=>viewModel.onOptionTap(),
+                  onTap: () => viewModel.onOptionTap(),
                   child: const MWIcon(MWIcons.moreHoriz),
                 )
               ],
@@ -51,13 +52,17 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                   builderDelegate: PagedChildBuilderDelegate(
                     itemBuilder: (context, item, index) {
                       return ListTile(
-                        leading: MWAvatar(
-                          avatarUrl: item.actor?.avatar?.url,
-                          customSize: 45.w,
-                        ),
-                        title: generateContentTitle(item),
-                        trailing: defineIcon(item),
-                      );
+                          leading: MWAvatar(
+                            avatarUrl: item.actor?.avatar?.url,
+                            customSize: 45.w,
+                            borderRadius: 10.r,
+                          ),
+                          title: generateContentTitle(item),
+                          trailing: defineIcon(item),
+                          subtitle: Text(
+                            time_ago.format(item.createdAt!, locale: 'vi'),
+                            style: UITextStyle.second_12_medium,
+                          ));
                     },
                     noItemsFoundIndicatorBuilder: (_) {
                       return Center(
@@ -146,17 +151,22 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
       case NotificationType.matting:
         return MWIcon(
           MWIcons.icMatting,
-          customSize: 45.w,
+          customSize: 35.w,
         );
       case NotificationType.adoption:
         return MWIcon(
           MWIcons.icAdoption,
-          customSize: 45.w,
+          customSize: 35.w,
         );
       case NotificationType.lose:
         return MWIcon(
           MWIcons.icLose,
-          customSize: 45.w,
+          customSize: 35.w,
+        );
+      case NotificationType.react:
+        return MWIcon(
+          MWIcons.icReact,
+          customSize: 35.w,
         );
       default:
         return const SizedBox();

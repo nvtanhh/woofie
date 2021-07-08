@@ -6,7 +6,7 @@ import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
 import 'package:suga_core/suga_core.dart';
 
-@injectable
+@lazySingleton
 class SplashWidgetModel extends BaseViewModel {
   final FirebaseAuth _firebaseAuth;
   final UserStorage _userStorage;
