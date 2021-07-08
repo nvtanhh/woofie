@@ -33,7 +33,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: Obx(
             () {
               if (viewModel.isLoaded) {

@@ -93,6 +93,9 @@ class Post extends UpdatableModel {
     if (json['type'] != null) {
       type = _$enumDecode(_$PostTypeEnumMap, json['type']);
     }
+    if (json['uuid'] != null) {
+      creatorUUID = json['uuid'] as String;
+    }
     if (json['creator_uuid'] != null) {
       creatorUUID = json['creator_uuid'] as String;
     }

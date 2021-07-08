@@ -19,12 +19,12 @@ import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
-class Weight extends StatefulWidget {
+class WeightWidget extends StatefulWidget {
   final Pet pet;
   final bool isMyPet;
   final bool? addData;
   final Function(PetWeight)? onAddWeight;
-  const Weight({
+  const WeightWidget({
     Key? key,
     required this.pet,
     required this.isMyPet,
@@ -33,10 +33,10 @@ class Weight extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _WeightState createState() => _WeightState();
+  _WeightWidgetState createState() => _WeightWidgetState();
 }
 
-class _WeightState extends BaseViewState<Weight, WeightModel> {
+class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> {
   @override
   void loadArguments() {
     viewModel.pet = widget.pet;
@@ -185,5 +185,5 @@ class _WeightState extends BaseViewState<Weight, WeightModel> {
   }
 
   @override
-  WeightModel createViewModel() => injector<WeightModel>();
+  WeightWidgetModel createViewModel() => injector<WeightWidgetModel>();
 }

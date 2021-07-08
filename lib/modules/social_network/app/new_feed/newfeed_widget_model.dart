@@ -67,8 +67,7 @@ class NewFeedWidgetModel extends BaseViewModel {
     super.initState();
     pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation =
-            CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     _lastRefeshTime = DateTime.now();
@@ -86,16 +85,14 @@ class NewFeedWidgetModel extends BaseViewModel {
       },
       onSuccess: () {
         if (isSuccess) {
-          injector<ToastService>()
-              .success(message: 'Post deleted!', context: Get.context!);
+          injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
         }
         pagingController.itemList?.removeAt(index);
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         pagingController.notifyListeners();
       },
       onFailure: (err) {
-        injector<ToastService>()
-            .success(message: err.toString(), context: Get.context!);
+        injector<ToastService>().success(message: err.toString(), context: Get.context!);
       },
     );
   }
@@ -119,8 +116,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   Future onWantsToCreateNewPost() async {
-    final NewPostData? newPostData =
-        await injector<NavigationService>().navigateToSavePost();
+    final NewPostData? newPostData = await injector<NavigationService>().navigateToSavePost();
     if (newPostData != null) {
       newPostsData.add(newPostData);
       _prepenedNewPostUploadingWidget(newPostData);
@@ -129,8 +125,7 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      final newItems = await _getPostsUsecase.call(
-          offset: nextPageKey, lastValue: dateTimeValueLast);
+      final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
@@ -148,8 +143,7 @@ class NewFeedWidgetModel extends BaseViewModel {
     _removeNewPostDataUploader(newPostData);
   }
 
-  void _onNewPostDataUploaderPostPublished(
-      Post publishedPost, NewPostData newPostData) {
+  void _onNewPostDataUploaderPostPublished(Post publishedPost, NewPostData newPostData) {
     _showSnackbarCreatePostSuccessful();
     pagingController.itemList?.insert(0, publishedPost);
     pagingController.notifyListeners();
@@ -164,8 +158,7 @@ class NewFeedWidgetModel extends BaseViewModel {
     );
 
     prependedWidgets.add(newPostUploaderWidget);
-    _prependedWidgetsRemover[newPostData.newPostUuid] =
-        _removeNewPostDataWidget(newPostUploaderWidget);
+    _prependedWidgetsRemover[newPostData.newPostUuid] = _removeNewPostDataWidget(newPostUploaderWidget);
   }
 
   void _removeNewPostDataUploader(NewPostData newPostData) {
@@ -200,7 +193,6 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   bool _isCanRefesh() {
-    return DateTime.now().difference(_lastRefeshTime).inSeconds >
-        _refreshIntervalLimitSecond;
+    return DateTime.now().difference(_lastRefeshTime).inSeconds > _refreshIntervalLimitSecond;
   }
 }

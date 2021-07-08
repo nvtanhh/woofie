@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
@@ -24,32 +25,53 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Expanded(
-        child: RefreshIndicator(
-          onRefresh: () => viewModel.onRefresh(),
-          child: PagedListView<int, Notification>(
-            pagingController: viewModel.pagingController,
-            builderDelegate: PagedChildBuilderDelegate(
-              itemBuilder: (context, item, index) {
-                return ListTile(
-                  leading: MWAvatar(
-                    avatarUrl: item.actor?.avatar?.url,
-                    customSize: 45.w,
-                  ),
-                  title: generateContentTitle(item),
-                  trailing: defineIcon(item),
-                );
-              },
-              noItemsFoundIndicatorBuilder: (_) {
-                return Center(
-                  child: Text(
-                    "No have notification",
-                    style: UITextStyle.text_body_14_w600,
-                  ),
-                );
-              },
+      body: Container(
+        height: Get.height,
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  LocaleKeys.notification_notifications.trans(),
+                  style: UITextStyle.text_header_24_w600,
+                ),
+                InkWell(
+                  onTap: ()=>viewModel.onOptionTap(),
+                  child: const MWIcon(MWIcons.moreHoriz),
+                )
+              ],
             ),
-          ),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () => viewModel.onRefresh(),
+                child: PagedListView<int, Notification>(
+                  pagingController: viewModel.pagingController,
+                  builderDelegate: PagedChildBuilderDelegate(
+                    itemBuilder: (context, item, index) {
+                      return ListTile(
+                        leading: MWAvatar(
+                          avatarUrl: item.actor?.avatar?.url,
+                          customSize: 45.w,
+                        ),
+                        title: generateContentTitle(item),
+                        trailing: defineIcon(item),
+                      );
+                    },
+                    noItemsFoundIndicatorBuilder: (_) {
+                      return Center(
+                        child: Text(
+                          "No have notification",
+                          style: UITextStyle.text_body_14_w600,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     ));

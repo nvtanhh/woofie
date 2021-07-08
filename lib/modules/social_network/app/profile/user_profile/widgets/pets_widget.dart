@@ -23,13 +23,13 @@ class PetsWidget extends StatelessWidget {
     this.onFollow,
     required this.isMyPets,
   }) : super(key: key) {
+    _list = RxList<Pet>();
     if (pets.isNotEmpty) {
-      _list = RxList<Pet>();
       _list.assignAll(pets);
     }
   }
 
-  Future obPressAddPet() async {
+  Future onPressAddPet() async {
     final petNew = await Get.to(
       () => const AddPetWidget(
         isAddMore: true,
@@ -37,6 +37,7 @@ class PetsWidget extends StatelessWidget {
     );
     if (petNew != null) {
       _list.add(petNew as Pet);
+      _list.refresh();
     }
   }
 
@@ -80,7 +81,7 @@ class PetsWidget extends StatelessWidget {
                             children: [
                               Text(LocaleKeys.add_pet_do_not_have_pet.trans()),
                               IconButton(
-                                onPressed: () => obPressAddPet(),
+                                onPressed: () => onPressAddPet(),
                                 icon: const Icon(
                                   Icons.add_box_outlined,
                                   color: UIColor.textBody,
@@ -120,7 +121,7 @@ class PetsWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
-                                onPressed: () => obPressAddPet(),
+                                onPressed: () => onPressAddPet(),
                                 icon: const Icon(
                                   Icons.add_box_outlined,
                                   color: UIColor.textBody,

@@ -61,8 +61,8 @@ class PetProfileModel extends BaseViewModel {
     return;
   }
 
-  void updatePet(Pet mypet) {
-    pet = mypet;
+  void updatePet(Pet myPet) {
+    pet = myPet;
     return;
   }
 
@@ -78,7 +78,7 @@ class PetProfileModel extends BaseViewModel {
 
   void onAddWeightClick() {
     Get.to(
-      Weight(
+      WeightWidget(
         pet: pet,
         isMyPet: isMyPet!,
         addData: true,

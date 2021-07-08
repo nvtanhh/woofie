@@ -31,7 +31,17 @@ class User extends UpdatableModel<User> {
   @JsonKey(name: "dob")
   DateTime? dob;
 
-  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob});
+  User({
+    required this.id,
+    this.uuid,
+    this.name,
+    this.phoneNumber,
+    this.email,
+    this.currentPets,
+    this.avatar,
+    this.bio,
+    this.dob,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);

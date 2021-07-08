@@ -21,7 +21,7 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
 
   void onTabWeightChart() {
     Get.to(
-      () => Weight(
+      () => WeightWidget(
         pet: pet,
         isMyPet: isMyPet,
         onAddWeight: onAddWeight,
@@ -58,6 +58,7 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
   void onAddWormFlush(PetWormFlushed petWormFlushed) {
     pet.petWormFlushes?.insert(0, petWormFlushed);
     if ((pet.petWormFlushes?.length ?? 0) > 2) pet.petWormFlushes?.removeLast();
+    printInfo(info: pet.petWormFlushes.toString());
     updatePet(pet);
   }
 

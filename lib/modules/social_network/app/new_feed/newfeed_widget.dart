@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,8 +21,7 @@ class NewFeedWidget extends StatefulWidget {
   _NewFeedWidgetState createState() => _NewFeedWidgetState();
 }
 
-class _NewFeedWidgetState
-    extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
+class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,8 +36,7 @@ class _NewFeedWidgetState
             child: RefreshIndicator(
               onRefresh: viewModel.onRefresh,
               child: PagedListView<int, Post>(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                 pagingController: viewModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) => PostItem(
@@ -67,7 +63,7 @@ class _NewFeedWidgetState
     return PreferredSize(
       preferredSize: Size.fromHeight(48.h),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: Row(
           children: [
             SizedBox(width: 45.w, height: 46.h, child: const MWLogo()),
@@ -76,8 +72,7 @@ class _NewFeedWidgetState
             ),
             Text(
               LocaleKeys.app_name.trans(),
-              style: GoogleFonts.montserrat(
-                  textStyle: UITextStyle.text_header_24_w700),
+              style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w700),
             ),
             const Expanded(
               child: SizedBox(),

@@ -116,6 +116,7 @@
     "rate_feedback": "Rate and feedback"
   },
   "notification": {
+    "notifications": "Notifications",
     "liked": "liked your post",
     "following": " followed ",
     "commented": " commented on your post",

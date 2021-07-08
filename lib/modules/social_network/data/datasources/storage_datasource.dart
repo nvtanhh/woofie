@@ -34,6 +34,7 @@ class StorageDatasource {
   }
 
   Future<String?> _getPresignedUrl(String objectName) async {
+    print(objectName);
     final String query = """
     mutation MyMutation {
       get_presigned_url(fileName: "$objectName") {

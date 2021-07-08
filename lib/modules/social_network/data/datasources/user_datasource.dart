@@ -2,6 +2,7 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 @lazySingleton
 class UserDatasource {
@@ -63,5 +64,9 @@ class UserDatasource {
 
   Future reportUser(int userID) async {
     return;
+  }
+
+  Future updateTokenNotify(String tokenNotify) async {
+    return OneSignal.shared.setExternalUserId(tokenNotify);
   }
 }
