@@ -5,15 +5,18 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/core/helpers/url_parser.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/httpie.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 
 @injectable
 class StorageDatasource {
   // ignore: constant_identifier_names
-  static const String POST_MEDIA_SUBFOLDER = '{post_uuid}';
+  static const String POST_MEDIA_SUBFOLDER = '{user_uuid}/{post_uuid}';
   // ignore: constant_identifier_names
   static const String AVATAR_SUBFOLDER = '{user_uuid}';
+  // ignore: constant_identifier_names
+  static const String POST_MEDIA_DEFAULT_BUCKET_NAME = 'medias';
 
   final UrlParser _urlParser;
 
@@ -21,23 +24,27 @@ class StorageDatasource {
 
   final HttpieService _httpieService;
 
+  final LoggedInUser _loggedInUser;
+
   StorageDatasource(
     this._urlParser,
     this._hasuraConnect,
     this._httpieService,
+    this._loggedInUser,
   );
 
   Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {
-    final String subFolder = _urlParser.parse(POST_MEDIA_SUBFOLDER, {'post_uuid': postUuid});
+    final userUuid = _loggedInUser.loggedInUser!.uuid;
 
-    return _getPresignedUrl('$subFolder/$objectName');
+    final String subFolder = _urlParser.parse(POST_MEDIA_SUBFOLDER, {'user_uuid': userUuid, 'post_uuid': postUuid});
+
+    return _getPresignedUrl('$subFolder/$objectName', POST_MEDIA_DEFAULT_BUCKET_NAME);
   }
 
-  Future<String?> _getPresignedUrl(String objectName) async {
-    print(objectName);
+  Future<String?> _getPresignedUrl(String objectName, String bucketName) async {
     final String query = """
     mutation MyMutation {
-      get_presigned_url(fileName: "$objectName") {
+      get_presigned_url(file_name: "$objectName", bucket_name: "$bucketName") {
         url
       }
     }

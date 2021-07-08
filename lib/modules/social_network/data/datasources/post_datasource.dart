@@ -16,7 +16,7 @@ class PostDatasource {
     return <Post>[];
   }
 
-  Future<List<Comment>> getCommentsInPost(int postId, int limit, int offset) async {
+  Future<List<Comment>> getPostComments(int postId, int limit, int offset) async {
     final query = """
     query MyQuery {
   comments(where: {post_id: {_eq: $postId}}, order_by: {created_at: desc}, offset: $offset, limit: $limit) {
@@ -34,6 +34,7 @@ class PostDatasource {
     }
     content
     id
+    uuid
     is_liked
     created_at
     user {
@@ -255,6 +256,7 @@ query MyQuery {
         content
         type
         status
+        creator_uuid 
         location {
           id
           lat
@@ -278,6 +280,11 @@ query MyQuery {
         uuid
         content
         type
+        medias {
+          id
+          url
+          type
+        }
         user {
           id
           name
