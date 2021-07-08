@@ -163,6 +163,8 @@ dependencies:
 
   # FFmpeg plugin for Flutter
   flutter_ffmpeg: ^0.4.0
+  # OneSignal is a free push notification service for mobile apps.
+  onesignal_flutter: ^3.0.0
 
 dev_dependencies:
   flutter_test:

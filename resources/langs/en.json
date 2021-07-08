@@ -117,10 +117,10 @@
   },
   "notification": {
     "liked": "liked your post",
-    "following": "followed ",
-    "commented": "commented on your post",
-    "adopt": "wants to contact you to adopt ",
-    "matting": "wants to contact you to breed ",
-    "lose": "got lost near your area"
+    "following": " followed ",
+    "commented": " commented on your post",
+    "adopt": " wants to contact you to adopt ",
+    "matting": " wants to contact you to breed ",
+    "lose": " got lost near your area"
   }
 }
