@@ -23,8 +23,7 @@ class NewFeedWidget extends StatefulWidget {
   _NewFeedWidgetState createState() => _NewFeedWidgetState();
 }
 
-class _NewFeedWidgetState
-    extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
+class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,8 +38,7 @@ class _NewFeedWidgetState
             child: RefreshIndicator(
               onRefresh: viewModel.onRefresh,
               child: PagedListView<int, Post>(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
                 pagingController: viewModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) => PostItem(
@@ -76,8 +74,7 @@ class _NewFeedWidgetState
             ),
             Text(
               LocaleKeys.app_name.trans(),
-              style: GoogleFonts.montserrat(
-                  textStyle: UITextStyle.text_header_24_w700),
+              style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w700),
             ),
             const Expanded(
               child: SizedBox(),

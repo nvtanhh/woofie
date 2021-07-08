@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:meowoof/core/logged_user.dart';
-import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
