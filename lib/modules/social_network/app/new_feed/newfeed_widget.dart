@@ -38,7 +38,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
             child: RefreshIndicator(
               onRefresh: viewModel.onRefresh,
               child: PagedListView<int, Post>(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                 pagingController: viewModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) => PostItem(
@@ -65,7 +65,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
     return PreferredSize(
       preferredSize: Size.fromHeight(48.h),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: Row(
           children: [
             SizedBox(width: 45.w, height: 46.h, child: const MWLogo()),

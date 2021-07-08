@@ -10,7 +10,7 @@ import 'package:meowoof/modules/social_network/domain/usecases/profile/get_weigh
 import 'package:suga_core/suga_core.dart';
 
 @injectable
-class WeightModel extends BaseViewModel {
+class WeightWidgetModel extends BaseViewModel {
   late Pet pet;
   late bool isMyPet;
   final int pageSize = 5;
@@ -24,7 +24,7 @@ class WeightModel extends BaseViewModel {
   final gloalKey = GlobalKey();
   Function(PetWeight)? onAddWeight;
 
-  WeightModel(
+  WeightWidgetModel(
     this._addWeightUsecase,
     this._getWeightsUsecase,
   );

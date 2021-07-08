@@ -116,11 +116,12 @@
     "rate_feedback": "Đánh giá và phản hồi"
   },
   "notification": {
+    "notifications": "Thông báo",
     "liked": " đã thích bài viết của bạn",
     "following": " đã theo dõi bạn",
     "commented": " đã bình luận về bài viết của bạn",
     "adopt": " muốn liên hệ với bạn để nhận nuôi ",
-    "matting": "muốn liên hệ với bạn để phối giống",
+    "matting": " muốn liên hệ với bạn để phối giống",
     "lose": " thất lạc ở gần khu vực của bạn"
   }
 }

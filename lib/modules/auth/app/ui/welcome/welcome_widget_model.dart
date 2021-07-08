@@ -10,6 +10,7 @@ import 'package:meowoof/modules/auth/domain/usecases/save_user_to_local_usecase.
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
 import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
+import 'package:meowoof/modules/social_network/domain/usecases/notification/update_token_notify_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -21,6 +22,7 @@ class WelcomeWidgetModel extends BaseViewModel {
   final GetUserWithUuidUsecase _getUserUsecase;
   final FirebaseAuth _firebaseAuth;
   final SaveUserToLocalUsecase _saveUserToLocalUsecase;
+  final UpdateTokenNotifyUsecase _updateTokenNotifyUsecase;
 
   WelcomeWidgetModel(
     this._loginWithGoogleUsecase,
@@ -29,6 +31,7 @@ class WelcomeWidgetModel extends BaseViewModel {
     this._getUserUsecase,
     this._firebaseAuth,
     this._saveUserToLocalUsecase,
+    this._updateTokenNotifyUsecase,
   );
 
   void onLoginClick() {
@@ -46,7 +49,14 @@ class WelcomeWidgetModel extends BaseViewModel {
   }
 
   Future onLoginGoogleClick() async {
-    await call(() async => user = await _loginWithGoogleUsecase.call(), onSuccess: () {
+    await call(() async {
+      user = await _loginWithGoogleUsecase.call();
+      await Future.delayed(
+        const Duration(
+          seconds: 3,
+        ),
+      );
+    }, onSuccess: () {
       checkUserHavePetForNavigator();
     }, onFailure: (err) {
       printError(
@@ -55,17 +65,28 @@ class WelcomeWidgetModel extends BaseViewModel {
     });
   }
 
+  Future updateTokenNotify(String userUUID) async {
+    try {
+      await _updateTokenNotifyUsecase.run(userUUID);
+    } catch (e) {
+      printInfo(info: e.toString());
+    }
+  }
+
   Future checkUserHavePetForNavigator() async {
     bool status = false;
     await call(
       () async {
-        await Future.delayed(const Duration(
-          seconds: 2,
-        ));
+        await Future.delayed(
+          const Duration(
+            seconds: 2,
+          ),
+        );
         final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
         if (haUser != null) {
           await _saveUserToLocalUsecase.call(haUser);
           status = await _checkUserHavePetUsecase.call(haUser.uuid!);
+          await updateTokenNotify(haUser.uuid!);
         } else {
           return;
         }

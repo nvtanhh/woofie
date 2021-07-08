@@ -9,6 +9,7 @@ import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 @lazySingleton
 class JwtInterceptor extends Interceptor {
   final FirebaseAuth auth;
+  String? jwtToken;
 
   JwtInterceptor(this.auth) {
     HttpOverrides.global = MyHttpOverrides();
@@ -16,6 +17,12 @@ class JwtInterceptor extends Interceptor {
 
   @override
   Future onError(HasuraError request) async {
+    if (jwtToken == null) {
+      printError(info: request.message);
+      return;
+    }
+    printInfo(info: jwtToken?.substring(0, ((jwtToken?.length ?? 0) / 2).floor() + 3) ?? "");
+    printInfo(info: jwtToken?.substring(((jwtToken?.length ?? 0) / 2).floor(), jwtToken?.length ?? 0) ?? "");
     printError(info: request.message);
   }
 
@@ -32,7 +39,8 @@ class JwtInterceptor extends Interceptor {
 
   @override
   Future? onRequest(Request request) async {
-    final jwtToken = await auth.currentUser?.getIdToken();
+    jwtToken = null;
+    jwtToken = await auth.currentUser?.getIdToken();
     if (jwtToken != null) {
       try {
         request.headers["Authorization"] = "Bearer $jwtToken";
@@ -56,10 +64,8 @@ class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback =
-          ((X509Certificate cert, String host, int port) {
-        final isValidHost =
-            ["203.113.148.132"].contains(host); // <-- allow only hosts in array
+      ..badCertificateCallback = ((X509Certificate cert, String host, int port) {
+        final isValidHost = ["203.113.148.132"].contains(host); // <-- allow only hosts in array
         return isValidHost;
       });
   }

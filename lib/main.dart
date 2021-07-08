@@ -11,12 +11,15 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/splash/app/ui/splash_widget.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:meowoof/configs/app_config.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   setupInjector();
   setupEasyLoading();
+  setupOneSignal();
   // set up google_fonts
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('resources/google_fonts/OFL.txt');
@@ -77,6 +80,18 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+void setupOneSignal() {
+  //Remove this method to stop OneSignal Debugging
+  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  OneSignal.shared.setAppId(AppConfig.APP_ID_ONESIGNAL);
+  OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent notification) {
+    // Will be called whenever a notification is received in foreground
+    // Display Notification, pass null param for not displaying the notification
+    // event.complete(event.notification);
+  });
+  OneSignal.shared.consentGranted(true);
 }
 
 void setupEasyLoading() {

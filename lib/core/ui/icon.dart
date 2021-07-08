@@ -152,6 +152,7 @@ class MWIcons {
   static final icAdoption = MWIconData(assetImageFile: Assets.resources.images.explore.icAdoption);
   static final icMatting = MWIconData(assetImageFile: Assets.resources.images.explore.icMatting);
   static final icLose = MWIconData(assetImageFile: Assets.resources.images.explore.icLose);
+  static final icReact = MWIconData(assetImageFile: Assets.resources.images.explore.icReact);
 }
 
 enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }

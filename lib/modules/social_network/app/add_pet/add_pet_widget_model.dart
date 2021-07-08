@@ -66,7 +66,9 @@ class AddPetWidgetModel extends BaseViewModel {
     pet.petBreedId = petBreedSelected!.id;
   }
 
-  void doNotHavePet() {}
+  void doNotHavePet() {
+    Get.offAll(() => HomeMenuWidget());
+  }
 
   void unknownBreed() {
     if (currentStepAddPet == 2) currentStepAddPet++;

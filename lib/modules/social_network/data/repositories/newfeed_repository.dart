@@ -24,7 +24,7 @@ class NewFeedRepository {
   }
 
   Future<List<Comment>> getCommentInPost(int postId, int limit, int offset) {
-    return _postDatasource.getPostComments(postId, limit, offset);
+    return _postDatasource.getCommentsInPost(postId, limit, offset);
   }
 
   Future<bool> likePost(int idPost) {
