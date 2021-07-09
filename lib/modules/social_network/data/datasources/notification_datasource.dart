@@ -31,11 +31,8 @@ class NotificationDatasource {
     }
     """;
     final data = await _hasuraConnect.query(query);
-    final listPost =
-        GetMapFromHasura.getMap(data as Map)["notifications"] as List;
-    return listPost
-        .map((e) => Notification.fromJson(e as Map<String, dynamic>))
-        .toList();
+    final listPost = GetMapFromHasura.getMap(data as Map)["notifications"] as List;
+    return listPost.map((e) => Notification.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<int> countNotificationUnread() async {
@@ -49,9 +46,7 @@ class NotificationDatasource {
     }
     """;
     final data = await _hasuraConnect.query(query);
-    final objectCount =
-        GetMapFromHasura.getMap(data as Map)["notifications_aggregate"]
-            as Map<String, dynamic>;
+    final objectCount = GetMapFromHasura.getMap(data as Map)["notifications_aggregate"] as Map<String, dynamic>;
     return ObjectAggregate.fromJson(objectCount).aggregate.count ?? 0;
   }
 
@@ -64,8 +59,7 @@ class NotificationDatasource {
     }
     """;
     final data = await _hasuraConnect.mutation(mutation);
-    final affectedRows =
-        GetMapFromHasura.getMap(data as Map)["readAllNotify"] as Map;
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["readAllNotify"] as Map;
     return int.tryParse("${affectedRows["affectRow"]}");
   }
 }

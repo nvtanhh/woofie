@@ -33,7 +33,7 @@ class StorageDatasource {
   );
 
   Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {
-    final userUuid = _loggedInUser.loggedInUser!.uuid;
+    final userUuid = _loggedInUser.user!.uuid;
 
     final String subFolder = _urlParser.parse(POST_MEDIA_SUBFOLDER, {'user_uuid': userUuid, 'post_uuid': postUuid});
 

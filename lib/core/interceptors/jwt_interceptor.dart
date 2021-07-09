@@ -21,14 +21,8 @@ class JwtInterceptor extends Interceptor {
       printError(info: request.message);
       return;
     }
-    printInfo(
-        info:
-            jwtToken?.substring(0, ((jwtToken?.length ?? 0) / 2).floor() + 3) ??
-                "");
-    printInfo(
-        info: jwtToken?.substring(
-                ((jwtToken?.length ?? 0) / 2).floor(), jwtToken?.length ?? 0) ??
-            "");
+    printInfo(info: jwtToken?.substring(0, ((jwtToken?.length ?? 0) / 2).floor() + 3) ?? "");
+    printInfo(info: jwtToken?.substring(((jwtToken?.length ?? 0) / 2).floor(), jwtToken?.length ?? 0) ?? "");
     printError(info: request.message);
   }
 
@@ -72,10 +66,8 @@ class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback =
-          ((X509Certificate cert, String host, int port) {
-        final isValidHost =
-            ["203.113.148.132"].contains(host); // <-- allow only hosts in array
+      ..badCertificateCallback = ((X509Certificate cert, String host, int port) {
+        final isValidHost = ["203.113.148.132"].contains(host); // <-- allow only hosts in array
         return isValidHost;
       });
   }

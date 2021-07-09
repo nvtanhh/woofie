@@ -9,6 +9,8 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/media_button.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -21,7 +23,9 @@ import 'widgets/post_type_choose.dart';
 class CreatePost extends StatefulWidget {
   final Post? post;
 
-  const CreatePost({Key? key, this.post}) : super(key: key);
+  final Function(String newContent, List<Media> deletedMedia, List<MediaFile> newAddedMedia)? onEditPost;
+
+  const CreatePost({Key? key, this.post, this.onEditPost}) : super(key: key);
 
   @override
   _CreatePostState createState() => _CreatePostState();

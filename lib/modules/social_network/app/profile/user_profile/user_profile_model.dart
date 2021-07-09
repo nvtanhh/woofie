@@ -54,7 +54,7 @@ class UserProfileModel extends BaseViewModel {
   void initState() {
     if (user == null) {
       isMe = true;
-      user = injector<LoggedInUser>().loggedInUser;
+      user = injector<LoggedInUser>().user;
     }
     _cancelableOperationLoadInit = CancelableOperation.fromFuture(initData());
     super.initState();
@@ -77,17 +77,17 @@ class UserProfileModel extends BaseViewModel {
   Future _loadMorePost(int pageKey) async {
     try {
       posts = await _getPostOfUserUsecase.call(userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
-      if (pagingController.itemList == null) {
-        posts.insert(
-          0,
-          Post(
-            id: 0,
-            uuid: '',
-            creator: User(id: 0),
-            type: PostType.activity,
-          ),
-        );
-      }
+      // if (pagingController.itemList == null) {
+      //   posts.insert(
+      //     0,
+      //     Post(
+      //       id: 0,
+      //       uuid: '',
+      //       creator: User(id: 0),
+      //       type: PostType.activity,
+      //     ),
+      //   );
+      // }
       final isLastPage = posts.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(posts);

@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_widget.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_shimmer.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_old.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_item_shimmer.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_posts_of_pet_usecase.dart';
 
@@ -51,7 +51,7 @@ class PostsOfPetWidget extends StatelessWidget {
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, post, index) {
-          return PostItem(
+          return PostItemOld(
             post: post,
             onLikeClick: onLikeClick,
             onEdidPost: () => onPostEdited(post),

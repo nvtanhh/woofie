@@ -17,7 +17,7 @@ class LoggedInUser {
     _loggedInUser = user;
   }
 
-  User? get loggedInUser => _loggedInUser;
+  User? get user => _loggedInUser;
 
   bool isMyPost(Post post) {
     // ignore: unrelated_type_equality_checks

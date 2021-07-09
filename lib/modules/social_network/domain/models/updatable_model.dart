@@ -11,7 +11,9 @@ abstract class UpdatableModel<T> {
 
   final Rxn<T> _updateChangeSubject = Rxn<T>();
 
-  UpdatableModel({this.id});
+  UpdatableModel({this.id}) {
+    notifyUpdate();
+  }
 
   void notifyUpdate() {
     _updateChangeSubject.value = this as T;

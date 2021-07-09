@@ -10,6 +10,7 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/newfeed_widget_model.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_old.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -41,11 +42,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) => PostItem(
                     post: item,
-                    onCommentClick: viewModel.onCommentClick,
-                    onLikeClick: viewModel.onLikeClick,
-                    onPostClick: viewModel.onPostClick,
-                    onDeletePost: () => viewModel.onDeletePost(item, index),
-                    onEdidPost: () => viewModel.onPostEdited(item),
+                    onPostDeleted: () => viewModel.onPostDeleted(index),
                   ),
                 ),
               ),

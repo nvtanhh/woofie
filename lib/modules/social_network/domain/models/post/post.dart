@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/aggregate/object_aggregate.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -29,8 +31,12 @@ class Post extends UpdatableModel {
   PostType type;
   @JsonKey(name: "user")
   User? creator;
+  @JsonKey(name: "is_my_post")
+  bool? _isMyPost;
   @JsonKey(name: "is_liked")
   bool? isLiked;
+  @JsonKey(name: "reactions_counts")
+  int? reactionsCounts;
   @JsonKey(name: "comments")
   List<Comment>? comments;
   @JsonKey(name: "post_pets", fromJson: allPetsFromJson)
@@ -85,6 +91,10 @@ class Post extends UpdatableModel {
     return factory.fromJson(json);
   }
 
+  bool get isMyPost => _isMyPost ?? injector<LoggedInUser>().user!.uuid == creatorUUID;
+
+  set isMyPost(bool? value) => _isMyPost = value;
+
   @override
   void updateFromJson(Map json) {
     if (json['user'] != null) {
@@ -108,8 +118,14 @@ class Post extends UpdatableModel {
     if (json['created_at'] != null) {
       createdAt = DateTime.parse(json['created_at'] as String);
     }
+    if (json['is_my_post'] != null) {
+      _isMyPost = json['is_my_post'] as bool;
+    }
     if (json['is_liked'] != null) {
       isLiked = json['is_liked'] as bool;
+    }
+    if (json['reactions_counts'] != null) {
+      reactionsCounts = json['reactions_counts'] as int;
     }
     if (json['comments'] != null) {
       comments = (json['comments'] as List<dynamic>?)?.map((e) => Comment.fromJson(e as Map<String, dynamic>)).toList();

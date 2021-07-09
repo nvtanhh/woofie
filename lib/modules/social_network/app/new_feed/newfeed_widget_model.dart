@@ -73,50 +73,14 @@ class NewFeedWidgetModel extends BaseViewModel {
     _lastRefeshTime = DateTime.now();
   }
 
-  void onCommentClick(int idPost) {
-    bottomSheetService.showComments(idPost);
-  }
-
-  void onDeletePost(Post post, int index) {
-    bool isSuccess = false;
-    call(
-      () async {
-        isSuccess = await _deletePostUsecase.call(post.id);
-      },
-      onSuccess: () {
-        if (isSuccess) {
-          injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
-        }
-        pagingController.itemList?.removeAt(index);
-        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-        pagingController.notifyListeners();
-      },
-      onFailure: (err) {
-        injector<ToastService>().success(message: err.toString(), context: Get.context!);
-      },
-    );
-  }
-
-  void onLikeClick(int idPost) {
-    call(
-      () => _likePostUsecase.call(idPost),
-      showLoading: false,
-      onFailure: (err) {},
-    );
-  }
-
-  void onPostClick(Post post) {
-    injector<NavigationService>().navigateToPostDetail(post);
-  }
-
-  void onPostEdited(Post post) {
-    Get.to(() => CreatePost(
-          post: post,
-        ));
+  void onPostDeleted(int index) {
+    pagingController.itemList?.removeAt(index);
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    pagingController.notifyListeners();
   }
 
   Future onWantsToCreateNewPost() async {
-    final NewPostData? newPostData = await injector<NavigationService>().navigateToSavePost();
+    final NewPostData? newPostData = await injector<NavigationService>().navigateToCreatePost();
     if (newPostData != null) {
       newPostsData.add(newPostData);
       _prepenedNewPostUploadingWidget(newPostData);

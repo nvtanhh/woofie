@@ -7,7 +7,6 @@ import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
-import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -15,14 +14,12 @@ import 'package:meowoof/modules/social_network/domain/models/post/media_file.dar
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_pets_of_user_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class SavePostModel extends BaseViewModel {
   final GetPetsOfUserUsecase _getPetsOfUserUsecase;
-  final CreatePostUsecase _createPostUsecase;
   late TextEditingController contentController;
   User? _user;
   late final Rx<PostType> _postType = PostType.activity.obs;
@@ -34,21 +31,18 @@ class SavePostModel extends BaseViewModel {
   Placemark? currentPlacemark;
   RxBool isLoadingAddress = false.obs;
   Position? currentPosition;
-  final ToastService _toastService;
 
   late bool isPostEditing;
 
   SavePostModel(
     this._getPetsOfUserUsecase,
-    this._createPostUsecase,
-    this._toastService,
   );
 
   @override
   void initState() {
     super.initState();
-    _user = injector<LoggedInUser>().loggedInUser;
-    _postType.value = post != null ? post!.type : PostType.activity;
+    _user = injector<LoggedInUser>().user;
+    _postType.value = post?.type ?? PostType.activity;
     _files.stream.listen(onFilesChanged);
     _taggedPets.addAll(post?.taggegPets ?? []);
     contentController = TextEditingController();
@@ -59,7 +53,8 @@ class SavePostModel extends BaseViewModel {
 
   Future getPetsOfUser() async {
     await call(
-      () async => user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
+      () async =>
+          user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
       showLoading: false,
       onSuccess: () {
         printInfo(info: user?.currentPets.toString() ?? "deo co gif");
@@ -101,7 +96,8 @@ class SavePostModel extends BaseViewModel {
   }
 
   void onFilesChanged(List<MediaFile>? event) {
-    if ((event != null && event.isNotEmpty) || contentController.text.isNotEmpty) {
+    if ((event != null && event.isNotEmpty) ||
+        contentController.text.isNotEmpty) {
       _isDisable.value = false;
     } else {
       _isDisable.value = true;
@@ -169,9 +165,15 @@ class SavePostModel extends BaseViewModel {
     try {
       isLoadingAddress.value = true;
       currentPlacemark = await locationService.getCurrentPlacemark();
-      final String address = (currentPlacemark!.street!.isNotEmpty ? '${currentPlacemark!.street!}, ' : '') +
-          (currentPlacemark!.locality!.isNotEmpty ? '${currentPlacemark!.locality!}, ' : '') +
-          (currentPlacemark!.subAdministrativeArea!.isNotEmpty ? '${currentPlacemark!.subAdministrativeArea!}, ' : '');
+      final String address = (currentPlacemark!.street!.isNotEmpty
+              ? '${currentPlacemark!.street!}, '
+              : '') +
+          (currentPlacemark!.locality!.isNotEmpty
+              ? '${currentPlacemark!.locality!}, '
+              : '') +
+          (currentPlacemark!.subAdministrativeArea!.isNotEmpty
+              ? '${currentPlacemark!.subAdministrativeArea!}, '
+              : '');
       currentAddress.value = address.trim().substring(0, address.length - 2);
     } catch (error) {
       currentAddress.value = error.toString();

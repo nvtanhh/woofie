@@ -50,7 +50,8 @@
     "like": "Like",
     "no_comments_yet": "No comments yet",
     "edit_post": "Edit post",
-    "delete_post": "Delete post"
+    "delete_post": "Delete post",
+    "report_post": "Report this post"
   },
   "explore": {
     "search": "Search",
@@ -123,5 +124,8 @@
     "adopt": " wants to contact you to adopt ",
     "matting": " wants to contact you to breed ",
     "lose": " got lost near your area"
+  },
+  "system": {
+    "comming_soon": "This feature will be coming soon"
   }
 }

@@ -50,7 +50,8 @@
     "like": "Thích",
     "no_comments_yet": "Chưa có bình luận nào",
     "edit_post": "Chỉnh sửa bài viết",
-    "delete_post": "Xoá bài viết"
+    "delete_post": "Xoá bài viết",
+    "report_post": "Báo cáo bài viết này"
   },
   "explore": {
     "search": "Tìm kiếm",
@@ -123,5 +124,8 @@
     "adopt": " muốn liên hệ với bạn để nhận nuôi ",
     "matting": " muốn liên hệ với bạn để phối giống",
     "lose": " thất lạc ở gần khu vực của bạn"
+  },
+  "system": {
+    "comming_soon": "Tính năng này sẽ sớm ra mắt"
   }
 }
