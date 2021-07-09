@@ -29,7 +29,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
         child: Scaffold(
       body: Container(
         height: Get.height,
-        padding: EdgeInsets.only(left: 10.w,right: 10.w,top: 10.h),
+        padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
         child: Column(
           children: [
             Row(
@@ -41,7 +41,11 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                 ),
                 InkWell(
                   onTap: () => viewModel.onOptionTap(),
-                  child:  MWIcon(MWIcons.moreHoriz,customSize: 30.w,color: UIColor.black,),
+                  child: MWIcon(
+                    MWIcons.moreHoriz,
+                    customSize: 30.w,
+                    color: UIColor.black,
+                  ),
                 )
               ],
             ),
