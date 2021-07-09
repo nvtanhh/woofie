@@ -51,7 +51,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                   alignment: Alignment.topCenter,
                   children: [
                     ImagesViewWidget(
-                      medias: viewModel.post.medias ?? [Media(id: 0, url: viewModel.pet?.avatar?.url ?? "", type: MediaType.image)],
+                      medias: viewModel.post.medias ?? [Media(id: 0, url: viewModel.pet?.avatarUrl ?? "", type: MediaType.image)],
                       height: Get.height / 2,
                       fit: BoxFit.cover,
                     ),
@@ -152,7 +152,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                             ListTile(
                               contentPadding: const EdgeInsets.symmetric(),
                               leading: MWAvatar(
-                                avatarUrl: viewModel.post.creator?.avatar?.url,
+                                avatarUrl: viewModel.post.creator?.avatarUrl,
                                 borderRadius: 10.r,
                               ),
                               title: Text(

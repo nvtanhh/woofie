@@ -25,11 +25,7 @@ query MyQuery {
     actor {
       id
       name
-      avatar {
-        url
-        type
-        id
-      }
+      avatar_url
     }
   }
 }
@@ -54,7 +50,16 @@ query MyQuery {
     return ObjectAggregate.fromJson(objectCount).aggregate.count ?? 0;
   }
 
-  Future readAllNotification() async {
-    return;
+  Future<int?> readAllNotification() async {
+    final mutation = """
+mutation MyMutation {
+  readAllNotify {
+    affectRow
+  }
+}
+""";
+    final data = await _hasuraConnect.mutation(mutation);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["readAllNotify"] as Map;
+    return int.tryParse("${affectedRows["affectRow"]}");
   }
 }

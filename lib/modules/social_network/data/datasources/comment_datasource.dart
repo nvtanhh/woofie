@@ -19,11 +19,7 @@ mutation MyMutation {
     content
     id
     user {
-      avatar {
-        url
-        type
-        id
-      }
+      avatar_url
       name
       id
     }

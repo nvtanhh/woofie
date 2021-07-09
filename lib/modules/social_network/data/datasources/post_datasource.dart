@@ -37,11 +37,7 @@ class PostDatasource {
     is_liked
     created_at
     user {
-      avatar {
-        url
-        type
-        id
-      }
+      avatar_url
       id
       name
       uuid
@@ -106,10 +102,7 @@ class PostDatasource {
           bio
           id
           name
-          avatar {
-            type
-            url
-          }
+          avatar_url
           uuid
         }
       }
@@ -186,11 +179,7 @@ query MyQuery {
     uuid
     post_pets {
       pet {
-        avatar {
-          type
-          url
-          id
-        }
+        avatar_url
         pet_breed {
           name
           id
@@ -287,21 +276,13 @@ query MyQuery {
         user {
           id
           name
-          avatar {
-            id
-            url
-            type
-          }
+          avatar_url
         }
         post_pets {
           pet {
             id
             name
-            avatar {
-              id
-              url
-              type
-            }
+            avatar_url
           }
         }
         location {

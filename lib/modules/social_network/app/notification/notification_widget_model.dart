@@ -15,6 +15,7 @@ class NotificationWidgetModel extends BaseViewModel {
   final GetNotificationUsecase _getNotificationUsecase;
 
   NotificationWidgetModel(this._getNotificationUsecase);
+
   @override
   void initState() {
     pagingController = PagingController(firstPageKey: nextPageKey);

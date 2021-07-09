@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';

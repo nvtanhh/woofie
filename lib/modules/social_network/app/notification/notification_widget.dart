@@ -12,6 +12,7 @@ import 'package:meowoof/modules/social_network/domain/models/notification/notifi
 import 'package:meowoof/modules/social_network/domain/models/notification/notification_type.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:timeago/timeago.dart' as time_ago;
@@ -28,7 +29,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
         child: Scaffold(
       body: Container(
         height: Get.height,
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        padding: EdgeInsets.only(left: 10.w,right: 10.w,top: 10.h),
         child: Column(
           children: [
             Row(
@@ -40,7 +41,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                 ),
                 InkWell(
                   onTap: () => viewModel.onOptionTap(),
-                  child: const MWIcon(MWIcons.moreHoriz),
+                  child:  MWIcon(MWIcons.moreHoriz,customSize: 30.w,color: UIColor.black,),
                 )
               ],
             ),
@@ -52,17 +53,19 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                   builderDelegate: PagedChildBuilderDelegate(
                     itemBuilder: (context, item, index) {
                       return ListTile(
-                          leading: MWAvatar(
-                            avatarUrl: item.actor?.avatar?.url,
-                            customSize: 45.w,
-                            borderRadius: 10.r,
-                          ),
-                          title: generateContentTitle(item),
-                          trailing: defineIcon(item),
-                          subtitle: Text(
-                            time_ago.format(item.createdAt!, locale: 'vi'),
-                            style: UITextStyle.second_12_medium,
-                          ));
+                        leading: MWAvatar(
+                          avatarUrl: item.actor?.avatarUrl,
+                          customSize: 45.w,
+                          borderRadius: 10.r,
+                        ),
+                        title: generateContentTitle(item),
+                        trailing: defineIcon(item),
+                        subtitle: Text(
+                          time_ago.format(item.createdAt!, locale: 'vi'),
+                          style: UITextStyle.second_12_medium,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+                      );
                     },
                     noItemsFoundIndicatorBuilder: (_) {
                       return Center(

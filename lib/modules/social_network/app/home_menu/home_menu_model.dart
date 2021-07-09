@@ -8,6 +8,7 @@ import 'package:meowoof/modules/social_network/app/new_feed/newfeed_widget.dart'
 import 'package:meowoof/modules/social_network/app/notification/notification_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/notification/count_notification_unread_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/notification/read_all_notification_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -17,8 +18,9 @@ class HomeMenuWidgetModel extends BaseViewModel {
   final RxInt _currentTab = RxInt(0);
   final RxInt _countUnreadNotify = RxInt(0);
   final CountNotificationUnreadUsecase _countNotificationUnreadUsecase;
+  final ReadAllNotificationUsecase _allNotificationUsecase;
 
-  HomeMenuWidgetModel(this._countNotificationUnreadUsecase);
+  HomeMenuWidgetModel(this._countNotificationUnreadUsecase, this._allNotificationUsecase);
 
   late Timer _timer;
 
@@ -30,6 +32,7 @@ class HomeMenuWidgetModel extends BaseViewModel {
   }
 
   Future getNumberNotificationUnread() async {
+    if (currentTab == 2) return;
     try {
       countUnreadNotify = await _countNotificationUnreadUsecase.run();
     } catch (er) {
@@ -37,10 +40,20 @@ class HomeMenuWidgetModel extends BaseViewModel {
     }
   }
 
+  void readAllNotify() {
+    call(
+      () async => countUnreadNotify = await _allNotificationUsecase.run() ?? 0,
+      showLoading: false,
+    );
+  }
+
   void onTabChange(int index) {
     if (currentTab == index) return;
     currentTab = index;
     tabController.index = index;
+    if (index == 2) {
+      readAllNotify();
+    }
   }
 
   int get currentTab => _currentTab.value;

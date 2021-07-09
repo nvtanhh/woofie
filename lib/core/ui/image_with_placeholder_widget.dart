@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -40,33 +41,29 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomLeft: Radius.circular(radius ?? bottomLeftRadius ?? 0),
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
-        child: Image.network(
-          imageUrl,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
           height: height ?? 180.0.h,
           width: width ?? 180.0.w,
-          errorBuilder: (context, url, error) {
-            printError(info: error.toString());
+          errorWidget: (context, _, __) {
             return itemPlaceholder();
           },
-          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-            if (loadingProgress == null) return child;
-            return Shimmer.fromColors(
-              baseColor: UIColor.white,
-              highlightColor: UIColor.silverSand,
-              child: Container(
-                width: width ?? 180.0.w,
-                height: height ?? 180.0.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10.r),
-                    topLeft: Radius.circular(10.r),
-                  ),
-                  color: UIColor.white,
+          placeholder: (context, url) => Shimmer.fromColors(
+            baseColor: UIColor.white,
+            highlightColor: UIColor.silverSand,
+            child: Container(
+              width: width ?? 180.0.w,
+              height: height ?? 180.0.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10.r),
+                  topLeft: Radius.circular(10.r),
                 ),
-                margin: EdgeInsets.only(right: 10.w),
+                color: UIColor.white,
               ),
-            );
-          },
+              margin: EdgeInsets.only(right: 10.w),
+            ),
+          ),
           fit: fit ?? BoxFit.fill,
         ),
       );

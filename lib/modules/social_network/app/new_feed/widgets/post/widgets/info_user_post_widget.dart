@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
+import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -34,7 +36,7 @@ class InfoUserPostWidget extends StatelessWidget {
             width: 45.w,
             height: 45.w,
             fit: BoxFit.fill,
-            imageUrl: user.avatar?.url ?? "",
+            imageUrl: user.avatarUrl ?? "",
             radius: 10.r,
           ),
           SizedBox(
@@ -42,13 +44,15 @@ class InfoUserPostWidget extends StatelessWidget {
           ),
           Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text.rich(
                   TextSpan(
-                    text: user.name,
-                    children: createTagPet(),
-                    style: UITextStyle.text_header_16_w600,
-                  ),
+                      text: user.name,
+                      children: createTagPet(),
+                      style: UITextStyle.text_header_16_w600,
+                      recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(user)),
                   maxLines: 2,
                 ),
                 Text(
@@ -94,16 +98,22 @@ class InfoUserPostWidget extends StatelessWidget {
   }
 
   ImageProvider defineAvatar() {
-    if (user.avatar == null) {
+    if (user.avatarUrl == null) {
       return Assets.resources.icons.icPerson;
     } else {
       return NetworkImage(
-        user.avatar?.url ?? "",
+        user.avatarUrl ?? "",
       );
     }
   }
 
   void openProfilePet(Pet pet) {
     Get.to(() => PetProfile(pet: pet));
+  }
+
+  void openProfileUser(User user) {
+    Get.to(() => UserProfile(
+          user: user,
+        ));
   }
 }

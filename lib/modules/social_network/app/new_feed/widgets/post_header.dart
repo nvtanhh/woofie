@@ -33,7 +33,7 @@ class PostHeader extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: MWAvatar(
-        avatarUrl: user.avatar?.url,
+        avatarUrl: user.avatarUrl,
         borderRadius: 10.r,
       ),
       title: Text.rich(

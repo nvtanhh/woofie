@@ -161,7 +161,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MWAvatar(
-            avatarUrl: viewModel.user?.avatar?.url,
+            avatarUrl: viewModel.user?.avatarUrl,
             borderRadius: 10.r,
           ),
           SizedBox(width: 15.w),

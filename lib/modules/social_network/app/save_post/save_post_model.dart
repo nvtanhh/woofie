@@ -211,19 +211,11 @@ class SavePostModel extends BaseViewModel {
           ? null
           : Location(
               long: currentPosition!.longitude,
-              lat: currentPosition!.longitude,
+              lat: currentPosition!.latitude,
               name: currentAddress.value,
             ),
     );
 
     Get.back(result: newPostData);
-
-    // call(
-    //   () async => post = await _createPostUsecase.call(post!),
-    //   onSuccess: () {
-    //     _toastService.success(
-    //         message: "Add post success", context: Get.context!);
-    //   },
-    // );
   }
 }

@@ -39,7 +39,7 @@ class PetItemWidget extends StatelessWidget {
         child: Stack(
           children: [
             ImageWithPlaceHolderWidget(
-              imageUrl: pet.avatar?.url ?? "",
+              imageUrl: pet.avatarUrl ?? "",
               width: 165.w,
               height: 157.h,
               fit: BoxFit.cover,

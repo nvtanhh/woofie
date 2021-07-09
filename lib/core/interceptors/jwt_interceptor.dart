@@ -42,6 +42,8 @@ class JwtInterceptor extends Interceptor {
     jwtToken = null;
     jwtToken = await auth.currentUser?.getIdToken();
     if (jwtToken != null) {
+      printInfo(info: jwtToken?.substring(0, ((jwtToken?.length ?? 0) / 2).floor() + 3) ?? "");
+      printInfo(info: jwtToken?.substring(((jwtToken?.length ?? 0) / 2).floor(), jwtToken?.length ?? 0) ?? "");
       try {
         request.headers["Authorization"] = "Bearer $jwtToken";
         return request;

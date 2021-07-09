@@ -59,7 +59,7 @@ class SendCommentWidget extends StatelessWidget {
                   width: 45.w,
                   height: 45.w,
                   fit: BoxFit.fill,
-                  imageUrl: user.value?.avatar?.url ?? "",
+                  imageUrl: user.value?.avatarUrl ?? "",
                   radius: 10.r,
                 );
               }

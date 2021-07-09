@@ -4,8 +4,8 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/storage_datasource.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 
 @lazySingleton
 class SavePostRepository {

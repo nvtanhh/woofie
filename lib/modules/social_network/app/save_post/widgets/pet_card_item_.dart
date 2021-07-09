@@ -34,7 +34,7 @@ class PetCardItem extends StatelessWidget {
         child: Column(
           children: [
             MWAvatar(
-              avatarUrl: pet.avatar?.url,
+              avatarUrl: pet.avatarUrl,
               size: MWAvatarSize.large,
               borderRadius: 10,
             ),

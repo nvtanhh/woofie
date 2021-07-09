@@ -32,29 +32,29 @@ class PostItem extends StatelessWidget {
   Widget build(BuildContext context) {
     isLiked.value = post.isLiked ?? false;
     countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
-    return InkWell(
-      onTap: () => onPostClick?.call(post),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          PostHeader(
-            post: post,
-            onDeletePost: onDeletePost,
-            onEditPost: onEdidPost,
-          ),
-          PostBody(post: post),
-          SizedBox(
-            height: 13.h,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 5),
-            child: _buildPostActions(),
-          ),
-          SizedBox(
-            height: 25.h,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        PostHeader(
+          post: post,
+          onDeletePost: onDeletePost,
+          onEditPost: onEdidPost,
+        ),
+        InkWell(
+          onTap: () => onPostClick?.call(post),
+          child: PostBody(post: post),
+        ),
+        SizedBox(
+          height: 13.h,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: _buildPostActions(),
+        ),
+        SizedBox(
+          height: 25.h,
+        ),
+      ],
     );
   }
 
