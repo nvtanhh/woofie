@@ -118,10 +118,12 @@
   "notification": {
     "notifications": "Thông báo",
     "liked": " đã thích bài viết của bạn",
-    "following": " đã theo dõi bạn",
+    "following": " đã theo dõi ",
     "commented": " đã bình luận về bài viết của bạn",
     "adopt": " muốn liên hệ với bạn để nhận nuôi ",
     "matting": " muốn liên hệ với bạn để phối giống",
-    "lose": " thất lạc ở gần khu vực của bạn"
+    "lose": " thất lạc ở gần khu vực của bạn",
+    "tag": " đã nhắc đến bạn trong một bài viết",
+    "like_comment": " đã thích bình luận của bạn"
   }
 }

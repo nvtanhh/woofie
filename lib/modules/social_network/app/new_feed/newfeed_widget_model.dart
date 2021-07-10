@@ -73,8 +73,8 @@ class NewFeedWidgetModel extends BaseViewModel {
     _lastRefeshTime = DateTime.now();
   }
 
-  void onCommentClick(int idPost) {
-    bottomSheetService.showComments(idPost);
+  void onCommentClick(Post post) {
+    bottomSheetService.showComments(post);
   }
 
   void onDeletePost(Post post, int index) {
@@ -124,19 +124,20 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   Future _loadMorePost(int pageKey) async {
-    try {
-      final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
-      final isLastPage = newItems.length < pageSize;
-      if (isLastPage) {
-        pagingController.appendLastPage(newItems);
-      } else {
-        nextPageKey = pageKey + newItems.length;
-        dateTimeValueLast = newItems.last.createdAt;
-        pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      pagingController.error = error;
+    // try {
+    final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
+    final isLastPage = newItems.length < pageSize;
+    if (isLastPage) {
+      pagingController.appendLastPage(newItems);
+    } else {
+      nextPageKey = pageKey + newItems.length;
+      dateTimeValueLast = newItems.last.createdAt;
+      pagingController.appendPage(newItems, nextPageKey);
     }
+    // } catch (error) {
+    //   print(error);
+    //   pagingController.error = error;
+    // }
   }
 
   void _onNewPostDataUploaderCancelled(NewPostData newPostData) {

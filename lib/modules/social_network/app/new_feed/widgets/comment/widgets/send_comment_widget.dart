@@ -9,11 +9,11 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 class SendCommentWidget extends StatelessWidget {
-  final Rx<User?> user;
+  final User? user;
   final TextEditingController commentEditingController;
   final Function onSendComment;
 
-  const SendCommentWidget({
+  const   SendCommentWidget({
     Key? key,
     required this.user,
     required this.commentEditingController,
@@ -43,7 +43,7 @@ class SendCommentWidget extends StatelessWidget {
         children: [
           Obx(
             () {
-              if (user.value == null) {
+              if (user?.updateSubject == null) {
                 return Container(
                   width: 45.w,
                   height: 45.w,
@@ -59,7 +59,7 @@ class SendCommentWidget extends StatelessWidget {
                   width: 45.w,
                   height: 45.w,
                   fit: BoxFit.fill,
-                  imageUrl: user.value?.avatarUrl ?? "",
+                  imageUrl: user?.avatarUrl ?? "",
                   radius: 10.r,
                 );
               }

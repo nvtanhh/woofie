@@ -5,10 +5,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/commons/shimmer_page.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/shimmer_comment_widget.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_widget_model.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_detail_widget_model.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_item_in_listview.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -28,7 +29,7 @@ class PostDetail extends StatefulWidget {
   _PostDetailState createState() => _PostDetailState();
 }
 
-class _PostDetailState extends BaseViewState<PostDetail, PostWidgetModel> {
+class _PostDetailState extends BaseViewState<PostDetail, PostDetailWidgetModel> {
   @override
   void loadArguments() {
     viewModel.post = widget.post;
@@ -77,13 +78,7 @@ class _PostDetailState extends BaseViewState<PostDetail, PostWidgetModel> {
                       );
                     },
                     firstPageProgressIndicatorBuilder: (_) => Column(
-                      children: [
-                        PostItemInListView(
-                          post: viewModel.post,
-                          onLikeClick: viewModel.onLikeClick,
-                        ),
-                        ShimmerCommentWidget()
-                      ],
+                      children: [ShimmerPage(), ShimmerCommentWidget()],
                     ),
                     newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
                   ),
@@ -107,5 +102,5 @@ class _PostDetailState extends BaseViewState<PostDetail, PostWidgetModel> {
   }
 
   @override
-  PostWidgetModel createViewModel() => injector<PostWidgetModel>();
+  PostDetailWidgetModel createViewModel() => injector<PostDetailWidgetModel>();
 }

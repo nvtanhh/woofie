@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/comment_bottom_sheet_widget.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/tag_pet_bottom_sheet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 @lazySingleton
@@ -15,11 +16,11 @@ class BottomSheetService {
       topLeft: Radius.circular(30.r),
     ),
   );
-  void showComments(int idPost) {
+  void showComments(Post post) {
     showMaterialModalBottomSheet(
       context: Get.context!,
       builder: (context) => CommentBottomSheetWidget(
-        postId: idPost,
+        post: post,
       ),
       shape: defaultBottomSheetShape,
     );

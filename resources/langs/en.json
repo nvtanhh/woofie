@@ -122,6 +122,8 @@
     "commented": " commented on your post",
     "adopt": " wants to contact you to adopt ",
     "matting": " wants to contact you to breed ",
-    "lose": " got lost near your area"
+    "lose": " got lost near your area",
+    "tag": " mentioned you in a post",
+    "like_comment": " liked your comment"
   }
 }

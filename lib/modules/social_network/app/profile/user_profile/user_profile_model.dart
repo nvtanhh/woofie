@@ -8,7 +8,7 @@ import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_detail_widget.dart';
 import 'package:meowoof/modules/social_network/app/save_post/save_post.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -134,8 +134,8 @@ class UserProfileModel extends BaseViewModel {
     });
   }
 
-  void onCommentClick(int idPost) {
-    _bottomSheetService.showComments(idPost);
+  void onCommentClick(Post post) {
+    _bottomSheetService.showComments(post);
   }
 
   void onUserBlock(User user) {}

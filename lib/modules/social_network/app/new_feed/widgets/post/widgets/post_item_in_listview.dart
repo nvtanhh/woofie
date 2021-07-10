@@ -12,8 +12,6 @@ class PostItemInListView extends StatelessWidget {
   final Function(int)? onCommentClick;
   final Function(int) onLikeClick;
   final Function(Post)? onPostClick;
-  final RxBool isLiked = RxBool(false);
-  final RxInt countLike = RxInt(0);
 
   PostItemInListView({
     Key? key,
@@ -21,12 +19,13 @@ class PostItemInListView extends StatelessWidget {
     this.onCommentClick,
     required this.onLikeClick,
     this.onPostClick,
-  }) : super(key: key);
+  }) : super(key: key) {
+    post.isLiked ??= false;
+    post.notifyUpdate();
+  }
 
   @override
   Widget build(BuildContext context) {
-    isLiked.value = post.isLiked ?? false;
-    countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
     return InkWell(
       onTap: () => onPostClick?.call(post),
       child: Column(
@@ -59,7 +58,7 @@ class PostItemInListView extends StatelessWidget {
                       onTap: () => likeClick(),
                       child: Obx(
                         () => MWIcon(
-                          isLiked.value ? MWIcons.react : MWIcons.unReact,
+                          post.updateSubject.isLiked! ? MWIcons.react : MWIcons.unReact,
                           size: MWIconSize.small,
                         ),
                       ),
@@ -69,7 +68,7 @@ class PostItemInListView extends StatelessWidget {
                     ),
                     Obx(
                       () => Text(
-                        "${countLike.value}",
+                        "${post.updateSubject.postReactsCount ?? 0}",
                         style: UITextStyle.black_14_w600,
                       ),
                     ),
@@ -93,9 +92,11 @@ class PostItemInListView extends StatelessWidget {
                     SizedBox(
                       width: 5.w,
                     ),
-                    Text(
-                      "${post.commentsAggregate?.aggregate.count ?? "0"}",
-                      style: UITextStyle.black_14_w600,
+                    Obx(
+                      () => Text(
+                        "${post.updateSubject.postCommentsCount ?? 0}",
+                        style: UITextStyle.black_14_w600,
+                      ),
                     ),
                   ],
                 ),
@@ -108,14 +109,15 @@ class PostItemInListView extends StatelessWidget {
   }
 
   void likeClick() {
-    if (!isLiked.value) {
-      countLike.value++;
+    if (!post.isLiked!) {
+      post.increasePostReactsCount();
     } else {
-      countLike.value--;
+      post.decreasePostReactsCount();
     }
-    isLiked.value = !isLiked.value;
+    post.isLiked = !post.isLiked!;
     onLikeClick(post.id);
-    post.isLiked = isLiked.value;
-    post.postReactsAggregate?.aggregate.count = countLike.value;
+    post.notifyUpdate();
+    post.refresh();
+    Post.factory.addToCache(post);
   }
 }

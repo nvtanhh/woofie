@@ -6,16 +6,17 @@ import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/explore/get_detail_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_comment_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_comment_in_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
-class PostWidgetModel extends BaseViewModel {
+class PostDetailWidgetModel extends BaseViewModel {
   late Post post;
   TextEditingController commentEditingController = TextEditingController();
-  Rx<User?> user = Rx<User?>(null);
+  User? user;
   final UserStorage _userStorage;
   final LikePostUsecase _likePostUsecase;
   final GetCommentInPostUsecase _getCommentInPostUsecase;
@@ -23,14 +24,16 @@ class PostWidgetModel extends BaseViewModel {
   int nextPageKey = 0;
   late PagingController<int, Comment> pagingController;
   final CreateCommentUsecase _createCommentUsecase;
+  final GetDetailPostUsecase _getDetailPostUsecase;
   final List<User> tagUsers = [];
   List<Comment> comments = [];
 
-  PostWidgetModel(
+  PostDetailWidgetModel(
     @Named("current_user_storage") this._userStorage,
     this._likePostUsecase,
     this._getCommentInPostUsecase,
     this._createCommentUsecase,
+    this._getDetailPostUsecase,
   ) {
     pagingController = PagingController(firstPageKey: 0);
   }
@@ -47,11 +50,29 @@ class PostWidgetModel extends BaseViewModel {
 
   @override
   void initState() {
+    checkNeedReloadPost();
     _loadUserLocal();
-    pagingController.addPageRequestListener((pageKey) {
-      _loadComments(pageKey);
-    });
     super.initState();
+  }
+
+  void checkNeedReloadPost() {
+    if (post.creator == null) {
+      call(
+        () async => post = await _getDetailPostUsecase.call(post.id),
+        onSuccess: () {
+          pagingController.addPageRequestListener((pageKey) {
+            _loadComments(pageKey);
+          });
+        },
+      );
+    }
+    {
+      pagingController.addPageRequestListener(
+        (pageKey) {
+          _loadComments(pageKey);
+        },
+      );
+    }
   }
 
   void _loadComments(int pageKey) {
@@ -78,12 +99,15 @@ class PostWidgetModel extends BaseViewModel {
 
   void _loadUserLocal() {
     call(
-      () async => user.value = _userStorage.get(),
+      () async => user = _userStorage.get(),
       showLoading: false,
     );
   }
 
   void onSendComment() {
+    if (commentEditingController.text.isEmpty) {
+      return;
+    }
     call(
       () async {
         final Comment? comment = await _createCommentUsecase.call(post.id, commentEditingController.text, tagUsers);
@@ -107,7 +131,6 @@ class PostWidgetModel extends BaseViewModel {
   void disposeState() {
     commentEditingController.dispose();
     pagingController.dispose();
-    user.close();
     super.disposeState();
   }
 }

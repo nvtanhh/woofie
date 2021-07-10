@@ -29,7 +29,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
         child: Scaffold(
       body: Container(
         height: Get.height,
-        padding: EdgeInsets.only(left: 10.w,right: 10.w,top: 10.h),
+        padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
         child: Column(
           children: [
             Row(
@@ -41,7 +41,11 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                 ),
                 InkWell(
                   onTap: () => viewModel.onOptionTap(),
-                  child:  MWIcon(MWIcons.moreHoriz,customSize: 30.w,color: UIColor.black,),
+                  child: MWIcon(
+                    MWIcons.moreHoriz,
+                    customSize: 30.w,
+                    color: UIColor.black,
+                  ),
                 )
               ],
             ),
@@ -58,6 +62,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                           customSize: 45.w,
                           borderRadius: 10.r,
                         ),
+                        onTap: () => viewModel.onItemTab(item),
                         title: generateContentTitle(item),
                         trailing: defineIcon(item),
                         subtitle: Text(
@@ -93,10 +98,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
           LocaleKeys.notification_liked.trans(),
         );
       case NotificationType.follow:
-        return createTitle(
-          notification.actor!,
-          LocaleKeys.notification_following.trans(),
-        );
+        return createTitle(notification.actor!, LocaleKeys.notification_following.trans(), pet: notification.pet);
       case NotificationType.comment:
         return createTitle(
           notification.actor!,
@@ -119,6 +121,16 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
           notification.actor!,
           LocaleKeys.notification_lose.trans(),
           pet: notification.pet,
+        );
+      case NotificationType.commentTagUser:
+        return createTitle(
+          notification.actor!,
+          LocaleKeys.notification_lose.trans(),
+        );
+      case NotificationType.reactComment:
+        return createTitle(
+          notification.actor!,
+          LocaleKeys.notification_lose.trans(),
         );
     }
   }

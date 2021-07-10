@@ -10,11 +10,9 @@ import 'post_body.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;
-  final Function(int)? onCommentClick;
+  final Function(Post)? onCommentClick;
   final Function(int) onLikeClick;
   final Function(Post)? onPostClick;
-  final RxBool isLiked = RxBool(false);
-  final RxInt countLike = RxInt(0);
   final VoidCallback onEdidPost;
   final VoidCallback onDeletePost;
 
@@ -30,8 +28,6 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    isLiked.value = post.isLiked ?? false;
-    countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -59,15 +55,16 @@ class PostItem extends StatelessWidget {
   }
 
   void likeClick() {
-    if (!isLiked.value) {
-      countLike.value++;
+    if (!post.isLiked!) {
+      post.increasePostReactsCount();
     } else {
-      countLike.value--;
+      post.decreasePostReactsCount();
     }
-    isLiked.value = !isLiked.value;
+    post.isLiked = !post.isLiked!;
     onLikeClick(post.id);
-    post.isLiked = isLiked.value;
-    post.postReactsAggregate?.aggregate.count = countLike.value;
+    post.notifyUpdate();
+    post.refresh();
+    Post.factory.addToCache(post);
   }
 
   Widget _buildPostActions() {
@@ -75,50 +72,55 @@ class PostItem extends StatelessWidget {
       children: [
         SizedBox(
           width: 60.w,
-          child: Row(
-            children: [
-              InkWell(
-                onTap: () => likeClick(),
-                child: Obx(
-                  () => MWIcon(
-                    isLiked.value ? MWIcons.react : MWIcons.unReact,
-                    size: MWIconSize.small,
+          child: InkWell(
+            onTap: () => likeClick(),
+            child: Row(
+              children: [
+                Obx(
+                  () {
+                    return MWIcon(
+                      post.updateSubject.isLiked! ? MWIcons.react : MWIcons.unReact,
+                      size: MWIconSize.small,
+                    );
+                  },
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                Obx(
+                  () => Text(
+                    "${post.updateSubject.postReactsCount ?? 0}",
+                    style: UITextStyle.black_14_w600,
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 5.w,
-              ),
-              Obx(
-                () => Text(
-                  "${countLike.value}",
-                  style: UITextStyle.black_14_w600,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         SizedBox(
           width: 30.w,
         ),
+        // onCommentClick?.call(post.id),/
         SizedBox(
           width: 60.w,
-          child: Row(
-            children: [
-              InkWell(
-                onTap: () => onCommentClick?.call(post.id),
-                child: MWIcon(
+          child: InkWell(
+            onTap: () => onCommentClick?.call(post),
+            child: Row(
+              children: [
+                MWIcon(
                   MWIcons.comment,
                 ),
-              ),
-              SizedBox(
-                width: 5.w,
-              ),
-              Text(
-                "${post.commentsAggregate?.aggregate.count ?? "0"}",
-                style: UITextStyle.black_14_w600,
-              ),
-            ],
+                SizedBox(
+                  width: 5.w,
+                ),
+                Obx(
+                  ()=> Text(
+                    "${post.updateSubject.postCommentsCount ?? 0}",
+                    style: UITextStyle.black_14_w600,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],

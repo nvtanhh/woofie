@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/injector.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_detail_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_shimmer.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
