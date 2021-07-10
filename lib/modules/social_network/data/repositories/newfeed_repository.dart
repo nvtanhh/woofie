@@ -50,4 +50,8 @@ class NewFeedRepository {
   Future<bool> deletePost(int post) {
     return _postDatasource.deletePost(post);
   }
+
+  Future<Post> refreshPost(int postId) {
+    return _postDatasource.getDetailPost(postId);
+  }
 }

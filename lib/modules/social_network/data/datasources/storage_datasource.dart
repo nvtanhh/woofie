@@ -32,15 +32,12 @@ class StorageDatasource {
     this._loggedInUser,
   );
 
-  Future<String?> getPresignedUrlForPostMedia(
-      String objectName, String postUuid) async {
+  Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {
     final userUuid = _loggedInUser.user!.uuid;
 
-    final String subFolder = _urlParser.parse(
-        POST_MEDIA_SUBFOLDER, {'user_uuid': userUuid, 'post_uuid': postUuid});
+    final String subFolder = _urlParser.parse(POST_MEDIA_SUBFOLDER, {'user_uuid': userUuid, 'post_uuid': postUuid});
 
-    return _getPresignedUrl(
-        '$subFolder/$objectName', POST_MEDIA_DEFAULT_BUCKET_NAME);
+    return _getPresignedUrl('$subFolder/$objectName', POST_MEDIA_DEFAULT_BUCKET_NAME);
   }
 
   Future<String?> _getPresignedUrl(String objectName, String bucketName) async {
@@ -52,8 +49,7 @@ class StorageDatasource {
     }
     """;
     final data = await _hasuraConnect.mutation(query);
-    final result =
-        GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
+    final result = GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
     return result['url'] as String;
   }
 
@@ -68,8 +64,7 @@ class StorageDatasource {
   Future addMediaToPost(List<UploadedMedia> medias, int postId) async {
     late String mediasData;
     if (medias.isNotEmpty) {
-      mediasData =
-          medias.map((e) => _mediaToJson(e, postId)).toList().toString();
+      mediasData = medias.map((e) => _mediaToJson(e, postId)).toList().toString();
     } else {
       mediasData = '[]';
     }

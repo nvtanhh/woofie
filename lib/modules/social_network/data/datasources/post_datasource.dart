@@ -2,7 +2,6 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
@@ -224,24 +223,36 @@ class PostDatasource {
 
   Future<Post> getDetailPost(int postId) async {
     final query = """
-    query MyQuery {
+    query getPostDetail {
       posts_by_pk(id: $postId) {
-        content
-        created_at
-        distance_user_to_post
         id
         uuid
+        content
+        type
         medias {
           id
-          type
           url
+          type
         }
-        status
-        type
-        location {
+        user {
           id
           name
+          avatar_url
         }
+        post_pets {
+          pet {
+            id
+            name
+            avatar_url
+          }
+        }
+        location {
+          id
+          lat
+          long
+          name
+        }
+        created_at
       }
     }
     """;
@@ -331,11 +342,7 @@ class PostDatasource {
 
   Future<Post?> getPostWithId(int postId) async {}
 
-  Future<Post> editPost(EditedPostData editedPostData) async {
-    const String query = "";
-    final data = await _hasuraConnect.mutation(query);
-    final postJson =
-        GetMapFromHasura.getMap(data as Map)["update_posts_by_pk"] as Map;
-    return Post.fromJson(postJson as Map<String, dynamic>);
+  Future<bool> editPost(EditedPostData editedPostData) async {
+    return false;
   }
 }

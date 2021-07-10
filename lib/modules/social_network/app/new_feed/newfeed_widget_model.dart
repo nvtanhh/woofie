@@ -20,6 +20,7 @@ import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/new_feed/refresh_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/delete_media_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/edit_post_usecase.dart';
@@ -40,6 +41,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   final EditPostUsecase _editPostUsecase;
   final DeletePostUsecase _deletePostUsecase;
   final LikePostUsecase _likePostUsecase;
+  final RefreshPostsUsecase _refreshPostsUsecase;
 
   List<Post> posts = [];
   late PagingController<int, Post> pagingController;
@@ -65,6 +67,7 @@ class NewFeedWidgetModel extends BaseViewModel {
     this._editPostUsecase,
     this._deletePostUsecase,
     this._likePostUsecase,
+    this._refreshPostsUsecase,
   ) {
     pagingController = PagingController(firstPageKey: 0);
   }
@@ -236,21 +239,32 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   Future onPostEdited(EditedPostData editedPostData) async {
-    if (editedPostData.deletedMedias != null &&
-        editedPostData.deletedMedias!.isNotEmpty) {
-      await _deleteMedia(editedPostData.deletedMedias!);
-    }
     if (editedPostData.newAddedFiles != null &&
         editedPostData.newAddedFiles!.isNotEmpty) {
       editedPostData.newAddedMedias = await _startUploadNewMediaFiles(
           editedPostData.newAddedFiles!, editedPostData.originPost);
     }
 
-    await call(
-      () async {
-        Post editedPost = await _editPostUsecase.call(editedPostData);
-      },
-    );
+    final bool isEditSuccessed = await _startEditPost(editedPostData);
+    if (isEditSuccessed) {
+      if (editedPostData.deletedMedias != null &&
+          editedPostData.deletedMedias!.isNotEmpty) {
+        await _deleteMedia(editedPostData.deletedMedias!);
+      }
+      _refreshPost(editedPostData.originPost.id);
+    } else {
+      _onPostEditFailed();
+    }
+  }
+
+  Future<bool> _startEditPost(EditedPostData editedPostData) async {
+    bool isEdited = false;
+    await call(() async {
+      isEdited = await _editPostUsecase.call(editedPostData);
+    }, onFailure: (error) {
+      printError(info: error.toString());
+    });
+    return isEdited;
   }
 
   Future _deleteMedia(List<Media> deletedMedias) async {
@@ -267,14 +281,16 @@ class NewFeedWidgetModel extends BaseViewModel {
     final List<MediaFile> compressMediaFiles = await Future.wait(newAddedFiles
         .map((file) async => _compressPostMediaItem(file))
         .toList());
-    final List<UploadedMedia?> storedMediaFiles = await Future.wait(
-        compressMediaFiles
-            .map((file) async => _storeMediaItem(file, oldPost))
-            .toList());
+    final List<UploadedMedia> storedMediaFiles = [];
 
-    storedMediaFiles.where((file) => file != null).toList();
+    for (final compressedFile in compressMediaFiles) {
+      final uploadedFile = await _storeMediaItem(compressedFile, oldPost);
+      if (uploadedFile != null) {
+        storedMediaFiles.add(uploadedFile);
+      }
+    }
 
-    return storedMediaFiles as List<UploadedMedia>;
+    return storedMediaFiles;
   }
 
   Future<MediaFile> _compressPostMediaItem(MediaFile postMediaItem) async {
@@ -324,5 +340,19 @@ class NewFeedWidgetModel extends BaseViewModel {
       }
     }
     throw Exception('Unsupported media type for post');
+  }
+
+  void _refreshPost(int postId) {
+    call(() => _refreshPostsUsecase.call(postId), onSuccess: () {
+      injector<ToastService>()
+          .success(message: 'Post updated!', context: Get.context!);
+    });
+  }
+
+  void _onPostEditFailed() {
+    injector<ToastService>().error(
+        message: 'Post update failed! Please try again latter.',
+        duration: const Duration(seconds: 2),
+        context: Get.context!);
   }
 }

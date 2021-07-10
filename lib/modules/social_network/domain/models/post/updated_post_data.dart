@@ -14,13 +14,7 @@ class EditedPostData {
 
   List<UploadedMedia>? newAddedMedias = [];
 
-  EditedPostData(
-      {required this.originPost,
-      this.newContent,
-      this.deletedMedias,
-      this.newAddedFiles,
-      this.taggedPets,
-      this.location});
+  EditedPostData({required this.originPost, this.newContent, this.deletedMedias, this.newAddedFiles, this.taggedPets, this.location});
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'origin_post': originPost.toJson(),

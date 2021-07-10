@@ -22,6 +22,5 @@ class UploadedMedia {
 
   UploadedMedia(this.uploadedUrl, this.type);
 
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{'url': uploadedUrl, 'type': type};
+  Map<String, dynamic> toJson() => <String, dynamic>{'url': uploadedUrl, 'type': type};
 }
