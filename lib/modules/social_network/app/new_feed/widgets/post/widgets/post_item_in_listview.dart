@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/ui/icon.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/images_view_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/images_view_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/info_user_post_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -21,7 +21,6 @@ class PostItemInListView extends StatelessWidget {
     this.onPostClick,
   }) : super(key: key) {
     post.isLiked ??= false;
-    post.notifyUpdate();
   }
 
   @override
@@ -32,7 +31,7 @@ class PostItemInListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InfoUserPostWidget(
-            pets: post.taggegPets!,
+            pets: post.taggegPets??[],
             postCreatedAt: post.createdAt!,
             user: post.creator!,
           ),
@@ -117,7 +116,6 @@ class PostItemInListView extends StatelessWidget {
     post.isLiked = !post.isLiked!;
     onLikeClick(post.id);
     post.notifyUpdate();
-    post.refresh();
     Post.factory.addToCache(post);
   }
 }

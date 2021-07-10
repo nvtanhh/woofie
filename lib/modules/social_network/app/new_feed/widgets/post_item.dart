@@ -2,25 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/ui/icon.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_header.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_body.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_header.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-
-import 'post_body.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;
   final Function(Post)? onCommentClick;
   final Function(int) onLikeClick;
   final Function(Post)? onPostClick;
-  final VoidCallback onEdidPost;
+  final VoidCallback onEditPost;
   final VoidCallback onDeletePost;
 
   PostItem({
     Key? key,
     required this.post,
     required this.onLikeClick,
-    required this.onEdidPost,
+    required this.onEditPost,
     required this.onDeletePost,
     this.onCommentClick,
     this.onPostClick,
@@ -34,7 +33,7 @@ class PostItem extends StatelessWidget {
         PostHeader(
           post: post,
           onDeletePost: onDeletePost,
-          onEditPost: onEdidPost,
+          onEditPost: onEditPost,
         ),
         InkWell(
           onTap: () => onPostClick?.call(post),
@@ -63,7 +62,6 @@ class PostItem extends StatelessWidget {
     post.isLiked = !post.isLiked!;
     onLikeClick(post.id);
     post.notifyUpdate();
-    post.refresh();
     Post.factory.addToCache(post);
   }
 
@@ -79,7 +77,7 @@ class PostItem extends StatelessWidget {
                 Obx(
                   () {
                     return MWIcon(
-                      post.updateSubject.isLiked! ? MWIcons.react : MWIcons.unReact,
+                      post.updateSubject.isLiked??false ? MWIcons.react : MWIcons.unReact,
                       size: MWIconSize.small,
                     );
                   },
@@ -114,7 +112,7 @@ class PostItem extends StatelessWidget {
                   width: 5.w,
                 ),
                 Obx(
-                  ()=> Text(
+                  () => Text(
                     "${post.updateSubject.postCommentsCount ?? 0}",
                     style: UITextStyle.black_14_w600,
                   ),

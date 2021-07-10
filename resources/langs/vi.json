@@ -50,7 +50,8 @@
     "like": "Thích",
     "no_comments_yet": "Chưa có bình luận nào",
     "edit_post": "Chỉnh sửa bài viết",
-    "delete_post": "Xoá bài viết"
+    "delete_post": "Xoá bài viết",
+    "report_post": "Báo cáo bài viết này"
   },
   "explore": {
     "search": "Tìm kiếm",
@@ -125,5 +126,8 @@
     "lose": " thất lạc ở gần khu vực của bạn",
     "tag": " đã nhắc đến bạn trong một bài viết",
     "like_comment": " đã thích bình luận của bạn"
+  },
+  "system": {
+    "comming_soon": "Tính năng này sẽ sớm ra mắt"
   }
 }

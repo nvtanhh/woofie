@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
@@ -55,9 +54,9 @@ class PostDetailWidgetModel extends BaseViewModel {
     super.initState();
   }
 
-  void checkNeedReloadPost() {
+  Future checkNeedReloadPost() async {
     if (post.creator == null) {
-      call(
+      await call(
         () async => post = await _getDetailPostUsecase.call(post.id),
         onSuccess: () {
           pagingController.addPageRequestListener((pageKey) {
@@ -65,14 +64,13 @@ class PostDetailWidgetModel extends BaseViewModel {
           });
         },
       );
+      return;
     }
-    {
-      pagingController.addPageRequestListener(
-        (pageKey) {
-          _loadComments(pageKey);
-        },
-      );
-    }
+    pagingController.addPageRequestListener(
+      (pageKey) {
+        _loadComments(pageKey);
+      },
+    );
   }
 
   void _loadComments(int pageKey) {

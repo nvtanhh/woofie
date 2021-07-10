@@ -78,7 +78,11 @@ class _PostDetailState extends BaseViewState<PostDetail, PostDetailWidgetModel> 
                       );
                     },
                     firstPageProgressIndicatorBuilder: (_) => Column(
-                      children: [ShimmerPage(), ShimmerCommentWidget()],
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // ShimmerPage(),
+                        ShimmerCommentWidget(),
+                      ],
                     ),
                     newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
                   ),

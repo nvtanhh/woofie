@@ -59,9 +59,7 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
     call(
       () async => user = _userStorage.get(),
       showLoading: false,
-      onSuccess: () {
-
-      },
+      onSuccess: () {},
     );
   }
 
@@ -92,13 +90,7 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   }
 
   void onLikeCommentClick(int idComment) {
-    call(
-      () => _likeCommentUsecase.call(idComment),
-      showLoading: false,
-      onSuccess: (){
-
-      }
-    );
+    call(() => _likeCommentUsecase.call(idComment), showLoading: false, onSuccess: () {});
   }
 
   @override

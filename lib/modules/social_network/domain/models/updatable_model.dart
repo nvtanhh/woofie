@@ -8,17 +8,18 @@ abstract class UpdatableModel<T> {
   final int? id;
 
   T get updateSubject => _updateChangeSubject.value as T;
-  Rxn<T> get rxUpdateSubject =>_updateChangeSubject;
+  Rxn<T> get rxUpdateSubject => _updateChangeSubject;
   final Rxn<T> _updateChangeSubject = Rxn<T>();
 
-  UpdatableModel({this.id});
+  UpdatableModel({this.id}) {
+    notifyUpdate();
+  }
 
   void notifyUpdate() {
     _updateChangeSubject.value = this as T;
-  }
-  void refresh(){
     _updateChangeSubject.refresh();
   }
+
   void update(Map json) {
     updateFromJson(json);
     notifyUpdate();

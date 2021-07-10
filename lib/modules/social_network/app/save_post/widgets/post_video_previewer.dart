@@ -72,6 +72,7 @@ class PostVideoPreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
+        heroTag: Key('postVideoPreviewerRemoveButton${postVideoFile?.path}${postVideo?.url}'),
         onPressed: onRemove,
         backgroundColor: Colors.black54,
         child: const MWIcon(
@@ -88,6 +89,7 @@ class PostVideoPreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
+        heroTag: Key('postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}'),
         backgroundColor: Colors.black54,
         onPressed: () => _onWantsToPlay(context),
         child: const Icon(

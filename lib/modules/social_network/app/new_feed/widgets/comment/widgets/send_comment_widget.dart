@@ -13,7 +13,7 @@ class SendCommentWidget extends StatelessWidget {
   final TextEditingController commentEditingController;
   final Function onSendComment;
 
-  const   SendCommentWidget({
+  const SendCommentWidget({
     Key? key,
     required this.user,
     required this.commentEditingController,
