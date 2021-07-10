@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
@@ -34,7 +33,7 @@ class StorageDatasource {
   );
 
   Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {
-    final userUuid = _loggedInUser.loggedInUser!.uuid;
+    final userUuid = _loggedInUser.user!.uuid;
 
     final String subFolder = _urlParser.parse(POST_MEDIA_SUBFOLDER, {'user_uuid': userUuid, 'post_uuid': postUuid});
 

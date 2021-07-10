@@ -7,14 +7,14 @@ part 'media.g.dart';
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Media {
   @JsonKey(name: "id")
-  int? id;
+  int id;
   @JsonKey(name: "url")
   String? url;
   @JsonKey(name: "type")
   MediaType? type;
 
   Media({
-    this.id,
+    required this.id,
     this.url,
     this.type,
   });

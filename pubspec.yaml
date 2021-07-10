@@ -62,7 +62,7 @@ dependencies:
   email_validator: ^2.0.1
 
   # The hasura_connect is designed to facilitate Hasura's integration with Flutter applications, leveraging the full power of Graphql.
-  hasura_connect: ^3.0.2
+  hasura_connect: ^3.0.4
 
   # A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
   firebase_core: ^1.1.1
@@ -171,6 +171,13 @@ dependencies:
 
   #The official BottomAppBar can only display a notch FAB with app bar, sometimes we need a convex FAB.
   convex_bottom_bar: ^3.0.0
+
+  #A flutter library to show images from the internet and keep them in the cache directory.
+  cached_network_image: ^3.0.0
+
+  #On most operating systems, permissions aren't just granted to apps at install time.
+  permission_handler: 8.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

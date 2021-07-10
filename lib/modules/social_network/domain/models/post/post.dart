@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/aggregate/object_aggregate.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -12,7 +14,7 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 part 'post.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Post extends UpdatableModel {
+class Post extends UpdatableModel<Post> {
   @JsonKey(name: "id")
   final int id;
   @JsonKey(name: "uuid")
@@ -29,8 +31,12 @@ class Post extends UpdatableModel {
   PostType type;
   @JsonKey(name: "user")
   User? creator;
+  @JsonKey(name: "is_my_post")
+  bool? _isMyPost;
   @JsonKey(name: "is_liked")
   bool? isLiked;
+  @JsonKey(name: "reactions_counts")
+  int? reactionsCounts;
   @JsonKey(name: "comments")
   List<Comment>? comments;
   @JsonKey(name: "post_pets", fromJson: allPetsFromJson)
@@ -39,14 +45,16 @@ class Post extends UpdatableModel {
   List<Media>? medias;
   @JsonKey(name: "location")
   Location? location;
-  @JsonKey(
-    name: "status",
-  )
+  @JsonKey(name: "status")
   PostStatus? status;
   @JsonKey(name: "distance_user_to_post")
   double? distanceUserToPost;
-  @JsonKey(name: "post_reacts_aggregate")
-  ObjectAggregate? postReactsAggregate;
+  @JsonKey(name: "post_reacts_aggregate", fromJson: aggregateCountFromJson)
+  int? postReactsCount;
+  @JsonKey(name: "comments_aggregate", fromJson: aggregateCountFromJson)
+  int? postCommentsCount;
+  @JsonKey(name: "medias_aggregate", fromJson: aggregateCountFromJson)
+  int? postMediasCount;
 
   Post({
     required this.id,
@@ -67,11 +75,34 @@ class Post extends UpdatableModel {
     return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
   }
 
-  @JsonKey(name: "comments_aggregate")
-  ObjectAggregate? commentsAggregate;
+  static int? aggregateCountFromJson(Map? json) {
+    if (json == null) return null;
+    return ObjectAggregate.fromJson(json as Map<String, dynamic>).aggregate.count;
+  }
 
-  @JsonKey(name: "medias_aggregate")
-  ObjectAggregate? mediasAggregate;
+  void increasePostReactsCount({int value = 1}) {
+    postReactsCount = (postReactsCount ?? 0) + value;
+  }
+
+  void increasePostCommentsCount({int value = 1}) {
+    postCommentsCount = (postCommentsCount ?? 0) + value;
+  }
+
+  void increasePostMediasCount({int value = 1}) {
+    postMediasCount = (postMediasCount ?? 0) + value;
+  }
+
+  void decreasePostReactsCount({int value = 1}) {
+    postReactsCount = (postReactsCount ?? 1) - value;
+  }
+
+  void decreasePostCommentsCount({int value = 1}) {
+    postCommentsCount = (postCommentsCount ?? 1) - value;
+  }
+
+  void decreasePostMediasCount({int value = 1}) {
+    postMediasCount = (postMediasCount ?? 1) - value;
+  }
 
   factory Post.fromJsonString(String jsonString) => Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
@@ -85,6 +116,8 @@ class Post extends UpdatableModel {
     return factory.fromJson(json);
   }
 
+  bool get isMyPost => _isMyPost ?? injector<LoggedInUser>().isMyPost(this);
+
   @override
   void updateFromJson(Map json) {
     if (json['user'] != null) {
@@ -92,9 +125,6 @@ class Post extends UpdatableModel {
     }
     if (json['type'] != null) {
       type = _$enumDecode(_$PostTypeEnumMap, json['type']);
-    }
-    if (json['uuid'] != null) {
-      creatorUUID = json['uuid'] as String;
     }
     if (json['creator_uuid'] != null) {
       creatorUUID = json['creator_uuid'] as String;
@@ -130,13 +160,13 @@ class Post extends UpdatableModel {
       distanceUserToPost = json['distance_user_to_post'] as double;
     }
     if (json['post_reacts_aggregate'] != null) {
-      postReactsAggregate = ObjectAggregate.fromJson(json["post_reacts_aggregate"] as Map<String, dynamic>);
+      postReactsCount = aggregateCountFromJson(json["post_reacts_aggregate"] as Map<String, dynamic>);
     }
     if (json['comments_aggregate'] != null) {
-      commentsAggregate = ObjectAggregate.fromJson(json["comments_aggregate"] as Map<String, dynamic>);
+      postCommentsCount = aggregateCountFromJson(json["comments_aggregate"] as Map<String, dynamic>);
     }
     if (json['medias_aggregate'] != null) {
-      mediasAggregate = ObjectAggregate.fromJson(json["medias_aggregate"] as Map<String, dynamic>);
+      postMediasCount = aggregateCountFromJson(json["medias_aggregate"] as Map<String, dynamic>);
     }
   }
 }

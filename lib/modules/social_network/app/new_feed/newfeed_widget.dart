@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,8 +44,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                     onCommentClick: viewModel.onCommentClick,
                     onLikeClick: viewModel.onLikeClick,
                     onPostClick: viewModel.onPostClick,
-                    onDeletePost: () => viewModel.onDeletePost(item, index),
-                    onEdidPost: () => viewModel.onPostEdited(item),
+                    onDeletePost: () => viewModel.onPostDeleted(index),
+                    onEditPost: () => viewModel.onWantsToEditPost(item),
                   ),
                 ),
               ),

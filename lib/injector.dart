@@ -10,6 +10,7 @@ import 'package:logger/logger.dart';
 import 'package:meowoof/configs/app_config.dart';
 import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/interceptors/jwt_interceptor.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

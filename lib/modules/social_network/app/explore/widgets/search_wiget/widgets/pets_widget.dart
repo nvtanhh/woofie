@@ -28,7 +28,7 @@ class PetsWidget extends StatelessWidget {
             child: Row(
               children: [
                 ImageWithPlaceHolderWidget(
-                  imageUrl: pet.avatar?.url ?? "",
+                  imageUrl: pet.avatarUrl ?? "",
                   width: 117.w,
                   height: 152.h,
                   radius: 10.r,

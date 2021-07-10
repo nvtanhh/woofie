@@ -13,7 +13,7 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/commons/shimmer_page.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget_model.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/widgets/card_detail_widget.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/images_view_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/images_view_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -51,7 +51,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                   alignment: Alignment.topCenter,
                   children: [
                     ImagesViewWidget(
-                      medias: viewModel.post.medias ?? [Media(id: 0, url: viewModel.pet?.avatar?.url ?? "", type: MediaType.image)],
+                      medias: viewModel.post.medias ?? [Media(id: 0, url: viewModel.pet?.avatarUrl ?? "", type: MediaType.image)],
                       height: Get.height / 2,
                       fit: BoxFit.cover,
                     ),
@@ -152,7 +152,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                             ListTile(
                               contentPadding: const EdgeInsets.symmetric(),
                               leading: MWAvatar(
-                                avatarUrl: viewModel.post.creator?.avatar?.url,
+                                avatarUrl: viewModel.post.creator?.avatarUrl,
                                 borderRadius: 10.r,
                               ),
                               title: Text(

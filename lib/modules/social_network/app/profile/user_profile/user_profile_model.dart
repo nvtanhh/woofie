@@ -8,7 +8,7 @@ import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_detail_widget.dart';
 import 'package:meowoof/modules/social_network/app/save_post/save_post.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -54,7 +54,7 @@ class UserProfileModel extends BaseViewModel {
   void initState() {
     if (user == null) {
       isMe = true;
-      user = injector<LoggedInUser>().loggedInUser;
+      user = injector<LoggedInUser>().user;
     }
     _cancelableOperationLoadInit = CancelableOperation.fromFuture(initData());
     super.initState();
@@ -77,17 +77,17 @@ class UserProfileModel extends BaseViewModel {
   Future _loadMorePost(int pageKey) async {
     try {
       posts = await _getPostOfUserUsecase.call(userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
-      if (pagingController.itemList == null) {
-        posts.insert(
-          0,
-          Post(
-            id: 0,
-            uuid: '',
-            creator: User(id: 0),
-            type: PostType.activity,
-          ),
-        );
-      }
+      // if (pagingController.itemList == null) {
+      //   posts.insert(
+      //     0,
+      //     Post(
+      //       id: 0,
+      //       uuid: '',
+      //       creator: User(id: 0),
+      //       type: PostType.activity,
+      //     ),
+      //   );
+      // }
       final isLastPage = posts.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(posts);
@@ -134,8 +134,8 @@ class UserProfileModel extends BaseViewModel {
     });
   }
 
-  void onCommentClick(int idPost) {
-    _bottomSheetService.showComments(idPost);
+  void onCommentClick(Post post) {
+    _bottomSheetService.showComments(post);
   }
 
   void onUserBlock(User user) {}

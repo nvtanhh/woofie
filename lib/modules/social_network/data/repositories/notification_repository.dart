@@ -21,7 +21,7 @@ class NotificationRepository {
     return _notificationDatasource.countNotificationUnread();
   }
 
-  Future readAllNotification() {
+  Future<int?> readAllNotification() {
     return _notificationDatasource.readAllNotification();
   }
 }

@@ -2,8 +2,10 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 
 @lazySingleton
 class PostDatasource {
@@ -19,35 +21,31 @@ class PostDatasource {
   Future<List<Comment>> getCommentsInPost(int postId, int limit, int offset) async {
     final query = """
     query MyQuery {
-  comments(where: {post_id: {_eq: $postId}}, order_by: {created_at: desc}, offset: $offset, limit: $limit) {
-    comment_reacts_aggregate {
-      aggregate {
-        count
-      }
-    }
-    comment_tag_users {
-      user {
-        name
-        uuid
+      comments(where: {post_id: {_eq: $postId}}, order_by: {created_at: desc}, offset: $offset, limit: $limit) {
+        comment_reacts_aggregate {
+          aggregate {
+            count
+          }
+        }
+        comment_tag_users {
+          user {
+            name
+            uuid
+            id
+          }
+        }
+        content
         id
+        is_liked
+        created_at
+        user {
+          avatar_url
+          id
+          name
+          uuid
+        }
       }
     }
-    content
-    id
-    is_liked
-    created_at
-    user {
-      avatar {
-        url
-        type
-        id
-      }
-      id
-      name
-      uuid
-    }
-  }
-}
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["comments"] as List;
@@ -57,11 +55,11 @@ class PostDatasource {
   Future<bool> likePost(int idPost) async {
     final mutation = """
     mutation MyMutation {
-  likePost(post_id: "$idPost") {
-    id
-  }
-  }
-""";
+      likePost(post_id: "$idPost") {
+        id
+      }
+    }
+    """;
     final data = await _hasuraConnect.mutation(mutation);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["likePost"] as Map;
     return int.tryParse("${affectedRows["id"]}") != null;
@@ -79,6 +77,8 @@ class PostDatasource {
         id
         uuid
         is_liked
+        is_my_post
+        reactions_counts
         medias {
           id
           type
@@ -106,10 +106,7 @@ class PostDatasource {
           bio
           id
           name
-          avatar {
-            type
-            url
-          }
+          avatar_url
           uuid
         }
       }
@@ -124,7 +121,7 @@ class PostDatasource {
     final query = """
   query MyQuery {
   posts(limit: $limit, offset: $offset, where: {post_pets: {pet_id: {_eq: $petId}}}, order_by: {created_at: asc}) {
-  content created_at creator_uuid id is_closed is_liked uuid
+  content created_at creator_uuid id is_closed is_liked is_my_post reactions_counts uuid
   medias { id type url }
   post_reacts_aggregate { aggregate { count } } 
   type post_pets { pet { name id } }
@@ -143,21 +140,22 @@ class PostDatasource {
         ? ""
         : 'location: {data: {long: "${post.location?.long}", lat: "${post.location?.lat}", name: "${post.location?.name ?? ""}"}},';
     final manution = """
-  mutation MyMutation {
-  insert_posts_one(object: {content: "${post.content?.trim()}",$location medias: {data: ${post.medias?.toString() ?? "[]"}}, type: "${post.type.index}", post_pets: {data: $listPetTag}}) {
-     content
-    created_at
-    distance_user_to_post
-    id
-    medias {
-      id
-      type
-      url
+    mutation MyMutation {
+      insert_posts_one(object: {content: "${post.content?.trim()}",$location medias: {data: ${post.medias?.toString() ?? "[]"}}, type: "${post.type.index}", post_pets: {data: $listPetTag}}) {
+        content
+        created_at
+        distance_user_to_post
+        id
+        medias {
+          id
+          type
+          url
+        }
+        status
+        type
+      }
     }
-    status
-    type
-  }}
-""";
+    """;
     final data = await _hasuraConnect.mutation(manution);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
     return Post.fromJson(affectedRows as Map<String, dynamic>);
@@ -179,31 +177,27 @@ class PostDatasource {
 
   Future<List<Post>> getPostByType(PostType postType, int distance, int limit, int offset) async {
     final query = """
-query MyQuery {
-  get_posts_by_type(args: {post_type: ${postType.index}, distance_kms: $distance }, order_by: {created_at: desc}, limit: $limit, offset: $offset) {
-    id
-    type
-    uuid
-    post_pets {
-      pet {
-        avatar {
-          type
-          url
-          id
-        }
-        pet_breed {
-          name
-          id
-        }
+    query MyQuery {
+      get_posts_by_type(args: {post_type: ${postType.index}, distance_kms: $distance }, order_by: {created_at: desc}, limit: $limit, offset: $offset) {
         id
-        dob
-        gender
-        name
+        type
+        uuid
+        post_pets {
+          pet {
+            avatar_url
+            pet_breed {
+              name
+              id
+            }
+            id
+            dob
+            gender
+            name
+          }
+        }
+        distance_user_to_post
       }
     }
-    distance_user_to_post
-  }
-}
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["get_posts_by_type"] as List;
@@ -213,25 +207,25 @@ query MyQuery {
   Future<Post> getDetailPost(int postId) async {
     final query = """
     query MyQuery {
-  posts_by_pk(id: $postId) {
-    content
-    created_at
-    distance_user_to_post
-    id
-    uuid
-    medias {
-      id
-      type
-      url
+      posts_by_pk(id: $postId) {
+        content
+        created_at
+        distance_user_to_post
+        id
+        uuid
+        medias {
+          id
+          type
+          url
+        }
+        status
+        type
+        location {
+          id
+          name
+        }
+      }
     }
-    status
-    type
-    location {
-      id
-      name
-    }
-  }
-}
     """;
     final data = await _hasuraConnect.query(query);
     final post = GetMapFromHasura.getMap(data as Map)["posts_by_pk"] as Map<String, dynamic>;
@@ -241,7 +235,7 @@ query MyQuery {
   Future<Post> createDraftPost(NewPostData newPostData) async {
     const draftPostStatus = 0;
 
-    final listPetTag = newPostData.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
+    final taggedPets = newPostData.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
 
     final location = newPostData.location == null
         ? ""
@@ -249,7 +243,7 @@ query MyQuery {
 
     final String manution = """
     mutation MyMutation {
-      insert_posts_one(object: {uuid: "${newPostData.newPostUuid}", content: "${newPostData.content}", type: ${newPostData.type.index}, $location status: $draftPostStatus, post_pets: {data: $listPetTag}}) {
+      insert_posts_one(object: {uuid: "${newPostData.newPostUuid}", content: "${newPostData.content}", type: ${newPostData.type.index}, $location status: $draftPostStatus, post_pets: {data: $taggedPets}}) {
         id
         uuid
         content
@@ -287,21 +281,13 @@ query MyQuery {
         user {
           id
           name
-          avatar {
-            id
-            url
-            type
-          }
+          avatar_url
         }
         post_pets {
           pet {
             id
             name
-            avatar {
-              id
-              url
-              type
-            }
+            avatar_url
           }
         }
         location {
@@ -322,4 +308,61 @@ query MyQuery {
   Future<PostStatus?> getPostStatusWithId(int postId) async {}
 
   Future<Post?> getPostWithId(int postId) async {}
+
+  Future<Post> editPost(EditedPostData editedPostData) async {
+    late String mediasData;
+    if (editedPostData.uploadedMediasToAddToPost.isNotEmpty) {
+      mediasData = editedPostData.uploadedMediasToAddToPost.map((e) => _mediaToJson(e, editedPostData.oldPost.id)).toList().toString();
+    } else {
+      mediasData = '[]';
+    }
+
+    final taggedPets = editedPostData.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
+
+    final location = editedPostData.location == null
+        ? ""
+        : 'location: {data: {long: "${editedPostData.location?.long}", lat: "${editedPostData.location?.lat}", name: "${editedPostData.location?.name}"}},';
+
+    final String query = """
+    mutation MyMutation {
+      update_posts_by_pk(pk_columns: {id: ${editedPostData.oldPost.id}}, _set: {content: "${editedPostData.content}"}) {
+        id
+        uuid
+        content
+        type
+        medias {
+          id
+          url
+          type
+        }
+        user {
+          id
+          name
+          avatar_url
+        }
+        post_pets {
+          pet {
+            id
+            name
+            avatar_url
+          }
+        }
+        location {
+          id
+          lat
+          long
+          name
+        }
+        created_at
+      }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(query);
+    final postJson = GetMapFromHasura.getMap(data as Map)["update_posts_by_pk"] as Map;
+    return Post.fromJson(postJson as Map<String, dynamic>);
+  }
+
+  String _mediaToJson(MediaFileUploader file, int id) {
+    return '{post_id: $id, url: "${file.uploadedUrl}", type: ${file.type}}';
+  }
 }

@@ -7,26 +7,26 @@ import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
-import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_pets_of_user_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class SavePostModel extends BaseViewModel {
   final GetPetsOfUserUsecase _getPetsOfUserUsecase;
-  final CreatePostUsecase _createPostUsecase;
   late TextEditingController contentController;
   User? _user;
   late final Rx<PostType> _postType = PostType.activity.obs;
   final RxList<MediaFile> _files = <MediaFile>[].obs;
+  final RxList<Media> _postMedia = <Media>[].obs;
   final RxBool _isDisable = true.obs;
   final RxList<Pet> _taggedPets = <Pet>[].obs;
   Post? post;
@@ -34,40 +34,46 @@ class SavePostModel extends BaseViewModel {
   Placemark? currentPlacemark;
   RxBool isLoadingAddress = false.obs;
   Position? currentPosition;
-  final ToastService _toastService;
 
   late bool isPostEditing;
 
+  final List<Media> _deletedMedia = [];
+
   SavePostModel(
     this._getPetsOfUserUsecase,
-    this._createPostUsecase,
-    this._toastService,
   );
 
   @override
   void initState() {
     super.initState();
-    _user = injector<LoggedInUser>().loggedInUser;
-    _postType.value = post != null ? post!.type : PostType.activity;
+    _user = injector<LoggedInUser>().user;
+    _postType.value = post?.type ?? PostType.activity;
     _files.stream.listen(onFilesChanged);
     _taggedPets.addAll(post?.taggegPets ?? []);
+    _postMedia.addAll(post?.medias ?? []);
     contentController = TextEditingController();
     contentController.addListener(onTextChanged);
     contentController.text = post?.content ?? "";
     getPetsOfUser();
   }
 
+  @override
+  void disposeState() {
+    contentController.dispose();
+    super.disposeState();
+  }
+
   Future getPetsOfUser() async {
     await call(
       () async => user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
       showLoading: false,
-      onSuccess: () {
-        printInfo(info: user?.currentPets.toString() ?? "deo co gif");
-      },
+      onSuccess: () {},
     );
   }
 
   Future onPostTypeChosen(PostType chosenType) async {
+    if (isPostEditing) return;
+
     _postType.value = chosenType;
     // ignore: unrelated_type_equality_checks
     if (_postType != PostType.activity && currentPlacemark == null) {
@@ -127,9 +133,11 @@ class SavePostModel extends BaseViewModel {
     _isDisable.value = value;
   }
 
-  List<MediaFile> get files => _files;
+  List<MediaFile> get addedMediaFiles => _files;
 
-  set files(List<MediaFile> value) {
+  List<Media> get postMedias => _postMedia;
+
+  set addedMediaFiles(List<MediaFile> value) {
     _files.assignAll(value);
   }
 
@@ -185,12 +193,6 @@ class SavePostModel extends BaseViewModel {
     await injector<DialogService>().showPermisstionDialog();
   }
 
-  @override
-  void disposeState() {
-    contentController.dispose();
-    super.disposeState();
-  }
-
   void onWantsToContinue() {
     if (isPostEditing) {
       _onSavePost();
@@ -199,7 +201,23 @@ class SavePostModel extends BaseViewModel {
     }
   }
 
-  void _onSavePost() {}
+  void _onSavePost() {
+    final EditedPostData editedPostData = EditedPostData(
+      oldPost: post!,
+      content: contentController.text,
+      taggegPets: taggedPets,
+      newAddedFiles: mediaFiles,
+      deletedMedias: _deletedMedia,
+      location: currentPosition == null
+          ? null
+          : Location(
+              long: currentPosition!.longitude,
+              lat: currentPosition!.latitude,
+              name: currentAddress.value,
+            ),
+    );
+    Get.back(result: editedPostData);
+  }
 
   void _onCreateNewPost() {
     final NewPostData newPostData = NewPostData(
@@ -211,19 +229,16 @@ class SavePostModel extends BaseViewModel {
           ? null
           : Location(
               long: currentPosition!.longitude,
-              lat: currentPosition!.longitude,
+              lat: currentPosition!.latitude,
               name: currentAddress.value,
             ),
     );
 
     Get.back(result: newPostData);
+  }
 
-    // call(
-    //   () async => post = await _createPostUsecase.call(post!),
-    //   onSuccess: () {
-    //     _toastService.success(
-    //         message: "Add post success", context: Get.context!);
-    //   },
-    // );
+  void onRemovePostMedia(Media media) {
+    _postMedia.remove(media);
+    _deletedMedia.add(media);
   }
 }

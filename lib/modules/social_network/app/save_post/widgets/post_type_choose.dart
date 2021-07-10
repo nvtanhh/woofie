@@ -23,9 +23,9 @@ class PostTypeChoseWidget extends StatelessWidget {
               ),
               border: Border.all(
                 width: 0.5,
-                color: _getBoderColorByType(chosenPostType),
+                color: getBoderColorByType(chosenPostType),
               ),
-              color: _getBackgroundColorByType(chosenPostType),
+              color: getBackgroundColorByType(chosenPostType),
             ),
           ),
         ),
@@ -36,7 +36,7 @@ class PostTypeChoseWidget extends StatelessWidget {
             icon: MWIcon(
               MWIcons.arrowDown,
               size: MWIconSize.small,
-              color: _getTextColorByType(chosenPostType),
+              color: getTextColorByType(chosenPostType),
             ),
             underline: const SizedBox(),
             value: chosenPostType,
@@ -54,13 +54,13 @@ class PostTypeChoseWidget extends StatelessWidget {
     return DropdownMenuItem(
       value: type,
       child: Text(
-        _getPostTypeTile(type),
-        style: UITextStyle.body_12_medium.apply(color: _getTextColorByType(type)),
+        getPostTypeTile(type),
+        style: UITextStyle.body_12_medium.apply(color: getTextColorByType(type)),
       ),
     );
   }
 
-  String _getPostTypeTile(PostType? type) {
+  static String getPostTypeTile(PostType? type) {
     switch (type) {
       case PostType.activity:
         return 'Activity';
@@ -75,7 +75,7 @@ class PostTypeChoseWidget extends StatelessWidget {
     }
   }
 
-  Color _getBoderColorByType(PostType? type) {
+  static Color getBoderColorByType(PostType? type) {
     switch (type) {
       case PostType.activity:
         return UIColor.textSecondary;
@@ -90,7 +90,7 @@ class PostTypeChoseWidget extends StatelessWidget {
     }
   }
 
-  Color _getTextColorByType(PostType type) {
+  static Color getTextColorByType(PostType type) {
     switch (type) {
       case PostType.activity:
         return UIColor.textBody;
@@ -105,7 +105,7 @@ class PostTypeChoseWidget extends StatelessWidget {
     }
   }
 
-  Color _getBackgroundColorByType(PostType type) {
+  static Color getBackgroundColorByType(PostType type) {
     switch (type) {
       case PostType.activity:
         return UIColor.white;

@@ -132,6 +132,7 @@ class MWIcons {
   static const checkCircle = MWIconData(nativeIcon: Icons.radio_button_unchecked);
   static const delete = MWIconData(nativeIcon: Icons.delete_rounded);
   static const edit = MWIconData(nativeIcon: Icons.edit);
+  static const report = MWIconData(nativeIcon: Icons.report);
   static const arrowDown = MWIconData(nativeIcon: Icons.keyboard_arrow_down_rounded);
   static const warning = MWIconData(nativeIcon: Icons.warning_amber_outlined);
   static const block = MWIconData(nativeIcon: Icons.person_remove_alt_1_outlined);

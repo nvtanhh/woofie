@@ -7,14 +7,17 @@ import 'package:get/get.dart';
 abstract class UpdatableModel<T> {
   final int? id;
 
-  Rxn<T> get updateSubject => _updateChangeSubject;
-
+  T get updateSubject => _updateChangeSubject.value as T;
+  Rxn<T> get rxUpdateSubject => _updateChangeSubject;
   final Rxn<T> _updateChangeSubject = Rxn<T>();
 
-  UpdatableModel({this.id});
+  UpdatableModel({this.id}) {
+    notifyUpdate();
+  }
 
   void notifyUpdate() {
     _updateChangeSubject.value = this as T;
+    _updateChangeSubject.refresh();
   }
 
   void update(Map json) {
@@ -52,6 +55,7 @@ abstract class UpdatableModelFactory<T extends UpdatableModel> {
     }
 
     item = makeFromJson(json);
+    item.notifyUpdate();
     addToCache(item as T);
     return item;
   }

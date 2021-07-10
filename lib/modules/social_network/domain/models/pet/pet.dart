@@ -52,26 +52,27 @@ class Pet extends UpdatableModel {
   List<PetVaccinated>? petVaccinates;
   @JsonKey(name: "pet_weights")
   List<PetWeight>? petWeights;
-
-  Pet({
-    required this.id,
-    this.name,
-    this.petTypeId,
-    this.gender,
-    this.dob,
-    this.avatar,
-    this.currentOwnerUuid,
-    this.currentOwner,
-    this.allOwners,
-    this.petType,
-    this.petBreed,
-    this.petBreedId,
-    this.bio,
-    this.isFollowing,
-    this.petVaccinates,
-    this.petWormFlushes,
-    this.petWeights,
-  });
+  @JsonKey(name: "avatar_url")
+  String? avatarUrl;
+  Pet(
+      {required this.id,
+      this.name,
+      this.petTypeId,
+      this.gender,
+      this.dob,
+      this.avatar,
+      this.currentOwnerUuid,
+      this.currentOwner,
+      this.allOwners,
+      this.petType,
+      this.petBreed,
+      this.petBreedId,
+      this.bio,
+      this.isFollowing,
+      this.petVaccinates,
+      this.petWormFlushes,
+      this.petWeights,
+      this.avatarUrl});
 
   factory Pet.fromJson(Map<String, dynamic> json) => _$PetFromJson(json);
 
@@ -140,6 +141,9 @@ class Pet extends UpdatableModel {
     }
     if (json['pet_weights'] != null) {
       petWeights = (json['pet_weights'] as List<dynamic>?)?.map((e) => PetWeight.fromJson(e as Map<String, dynamic>)).toList();
+    }
+    if (json['avatar_url'] != null) {
+      avatarUrl = json['avatar_url'] as String;
     }
   }
 }

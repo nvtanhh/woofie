@@ -57,16 +57,12 @@ class PetDatasource {
     }
     final mutationInsertPet = """
     mutation MyMutation {
-    insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar: {data: {url: "${pet.avatar?.url ?? ""}"}},current_owner_uuid:"$userUUID"}) {
+    insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar: {data: {url: "${pet.avatarUrl ?? ""}"}},current_owner_uuid:"$userUUID",avatar_url:"${pet.avatarUrl ?? ""}"}) {
     id
     name
     dob
     bio
-    avatar {
-      id
-      url
-      type
-    }
+    avatar_url
     pet_breed_id
     pet_type_id
   }}
@@ -166,10 +162,7 @@ mutation MyMutation {
     final query = """
     query MyQuery {
   pets(limit: 1, where: {id: {_eq: $idPet}}) {
-    avatar {
-      url
-      id
-    }
+    avatar_url
     bio
     dob
     gender
@@ -238,11 +231,7 @@ query MyQuery {
     bio
     name
     id
-    avatar {
-      url
-      type
-      id
-    }
+    avatar_url
   }
 }
     """;

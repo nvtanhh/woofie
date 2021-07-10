@@ -34,11 +34,7 @@ class UserDatasource {
         id
         uuid
         name
-        avatar {
-          id
-          url
-          type
-        }
+        avatar_url
         bio
         email
         dob
@@ -48,11 +44,7 @@ class UserDatasource {
           name
           gender
           bio
-          avatar {
-            id
-            type
-            url
-          }
+          avatar_url
         }
       }
     }

@@ -21,8 +21,6 @@ class JwtInterceptor extends Interceptor {
       printError(info: request.message);
       return;
     }
-    printInfo(info: jwtToken?.substring(0, ((jwtToken?.length ?? 0) / 2).floor() + 3) ?? "");
-    printInfo(info: jwtToken?.substring(((jwtToken?.length ?? 0) / 2).floor(), jwtToken?.length ?? 0) ?? "");
     printError(info: request.message);
   }
 
@@ -41,13 +39,11 @@ class JwtInterceptor extends Interceptor {
   Future? onRequest(Request request) async {
     jwtToken = null;
     jwtToken = await auth.currentUser?.getIdToken();
+    printInfo(info: jwtToken?.substring(0, ((jwtToken?.length ?? 0) / 2).floor() + 3) ?? "");
+    printInfo(info: jwtToken?.substring(((jwtToken?.length ?? 0) / 2).floor(), jwtToken?.length ?? 0) ?? "");
     if (jwtToken != null) {
-      try {
-        request.headers["Authorization"] = "Bearer $jwtToken";
-        return request;
-      } catch (e) {
-        await Get.offAll(WelcomeWidget());
-      }
+      request.headers["Authorization"] = "Bearer $jwtToken";
+      return request;
     } else {
       await Get.offAll(WelcomeWidget());
     }

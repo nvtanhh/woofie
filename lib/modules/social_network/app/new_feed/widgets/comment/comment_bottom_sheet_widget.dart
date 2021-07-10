@@ -11,16 +11,17 @@ import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widg
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/shimmer_comment_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
 class CommentBottomSheetWidget extends StatefulWidget {
-  final int postId;
+  final Post post;
 
   const CommentBottomSheetWidget({
     Key? key,
-    required this.postId,
+    required this.post,
   }) : super(key: key);
 
   @override
@@ -30,7 +31,7 @@ class CommentBottomSheetWidget extends StatefulWidget {
 class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWidget, CommentBottomSheetWidgetModel> {
   @override
   void loadArguments() {
-    viewModel.postId = widget.postId;
+    viewModel.post = widget.post;
     super.loadArguments();
   }
 

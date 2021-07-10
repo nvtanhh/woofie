@@ -28,20 +28,12 @@ class User extends UpdatableModel<User> {
   List<Pet>? allPets;
   @JsonKey(name: "avatar")
   Media? avatar;
+  @JsonKey(name: "avatar_url")
+  String? avatarUrl;
   @JsonKey(name: "dob")
   DateTime? dob;
 
-  User({
-    required this.id,
-    this.uuid,
-    this.name,
-    this.phoneNumber,
-    this.email,
-    this.currentPets,
-    this.avatar,
-    this.bio,
-    this.dob,
-  });
+  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob, this.avatarUrl});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
@@ -82,6 +74,9 @@ class User extends UpdatableModel<User> {
     }
     if (json['dob'] != null) {
       dob = json['dob'] == null ? null : DateTime.parse(json['dob'] as String);
+    }
+    if (json['avatar_url'] != null) {
+      avatarUrl = json['avatar_url'] as String;
     }
   }
 

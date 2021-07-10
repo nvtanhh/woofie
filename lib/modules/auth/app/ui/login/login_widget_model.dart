@@ -12,6 +12,7 @@ import 'package:meowoof/modules/auth/domain/usecases/login_email_password_usecas
 import 'package:meowoof/modules/auth/domain/usecases/save_user_to_local_usecase.dart';
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
 import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/notification/update_token_notify_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -26,7 +27,7 @@ class LoginWidgetModel extends BaseViewModel {
   final passwordEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   firebase.User? firebaseUser;
-
+  final UpdateTokenNotifyUsecase _updateTokenNotifyUsecase;
   final LoggedInUser _loggedInUser;
 
   User? _user;
@@ -36,6 +37,7 @@ class LoginWidgetModel extends BaseViewModel {
     this._getUserWithUuidUsecase,
     this._saveUserToLocalUsecase,
     this._loggedInUser,
+    this._updateTokenNotifyUsecase,
   );
 
   void onEyeClick() {
@@ -76,6 +78,7 @@ class LoginWidgetModel extends BaseViewModel {
           if (_user != null) {
             await _saveUserToLocalUsecase.call(_user!);
             await _loggedInUser.setLoggedUser(_user!);
+            await updateTokenNotify(_user!.uuid!);
             if (!_user!.isHavePets) {
               await Get.offAll(() => const AddPetWidget());
             } else {
@@ -101,6 +104,14 @@ class LoginWidgetModel extends BaseViewModel {
           );
         },
       );
+    }
+  }
+
+  Future updateTokenNotify(String userUUID) async {
+    try {
+      await _updateTokenNotifyUsecase.run(userUUID);
+    } catch (e) {
+      printInfo(info: e.toString());
     }
   }
 

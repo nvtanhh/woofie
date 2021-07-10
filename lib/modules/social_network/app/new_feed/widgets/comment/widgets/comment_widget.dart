@@ -37,7 +37,7 @@ class CommentWidget extends StatelessWidget {
             width: 40.w,
             height: 40.w,
             fit: BoxFit.cover,
-            imageUrl: comment.creator?.avatar?.url ?? "",
+            imageUrl: comment.creator?.avatarUrl ?? "",
             radius: 10.r,
           ),
           SizedBox(

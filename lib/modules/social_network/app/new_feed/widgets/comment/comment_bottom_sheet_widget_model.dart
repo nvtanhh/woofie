@@ -4,6 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_comment_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_comment_in_post_usecase.dart';
@@ -12,14 +13,14 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class CommentBottomSheetWidgetModel extends BaseViewModel {
-  final Rx<User?> user = Rx<User?>(null);
+  User? user;
   List<Comment> _comments = [];
   final GetCommentInPostUsecase _getCommentInPostUsecase;
   final UserStorage _userStorage;
   final CreateCommentUsecase _createCommentUsecase;
   final LikeCommentUsecase _likeCommentUsecase;
   TextEditingController commentEditingController = TextEditingController();
-  late int postId;
+  late Post post;
   late PagingController<int, Comment> pagingController;
   final int pageSize = 10;
   final List<User> tagUsers = [];
@@ -37,7 +38,7 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   void _loadComments(int pageKey) {
     call(
       () async {
-        _comments = await _getCommentInPostUsecase.call(postId, offset: nextPageKey);
+        _comments = await _getCommentInPostUsecase.call(post.id, offset: nextPageKey);
         if (_comments.length < pageSize) {
           pagingController.appendLastPage(_comments);
         } else {
@@ -56,7 +57,7 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
 
   void loadUserLocal() {
     call(
-      () async => user.value = _userStorage.get(),
+      () async => user = _userStorage.get(),
       showLoading: false,
       onSuccess: () {},
     );
@@ -76,7 +77,7 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   void onSendComment() {
     call(
       () async {
-        final Comment? comment = await _createCommentUsecase.call(postId, commentEditingController.text, tagUsers);
+        final Comment? comment = await _createCommentUsecase.call(post.id, commentEditingController.text, tagUsers);
         if (comment != null) {
           pagingController.itemList?.insert(0, comment);
           // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
@@ -89,10 +90,7 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   }
 
   void onLikeCommentClick(int idComment) {
-    call(
-      () => _likeCommentUsecase.call(idComment),
-      showLoading: false,
-    );
+    call(() => _likeCommentUsecase.call(idComment), showLoading: false, onSuccess: () {});
   }
 
   @override

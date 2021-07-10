@@ -4,7 +4,6 @@ import 'package:meowoof/modules/social_network/data/datasources/post_datasource.
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/service.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class ExploreRepository {

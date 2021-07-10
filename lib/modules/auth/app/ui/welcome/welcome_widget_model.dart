@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/check_user_have_pet_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
@@ -23,6 +24,7 @@ class WelcomeWidgetModel extends BaseViewModel {
   final FirebaseAuth _firebaseAuth;
   final SaveUserToLocalUsecase _saveUserToLocalUsecase;
   final UpdateTokenNotifyUsecase _updateTokenNotifyUsecase;
+  final ToastService _toastService;
 
   WelcomeWidgetModel(
     this._loginWithGoogleUsecase,
@@ -32,6 +34,7 @@ class WelcomeWidgetModel extends BaseViewModel {
     this._firebaseAuth,
     this._saveUserToLocalUsecase,
     this._updateTokenNotifyUsecase,
+    this._toastService,
   );
 
   void onLoginClick() {
@@ -59,6 +62,7 @@ class WelcomeWidgetModel extends BaseViewModel {
     }, onSuccess: () {
       checkUserHavePetForNavigator();
     }, onFailure: (err) {
+      _toastService.error(message: "Login fail", context: Get.context!);
       printError(
         info: err.toString(),
       );
@@ -77,11 +81,6 @@ class WelcomeWidgetModel extends BaseViewModel {
     bool status = false;
     await call(
       () async {
-        await Future.delayed(
-          const Duration(
-            seconds: 2,
-          ),
-        );
         final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
         if (haUser != null) {
           await _saveUserToLocalUsecase.call(haUser);

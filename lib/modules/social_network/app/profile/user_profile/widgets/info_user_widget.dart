@@ -51,7 +51,7 @@ class InfoUserWidget extends StatelessWidget {
         //   height: 5.h,
         // ),
         MWAvatar(
-          avatarUrl: user.avatar?.url,
+          avatarUrl: user.avatarUrl,
           customSize: 80.w,
           borderRadius: 15.r,
         ),

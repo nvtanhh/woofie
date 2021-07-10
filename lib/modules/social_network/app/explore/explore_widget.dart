@@ -8,7 +8,6 @@ import 'package:meowoof/core/ui/search_bar.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/explore/explore_widget_model.dart';
-import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_widget/adoption_widget.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/service_widget.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';

@@ -6,24 +6,27 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
+import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:timeago/timeago.dart' as time_ago;
 
-import './post/post_actions_popup.dart';
+import './post_actions_popup.dart';
 
 class PostHeader extends StatelessWidget {
   final Post post;
   final VoidCallback onDeletePost;
   final VoidCallback onEditPost;
+  final VoidCallback? onReportPost;
 
   const PostHeader({
     Key? key,
     required this.post,
     required this.onDeletePost,
     required this.onEditPost,
+    this.onReportPost,
   }) : super(key: key);
 
   @override
@@ -33,15 +36,15 @@ class PostHeader extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: MWAvatar(
-        avatarUrl: user.avatar?.url,
+        avatarUrl: user.avatarUrl,
         borderRadius: 10.r,
       ),
       title: Text.rich(
         TextSpan(
-          text: user.name,
-          children: createTagPet(),
-          style: UITextStyle.heading_16_semiBold,
-        ),
+            text: user.name,
+            children: createTagPet(),
+            style: UITextStyle.heading_16_semiBold,
+            recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(user)),
         maxLines: 2,
       ),
       subtitle: Text(
@@ -50,8 +53,9 @@ class PostHeader extends StatelessWidget {
       ),
       trailing: PostActionsTrailing(
         post: post,
-        ondeletePost: onDeletePost,
+        onDeletePost: onDeletePost,
         onEditPost: onEditPost,
+        onReportPost: onReportPost ?? () {},
       ),
     );
   }
@@ -77,5 +81,11 @@ class PostHeader extends StatelessWidget {
 
   void openProfilePet(Pet pet) {
     Get.to(() => PetProfile(pet: pet));
+  }
+
+  void openProfileUser(User user) {
+    Get.to(() => UserProfile(
+          user: user,
+        ));
   }
 }
