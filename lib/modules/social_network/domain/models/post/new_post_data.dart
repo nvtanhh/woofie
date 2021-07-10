@@ -17,14 +17,19 @@ class NewPostData {
   late PostStatus createdDraftPostStatus;
   late List<MediaFile> remainingMediaToCompress;
   List<MediaFile> compressedMedia = [];
-  List<MediaFileUploader> uploadedMediasToAddToPost = [];
+  List<UploadedMedia> uploadedMediasToAddToPost = [];
   bool postPublishRequested = false;
   File? mediaThumbnail;
 
   late String newPostUuid;
   // late String _cachedKey;
 
-  NewPostData({required this.content, required this.type, this.mediaFiles, this.taggegPets, this.location}) {
+  NewPostData(
+      {required this.content,
+      required this.type,
+      this.mediaFiles,
+      this.taggegPets,
+      this.location}) {
     remainingMediaToCompress = mediaFiles ?? [];
     newPostUuid = const Uuid().v4();
   }

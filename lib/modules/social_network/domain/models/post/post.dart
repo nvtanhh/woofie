@@ -70,9 +70,7 @@ class Post extends UpdatableModel {
   });
 
   static List<Pet>? allPetsFromJson(List<dynamic>? list) {
-    return list
-        ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
-        .toList();
+    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
   }
 
   @JsonKey(name: "comments_aggregate")
@@ -81,8 +79,7 @@ class Post extends UpdatableModel {
   @JsonKey(name: "medias_aggregate")
   ObjectAggregate? mediasAggregate;
 
-  factory Post.fromJsonString(String jsonString) =>
-      Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Post.fromJsonString(String jsonString) => Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
 
@@ -126,9 +123,7 @@ class Post extends UpdatableModel {
       reactionsCounts = json['reactions_counts'] as int;
     }
     if (json['comments'] != null) {
-      comments = (json['comments'] as List<dynamic>?)
-          ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
-          .toList();
+      comments = (json['comments'] as List<dynamic>?)?.map((e) => Comment.fromJson(e as Map<String, dynamic>)).toList();
     }
     if (json['post_pets'] != null) {
       taggegPets = allPetsFromJson(json['post_pets'] as List?);
@@ -140,24 +135,19 @@ class Post extends UpdatableModel {
       location = Location.fromJson(json['location'] as Map<String, dynamic>);
     }
     if (json['medias'] != null) {
-      medias = (json['medias'] as List<dynamic>?)
-          ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
-          .toList();
+      medias = (json['medias'] as List<dynamic>?)?.map((e) => Media.fromJson(e as Map<String, dynamic>)).toList();
     }
     if (json['distance_user_to_post'] != null) {
       distanceUserToPost = json['distance_user_to_post'] as double;
     }
     if (json['post_reacts_aggregate'] != null) {
-      postReactsAggregate = ObjectAggregate.fromJson(
-          json["post_reacts_aggregate"] as Map<String, dynamic>);
+      postReactsAggregate = ObjectAggregate.fromJson(json["post_reacts_aggregate"] as Map<String, dynamic>);
     }
     if (json['comments_aggregate'] != null) {
-      commentsAggregate = ObjectAggregate.fromJson(
-          json["comments_aggregate"] as Map<String, dynamic>);
+      commentsAggregate = ObjectAggregate.fromJson(json["comments_aggregate"] as Map<String, dynamic>);
     }
     if (json['medias_aggregate'] != null) {
-      mediasAggregate = ObjectAggregate.fromJson(
-          json["medias_aggregate"] as Map<String, dynamic>);
+      mediasAggregate = ObjectAggregate.fromJson(json["medias_aggregate"] as Map<String, dynamic>);
     }
   }
 }

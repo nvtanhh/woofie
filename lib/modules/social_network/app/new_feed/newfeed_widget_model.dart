@@ -87,7 +87,8 @@ class NewFeedWidgetModel extends BaseViewModel {
     super.initState();
     pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        cancelableOperation =
+            CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     _lastRefeshTime = DateTime.now();
@@ -100,7 +101,8 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   Future onWantsToCreateNewPost() async {
-    final NewPostData? newPostData = await injector<NavigationService>().navigateToCreatePost();
+    final NewPostData? newPostData =
+        await injector<NavigationService>().navigateToCreatePost();
     if (newPostData != null) {
       newPostsData.add(newPostData);
       _prepenedNewPostUploadingWidget(newPostData);
@@ -109,7 +111,8 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
+      final newItems = await _getPostsUsecase.call(
+          offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
@@ -127,7 +130,8 @@ class NewFeedWidgetModel extends BaseViewModel {
     _removeNewPostDataUploader(newPostData);
   }
 
-  void _onNewPostDataUploaderPostPublished(Post publishedPost, NewPostData newPostData) {
+  void _onNewPostDataUploaderPostPublished(
+      Post publishedPost, NewPostData newPostData) {
     _showSnackbarCreatePostSuccessful();
     pagingController.itemList?.insert(0, publishedPost);
     // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
@@ -143,7 +147,8 @@ class NewFeedWidgetModel extends BaseViewModel {
     );
 
     prependedWidgets.add(newPostUploaderWidget);
-    _prependedWidgetsRemover[newPostData.newPostUuid] = _removeNewPostDataWidget(newPostUploaderWidget);
+    _prependedWidgetsRemover[newPostData.newPostUuid] =
+        _removeNewPostDataWidget(newPostUploaderWidget);
   }
 
   void _removeNewPostDataUploader(NewPostData newPostData) {
@@ -179,7 +184,8 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   bool _isCanRefesh() {
-    return DateTime.now().difference(_lastRefeshTime).inSeconds > _refreshIntervalLimitSecond;
+    return DateTime.now().difference(_lastRefeshTime).inSeconds >
+        _refreshIntervalLimitSecond;
   }
 
   void onCommentClick(int idPost) {
@@ -194,14 +200,16 @@ class NewFeedWidgetModel extends BaseViewModel {
       },
       onSuccess: () {
         if (isSuccess) {
-          injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
+          injector<ToastService>()
+              .success(message: 'Post deleted!', context: Get.context!);
         }
         pagingController.itemList?.removeAt(index);
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         pagingController.notifyListeners();
       },
       onFailure: (err) {
-        injector<ToastService>().success(message: err.toString(), context: Get.context!);
+        injector<ToastService>()
+            .success(message: err.toString(), context: Get.context!);
       },
     );
   }
@@ -219,7 +227,8 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   Future onWantsToEditPost(Post post) async {
-    final EditedPostData? editedPostData = await injector<NavigationService>().navigateToEditPost(post);
+    final EditedPostData? editedPostData =
+        await injector<NavigationService>().navigateToEditPost(post);
 
     if (editedPostData != null) {
       await onPostEdited(editedPostData);
@@ -227,11 +236,14 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   Future onPostEdited(EditedPostData editedPostData) async {
-    if (editedPostData.deletedMedias != null && editedPostData.deletedMedias!.isNotEmpty) {
+    if (editedPostData.deletedMedias != null &&
+        editedPostData.deletedMedias!.isNotEmpty) {
       await _deleteMedia(editedPostData.deletedMedias!);
     }
-    if (editedPostData.newAddedFiles != null && editedPostData.newAddedFiles!.isNotEmpty) {
-      editedPostData.uploadedMediasToAddToPost = await _startUploadNewMediaFiles(editedPostData.newAddedFiles!, editedPostData.oldPost);
+    if (editedPostData.newAddedFiles != null &&
+        editedPostData.newAddedFiles!.isNotEmpty) {
+      editedPostData.newAddedMedias = await _startUploadNewMediaFiles(
+          editedPostData.newAddedFiles!, editedPostData.originPost);
     }
 
     await call(
@@ -250,41 +262,52 @@ class NewFeedWidgetModel extends BaseViewModel {
     );
   }
 
-  Future<List<MediaFileUploader>> _startUploadNewMediaFiles(List<MediaFile> newAddedFiles, Post oldPost) async {
-    final List<MediaFile> compressMediaFiles = await Future.wait(newAddedFiles.map((file) async => _compressPostMediaItem(file)).toList());
-    final List<MediaFileUploader?> storedMediaFiles =
-        await Future.wait(compressMediaFiles.map((file) async => _storeMediaItem(file, oldPost)).toList());
+  Future<List<UploadedMedia>> _startUploadNewMediaFiles(
+      List<MediaFile> newAddedFiles, Post oldPost) async {
+    final List<MediaFile> compressMediaFiles = await Future.wait(newAddedFiles
+        .map((file) async => _compressPostMediaItem(file))
+        .toList());
+    final List<UploadedMedia?> storedMediaFiles = await Future.wait(
+        compressMediaFiles
+            .map((file) async => _storeMediaItem(file, oldPost))
+            .toList());
 
     storedMediaFiles.where((file) => file != null).toList();
 
-    return storedMediaFiles as List<MediaFileUploader>;
+    return storedMediaFiles as List<UploadedMedia>;
   }
 
   Future<MediaFile> _compressPostMediaItem(MediaFile postMediaItem) async {
     if (postMediaItem.isImage) {
-      postMediaItem.file = await _mediaService.compressImage(postMediaItem.file);
+      postMediaItem.file =
+          await _mediaService.compressImage(postMediaItem.file);
     } else if (postMediaItem.isVideo) {
-      postMediaItem.file = await _mediaService.compressVideo(postMediaItem.file);
+      postMediaItem.file =
+          await _mediaService.compressVideo(postMediaItem.file);
     } else {
       printError(info: 'Unsupported media type for compression');
     }
     return postMediaItem;
   }
 
-  Future<MediaFileUploader?> _storeMediaItem(MediaFile mediaFile, Post oldPost) async {
+  Future<UploadedMedia?> _storeMediaItem(
+      MediaFile mediaFile, Post oldPost) async {
     final String fileName = basename(mediaFile.file.path);
     final String postUuid = oldPost.uuid;
     // get presigned URL
     printInfo(info: 'Getting presigned URL');
-    final String? preSignedUrl = await _getPresignedUrlUsecase.call(fileName, postUuid);
+    final String? preSignedUrl =
+        await _getPresignedUrlUsecase.call(fileName, postUuid);
     // upload media to s3
     String? uploadedMediaUrl;
     if (preSignedUrl != null) {
       printInfo(info: 'Uploading media to s3');
-      uploadedMediaUrl = await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
+      uploadedMediaUrl =
+          await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
     }
     if (uploadedMediaUrl != null) {
-      final MediaFileUploader mediaFileUploader = MediaFileUploader(uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
+      final UploadedMedia mediaFileUploader = UploadedMedia(
+          uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
       return mediaFileUploader;
     }
     return null;

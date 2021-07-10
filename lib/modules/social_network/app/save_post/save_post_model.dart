@@ -65,7 +65,8 @@ class SavePostModel extends BaseViewModel {
 
   Future getPetsOfUser() async {
     await call(
-      () async => user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
+      () async =>
+          user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
       showLoading: false,
       onSuccess: () {},
     );
@@ -107,7 +108,8 @@ class SavePostModel extends BaseViewModel {
   }
 
   void onFilesChanged(List<MediaFile>? event) {
-    if ((event != null && event.isNotEmpty) || contentController.text.isNotEmpty) {
+    if ((event != null && event.isNotEmpty) ||
+        contentController.text.isNotEmpty) {
       _isDisable.value = false;
     } else {
       _isDisable.value = true;
@@ -177,9 +179,15 @@ class SavePostModel extends BaseViewModel {
     try {
       isLoadingAddress.value = true;
       currentPlacemark = await locationService.getCurrentPlacemark();
-      final String address = (currentPlacemark!.street!.isNotEmpty ? '${currentPlacemark!.street!}, ' : '') +
-          (currentPlacemark!.locality!.isNotEmpty ? '${currentPlacemark!.locality!}, ' : '') +
-          (currentPlacemark!.subAdministrativeArea!.isNotEmpty ? '${currentPlacemark!.subAdministrativeArea!}, ' : '');
+      final String address = (currentPlacemark!.street!.isNotEmpty
+              ? '${currentPlacemark!.street!}, '
+              : '') +
+          (currentPlacemark!.locality!.isNotEmpty
+              ? '${currentPlacemark!.locality!}, '
+              : '') +
+          (currentPlacemark!.subAdministrativeArea!.isNotEmpty
+              ? '${currentPlacemark!.subAdministrativeArea!}, '
+              : '');
       currentAddress.value = address.trim().substring(0, address.length - 2);
     } catch (error) {
       currentAddress.value = error.toString();
@@ -203,9 +211,9 @@ class SavePostModel extends BaseViewModel {
 
   void _onSavePost() {
     final EditedPostData editedPostData = EditedPostData(
-      oldPost: post!,
-      content: contentController.text,
-      taggegPets: taggedPets,
+      originPost: post!,
+      newContent: contentController.text,
+      taggedPets: taggedPets,
       newAddedFiles: mediaFiles,
       deletedMedias: _deletedMedia,
       location: currentPosition == null
