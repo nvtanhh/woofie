@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meowoof/modules/social_network/domain/models/aggregate/object_aggregate.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment_tag_user.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 part 'comment.g.dart';
@@ -21,8 +21,8 @@ class Comment {
   bool? isLiked;
   @JsonKey(name: "user")
   User? creator;
-  @JsonKey(name: "comment_reacts_aggregate")
-  ObjectAggregate? commentReactsAggregate;
+  @JsonKey(name: "comment_reacts_aggregate", fromJson: Post.aggregateCountFromJson)
+  int? commentReactsAggregate;
   @JsonKey(name: "comment_tag_users")
   List<CommentTagUser>? commentTagUser;
   @JsonKey(name: "created_at")

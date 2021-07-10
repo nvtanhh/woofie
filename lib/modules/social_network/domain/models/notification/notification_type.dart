@@ -12,5 +12,9 @@ enum NotificationType {
   @JsonValue(4)
   matting,
   @JsonValue(5)
-  lose
+  lose,
+  @JsonValue(6)
+  commentTagUser,
+  @JsonValue(7)
+  reactComment
 }
