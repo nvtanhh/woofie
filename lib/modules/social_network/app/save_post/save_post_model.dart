@@ -10,9 +10,11 @@ import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_pets_of_user_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -24,6 +26,7 @@ class SavePostModel extends BaseViewModel {
   User? _user;
   late final Rx<PostType> _postType = PostType.activity.obs;
   final RxList<MediaFile> _files = <MediaFile>[].obs;
+  final RxList<Media> _postMedia = <Media>[].obs;
   final RxBool _isDisable = true.obs;
   final RxList<Pet> _taggedPets = <Pet>[].obs;
   Post? post;
@@ -33,6 +36,8 @@ class SavePostModel extends BaseViewModel {
   Position? currentPosition;
 
   late bool isPostEditing;
+
+  final List<Media> _deletedMedia = [];
 
   SavePostModel(
     this._getPetsOfUserUsecase,
@@ -45,24 +50,30 @@ class SavePostModel extends BaseViewModel {
     _postType.value = post?.type ?? PostType.activity;
     _files.stream.listen(onFilesChanged);
     _taggedPets.addAll(post?.taggegPets ?? []);
+    _postMedia.addAll(post?.medias ?? []);
     contentController = TextEditingController();
     contentController.addListener(onTextChanged);
     contentController.text = post?.content ?? "";
     getPetsOfUser();
   }
 
+  @override
+  void disposeState() {
+    contentController.dispose();
+    super.disposeState();
+  }
+
   Future getPetsOfUser() async {
     await call(
-      () async =>
-          user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
+      () async => user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
       showLoading: false,
-      onSuccess: () {
-        printInfo(info: user?.currentPets.toString() ?? "deo co gif");
-      },
+      onSuccess: () {},
     );
   }
 
   Future onPostTypeChosen(PostType chosenType) async {
+    if (isPostEditing) return;
+
     _postType.value = chosenType;
     // ignore: unrelated_type_equality_checks
     if (_postType != PostType.activity && currentPlacemark == null) {
@@ -96,8 +107,7 @@ class SavePostModel extends BaseViewModel {
   }
 
   void onFilesChanged(List<MediaFile>? event) {
-    if ((event != null && event.isNotEmpty) ||
-        contentController.text.isNotEmpty) {
+    if ((event != null && event.isNotEmpty) || contentController.text.isNotEmpty) {
       _isDisable.value = false;
     } else {
       _isDisable.value = true;
@@ -123,9 +133,11 @@ class SavePostModel extends BaseViewModel {
     _isDisable.value = value;
   }
 
-  List<MediaFile> get files => _files;
+  List<MediaFile> get addedMediaFiles => _files;
 
-  set files(List<MediaFile> value) {
+  List<Media> get postMedias => _postMedia;
+
+  set addedMediaFiles(List<MediaFile> value) {
     _files.assignAll(value);
   }
 
@@ -165,15 +177,9 @@ class SavePostModel extends BaseViewModel {
     try {
       isLoadingAddress.value = true;
       currentPlacemark = await locationService.getCurrentPlacemark();
-      final String address = (currentPlacemark!.street!.isNotEmpty
-              ? '${currentPlacemark!.street!}, '
-              : '') +
-          (currentPlacemark!.locality!.isNotEmpty
-              ? '${currentPlacemark!.locality!}, '
-              : '') +
-          (currentPlacemark!.subAdministrativeArea!.isNotEmpty
-              ? '${currentPlacemark!.subAdministrativeArea!}, '
-              : '');
+      final String address = (currentPlacemark!.street!.isNotEmpty ? '${currentPlacemark!.street!}, ' : '') +
+          (currentPlacemark!.locality!.isNotEmpty ? '${currentPlacemark!.locality!}, ' : '') +
+          (currentPlacemark!.subAdministrativeArea!.isNotEmpty ? '${currentPlacemark!.subAdministrativeArea!}, ' : '');
       currentAddress.value = address.trim().substring(0, address.length - 2);
     } catch (error) {
       currentAddress.value = error.toString();
@@ -187,12 +193,6 @@ class SavePostModel extends BaseViewModel {
     await injector<DialogService>().showPermisstionDialog();
   }
 
-  @override
-  void disposeState() {
-    contentController.dispose();
-    super.disposeState();
-  }
-
   void onWantsToContinue() {
     if (isPostEditing) {
       _onSavePost();
@@ -201,7 +201,23 @@ class SavePostModel extends BaseViewModel {
     }
   }
 
-  void _onSavePost() {}
+  void _onSavePost() {
+    final EditedPostData editedPostData = EditedPostData(
+      oldPost: post!,
+      content: contentController.text,
+      taggegPets: taggedPets,
+      newAddedFiles: mediaFiles,
+      deletedMedias: _deletedMedia,
+      location: currentPosition == null
+          ? null
+          : Location(
+              long: currentPosition!.longitude,
+              lat: currentPosition!.latitude,
+              name: currentAddress.value,
+            ),
+    );
+    Get.back(result: editedPostData);
+  }
 
   void _onCreateNewPost() {
     final NewPostData newPostData = NewPostData(
@@ -219,5 +235,10 @@ class SavePostModel extends BaseViewModel {
     );
 
     Get.back(result: newPostData);
+  }
+
+  void onRemovePostMedia(Media media) {
+    _postMedia.remove(media);
+    _deletedMedia.add(media);
   }
 }

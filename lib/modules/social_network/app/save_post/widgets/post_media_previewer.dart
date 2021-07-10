@@ -21,7 +21,7 @@ class MediaPreviewer extends StatelessWidget {
         onRemove: onRemove,
         onPostImageEdited: onImageEidted,
       );
-    } else if (mediaFile!.isVideo) {
+    } else if (mediaFile != null && mediaFile!.isVideo) {
       return PostVideoPreviewer(
         postVideoFile: mediaFile!.file,
         onRemove: onRemove,
@@ -33,7 +33,7 @@ class MediaPreviewer extends StatelessWidget {
         postMedia: postMedia,
         onRemove: onRemove,
       );
-    } else if (mediaFile!.isVideo) {
+    } else if (postMedia != null && mediaFile!.isVideo) {
       return PostVideoPreviewer(postVideo: postMedia, onRemove: onRemove);
     }
     return const SizedBox();

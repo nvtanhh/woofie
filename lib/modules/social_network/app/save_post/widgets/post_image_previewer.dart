@@ -70,7 +70,7 @@ class PostImagePreviewer extends StatelessWidget {
         width: buttonSize,
         height: buttonSize,
         child: FloatingActionButton(
-          heroTag: Key('postImagePreviewerRemoveButton${postImageFile?.path}$postMedia'),
+          heroTag: Key('postImagePreviewerRemoveButton${postImageFile?.path}${postMedia?.url}'),
           onPressed: onRemove,
           backgroundColor: Colors.black54,
           child: const MWIcon(
@@ -88,7 +88,7 @@ class PostImagePreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
-        heroTag: Key('postImagePreviewerEditButton${postImageFile?.path}$postMedia'),
+        heroTag: Key('postImagePreviewerEditButton${postImageFile?.path}${postMedia?.url}'),
         onPressed: () => _onWantsToEditImage(context),
         backgroundColor: Colors.black54,
         child: const MWIcon(

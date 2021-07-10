@@ -1,73 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/ui/icon.dart';
-import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_header.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_model.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:suga_core/suga_core.dart';
 
 import './post/widgets/post_body.dart';
 
-class PostItem extends StatefulWidget {
+class PostItem extends StatelessWidget {
   final Post post;
-  final VoidCallback onPostDeleted;
+  final Function(int)? onCommentClick;
+  final Function(int) onLikeClick;
+  final Function(Post)? onPostClick;
+  final RxBool isLiked = RxBool(false);
+  final RxInt countLike = RxInt(0);
+  final VoidCallback onEditPost;
+  final VoidCallback onDeletePost;
 
-  const PostItem({
+  PostItem({
     Key? key,
     required this.post,
-    required this.onPostDeleted,
+    required this.onLikeClick,
+    required this.onEditPost,
+    required this.onDeletePost,
+    this.onCommentClick,
+    this.onPostClick,
   }) : super(key: key);
 
   @override
-  _PostItemState createState() => _PostItemState();
-}
-
-class _PostItemState extends BaseViewState<PostItem, PostItemModel> {
-  @override
-  void loadArguments() {
-    viewModel.post = widget.post;
-    viewModel.onPostDeleted = widget.onPostDeleted;
-    super.loadArguments();
-  }
-
-  final RxBool isLiked = RxBool(false);
-
-  final RxInt countLike = RxInt(0);
-
-  @override
   Widget build(BuildContext context) {
-    isLiked.value = widget.post.isLiked ?? false;
-    countLike.value = widget.post.postReactsAggregate?.aggregate.count ?? 0;
-    return Obx(
-      () => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          PostHeader(
-            post: viewModel.updatablePost,
-            onDeletePost: viewModel.onDeletePost,
-            onEditPost: viewModel.onWantsToEditPost,
-            onReportPost: viewModel.onReportPost,
-          ),
-          InkWell(
-            onTap: viewModel.onPostClick,
-            child: PostBody(post: viewModel.updatablePost),
-          ),
-          SizedBox(
-            height: 13.h,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 5),
-            child: _buildPostActions(),
-          ),
-          SizedBox(
-            height: 25.h,
-          ),
-        ],
-      ),
+    isLiked.value = post.isLiked ?? false;
+    countLike.value = post.postReactsAggregate?.aggregate.count ?? 0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        PostHeader(
+          post: post,
+          onDeletePost: onDeletePost,
+          onEditPost: onEditPost,
+        ),
+        InkWell(
+          onTap: () => onPostClick?.call(post),
+          child: PostBody(post: post),
+        ),
+        SizedBox(
+          height: 13.h,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: _buildPostActions(),
+        ),
+        SizedBox(
+          height: 25.h,
+        ),
+      ],
     );
   }
 
@@ -78,9 +65,9 @@ class _PostItemState extends BaseViewState<PostItem, PostItemModel> {
       countLike.value--;
     }
     isLiked.value = !isLiked.value;
-    viewModel.onLikeClick(widget.post.id);
-    widget.post.isLiked = isLiked.value;
-    widget.post.postReactsAggregate?.aggregate.count = countLike.value;
+    onLikeClick(post.id);
+    post.isLiked = isLiked.value;
+    post.postReactsAggregate?.aggregate.count = countLike.value;
   }
 
   Widget _buildPostActions() {
@@ -104,7 +91,7 @@ class _PostItemState extends BaseViewState<PostItem, PostItemModel> {
               ),
               Obx(
                 () => Text(
-                  "${viewModel.updatablePost.reactionsCounts}",
+                  "${countLike.value}",
                   style: UITextStyle.black_14_w600,
                 ),
               ),
@@ -119,7 +106,7 @@ class _PostItemState extends BaseViewState<PostItem, PostItemModel> {
           child: Row(
             children: [
               InkWell(
-                onTap: viewModel.onCommentClick,
+                onTap: () => onCommentClick?.call(post.id),
                 child: MWIcon(
                   MWIcons.comment,
                 ),
@@ -127,11 +114,9 @@ class _PostItemState extends BaseViewState<PostItem, PostItemModel> {
               SizedBox(
                 width: 5.w,
               ),
-              Obx(
-                () => Text(
-                  "${viewModel.updatablePost.commentsAggregate?.aggregate.count ?? "0"}",
-                  style: UITextStyle.black_14_w600,
-                ),
+              Text(
+                "${post.commentsAggregate?.aggregate.count ?? "0"}",
+                style: UITextStyle.black_14_w600,
               ),
             ],
           ),
@@ -139,7 +124,4 @@ class _PostItemState extends BaseViewState<PostItem, PostItemModel> {
       ],
     );
   }
-
-  @override
-  PostItemModel createViewModel() => injector<PostItemModel>();
 }

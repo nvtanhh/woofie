@@ -6,6 +6,7 @@ import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 
 @lazySingleton
 class NavigationService {
@@ -24,9 +25,10 @@ class NavigationService {
     return newPost;
   }
 
-  void navigateToEditPost(Post post, Function(String newContent, List<Media> deletedMedia, List<MediaFile> newAddedMedia) onEditPost) {
-    Get.to(
-      () => CreatePost(post: post, onEditPost: onEditPost),
-    );
+  Future<EditedPostData?> navigateToEditPost(Post post) async {
+    final editedPostData = await Get.to(
+      () => CreatePost(post: post),
+    ) as EditedPostData?;
+    return editedPostData;
   }
 }

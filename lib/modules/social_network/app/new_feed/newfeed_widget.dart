@@ -10,7 +10,6 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/newfeed_widget_model.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item_old.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -22,7 +21,8 @@ class NewFeedWidget extends StatefulWidget {
   _NewFeedWidgetState createState() => _NewFeedWidgetState();
 }
 
-class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
+class _NewFeedWidgetState
+    extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,9 +40,14 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                 pagingController: viewModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
-                  itemBuilder: (context, item, index) => PostItem(
-                    post: item,
-                    onPostDeleted: () => viewModel.onPostDeleted(index),
+                  itemBuilder: (context, item, index) => Obx(
+                    () => PostItem(
+                      post: item.updateSubject.value as Post,
+                      onLikeClick: viewModel.onLikeClick,
+                      onPostClick: viewModel.onPostClick,
+                      onDeletePost: () => viewModel.onDeletePost(item, index),
+                      onEditPost: () => viewModel.onWantsToEditPost(item),
+                    ),
                   ),
                 ),
               ),
@@ -69,7 +74,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
             ),
             Text(
               LocaleKeys.app_name.trans(),
-              style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w700),
+              style: GoogleFonts.montserrat(
+                  textStyle: UITextStyle.text_header_24_w700),
             ),
             const Expanded(
               child: SizedBox(),

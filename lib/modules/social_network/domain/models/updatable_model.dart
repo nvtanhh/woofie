@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 abstract class UpdatableModel<T> {
   final int? id;
 
-  Rxn<T> get updateSubject => _updateChangeSubject;
+  Rx<T> get updateSubject => _updateChangeSubject as Rx<T>;
 
-  final Rxn<T> _updateChangeSubject = Rxn<T>();
+  final Rx<T?> _updateChangeSubject = Rx<T?>(null);
 
   UpdatableModel({this.id}) {
     notifyUpdate();
@@ -17,6 +17,7 @@ abstract class UpdatableModel<T> {
 
   void notifyUpdate() {
     _updateChangeSubject.value = this as T;
+    _updateChangeSubject.refresh();
   }
 
   void update(Map json) {

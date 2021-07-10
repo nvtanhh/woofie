@@ -23,9 +23,7 @@ import 'widgets/post_type_choose.dart';
 class CreatePost extends StatefulWidget {
   final Post? post;
 
-  final Function(String newContent, List<Media> deletedMedia, List<MediaFile> newAddedMedia)? onEditPost;
-
-  const CreatePost({Key? key, this.post, this.onEditPost}) : super(key: key);
+  const CreatePost({Key? key, this.post}) : super(key: key);
 
   @override
   _CreatePostState createState() => _CreatePostState();
@@ -39,7 +37,6 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
   void loadArguments() {
     viewModel.post = widget.post;
     viewModel.isPostEditing = widget.post != null;
-
     super.loadArguments();
   }
 
@@ -102,16 +99,33 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
           children: [
             MediaButton(onMediasPicked: viewModel.onMediasPicked),
             Obx(
-              () => viewModel.files.isEmpty
+              () => viewModel.addedMediaFiles.isEmpty
                   ? const SizedBox()
                   : Row(
-                      children: viewModel.files
-                          .map((file) => MediaButton(
-                                key: ObjectKey(file),
-                                mediaFile: file,
-                                onRemove: () => viewModel.onRemoveMedia(file),
-                                onImageEdited: (editedFile) => viewModel.onImageEdited(file, editedFile),
-                              ))
+                      children: viewModel.addedMediaFiles
+                          .map(
+                            (file) => MediaButton(
+                              key: ObjectKey(file),
+                              mediaFile: file,
+                              onRemove: () => viewModel.onRemoveMedia(file),
+                              onImageEdited: (editedFile) => viewModel.onImageEdited(file, editedFile),
+                            ),
+                          )
+                          .toList(),
+                    ),
+            ),
+            Obx(
+              () => viewModel.postMedias.isEmpty
+                  ? const SizedBox()
+                  : Row(
+                      children: viewModel.postMedias
+                          .map(
+                            (media) => MediaButton(
+                              key: ObjectKey(media),
+                              postMedia: media,
+                              onRemove: () => viewModel.onRemovePostMedia(media),
+                            ),
+                          )
                           .toList(),
                     ),
             ),
@@ -207,10 +221,13 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                   child: Obx(
                     () => Row(
                       children: [
-                        PostTypeChoseWidget(
-                          onPostTypeChosen: viewModel.onPostTypeChosen,
-                          chosenPostType: viewModel.postType,
-                        ),
+                        if (!viewModel.isPostEditing)
+                          PostTypeChoseWidget(
+                            onPostTypeChosen: viewModel.onPostTypeChosen,
+                            chosenPostType: viewModel.postType,
+                          )
+                        else
+                          _buildPostTypeWidget(),
                         const SizedBox(width: 10),
                         Expanded(
                           child: _buildLocater(),
@@ -289,5 +306,29 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         ),
       ),
     ]);
+  }
+
+  Widget _buildPostTypeWidget() {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(5.r),
+        ),
+        border: Border.all(
+          width: 0.5,
+          color: PostTypeChoseWidget.getBoderColorByType(viewModel.postType),
+        ),
+        color: PostTypeChoseWidget.getBackgroundColorByType(viewModel.postType),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+        child: Text(
+          PostTypeChoseWidget.getPostTypeTile(viewModel.postType),
+          style: UITextStyle.body_12_medium.apply(
+            color: PostTypeChoseWidget.getTextColorByType(viewModel.postType),
+          ),
+        ),
+      ),
+    );
   }
 }
