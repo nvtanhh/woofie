@@ -40,23 +40,29 @@ class StorageDatasource {
   Future<String?> getPresignedUrlForAvatar(String objectName) async {
     final userUuid = _loggedInUser.user!.uuid;
 
-    final String subFolder = _urlParser.parse(AVATAR_USER_SUBFOLDER, {'user_uuid': userUuid});
+    final String subFolder =
+        _urlParser.parse(AVATAR_USER_SUBFOLDER, {'user_uuid': userUuid});
 
-    return _getPresignedUrl('$subFolder/$objectName', AVATAR_DEFAULT_BUCKET_NAME);
+    return _getPresignedUrl(
+        '$subFolder/$objectName', AVATAR_DEFAULT_BUCKET_NAME);
   }
 
-  Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {
+  Future<String?> getPresignedUrlForPostMedia(
+      String objectName, String postUuid) async {
     final userUuid = _loggedInUser.user!.uuid;
 
-    final String subFolder = _urlParser.parse(POST_MEDIA_SUBFOLDER, {'user_uuid': userUuid, 'post_uuid': postUuid});
+    final String subFolder = _urlParser.parse(
+        POST_MEDIA_SUBFOLDER, {'user_uuid': userUuid, 'post_uuid': postUuid});
 
-    return _getPresignedUrl('$subFolder/$objectName', POST_MEDIA_DEFAULT_BUCKET_NAME);
+    return _getPresignedUrl(
+        '$subFolder/$objectName', POST_MEDIA_DEFAULT_BUCKET_NAME);
   }
 
   Future<String?> getPresignedAvatarPetUrl(String fileName, String petUUID) {
     final userUuid = _loggedInUser.user!.uuid;
 
-    final String subFolder = _urlParser.parse(AVATAR_PET_SUBFOLDER, {'user_uuid': userUuid, 'pet_uuid': petUUID});
+    final String subFolder = _urlParser.parse(
+        AVATAR_PET_SUBFOLDER, {'user_uuid': userUuid, 'pet_uuid': petUUID});
 
     return _getPresignedUrl('$subFolder/$fileName', AVATAR_DEFAULT_BUCKET_NAME);
   }
@@ -64,13 +70,14 @@ class StorageDatasource {
   Future<String?> _getPresignedUrl(String objectName, String bucketName) async {
     final String query = """
     mutation MyMutation {
-      get_presigned_url(file_name: "$objectName", bucket_name: "$bucketName") {
+      getPresignedUrl(fileName: "$objectName", bucketName: "$bucketName") {
         url
       }
     }
     """;
     final data = await _hasuraConnect.mutation(query);
-    final result = GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
+    final result =
+        GetMapFromHasura.getMap(data as Map)["getPresignedUrl"] as Map;
     return result['url'] as String;
   }
 
@@ -85,7 +92,8 @@ class StorageDatasource {
   Future addMediaToPost(List<UploadedMedia> medias, int postId) async {
     late String mediasData;
     if (medias.isNotEmpty) {
-      mediasData = medias.map((e) => _mediaToJson(e, postId)).toList().toString();
+      mediasData =
+          medias.map((e) => _mediaToJson(e, postId)).toList().toString();
     } else {
       mediasData = '[]';
     }
