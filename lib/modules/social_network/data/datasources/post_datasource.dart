@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
@@ -343,6 +346,29 @@ class PostDatasource {
   Future<Post?> getPostWithId(int postId) async {}
 
   Future<bool> editPost(EditedPostData editedPostData) async {
-    return false;
+    final mediasData = editedPostData.newAddedMedias
+            ?.map((e) => _mediaToJson(e))
+            .toList()
+            .toString() ??
+        "[]";
+
+    final location = editedPostData.location == null
+        ? ""
+        : 'location: {long: "${editedPostData.location?.long}", lat: "${editedPostData.location?.lat}", name: "${editedPostData.location?.name}"},';
+
+    final String query = """
+    mutation EditPost {
+      editPost(originPostId: ${editedPostData.originPost.id}, newContent: "${editedPostData.newContent}", newTaggedPetIds: ${editedPostData.newTaggedPetIds.toString()}, deletedTaggedPetIds: ${editedPostData.deletedTaggedPetIds.toString()}, deletedMediaIds: ${editedPostData.deletedMediaIds.toString()}, newAddedMedias: $mediasData, $location) {
+          status
+      }
+    }
+    """;
+
+    await _hasuraConnect.mutation(query);
+    return true;
+  }
+
+  String _mediaToJson(UploadedMedia e) {
+    return '{url: "${e.uploadedUrl}", type: ${e.type}}';
   }
 }

@@ -43,13 +43,13 @@ class StorageDatasource {
   Future<String?> _getPresignedUrl(String objectName, String bucketName) async {
     final String query = """
     mutation MyMutation {
-      get_presigned_url(file_name: "$objectName", bucket_name: "$bucketName") {
+      getPresignedUrl(fileName: "$objectName", bucketName: "$bucketName") {
         url
       }
     }
     """;
     final data = await _hasuraConnect.mutation(query);
-    final result = GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
+    final result = GetMapFromHasura.getMap(data as Map)["getPresignedUrl"] as Map;
     return result['url'] as String;
   }
 
