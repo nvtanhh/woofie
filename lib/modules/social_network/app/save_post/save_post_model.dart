@@ -68,8 +68,7 @@ class SavePostModel extends BaseViewModel {
 
   Future getPetsOfUser() async {
     await call(
-      () async =>
-          user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
+      () async => user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid!),
       showLoading: false,
       onSuccess: () {},
     );
@@ -118,8 +117,7 @@ class SavePostModel extends BaseViewModel {
     if (isPostEditing) {
       _checkIsPostEdited();
     } else {}
-    if ((event != null && event.isNotEmpty) ||
-        contentController.text.isNotEmpty) {
+    if ((event != null && event.isNotEmpty) || contentController.text.isNotEmpty) {
       _isDisable.value = false;
     } else {
       _isDisable.value = true;
@@ -188,15 +186,9 @@ class SavePostModel extends BaseViewModel {
     try {
       isLoadingAddress.value = true;
       currentPlacemark = await locationService.getCurrentPlacemark();
-      final String address = (currentPlacemark!.street!.isNotEmpty
-              ? '${currentPlacemark!.street!}, '
-              : '') +
-          (currentPlacemark!.locality!.isNotEmpty
-              ? '${currentPlacemark!.locality!}, '
-              : '') +
-          (currentPlacemark!.subAdministrativeArea!.isNotEmpty
-              ? '${currentPlacemark!.subAdministrativeArea!}, '
-              : '');
+      final String address = (currentPlacemark!.street!.isNotEmpty ? '${currentPlacemark!.street!}, ' : '') +
+          (currentPlacemark!.locality!.isNotEmpty ? '${currentPlacemark!.locality!}, ' : '') +
+          (currentPlacemark!.subAdministrativeArea!.isNotEmpty ? '${currentPlacemark!.subAdministrativeArea!}, ' : '');
       currentAddress.value = address.trim().substring(0, address.length - 2);
     } catch (error) {
       currentAddress.value = error.toString();
@@ -235,12 +227,8 @@ class SavePostModel extends BaseViewModel {
   }
 
   void _onCreateNewPost() {
-    final NewPostData newPostData = NewPostData(
-        content: contentController.text,
-        type: postType,
-        taggegPets: taggedPets,
-        mediaFiles: newAddedFiles,
-        location: _currentLocation);
+    final NewPostData newPostData =
+        NewPostData(content: contentController.text, type: postType, taggegPets: taggedPets, mediaFiles: newAddedFiles, location: _currentLocation);
 
     Get.back(result: newPostData);
   }
@@ -252,18 +240,12 @@ class SavePostModel extends BaseViewModel {
 
   void _checkIsPostEdited() {
     final Function eq = const ListEquality().equals;
-    final bool isContentChanged =
-        contentController.text != (post?.content ?? '');
-    final bool isTaggedPetsChanged =
-        !(eq(taggedPets, post?.taggegPets ?? []) as bool);
+    final bool isContentChanged = contentController.text != (post?.content ?? '');
+    final bool isTaggedPetsChanged = !(eq(taggedPets, post?.taggegPets ?? []) as bool);
     final bool isLocationChanged = _currentLocation != post?.location;
-    final isMediaChanged = _newAddedFiles.isNotEmpty ||
-        (postMedias.length != (post?.medias?.length ?? 0));
+    final isMediaChanged = _newAddedFiles.isNotEmpty || (postMedias.length != (post?.medias?.length ?? 0));
 
-    _isDisable.value = !(isContentChanged ||
-        isTaggedPetsChanged ||
-        isLocationChanged ||
-        isMediaChanged);
+    _isDisable.value = !(isContentChanged || isTaggedPetsChanged || isLocationChanged || isMediaChanged);
   }
 
   void onPostMediaChanged(List<Media>? event) {
