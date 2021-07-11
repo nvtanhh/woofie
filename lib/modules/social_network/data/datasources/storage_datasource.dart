@@ -82,7 +82,7 @@ class StorageDatasource {
     throw Exception('Put object to s3 failed');
   }
 
-  Future addMediaToPost(List<MediaFileUploader> medias, int postId) async {
+  Future addMediaToPost(List<UploadedMedia> medias, int postId) async {
     late String mediasData;
     if (medias.isNotEmpty) {
       mediasData = medias.map((e) => _mediaToJson(e, postId)).toList().toString();
@@ -108,7 +108,7 @@ class StorageDatasource {
     }
   }
 
-  String _mediaToJson(MediaFileUploader e, int id) {
+  String _mediaToJson(UploadedMedia e, int id) {
     return '{post_id: $id, url: "${e.uploadedUrl}", type: ${e.type}}';
   }
 }

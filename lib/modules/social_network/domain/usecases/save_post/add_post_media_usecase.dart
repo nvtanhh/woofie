@@ -8,7 +8,7 @@ class AddPostMediaUsecase {
 
   AddPostMediaUsecase(this._savePostRepository);
 
-  Future call(List<MediaFileUploader> medias, int id) async {
+  Future call(List<UploadedMedia> medias, int id) async {
     return _savePostRepository.addMediaToPost(medias, id);
   }
 }

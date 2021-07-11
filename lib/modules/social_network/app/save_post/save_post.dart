@@ -9,8 +9,6 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/media_button.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -81,7 +79,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(
+              bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
           child: _mediaWrapper(),
         ),
       ],
@@ -108,7 +107,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                               key: ObjectKey(file),
                               mediaFile: file,
                               onRemove: () => viewModel.onRemoveMedia(file),
-                              onImageEdited: (editedFile) => viewModel.onImageEdited(file, editedFile),
+                              onImageEdited: (editedFile) =>
+                                  viewModel.onImageEdited(file, editedFile),
                             ),
                           )
                           .toList(),
@@ -123,7 +123,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                             (media) => MediaButton(
                               key: ObjectKey(media),
                               postMedia: media,
-                              onRemove: () => viewModel.onRemovePostMedia(media),
+                              onRemove: () =>
+                                  viewModel.onRemovePostMedia(media),
                             ),
                           )
                           .toList(),
@@ -160,7 +161,9 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 onPressed: viewModel.onWantsToContinue,
                 isDisabled: viewModel.isDisable,
                 borderRadius: BorderRadius.circular(5.r),
-                textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.textBody : UIColor.white),
+                textStyle: UITextStyle.heading_16_medium.apply(
+                    color:
+                        viewModel.isDisable ? UIColor.textBody : UIColor.white),
                 child: Text(
                   widget.post == null ? 'Post' : 'Update',
                 ),
@@ -209,7 +212,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                             children: [
                               MWIcon(MWIcons.petTag, customSize: 20),
                               SizedBox(width: 5.w),
-                              Text('Tag your pet', style: UITextStyle.second_14_medium),
+                              Text('Tag your pet',
+                                  style: UITextStyle.second_14_medium),
                             ],
                           ),
                         ),
@@ -248,12 +252,15 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
     if (viewModel.taggedPets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
+      TextSpan(
+          text: " ${LocaleKeys.new_feed_with.trans()} ",
+          style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < viewModel.taggedPets.length; i++) {
       inLineSpan.add(
         TextSpan(
-          text: "${viewModel.taggedPets[i].name}${i != viewModel.taggedPets.length - 1 ? ", " : " "}",
+          text:
+              "${viewModel.taggedPets[i].name}${i != viewModel.taggedPets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
           recognizer: TapGestureRecognizer()..onTap = viewModel.onTagPet,
         ),

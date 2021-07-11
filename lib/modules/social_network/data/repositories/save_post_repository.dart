@@ -35,7 +35,7 @@ class SavePostRepository {
     }
   }
 
-  Future addMediaToPost(List<MediaFileUploader> medias, int id) {
+  Future addMediaToPost(List<UploadedMedia> medias, int id) {
     return _storageDatasource.addMediaToPost(medias, id);
   }
 
@@ -55,7 +55,7 @@ class SavePostRepository {
     return _mediaDatasource.deleteMedia(mediaIds);
   }
 
-  Future<Post> editPost(EditedPostData editedPostData) {
+  Future<bool> editPost(EditedPostData editedPostData) {
     return _postDatasource.editPost(editedPostData);
   }
 
