@@ -4,6 +4,7 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/dialog/add_worm_flushed_dialog.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/add_worm_flushed_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_worm_flushes_usecase.dart';
@@ -11,7 +12,7 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class WormFlushedWidgetModel extends BaseViewModel {
-  late int petId;
+  late Pet pet;
   late bool isMyPet;
   final RxList<PetWormFlushed> _wormFlushes = RxList<PetWormFlushed>();
   final GetWormFlushesUsecase _getWormFlushesUsecase;
@@ -21,7 +22,6 @@ class WormFlushedWidgetModel extends BaseViewModel {
   int pageSize = 10, pageKey = 0;
   List<PetWormFlushed> receiveWormFlushed = [];
   PetWormFlushed? wormFlushed;
-  Function(PetWormFlushed)? onAddWormFlushed;
 
   @override
   void initState() {
@@ -37,14 +37,14 @@ class WormFlushedWidgetModel extends BaseViewModel {
     if (wormFlushed == null) {
       return;
     }
-    wormFlushed!.petId = petId;
+    wormFlushed!.petId = pet.id;
     await call(
       () async {
         final wormF = await _addWormFlushedUsecase.call(wormFlushed!);
         wormFlushed!.id = wormF.id;
       },
       onSuccess: () {
-        onAddWormFlushed?.call(wormFlushed!);
+        onAddWormFlush(wormFlushed!);
         _wormFlushes.insert(0, wormFlushed!);
         _wormFlushes.refresh();
       },
@@ -55,12 +55,18 @@ class WormFlushedWidgetModel extends BaseViewModel {
     );
   }
 
+  void onAddWormFlush(PetWormFlushed petWormFlushed) {
+    pet.petWormFlushes?.insert(0, petWormFlushed);
+    if ((pet.petWormFlushes?.length ?? 0) > 2) pet.petWormFlushes?.removeLast();
+    pet.notifyUpdate();
+  }
+
   Future getWormFlushes() async {
     if (isLastPage) return;
     await call(
       () async {
         receiveWormFlushed = await _getWormFlushesUsecase.call(
-          petId,
+          pet.id,
           offset: _wormFlushes.length,
         );
 

@@ -23,13 +23,11 @@ class WeightWidget extends StatefulWidget {
   final Pet pet;
   final bool isMyPet;
   final bool? addData;
-  final Function(PetWeight)? onAddWeight;
   const WeightWidget({
     Key? key,
     required this.pet,
     required this.isMyPet,
     this.addData,
-    this.onAddWeight,
   }) : super(key: key);
 
   @override
@@ -41,7 +39,6 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
   void loadArguments() {
     viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
-    viewModel.onAddWeight = widget.onAddWeight;
     viewModel.listWeightChart = widget.pet.petWeights ?? [];
     if (widget.addData == true) {
       SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.addWeightPress());

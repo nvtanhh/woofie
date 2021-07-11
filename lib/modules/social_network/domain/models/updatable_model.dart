@@ -14,6 +14,9 @@ abstract class UpdatableModel<T> {
   UpdatableModel({this.id}) {
     notifyUpdate();
   }
+  void resetObject() {
+    updateFromJson(_updateChangeSubject.toJson() as Map<String, dynamic>);
+  }
 
   void notifyUpdate() {
     _updateChangeSubject.value = this as T;

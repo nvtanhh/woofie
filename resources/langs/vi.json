@@ -99,7 +99,15 @@
     "vaccinate_name_invalid": "Tên tiêm ngừa không hợp lệ",
     "weight_invalid": "Cân nặng không hợp lệ",
     "description": "Mô tả",
-    "vaccine_name": "Tên vaccine"
+    "vaccine_name": "Tên vaccine",
+    "user_information": "Thông tin cá nhân",
+    "pet_information": "Thông tin thú cưng",
+    "save": "Lưu",
+    "email": "Email",
+    "introduce": "Giới thiệu",
+    "birthday": "Ngày sinh",
+    "bread": "Giống",
+    "address": "Địa chỉ"
   },
   "year": "năm",
   "month": "tháng",

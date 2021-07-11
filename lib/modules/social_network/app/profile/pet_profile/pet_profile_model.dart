@@ -69,7 +69,7 @@ class PetProfileModel extends BaseViewModel {
   void onAddVaccinatedClick() {
     Get.to(
       VaccinatedWidget(
-        petId: pet.id,
+        pet: pet,
         isMyPet: isMyPet!,
         addData: true,
       ),
@@ -89,7 +89,7 @@ class PetProfileModel extends BaseViewModel {
   void onAddWormFlushedClick() {
     Get.to(
       WormFlushedWidget(
-        petId: pet.id,
+        pet: pet,
         isMyPet: isMyPet!,
         addData: true,
       ),

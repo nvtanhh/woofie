@@ -99,7 +99,15 @@
     "vaccinate_name_invalid": "Vaccinate name invalid",
     "weight_invalid": "Weight invalid",
     "description": "Description",
-    "vaccine_name": "Vaccine name"
+    "vaccine_name": "Vaccine name",
+    "user_information": "User Information",
+    "pet_information": "Pet Information",
+    "save": "Save",
+    "email": "Email",
+    "introduce": "Introduce",
+    "birthday": "Birthday",
+    "bread": "Bread",
+    "address": "Address"
   },
   "year": "year",
   "month": "month",

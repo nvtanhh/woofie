@@ -21,7 +21,6 @@ class DetailInfoPetWidget extends StatefulWidget {
   final Function onAddWeightClick;
   final Function onAddWormFlushedClick;
   final Function onAddVaccinatedClick;
-  final Function(Pet) updatePet;
 
   const DetailInfoPetWidget({
     Key? key,
@@ -30,7 +29,6 @@ class DetailInfoPetWidget extends StatefulWidget {
     required this.onAddWeightClick,
     required this.onAddWormFlushedClick,
     required this.onAddVaccinatedClick,
-    required this.updatePet,
   }) : super(key: key);
 
   @override
@@ -45,7 +43,6 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
     viewModel.onAddWeightClick = widget.onAddWeightClick;
     viewModel.onAddVaccinatedClick = widget.onAddVaccinatedClick;
     viewModel.onAddWormFlushedClick = widget.onAddWormFlushedClick;
-    viewModel.updatePet = widget.updatePet;
     super.loadArguments();
   }
 
@@ -84,12 +81,14 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
         ),
         InkWell(
           onTap: () => viewModel.onTabWeightChart(),
-          child: WeightChartPreviewWidget(
-            width: Get.width,
-            height: 175.h,
-            isMyPet: viewModel.isMyPet,
-            onAddClick: viewModel.isMyPet ? viewModel.onAddWeightClick : () => null,
-            weights: viewModel.pet.petWeights ?? [],
+          child: Obx(
+            () => WeightChartPreviewWidget(
+              width: Get.width,
+              height: 175.h,
+              isMyPet: viewModel.isMyPet,
+              onAddClick: viewModel.isMyPet ? viewModel.onAddWeightClick : () => null,
+              weights: viewModel.pet.updateSubject.petWeights ?? [],
+            ),
           ),
         ),
         SizedBox(
@@ -102,22 +101,26 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
             children: [
               InkWell(
                 onTap: () => viewModel.onTabWormFlushed(),
-                child: WormFlushedPreviewWidget(
-                  width: 160.w,
-                  height: 188.h,
-                  wormFlushed: viewModel.pet.petWormFlushes ?? [],
-                  isMyPet: viewModel.isMyPet,
-                  onAddClick: viewModel.isMyPet ? viewModel.onAddWormFlushedClick : () => null,
+                child: Obx(
+                  () => WormFlushedPreviewWidget(
+                    width: 160.w,
+                    height: 188.h,
+                    wormFlushed: viewModel.pet.updateSubject.petWormFlushes ?? [],
+                    isMyPet: viewModel.isMyPet,
+                    onAddClick: viewModel.isMyPet ? viewModel.onAddWormFlushedClick : () => null,
+                  ),
                 ),
               ),
               InkWell(
                 onTap: () => viewModel.onTabVaccinated(),
-                child: VaccinatedPreviewWidget(
-                  width: 160.w,
-                  height: 188.h,
-                  vaccinates: viewModel.pet.petVaccinates ?? [],
-                  isMyPet: viewModel.isMyPet,
-                  onAddClick: viewModel.isMyPet ? viewModel.onAddVaccinatedClick : () => null,
+                child: Obx(
+                  () => VaccinatedPreviewWidget(
+                    width: 160.w,
+                    height: 188.h,
+                    vaccinates: viewModel.pet.updateSubject.petVaccinates ?? [],
+                    isMyPet: viewModel.isMyPet,
+                    onAddClick: viewModel.isMyPet ? viewModel.onAddVaccinatedClick : () => null,
+                  ),
                 ),
               ),
             ],

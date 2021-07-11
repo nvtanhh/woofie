@@ -14,6 +14,7 @@ import 'package:meowoof/modules/social_network/domain/usecases/add_pet/add_pet_u
 import 'package:meowoof/modules/social_network/domain/usecases/add_pet/get_pet_breeds_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/add_pet/get_pet_types_usecase.dart';
 import 'package:suga_core/suga_core.dart';
+import 'package:uuid/uuid.dart';
 
 @injectable
 class AddPetWidgetModel extends BaseViewModel {
@@ -94,6 +95,7 @@ class AddPetWidgetModel extends BaseViewModel {
 
   void onDone() {
     if (!validate()) return;
+    pet.uuid = const Uuid().v4();
     call(
       () async => pet = await _addPetUsecase.call(pet),
       onSuccess: () {

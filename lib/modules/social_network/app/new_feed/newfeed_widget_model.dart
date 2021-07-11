@@ -182,6 +182,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   void onCommentClick(Post post) {
     bottomSheetService.showComments(post);
   }
+
   void onLikeClick(int idPost) {
     call(
       () => _likePostUsecase.call(idPost),
