@@ -22,7 +22,7 @@ class SavePostRepository {
     return _postDatasource.createDraftPost(data);
   }
 
-  Future<String?> getPresignedUrl(String objectName, String postUuid) async {
+  Future<String?> getPresignedPostMediaUrl(String objectName, String postUuid) async {
     return _storageDatasource.getPresignedUrlForPostMedia(objectName, postUuid);
   }
 
@@ -57,5 +57,13 @@ class SavePostRepository {
 
   Future<Post> editPost(EditedPostData editedPostData) {
     return _postDatasource.editPost(editedPostData);
+  }
+
+  Future<String?> getPresignedAvatarUserUrl(String fileName) {
+    return _storageDatasource.getPresignedUrlForAvatar(fileName);
+  }
+
+  Future<String?> getPresignedAvatarPetUrl(String fileName, String petUUID) {
+    return _storageDatasource.getPresignedAvatarPetUrl(fileName, petUUID);
   }
 }

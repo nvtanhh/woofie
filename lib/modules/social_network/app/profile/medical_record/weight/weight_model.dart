@@ -22,7 +22,6 @@ class WeightWidgetModel extends BaseViewModel {
   final RxList<PetWeight> _listWeightChart = <PetWeight>[].obs;
   PetWeight? petWeightNew;
   final gloalKey = GlobalKey();
-  Function(PetWeight)? onAddWeight;
 
   WeightWidgetModel(
     this._addWeightUsecase,
@@ -69,7 +68,7 @@ class WeightWidgetModel extends BaseViewModel {
         petWeightNew?.id = pet.id;
       },
       onSuccess: () {
-        onAddWeight?.call(petWeightNew!);
+        onAddWeight(petWeightNew!);
         pagingController.itemList?.insert.call(0, petWeightNew!);
         if ((pagingController.itemList?.length ?? 0) > 6) {
           petWeights = pagingController.itemList?.sublist(0, 6) ?? [];
@@ -82,6 +81,12 @@ class WeightWidgetModel extends BaseViewModel {
       },
       onFailure: (err) {},
     );
+  }
+
+  void onAddWeight(PetWeight petWeight) {
+    pet.petWeights?.insert(0, petWeight);
+    if ((pet.petWeights?.length ?? 0) > 5) pet.petWeights?.removeLast();
+    pet.notifyUpdate();
   }
 
   List<PetWeight> get listWeightChart => _listWeightChart.toList();

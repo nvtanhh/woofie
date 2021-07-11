@@ -24,7 +24,6 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
       () => WeightWidget(
         pet: pet,
         isMyPet: isMyPet,
-        onAddWeight: onAddWeight,
       ),
     );
   }
@@ -32,9 +31,8 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
   void onTabWormFlushed() {
     Get.to(
       () => WormFlushedWidget(
-        petId: pet.id,
+        pet: pet,
         isMyPet: isMyPet,
-        onAddWormFlushed: onAddWormFlush,
       ),
     );
   }
@@ -42,30 +40,10 @@ class DetailInfoPetWidgetModel extends BaseViewModel {
   void onTabVaccinated() {
     Get.to(
       () => VaccinatedWidget(
-        petId: pet.id,
+        pet: pet,
         isMyPet: isMyPet,
-        onAddVaccinated: onAddVaccinated,
       ),
     );
-  }
-
-  void onAddWeight(PetWeight petWeight) {
-    pet.petWeights?.insert(0, petWeight);
-    if ((pet.petWeights?.length ?? 0) > 2) pet.petWeights?.removeLast();
-    updatePet(pet);
-  }
-
-  void onAddWormFlush(PetWormFlushed petWormFlushed) {
-    pet.petWormFlushes?.insert(0, petWormFlushed);
-    if ((pet.petWormFlushes?.length ?? 0) > 2) pet.petWormFlushes?.removeLast();
-    printInfo(info: pet.petWormFlushes.toString());
-    updatePet(pet);
-  }
-
-  void onAddVaccinated(PetVaccinated petVaccinated) {
-    pet.petVaccinates?.insert(0, petVaccinated);
-    if ((pet.petVaccinates?.length ?? 0) > 2) pet.petVaccinates?.removeLast();
-    updatePet(pet);
   }
 
   bool get isLoaded => _isLoaded.value;

@@ -20,7 +20,9 @@ class PostsOfPetWidget extends StatelessWidget {
   PostsOfPetWidget({
     Key? key,
     required this.idPet,
-  }) : super(key: key);
+  }) : super(key: key) {
+    registerEvent();
+  }
 
   Future _loadMorePost(int pageKey) async {
     _post = [];
@@ -46,7 +48,6 @@ class PostsOfPetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    registerEvent();
     return PagedListView<int, Post>(
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate(

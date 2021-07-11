@@ -15,12 +15,14 @@ class NavigationService {
       ),
     );
   }
+
   Future<NewPostData?> navigateToCreatePost() async {
     final newPost = await Get.to(
-          () => const CreatePost(),
+      () => const CreatePost(),
     ) as NewPostData?;
     return newPost;
   }
+
   Future<EditedPostData?> navigateToEditPost(Post post) async {
     final editedPostData = await Get.to(
       () => CreatePost(post: post),

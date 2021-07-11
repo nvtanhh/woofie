@@ -1,19 +1,32 @@
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/repositories/profile_repository.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 
 @lazySingleton
-class UpdateUserInformationUsecase {
+class UpdatePetInformationUsecase {
   final ProfileRepository _profileRepository;
 
-  UpdateUserInformationUsecase(this._profileRepository);
+  UpdatePetInformationUsecase(this._profileRepository);
 
   Future<Map<String, dynamic>> run(
-    int userId, {
+    int petId, {
     String? name,
     String? bio,
-    int? locationId,
+    int? breed,
     String? avatarUrl,
+    DateTime? dob,
+    String? uuid,
+    Gender? gender,
   }) {
-    return _profileRepository.updateUserInformationLocation(userId, name: name, bio: bio, locationId: locationId, avatarUrl: avatarUrl);
+    return _profileRepository.updatePetInformation(
+      petId,
+      name,
+      bio,
+      breed,
+      avatarUrl,
+      uuid,
+      dob,
+      gender,
+    );
   }
 }

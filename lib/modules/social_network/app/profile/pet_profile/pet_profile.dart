@@ -95,7 +95,6 @@ class _PetProfileState extends BaseViewState<PetProfile, PetProfileModel> with T
                               onAddVaccinatedClick: viewModel.onAddVaccinatedClick,
                               onAddWeightClick: viewModel.onAddWeightClick,
                               onAddWormFlushedClick: viewModel.onAddWormFlushedClick,
-                              updatePet: viewModel.updatePet,
                             ),
                             PostsOfPetWidget(idPet: viewModel.pet.id),
                           ],

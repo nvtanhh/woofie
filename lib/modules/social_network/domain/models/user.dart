@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/updatable_model.dart';
@@ -32,6 +33,10 @@ class User extends UpdatableModel<User> {
   String? avatarUrl;
   @JsonKey(name: "dob")
   DateTime? dob;
+  @JsonKey(name: "location_id")
+  int? locationId;
+  @JsonKey(name: "location")
+  Location? location;
 
   User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob, this.avatarUrl});
 
@@ -77,6 +82,12 @@ class User extends UpdatableModel<User> {
     }
     if (json['avatar_url'] != null) {
       avatarUrl = json['avatar_url'] as String;
+    }
+    if (json['location_id'] != null) {
+      locationId = json['location_id'] as int;
+    }
+    if (json['location'] != null) {
+      location = Location.fromJson(json['location'] as Map<String, dynamic>);
     }
   }
 

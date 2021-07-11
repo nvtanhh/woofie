@@ -29,4 +29,10 @@ class PetBreed {
   Map<String, dynamic> toJson() => _$PetBreedToJson(this);
 
   String toJsonString() => json.encode(toJson());
+
+  @override
+  bool operator ==(Object other) => other is PetBreed && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

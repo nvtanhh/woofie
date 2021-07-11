@@ -77,7 +77,7 @@ class PostItem extends StatelessWidget {
                 Obx(
                   () {
                     return MWIcon(
-                      post.updateSubject.isLiked??false ? MWIcons.react : MWIcons.unReact,
+                      post.updateSubject.isLiked ?? false ? MWIcons.react : MWIcons.unReact,
                       size: MWIconSize.small,
                     );
                   },

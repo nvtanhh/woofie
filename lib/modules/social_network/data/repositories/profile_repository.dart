@@ -1,7 +1,10 @@
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/social_network/data/datasources/location_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/user_datasource.dart';
+import 'package:meowoof/modules/social_network/domain/models/location.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
@@ -14,11 +17,12 @@ class ProfileRepository {
   final UserDatasource _userDatasource;
   final PetDatasource _petDatasource;
   final PostDatasource _postDatasource;
-
+  final LocationDatasource _locationDatasource;
   ProfileRepository(
     this._userDatasource,
     this._petDatasource,
     this._postDatasource,
+    this._locationDatasource,
   );
 
   Future likePost(int postId) async {
@@ -83,5 +87,22 @@ class ProfileRepository {
 
   Future<bool> deletePost(int idPost) {
     return _postDatasource.deletePost(idPost);
+  }
+
+  Future<Location> updateLocation(int id, double long, double lat, String name) {
+    return _locationDatasource.updateLocation(id, long, long, name);
+  }
+
+  Future<Location> createLocation(double long, double lat, String name) {
+    return _locationDatasource.createLocation(long, lat, name);
+  }
+
+  Future<Map<String, dynamic>> updateUserInformationLocation(int userId, {String? name, String? bio, int? locationId, String? avatarUrl}) {
+    return _userDatasource.updateUserInformationLocation(userId, name: name, bio: bio, locationId: locationId, avatarUrl: avatarUrl);
+  }
+
+  Future<Map<String, dynamic>> updatePetInformation(
+      int petId, String? name, String? bio, int? breed, String? avatarUrl, String? uuid, DateTime? dob, Gender? gender) {
+    return _petDatasource.updatePetInformation(petId, name, bio, breed, avatarUrl, uuid, dob, gender);
   }
 }

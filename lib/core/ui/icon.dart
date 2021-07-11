@@ -140,7 +140,7 @@ class MWIcons {
   static const calendar = MWIconData(nativeIcon: Icons.calendar_today_outlined);
   static const cancel = MWIconData(nativeIcon: Icons.close);
   static const retry = MWIconData(nativeIcon: Icons.refresh);
-
+  static const camera = MWIconData(nativeIcon: Icons.camera_alt_outlined);
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);

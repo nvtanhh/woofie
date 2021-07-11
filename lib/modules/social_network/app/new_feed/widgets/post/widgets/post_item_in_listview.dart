@@ -31,7 +31,7 @@ class PostItemInListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InfoUserPostWidget(
-            pets: post.taggegPets??[],
+            pets: post.taggegPets ?? [],
             postCreatedAt: post.createdAt!,
             user: post.creator!,
           ),
