@@ -38,7 +38,7 @@ class SavePostModel extends BaseViewModel {
 
   final List<Media> _deletedMedia = [];
 
-  Location? _currentLocation;
+  final Rxn<Location> _currentLocation = Rxn<Location>();
 
   SavePostModel(
     this._getPetsOfUserUsecase,
@@ -53,6 +53,7 @@ class SavePostModel extends BaseViewModel {
     _postMedia.addAll(post?.medias ?? []);
     contentController = TextEditingController();
     contentController.text = post?.content ?? "";
+    _currentLocation.value = post?.location;
 
     _newAddedFiles.stream.listen(onNewAddedFilesChanged);
     _postMedia.stream.listen(onPostMediaChanged);
@@ -60,7 +61,7 @@ class SavePostModel extends BaseViewModel {
     getPetsOfUser();
   }
 
-  Location? get currentLocation => _currentLocation;
+  Location? get currentLocation => _currentLocation.value;
 
   @override
   void disposeState() {
@@ -91,7 +92,7 @@ class SavePostModel extends BaseViewModel {
       if (isResetDisable) _isDisable.value = false;
       return;
     }
-    _currentLocation = null;
+    _currentLocation.value = null;
     return;
   }
 
@@ -198,7 +199,7 @@ class SavePostModel extends BaseViewModel {
       isLoadingAddress.value = false;
     }
     final currentPosition = await locationService.determinePosition();
-    _currentLocation = Location(
+    _currentLocation.value = Location(
       long: currentPosition.longitude,
       lat: currentPosition.latitude,
       name: currentAddress.value,
@@ -217,20 +218,36 @@ class SavePostModel extends BaseViewModel {
     }
   }
 
+  Location? getCurrentLocationForUpdate() {
+    if (post?.location == currentLocation) return null;
+    return currentLocation;
+  }
+
   void _onSavePost() {
+    final newTaggedPets = taggedPets.where((element) => !(post?.taggegPets ?? []).contains(element)).toList();
+
+    final deletedTaggedPet = (post?.taggegPets ?? []).where((element) => !taggedPets.contains(element)).toList();
+
     final EditedPostData editedPostData = EditedPostData(
-        originPost: post!,
-        newContent: contentController.text,
-        newTaggedPets: taggedPets,
-        newAddedFiles: newAddedFiles,
-        deletedMedias: _deletedMedia,
-        location: _currentLocation);
+      originPost: post!,
+      newContent: contentController.text,
+      newTaggedPets: newTaggedPets,
+      deletedTaggedPets: deletedTaggedPet,
+      newAddedFiles: newAddedFiles,
+      deletedMedias: _deletedMedia,
+      location: getCurrentLocationForUpdate(),
+    );
     Get.back(result: editedPostData);
   }
 
   void _onCreateNewPost() {
-    final NewPostData newPostData =
-        NewPostData(content: contentController.text, type: postType, taggegPets: taggedPets, mediaFiles: newAddedFiles, location: _currentLocation);
+    final NewPostData newPostData = NewPostData(
+      content: contentController.text,
+      type: postType,
+      taggegPets: taggedPets,
+      mediaFiles: newAddedFiles,
+      location: currentLocation,
+    );
 
     Get.back(result: newPostData);
   }

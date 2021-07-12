@@ -67,7 +67,7 @@ class Post extends UpdatableModel<Post> {
     this.createdAt,
     this.isLiked,
     this.comments,
-    this.taggegPets,
+    this.taggegPets = const [],
     this.location,
   });
 

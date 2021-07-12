@@ -51,7 +51,7 @@ class PreviewFollowPet extends StatelessWidget {
           children: [
             Obx(
               () => ImageWithPlaceHolderWidget(
-                imageUrl: pet.updateSubject.avatarUrl ?? "",
+                imageUrl: pet.updateSubjectValue.avatarUrl ?? "",
                 width: 60.w,
                 height: 60.w,
                 radius: 10.r,
@@ -62,7 +62,7 @@ class PreviewFollowPet extends StatelessWidget {
             ),
             Obx(
               () => Text(
-                pet.updateSubject.name ?? "",
+                pet.updateSubjectValue.name ?? "",
                 style: UITextStyle.text_header_18_w600,
               ),
             ),
@@ -72,7 +72,7 @@ class PreviewFollowPet extends StatelessWidget {
             Expanded(
               child: Obx(
                 () => Text(
-                  pet.updateSubject.bio ?? "",
+                  pet.updateSubjectValue.bio ?? "",
                   style: UITextStyle.text_body_12_w600,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
