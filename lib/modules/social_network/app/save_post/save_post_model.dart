@@ -219,7 +219,7 @@ class SavePostModel extends BaseViewModel {
     final EditedPostData editedPostData = EditedPostData(
         originPost: post!,
         newContent: contentController.text,
-        taggedPets: taggedPets,
+        newTaggedPets: taggedPets,
         newAddedFiles: newAddedFiles,
         deletedMedias: _deletedMedia,
         location: _currentLocation);
