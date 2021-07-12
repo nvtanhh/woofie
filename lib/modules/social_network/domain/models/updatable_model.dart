@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 abstract class UpdatableModel<T> {
   final int? id;
 
-  T get updateSubject => _updateChangeSubject.value as T;
+  T get updateSubjectValue => _updateChangeSubject.value as T;
   Rxn<T> get rxUpdateSubject => _updateChangeSubject;
   final Rxn<T> _updateChangeSubject = Rxn<T>();
 

@@ -43,7 +43,7 @@ class SendCommentWidget extends StatelessWidget {
         children: [
           Obx(
             () {
-              if (user?.updateSubject == null) {
+              if (user?.updateSubjectValue == null) {
                 return Container(
                   width: 45.w,
                   height: 45.w,

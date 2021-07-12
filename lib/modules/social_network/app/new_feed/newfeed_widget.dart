@@ -39,13 +39,15 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                 pagingController: viewModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
-                  itemBuilder: (context, item, index) => PostItem(
-                    post: item,
-                    onCommentClick: viewModel.onCommentClick,
-                    onLikeClick: viewModel.onLikeClick,
-                    onPostClick: viewModel.onPostClick,
-                    onDeletePost: () => viewModel.onPostDeleted(index),
-                    onEditPost: () => viewModel.onWantsToEditPost(item),
+                  itemBuilder: (context, item, index) => Obx(
+                    () => PostItem(
+                      post: item.updateSubjectValue,
+                      onCommentClick: viewModel.onCommentClick,
+                      onLikeClick: viewModel.onLikeClick,
+                      onPostClick: viewModel.onPostClick,
+                      onDeletePost: () => viewModel.onPostDeleted(index),
+                      onEditPost: () => viewModel.onWantsToEditPost(item),
+                    ),
                   ),
                 ),
               ),

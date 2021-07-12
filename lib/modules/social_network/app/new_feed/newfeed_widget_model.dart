@@ -236,9 +236,6 @@ class NewFeedWidgetModel extends BaseViewModel {
 
     final bool isEditSuccessed = await _startEditPost(editedPostData);
     if (isEditSuccessed) {
-      if (editedPostData.deletedMedias != null && editedPostData.deletedMedias!.isNotEmpty) {
-        await _deleteMedia(editedPostData.deletedMedias!);
-      }
       _refreshPost(editedPostData.originPost.id);
     } else {
       _onPostEditFailed();
