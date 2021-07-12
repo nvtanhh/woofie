@@ -29,4 +29,8 @@ class Location {
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
   String toJsonString() => json.encode(toJson());
+
+  String toPresent() {
+    return name ?? "${lat.toString()}, ${lat.toString()}";
+  }
 }

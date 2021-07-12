@@ -111,6 +111,12 @@ class PostDatasource {
           avatar_url
           uuid
         }
+        location {
+          id
+          lat
+          long
+          name
+        }
       }
     }
     """;

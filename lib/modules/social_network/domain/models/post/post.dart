@@ -71,6 +71,8 @@ class Post extends UpdatableModel<Post> {
     this.location,
   });
 
+  bool get isIncludeLocation => location != null;
+
   static List<Pet>? allPetsFromJson(List<dynamic>? list) {
     return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
   }

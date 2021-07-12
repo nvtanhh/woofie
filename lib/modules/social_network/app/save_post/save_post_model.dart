@@ -60,6 +60,8 @@ class SavePostModel extends BaseViewModel {
     getPetsOfUser();
   }
 
+  Location? get currentLocation => _currentLocation;
+
   @override
   void disposeState() {
     contentController.dispose();
