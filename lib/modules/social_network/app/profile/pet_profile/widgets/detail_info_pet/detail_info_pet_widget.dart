@@ -87,7 +87,7 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
               height: 175.h,
               isMyPet: viewModel.isMyPet,
               onAddClick: viewModel.isMyPet ? viewModel.onAddWeightClick : () => null,
-              weights: viewModel.pet.updateSubject.petWeights ?? [],
+              weights: viewModel.pet.updateSubjectValue.petWeights ?? [],
             ),
           ),
         ),
@@ -105,7 +105,7 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
                   () => WormFlushedPreviewWidget(
                     width: 160.w,
                     height: 188.h,
-                    wormFlushed: viewModel.pet.updateSubject.petWormFlushes ?? [],
+                    wormFlushed: viewModel.pet.updateSubjectValue.petWormFlushes ?? [],
                     isMyPet: viewModel.isMyPet,
                     onAddClick: viewModel.isMyPet ? viewModel.onAddWormFlushedClick : () => null,
                   ),
@@ -117,7 +117,7 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
                   () => VaccinatedPreviewWidget(
                     width: 160.w,
                     height: 188.h,
-                    vaccinates: viewModel.pet.updateSubject.petVaccinates ?? [],
+                    vaccinates: viewModel.pet.updateSubjectValue.petVaccinates ?? [],
                     isMyPet: viewModel.isMyPet,
                     onAddClick: viewModel.isMyPet ? viewModel.onAddVaccinatedClick : () => null,
                   ),

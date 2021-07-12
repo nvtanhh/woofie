@@ -40,7 +40,7 @@ class PetInfoWidget extends StatelessWidget {
         ),
         Obx(
           () => MWAvatar(
-            avatarUrl: pet.updateSubject.avatarUrl,
+            avatarUrl: pet.updateSubjectValue.avatarUrl,
             customSize: 80.w,
             borderRadius: 15.r,
           ),
@@ -50,7 +50,7 @@ class PetInfoWidget extends StatelessWidget {
         ),
         Obx(
           () => Text(
-            pet.updateSubject.name ?? "Unknown",
+            pet.updateSubjectValue.name ?? "Unknown",
             style: UITextStyle.text_header_24_w600,
           ),
         ),
@@ -59,7 +59,7 @@ class PetInfoWidget extends StatelessWidget {
         ),
         Obx(
           () => Text(
-            pet.updateSubject.bio ?? "Unknown",
+            pet.updateSubjectValue.bio ?? "Unknown",
             style: UITextStyle.text_body_14_w500,
           ),
         ),

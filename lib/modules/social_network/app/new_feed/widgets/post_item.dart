@@ -77,7 +77,7 @@ class PostItem extends StatelessWidget {
                 Obx(
                   () {
                     return MWIcon(
-                      post.updateSubject.isLiked ?? false ? MWIcons.react : MWIcons.unReact,
+                      post.updateSubjectValue.isLiked ?? false ? MWIcons.react : MWIcons.unReact,
                       size: MWIconSize.small,
                     );
                   },
@@ -87,7 +87,7 @@ class PostItem extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    "${post.updateSubject.postReactsCount ?? 0}",
+                    "${post.updateSubjectValue.postReactsCount ?? 0}",
                     style: UITextStyle.black_14_w600,
                   ),
                 ),
@@ -113,7 +113,7 @@ class PostItem extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    "${post.updateSubject.postCommentsCount ?? 0}",
+                    "${post.updateSubjectValue.postCommentsCount ?? 0}",
                     style: UITextStyle.black_14_w600,
                   ),
                 ),

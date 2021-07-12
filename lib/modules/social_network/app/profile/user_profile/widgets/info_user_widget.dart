@@ -51,7 +51,7 @@ class InfoUserWidget extends StatelessWidget {
         ),
         Obx(
           () => MWAvatar(
-            avatarUrl: user.updateSubject.avatarUrl,
+            avatarUrl: user.updateSubjectValue.avatarUrl,
             customSize: 80.w,
             borderRadius: 15.r,
           ),
@@ -61,7 +61,7 @@ class InfoUserWidget extends StatelessWidget {
         ),
         Obx(
           () => Text(
-            user.updateSubject.name ?? "Unknown",
+            user.updateSubjectValue.name ?? "Unknown",
             style: UITextStyle.text_header_24_w600,
           ),
         ),
@@ -70,7 +70,7 @@ class InfoUserWidget extends StatelessWidget {
         ),
         Obx(
           () => Text(
-            user.updateSubject.bio ?? "Unknown",
+            user.updateSubjectValue.bio ?? "Unknown",
             style: UITextStyle.text_body_14_w500,
           ),
         ),

@@ -266,12 +266,10 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
 
     return viewModel.isLoadingAddress.value
         ? _buildLoadingAddressWidget()
-        : viewModel.currentAddress.value.isNotEmpty
-            ? PostLocator(
-                location: viewModel.currentLocation,
-                maxLines: 2,
-              )
-            : const SizedBox();
+        : PostLocator(
+            location: viewModel.currentLocation,
+            maxLines: 2,
+          );
   }
 
   Widget _buildLoadingAddressWidget() {
