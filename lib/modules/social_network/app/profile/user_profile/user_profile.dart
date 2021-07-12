@@ -30,48 +30,47 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child: Obx(
-            () {
-              if (viewModel.isLoaded) {
-                return PagedListView<int, Post>(
-                  pagingController: viewModel.pagingController,
-                  builderDelegate: PagedChildBuilderDelegate(
-                    itemBuilder: (context, post, index) {
-                      if (index == 0) {
-                        return InfoUserWidget(
-                          user: viewModel.user!,
-                          onFollowPet: viewModel.onFollowPet,
-                          isMe: viewModel.isMe,
-                          onUserBlock: viewModel.onUserBlock,
-                          onUserReport: viewModel.onUserReport,
-                        );
-                      }
-                      return PostItem(
-                        post: post,
-                        onLikeClick: viewModel.onLikeClick,
-                        onEditPost: () => viewModel.onPostEdited(post),
-                        onDeletePost: () => viewModel.onPostDeleted(post, index),
-                        onCommentClick: viewModel.onCommentClick,
-                        onPostClick: viewModel.onPostClick,
-                      );
-                    },
-                  ),
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        child: Column(
+          children: [
+            InfoUserWidget(
+              user: viewModel.user!,
+              onFollowPet: viewModel.onFollowPet,
+              isMe: viewModel.isMe,
+              onUserBlock: viewModel.onUserBlock,
+              onUserReport: viewModel.onUserReport,
+            ),
+            Obx(
+              () => (viewModel.isLoaded)
+                  ? PagedListView<int, Post>(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      pagingController: viewModel.pagingController,
+                      builderDelegate: PagedChildBuilderDelegate(
+                        itemBuilder: (context, post, index) {
+                          return PostItem(
+                            post: post.updateSubjectValue,
+                            onLikeClick: viewModel.onLikeClick,
+                            onEditPost: () => viewModel.onPostEdited(post),
+                            onDeletePost: () =>
+                                viewModel.onPostDeleted(post, index),
+                            onCommentClick: viewModel.onCommentClick,
+                            onPostClick: viewModel.onPostClick,
+                          );
+                        },
+                      ),
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+            ),
+          ],
         ),
-        endDrawer: Drawer(
-          child: Setting(),
-        ),
+      ),
+      endDrawer: Drawer(
+        child: Setting(),
       ),
     );
   }
