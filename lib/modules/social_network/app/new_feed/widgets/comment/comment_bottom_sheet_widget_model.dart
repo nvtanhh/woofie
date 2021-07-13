@@ -28,7 +28,7 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
 
   CommentBottomSheetWidgetModel(
     this._getCommentInPostUsecase,
-    @Named("current_user_storage") this._userStorage,
+    this._userStorage,
     this._createCommentUsecase,
     this._likeCommentUsecase,
   ) {

@@ -7,7 +7,7 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 class LoggedInUser {
   final UserStorage _userStorage;
 
-  LoggedInUser(@Named("current_user_storage") this._userStorage) {
+  LoggedInUser(this._userStorage) {
     _loggedInUser = _userStorage.get();
   }
 

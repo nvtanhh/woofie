@@ -45,7 +45,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
     this._updateLocationUsecase,
     this._createLocationUsecase,
     this._updateUserInformationUsecase,
-    @Named("current_user_storage") this._userStorage,
+    this._userStorage,
   );
 
   @override

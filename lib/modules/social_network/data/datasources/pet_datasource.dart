@@ -18,7 +18,7 @@ class PetDatasource {
 
   PetDatasource(
     this._hasuraConnect,
-    @Named("current_user_storage") this._userStorage,
+    this._userStorage,
   );
 
   Future<List<PetType>> getPetTypes() async {

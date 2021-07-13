@@ -7,7 +7,7 @@ class SaveUserToLocalUsecase {
   final UserStorage _userStorage;
 
   SaveUserToLocalUsecase(
-    @Named("current_user_storage") this._userStorage,
+    this._userStorage,
   );
 
   Future call(User user) async {

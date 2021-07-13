@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/commons/shimmer_page.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile_model.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/info_user_widget.dart';
@@ -62,9 +63,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
                   ),
                 );
               } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return ShimmerPage();
               }
             },
           ),

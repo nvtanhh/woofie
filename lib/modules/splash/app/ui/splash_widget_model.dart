@@ -12,7 +12,7 @@ class SplashWidgetModel extends BaseViewModel {
   final UserStorage _userStorage;
   bool isChecked = false;
 
-  SplashWidgetModel(this._firebaseAuth, @Named("current_user_storage") this._userStorage);
+  SplashWidgetModel(this._firebaseAuth, this._userStorage);
 
   Future checkLogged() async {
     if (!isChecked) {

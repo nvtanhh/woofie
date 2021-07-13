@@ -28,7 +28,7 @@ class PostDetailWidgetModel extends BaseViewModel {
   List<Comment> comments = [];
 
   PostDetailWidgetModel(
-    @Named("current_user_storage") this._userStorage,
+    this._userStorage,
     this._likePostUsecase,
     this._getCommentInPostUsecase,
     this._createCommentUsecase,

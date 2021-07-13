@@ -7,7 +7,7 @@ import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
-class PostItem extends StatelessWidget {
+class PostItem extends StatefulWidget {
   final Post post;
   final Function(Post)? onCommentClick;
   final Function(int) onLikeClick;
@@ -26,18 +26,23 @@ class PostItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _PostItemState createState() => _PostItemState();
+}
+
+class _PostItemState extends State<PostItem> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         PostHeader(
-          post: post,
-          onDeletePost: onDeletePost,
-          onEditPost: onEditPost,
+          post: widget.post,
+          onDeletePost: widget.onDeletePost,
+          onEditPost: widget.onEditPost,
         ),
         InkWell(
-          onTap: () => onPostClick?.call(post),
-          child: PostBody(post: post),
+          onTap: () => widget.onPostClick?.call(widget.post),
+          child: PostBody(post: widget.post),
         ),
         SizedBox(
           height: 13.h,
@@ -54,15 +59,15 @@ class PostItem extends StatelessWidget {
   }
 
   void likeClick() {
-    if (!post.isLiked!) {
-      post.increasePostReactsCount();
+    if (!widget.post.isLiked!) {
+      widget.post.increasePostReactsCount();
     } else {
-      post.decreasePostReactsCount();
+      widget.post.decreasePostReactsCount();
     }
-    post.isLiked = !post.isLiked!;
-    onLikeClick(post.id);
-    post.notifyUpdate();
-    Post.factory.addToCache(post);
+    widget.post.isLiked = !widget.post.isLiked!;
+    widget.onLikeClick(widget.post.id);
+    widget.post.notifyUpdate();
+    Post.factory.addToCache(widget.post);
   }
 
   Widget _buildPostActions() {
@@ -77,7 +82,7 @@ class PostItem extends StatelessWidget {
                 Obx(
                   () {
                     return MWIcon(
-                      post.updateSubjectValue.isLiked ?? false ? MWIcons.react : MWIcons.unReact,
+                      widget.post.updateSubjectValue.isLiked ?? false ? MWIcons.react : MWIcons.unReact,
                       size: MWIconSize.small,
                     );
                   },
@@ -87,7 +92,7 @@ class PostItem extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    "${post.updateSubjectValue.postReactsCount ?? 0}",
+                    "${widget.post.updateSubjectValue.postReactsCount ?? 0}",
                     style: UITextStyle.black_14_w600,
                   ),
                 ),
@@ -102,7 +107,7 @@ class PostItem extends StatelessWidget {
         SizedBox(
           width: 60.w,
           child: InkWell(
-            onTap: () => onCommentClick?.call(post),
+            onTap: () => widget.onCommentClick?.call(widget.post),
             child: Row(
               children: [
                 MWIcon(
@@ -113,7 +118,7 @@ class PostItem extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    "${post.updateSubjectValue.postCommentsCount ?? 0}",
+                    "${widget.post.updateSubjectValue.postCommentsCount ?? 0}",
                     style: UITextStyle.black_14_w600,
                   ),
                 ),
