@@ -51,6 +51,9 @@ class PetProfileModel extends BaseViewModel {
     call(
       () => _followPetUsecase.call(pet.id),
       onSuccess: () {},
+      onFailure: (err){
+        printError(info: err.toString());
+      }
     );
   }
 
