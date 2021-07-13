@@ -48,13 +48,9 @@ class PetProfileModel extends BaseViewModel {
   void onPetBlock(Pet pet) {}
 
   void followPet(Pet pet) {
-    call(
-      () => _followPetUsecase.call(pet.id),
-      onSuccess: () {},
-      onFailure: (err){
-        printError(info: err.toString());
-      }
-    );
+    call(() => _followPetUsecase.call(pet.id), onSuccess: () {}, onFailure: (err) {
+      printError(info: err.toString());
+    });
   }
 
   void onPetReport(Pet pet) {}

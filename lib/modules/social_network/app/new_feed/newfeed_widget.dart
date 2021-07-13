@@ -30,23 +30,23 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
         children: [
           const SizedBox(height: 10),
           Obx(
-            () => Column(children: viewModel.prependedWidgets),
+            () => Column(children: viewModel.postService.prependedWidgets),
           ),
           Expanded(
             child: RefreshIndicator(
               onRefresh: viewModel.onRefresh,
               child: PagedListView<int, Post>(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                pagingController: viewModel.pagingController,
+                pagingController: viewModel.postService.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) => Obx(
                     () => PostItem(
                       post: item.updateSubjectValue,
-                      onCommentClick: viewModel.onCommentClick,
-                      onLikeClick: viewModel.onLikeClick,
-                      onPostClick: viewModel.onPostClick,
-                      onDeletePost: () => viewModel.onPostDeleted(index),
-                      onEditPost: () => viewModel.onWantsToEditPost(item),
+                      onCommentClick: viewModel.postService.onCommentClick,
+                      onLikeClick: viewModel.postService.onLikeClick,
+                      onPostClick: viewModel.postService.onPostClick,
+                      onDeletePost: () => viewModel.postService.onPostDeleted(index),
+                      onEditPost: () => viewModel.postService.onWantsToEditPost(item),
                     ),
                   ),
                 ),
@@ -80,7 +80,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
               child: SizedBox(),
             ),
             InkWell(
-              onTap: viewModel.onWantsToCreateNewPost,
+              onTap: viewModel.postService.onWantsToCreateNewPost,
               child: MWIcon(MWIcons.add),
             ),
             SizedBox(

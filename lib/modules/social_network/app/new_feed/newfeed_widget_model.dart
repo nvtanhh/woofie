@@ -1,58 +1,27 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:async/async.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
-import 'package:meowoof/core/services/media_service.dart';
-import 'package:meowoof/core/services/navigation_service.dart';
-import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
-import 'package:meowoof/modules/social_network/app/save_post/new_post_uploader.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
+import 'package:meowoof/modules/social_network/app/save_post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/new_feed/refresh_post_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_post_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/save_post/delete_media_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/save_post/edit_post_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/save_post/get_presigned_url_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
-import 'package:meowoof/theme/ui_color.dart';
-import 'package:path/path.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class NewFeedWidgetModel extends BaseViewModel {
   final BottomSheetService bottomSheetService = injector<BottomSheetService>();
   final GetPostsUsecase _getPostsUsecase;
-  final DeleteMediaUsecase _deleteMediaUsecase;
-  final MediaService _mediaService;
-  final GetPresignedUrlUsecase _getPresignedUrlUsecase;
-  final UploadMediaUsecase _uploadMediaUsecase;
-  final EditPostUsecase _editPostUsecase;
-  final LikePostUsecase _likePostUsecase;
-  final RefreshPostsUsecase _refreshPostsUsecase;
-  DeletePostUsecase _deletePostUsecase;
+  final PostService postService;
 
   List<Post> posts = [];
-  late PagingController<int, Post> pagingController;
   final int pageSize = 10;
   int nextPageKey = 0;
   DateTime? dateTimeValueLast;
   CancelableOperation? cancelableOperation;
-  RxList<Widget> prependedWidgets = <Widget>[].obs;
-  RxList<NewPostData> newPostsData = <NewPostData>[].obs;
-
-  final HashMap _prependedWidgetsRemover = HashMap<String, VoidCallback>();
 
   late DateTime _lastRefeshTime;
 
@@ -60,22 +29,13 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   NewFeedWidgetModel(
     this._getPostsUsecase,
-    this._deleteMediaUsecase,
-    this._mediaService,
-    this._getPresignedUrlUsecase,
-    this._uploadMediaUsecase,
-    this._editPostUsecase,
-    this._likePostUsecase,
-    this._refreshPostsUsecase,
-    this._deletePostUsecase,
-  ) {
-    pagingController = PagingController(firstPageKey: 0);
-  }
+    this.postService,
+  );
 
   @override
   void disposeState() {
     cancelableOperation?.cancel();
-    pagingController.dispose();
+    postService.disposeState();
     super.disposeState();
   }
 
@@ -87,8 +47,9 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   @override
   void initState() {
+    postService.initState();
     super.initState();
-    pagingController.addPageRequestListener(
+    postService.pagingController.addPageRequestListener(
       (pageKey) {
         cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
@@ -96,86 +57,28 @@ class NewFeedWidgetModel extends BaseViewModel {
     _lastRefeshTime = DateTime.now();
   }
 
-  void onPostDeleted(int index) {
-    pagingController.itemList?.removeAt(index);
-    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-    pagingController.notifyListeners();
-  }
-
-  Future onWantsToCreateNewPost() async {
-    final NewPostData? newPostData = await injector<NavigationService>().navigateToCreatePost();
-    if (newPostData != null) {
-      newPostsData.add(newPostData);
-      _prepenedNewPostUploadingWidget(newPostData);
-    }
-  }
-
   Future _loadMorePost(int pageKey) async {
     try {
       final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
-        pagingController.appendLastPage(newItems);
+        postService.pagingController.appendLastPage(newItems);
       } else {
         nextPageKey = pageKey + newItems.length;
         dateTimeValueLast = newItems.last.createdAt;
-        pagingController.appendPage(newItems, nextPageKey);
+        postService.pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
-      pagingController.error = error;
+      postService.pagingController.error = error;
     }
-  }
-
-  void _onNewPostDataUploaderCancelled(NewPostData newPostData) {
-    _removeNewPostDataUploader(newPostData);
-  }
-
-  void _onNewPostDataUploaderPostPublished(Post publishedPost, NewPostData newPostData) {
-    _showSnackbarCreatePostSuccessful();
-    pagingController.itemList?.insert(0, publishedPost);
-    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-    pagingController.notifyListeners();
-    _removeNewPostDataUploader(newPostData);
-  }
-
-  void _prepenedNewPostUploadingWidget(NewPostData newPostData) {
-    final NewPostUploader newPostUploaderWidget = NewPostUploader(
-      data: newPostData,
-      onPostPublished: _onNewPostDataUploaderPostPublished,
-      onCancelled: _onNewPostDataUploaderCancelled,
-    );
-
-    prependedWidgets.add(newPostUploaderWidget);
-    _prependedWidgetsRemover[newPostData.newPostUuid] = _removeNewPostDataWidget(newPostUploaderWidget);
-  }
-
-  void _removeNewPostDataUploader(NewPostData newPostData) {
-    newPostsData.remove(newPostData);
-    _prependedWidgetsRemover[newPostData.newPostUuid]();
-  }
-
-  VoidCallback _removeNewPostDataWidget(NewPostUploader newPostUploaderWidget) {
-    return () {
-      prependedWidgets.remove(newPostUploaderWidget);
-    };
-  }
-
-  void _showSnackbarCreatePostSuccessful() {
-    Get.snackbar(
-      "Congrats 🎉",
-      "Create new post successful",
-      duration: const Duration(seconds: 2),
-      backgroundColor: UIColor.accent2,
-      colorText: UIColor.white,
-    );
   }
 
   Future<void> onRefresh() async {
     if (_isCanRefesh()) {
       final newItems = await _getPostsUsecase.call(limit: pageSize);
-      pagingController.itemList = newItems;
+      postService.pagingController.itemList = newItems;
       // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-      pagingController.notifyListeners();
+      postService.pagingController.notifyListeners();
     } else {
       printInfo(info: 'Please wait $_refreshIntervalLimitSecond seconds');
     }
@@ -183,149 +86,5 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   bool _isCanRefesh() {
     return DateTime.now().difference(_lastRefeshTime).inSeconds > _refreshIntervalLimitSecond;
-  }
-
-  void onCommentClick(Post post) {
-    bottomSheetService.showComments(post);
-  }
-
-  void onDeletePost(Post post, int index) {
-    bool isSuccess = false;
-    call(
-      () async {
-        isSuccess = await _deletePostUsecase.call(post.id);
-      },
-      onSuccess: () {
-        if (isSuccess) {
-          injector<ToastService>().success(message: 'Post deleted!', context: Get.context!);
-        }
-        pagingController.itemList?.removeAt(index);
-        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-        pagingController.notifyListeners();
-      },
-      onFailure: (err) {
-        injector<ToastService>().success(message: err.toString(), context: Get.context!);
-      },
-    );
-  }
-
-  void onLikeClick(int idPost) {
-    call(
-      () => _likePostUsecase.call(idPost),
-      showLoading: false,
-      onFailure: (err) {},
-    );
-  }
-
-  void onPostClick(Post post) {
-    injector<NavigationService>().navigateToPostDetail(post);
-  }
-
-  Future onWantsToEditPost(Post post) async {
-    final EditedPostData? editedPostData = await injector<NavigationService>().navigateToEditPost(post);
-
-    if (editedPostData != null) {
-      await onPostEdited(editedPostData);
-    }
-  }
-
-  Future onPostEdited(EditedPostData editedPostData) async {
-    if (editedPostData.newAddedFiles != null && editedPostData.newAddedFiles!.isNotEmpty) {
-      editedPostData.newAddedMedias = await _startUploadNewMediaFiles(editedPostData.newAddedFiles!, editedPostData.originPost);
-    }
-
-    final bool isEditSuccessed = await _startEditPost(editedPostData);
-    if (isEditSuccessed) {
-      _refreshPost(editedPostData.originPost.id);
-    } else {
-      _onPostEditFailed();
-    }
-  }
-
-  Future<bool> _startEditPost(EditedPostData editedPostData) async {
-    bool isEdited = false;
-    await call(() async {
-      isEdited = await _editPostUsecase.call(editedPostData);
-    }, onFailure: (error) {
-      printError(info: error.toString());
-    });
-    return isEdited;
-  }
-
-  Future _deleteMedia(List<Media> deletedMedias) async {
-    await call(
-      () async {
-        final List<int> ids = deletedMedias.map((media) => media.id).toList();
-        await _deleteMediaUsecase.call(ids);
-      },
-    );
-  }
-
-  Future<List<UploadedMedia>> _startUploadNewMediaFiles(List<MediaFile> newAddedFiles, Post oldPost) async {
-    final List<MediaFile> compressMediaFiles = await Future.wait(newAddedFiles.map((file) async => _compressPostMediaItem(file)).toList());
-    final List<UploadedMedia> storedMediaFiles = [];
-
-    for (final compressedFile in compressMediaFiles) {
-      final uploadedFile = await _storeMediaItem(compressedFile, oldPost);
-      if (uploadedFile != null) {
-        storedMediaFiles.add(uploadedFile);
-      }
-    }
-
-    return storedMediaFiles;
-  }
-
-  Future<MediaFile> _compressPostMediaItem(MediaFile postMediaItem) async {
-    if (postMediaItem.isImage) {
-      postMediaItem.file = await _mediaService.compressImage(postMediaItem.file);
-    } else if (postMediaItem.isVideo) {
-      postMediaItem.file = await _mediaService.compressVideo(postMediaItem.file);
-    } else {
-      printError(info: 'Unsupported media type for compression');
-    }
-    return postMediaItem;
-  }
-
-  Future<UploadedMedia?> _storeMediaItem(MediaFile mediaFile, Post oldPost) async {
-    final String fileName = basename(mediaFile.file.path);
-    final String postUuid = oldPost.uuid;
-    // get presigned URL
-    printInfo(info: 'Getting presigned URL');
-    final String? preSignedUrl = await _getPresignedUrlUsecase.call(fileName, postUuid);
-    // upload media to s3
-    String? uploadedMediaUrl;
-    if (preSignedUrl != null) {
-      printInfo(info: 'Uploading media to s3');
-      uploadedMediaUrl = await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
-    }
-    if (uploadedMediaUrl != null) {
-      final UploadedMedia mediaFileUploader = UploadedMedia(uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
-      return mediaFileUploader;
-    }
-    return null;
-  }
-
-  int _convertToMediaTypeCode(FileType? type) {
-    if (type != null) {
-      switch (type) {
-        case FileType.image:
-          return 0;
-        case FileType.video:
-          return 1;
-        default:
-      }
-    }
-    throw Exception('Unsupported media type for post');
-  }
-
-  void _refreshPost(int postId) {
-    call(() => _refreshPostsUsecase.call(postId), onSuccess: () {
-      injector<ToastService>().success(message: 'Post updated!', context: Get.context!);
-    });
-  }
-
-  void _onPostEditFailed() {
-    injector<ToastService>()
-        .error(message: 'Post update failed! Please try again latter.', duration: const Duration(seconds: 2), context: Get.context!);
   }
 }
