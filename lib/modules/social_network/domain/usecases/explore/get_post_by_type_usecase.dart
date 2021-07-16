@@ -8,7 +8,13 @@ class GetPostByTypeUsecase {
 
   GetPostByTypeUsecase(this._exploreRepository);
 
-  Future<List<Post>> call({required PostType postType, int distance = 5, int limit = 10, int offset = 0}) {
-    return _exploreRepository.getPostsByType(postType, distance, limit, offset);
+  Future<List<Post>> call({
+    required PostType postType,
+    required double longUser,
+    required double latUser,
+    int limit = 10,
+    int offset = 0,
+  }) {
+    return _exploreRepository.getPostsByType(postType, longUser, latUser, limit, offset);
   }
 }

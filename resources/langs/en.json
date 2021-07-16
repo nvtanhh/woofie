@@ -51,7 +51,9 @@
     "no_comments_yet": "No comments yet",
     "edit_post": "Edit post",
     "delete_post": "Delete post",
-    "report_post": "Report this post"
+    "report_post": "Report this post",
+    "need_choose_at_least_one_pet": "Need to choose at least one pet",
+    "require_access_location": "Location access is required to use the function"
   },
   "explore": {
     "search": "Search",

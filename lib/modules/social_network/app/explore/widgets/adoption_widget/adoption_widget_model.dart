@@ -1,29 +1,60 @@
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/services/dialog_service.dart';
+import 'package:meowoof/core/services/location_service.dart';
+import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
+import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/get_post_by_type_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class AdoptionWidgetModel extends BaseViewModel {
+  final GetPostByTypeUsecase _getPostByTypeUsecase;
+  final LocationService _locationService;
   final int pageSize = 10;
   int nextPageKey = 0;
   late PagingController<int, Post> pagingController;
-  final GetPostByTypeUsecase _getPostByTypeUsecase;
+  late UserStorage _userStorage;
+
   List<Post>? posts = [];
   late PostType postType;
-  AdoptionWidgetModel(this._getPostByTypeUsecase) {
+  late Location location;
+
+  AdoptionWidgetModel(
+    this._getPostByTypeUsecase,
+    this._locationService,
+  ) {
     pagingController = PagingController(firstPageKey: 0);
   }
 
   @override
   void initState() {
+    getCurrentAddress();
     pagingController.addPageRequestListener((pageKey) {
       _loadPost(pageKey);
     });
     super.initState();
+  }
+
+  void loadUserFormLocal() {
+    final user = _userStorage.get();
+    if (user == null) {}
+  }
+
+  Future getCurrentAddress() async {
+    if (await _locationService.isPermissionDenied()) {
+      await injector<DialogService>().showPermisstionDialog();
+      return;
+    }
+    final currentPosition = await _locationService.determinePosition();
+    location = Location(
+      long: currentPosition.longitude,
+      lat: currentPosition.latitude,
+    );
   }
 
   void _loadPost(int pageKey) {
@@ -31,6 +62,8 @@ class AdoptionWidgetModel extends BaseViewModel {
         () async {
           posts = await _getPostByTypeUsecase.call(
             postType: postType,
+            longUser: location.long!,
+            latUser: location.lat!,
           );
           if ((posts?.length ?? 0) < pageSize) {
             pagingController.appendLastPage(posts ?? []);
