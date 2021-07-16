@@ -13,16 +13,16 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class PetItemWidget extends StatelessWidget {
   final Pet pet;
+  final Post post;
   final Function onClick;
-  final double distance;
   final PostType postType;
 
   const PetItemWidget({
     Key? key,
     required this.pet,
     required this.onClick,
-    required this.distance,
     required this.postType,
+    required this.post,
   }) : super(key: key);
 
   @override
@@ -39,7 +39,7 @@ class PetItemWidget extends StatelessWidget {
         child: Stack(
           children: [
             ImageWithPlaceHolderWidget(
-              imageUrl: pet.avatarUrl ?? "",
+              imageUrl: post.medias?[0].url??pet.avatarUrl ?? "",
               width: 165.w,
               height: 157.h,
               fit: BoxFit.cover,
@@ -91,7 +91,7 @@ class PetItemWidget extends StatelessWidget {
                               width: 5.w,
                             ),
                             Text(
-                              "$distance Km",
+                              "${post.distanceUserToPost??""} Km",
                               style: UITextStyle.text_body_10_w500,
                             ),
                           ],

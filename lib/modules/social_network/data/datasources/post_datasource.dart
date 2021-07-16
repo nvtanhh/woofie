@@ -194,6 +194,11 @@ class PostDatasource {
         id
         type
         uuid
+        location {
+          id
+          lat
+          long
+        }
         post_pets {
           pet {
             avatar_url
