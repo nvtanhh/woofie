@@ -19,7 +19,7 @@ class AdoptionWidgetModel extends BaseViewModel {
   final int pageSize = 10;
   int nextPageKey = 0;
   late PagingController<int, Post> pagingController;
-  late UserStorage _userStorage;
+  final UserStorage _userStorage;
 
   List<Post> posts = [];
   late PostType postType;
@@ -28,6 +28,7 @@ class AdoptionWidgetModel extends BaseViewModel {
   AdoptionWidgetModel(
     this._getPostByTypeUsecase,
     this._locationService,
+    this._userStorage,
   );
 
   @override
@@ -49,15 +50,19 @@ class AdoptionWidgetModel extends BaseViewModel {
 
   Future getCurrentAddress() async {
     if (await _locationService.isPermissionDenied()) {
-      await injector<DialogService>().showPermisstionDialog();
       loadUserFormLocal();
       return;
     }
-    final currentPosition = await _locationService.determinePosition();
-    location = Location(
-      long: currentPosition.longitude,
-      lat: currentPosition.latitude,
-    );
+    try {
+      final currentPosition = await _locationService.determinePosition();
+      location = Location(
+        long: currentPosition.longitude,
+        lat: currentPosition.latitude,
+      );
+    } catch (e) {
+      await injector<DialogService>().showPermisstionDialog();
+      return;
+    }
     if (location != null) {
       startLoadPage();
     }

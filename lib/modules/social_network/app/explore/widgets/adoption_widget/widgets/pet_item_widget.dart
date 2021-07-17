@@ -39,7 +39,7 @@ class PetItemWidget extends StatelessWidget {
         child: Stack(
           children: [
             ImageWithPlaceHolderWidget(
-              imageUrl: post.medias?[0].url??pet.avatarUrl ?? "",
+              imageUrl: post.medias?.isEmpty == true ? (pet.avatarUrl ?? "") : post.medias!.first.url!,
               width: 165.w,
               height: 157.h,
               fit: BoxFit.cover,
@@ -91,7 +91,7 @@ class PetItemWidget extends StatelessWidget {
                               width: 5.w,
                             ),
                             Text(
-                              "${post.distanceUserToPost??""} Km",
+                              "${post.distanceUserToPost ?? ""} Km",
                               style: UITextStyle.text_body_10_w500,
                             ),
                           ],

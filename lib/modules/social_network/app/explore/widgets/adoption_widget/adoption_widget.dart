@@ -60,7 +60,7 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
                   pagingController: viewModel.pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Post>(
                     itemBuilder: (context, item, index) {
-                      item.distanceUserToPost =Geolocator.distanceBetween(
+                      item.distanceUserToPost = Geolocator.distanceBetween(
                         viewModel.location!.lat!,
                         viewModel.location!.long!,
                         item.location!.lat!,

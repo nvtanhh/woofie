@@ -31,6 +31,12 @@ class PostItem extends StatefulWidget {
 
 class _PostItemState extends State<PostItem> {
   @override
+  void initState() {
+    widget.post.isLiked ??= false;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

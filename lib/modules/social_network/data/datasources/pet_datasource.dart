@@ -201,31 +201,20 @@ mutation MyMutation {
   }
 
   Future<List<Pet>> searchPet(String keyWord, int offset, int limit) async {
-    await Future.delayed(const Duration(seconds: 1));
-    if (keyWord.isEmpty) {
-      return const <Pet>[];
-    } else {
-      return <Pet>[
-        Pet(
-          id: 0,
-          name: "Vàng",
-          avatar: Media(
-            id: 0,
-            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-            type: MediaType.image,
-          ),
-        ),
-        Pet(
-          id: 1,
-          name: "Đỏ",
-          avatar: Media(
-            id: 0,
-            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-            type: MediaType.image,
-          ),
-        ),
-      ];
-    }
+    final query = """
+query MyQuery {
+  pets(where: {name: {_ilike: "$keyWord%"}}) {
+    id
+    avatar_url
+    name
+    bio
+    is_following
+  }
+}
+    """;
+    final data = await _hasuraConnect.query(query);
+    final list = GetMapFromHasura.getMap(data as Map)["pets"] as List;
+    return list.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<List<Pet>> getPetsOfUser(String userUUID) async {

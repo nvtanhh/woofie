@@ -51,7 +51,9 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                   alignment: Alignment.topCenter,
                   children: [
                     ImagesViewWidget(
-                      medias: viewModel.post.medias ?? [Media(id: 0, url: viewModel.pet?.avatarUrl ?? "", type: MediaType.image)],
+                      medias: viewModel.post.medias?.isEmpty == true
+                          ? [Media(id: 0, url: viewModel.pet?.avatarUrl ?? "", type: MediaType.image)]
+                          : viewModel.post.medias!,
                       height: Get.height / 2,
                       fit: BoxFit.cover,
                     ),

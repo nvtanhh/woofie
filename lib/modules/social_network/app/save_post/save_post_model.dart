@@ -245,7 +245,7 @@ class SavePostModel extends BaseViewModel {
   }
 
   void _onCreateNewPost() {
-    if(!_validateDataBeforeCreatePost())return;
+    if (!_validateDataBeforeCreatePost()) return;
     final NewPostData newPostData = NewPostData(
       content: contentController.text.trim().replaceAll("\n", "\\n"),
       type: postType,
@@ -267,7 +267,7 @@ class SavePostModel extends BaseViewModel {
         );
         return false;
       }
-      if(postType.index==4 || currentLocation==null){
+      if (postType.index == 4 || currentLocation == null) {
         toastService.warning(
           message: LocaleKeys.new_feed_require_access_location.trans(),
           context: Get.context!,
