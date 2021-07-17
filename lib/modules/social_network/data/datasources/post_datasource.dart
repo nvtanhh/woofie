@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
@@ -183,13 +181,24 @@ class PostDatasource {
     return affectedRows >= 1;
   }
 
-  Future<List<Post>> getPostByType(PostType postType, int distance, int limit, int offset) async {
+  Future<List<Post>> getPostByType(
+    PostType postType,
+    double longUser,
+    double latUser,
+    int limit,
+    int offset,
+  ) async {
     final query = """
     query MyQuery {
-      get_posts_by_type(args: {post_type: ${postType.index}, distance_kms: $distance }, order_by: {created_at: desc}, limit: $limit, offset: $offset) {
+      get_posts_by_type(args: {post_type: ${postType.index},long_user: $longUser,lat_user: $latUser , mlimit: $limit, moffset: $offset }, order_by: {created_at: desc},) {
         id
         type
         uuid
+        location {
+          id
+          lat
+          long
+        }
         post_pets {
           pet {
             avatar_url
@@ -203,7 +212,6 @@ class PostDatasource {
             name
           }
         }
-        distance_user_to_post
       }
     }
     """;

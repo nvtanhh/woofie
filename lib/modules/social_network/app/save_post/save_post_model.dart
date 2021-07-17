@@ -1,12 +1,16 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
+import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
@@ -17,7 +21,6 @@ import 'package:meowoof/modules/social_network/domain/models/post/updated_post_d
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_pets_of_user_usecase.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:collection/collection.dart';
 
 @injectable
 class SavePostModel extends BaseViewModel {
@@ -134,6 +137,7 @@ class SavePostModel extends BaseViewModel {
   }
 
   List<Pet> get taggedPets => _taggedPets.toList();
+
   List<MediaFile> get newAddedFiles => _newAddedFiles.toList();
 
   set taggedPets(List<Pet> value) {
@@ -241,8 +245,9 @@ class SavePostModel extends BaseViewModel {
   }
 
   void _onCreateNewPost() {
+    if (!_validateDataBeforeCreatePost()) return;
     final NewPostData newPostData = NewPostData(
-      content: contentController.text,
+      content: contentController.text.trim().replaceAll("\n", "\\n"),
       type: postType,
       taggegPets: taggedPets,
       mediaFiles: newAddedFiles,
@@ -250,6 +255,27 @@ class SavePostModel extends BaseViewModel {
     );
 
     Get.back(result: newPostData);
+  }
+
+  bool _validateDataBeforeCreatePost() {
+    ToastService toastService = injector<ToastService>();
+    if (postType.index >= 1) {
+      if (taggedPets.isEmpty) {
+        toastService.warning(
+          message: LocaleKeys.new_feed_need_choose_at_least_one_pet.trans(),
+          context: Get.context!,
+        );
+        return false;
+      }
+      if (postType.index == 4 || currentLocation == null) {
+        toastService.warning(
+          message: LocaleKeys.new_feed_require_access_location.trans(),
+          context: Get.context!,
+        );
+        return false;
+      }
+    }
+    return true;
   }
 
   void onRemovePostMedia(Media media) {

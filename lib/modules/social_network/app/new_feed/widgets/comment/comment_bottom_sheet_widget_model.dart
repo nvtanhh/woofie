@@ -75,18 +75,21 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   }
 
   void onSendComment() {
+    if (commentEditingController.text.isEmpty) return;
     call(
-      () async {
-        final Comment? comment = await _createCommentUsecase.call(post.id, commentEditingController.text, tagUsers);
-        if (comment != null) {
-          pagingController.itemList?.insert(0, comment);
-          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-          pagingController.notifyListeners();
-          commentEditingController.clear();
-        }
-      },
-      showLoading: false,
-    );
+        () async {
+          final Comment? comment = await _createCommentUsecase.call(post.id, commentEditingController.text.replaceAll("\n", "\\n"), tagUsers);
+          if (comment != null) {
+            pagingController.itemList?.insert(0, comment);
+            // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+            pagingController.notifyListeners();
+            commentEditingController.clear();
+          }
+        },
+        showLoading: false,
+        onSuccess: () {
+          post.increasePostCommentsCount();
+        });
   }
 
   void onLikeCommentClick(int idComment) {

@@ -83,6 +83,15 @@ class Pet extends UpdatableModel<Pet> {
   Map<String, dynamic> toJson() => _$PetToJson(this);
 
   String toJsonString() => json.encode(toJson());
+  void followPet() {
+    isFollowing = true;
+    notifyUpdate();
+  }
+
+  void unFollowPet() {
+    isFollowing = false;
+    notifyUpdate();
+  }
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Pet && runtimeType == other.runtimeType && id == other.id;

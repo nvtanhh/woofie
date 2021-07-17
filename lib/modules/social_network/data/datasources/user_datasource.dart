@@ -10,7 +10,7 @@ class UserDatasource {
 
   UserDatasource(this._hasuraConnect);
 
-  Future<String?> followPet(int petID) async {
+  Future<int?> followPet(int petID) async {
     final manution = """
   mutation MyMutation {
   follow(pet_id:"$petID") {
@@ -20,7 +20,7 @@ class UserDatasource {
 """;
     final data = await _hasuraConnect.mutation(manution);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["follow"] as Map;
-    return affectedRows["id"] as String;
+    return affectedRows["id"] as int;
   }
 
   Future blockUser(int userID) async {

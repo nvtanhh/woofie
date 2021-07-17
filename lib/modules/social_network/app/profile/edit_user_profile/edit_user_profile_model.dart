@@ -161,6 +161,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
     addressEditingController.text = "Loading your location...";
     if (await locationService.isPermissionDenied()) {
       await injector<DialogService>().showPermisstionDialog();
+      return;
     }
     try {
       currentPlacemark = await locationService.getCurrentPlacemark();

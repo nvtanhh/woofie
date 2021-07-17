@@ -84,26 +84,32 @@ class Post extends UpdatableModel<Post> {
 
   void increasePostReactsCount({int value = 1}) {
     postReactsCount = (postReactsCount ?? 0) + value;
+    notifyUpdate();
   }
 
   void increasePostCommentsCount({int value = 1}) {
     postCommentsCount = (postCommentsCount ?? 0) + value;
+    notifyUpdate();
   }
 
   void increasePostMediasCount({int value = 1}) {
     postMediasCount = (postMediasCount ?? 0) + value;
+    notifyUpdate();
   }
 
   void decreasePostReactsCount({int value = 1}) {
     postReactsCount = (postReactsCount ?? 1) - value;
+    notifyUpdate();
   }
 
   void decreasePostCommentsCount({int value = 1}) {
     postCommentsCount = (postCommentsCount ?? 1) - value;
+    notifyUpdate();
   }
 
   void decreasePostMediasCount({int value = 1}) {
     postMediasCount = (postMediasCount ?? 1) - value;
+    notifyUpdate();
   }
 
   factory Post.fromJsonString(String jsonString) => Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);

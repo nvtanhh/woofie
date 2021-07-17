@@ -16,8 +16,20 @@ class ExploreRepository {
     return [];
   }
 
-  Future<List<Post>> getPostsByType(PostType postType, int distance, int limit, int offset) async {
-    return _postDatasource.getPostByType(postType, distance, limit, offset);
+  Future<List<Post>> getPostsByType(
+    PostType postType,
+    double longUser,
+    double latUser,
+    int limit,
+    int offset,
+  ) async {
+    return _postDatasource.getPostByType(
+      postType,
+      longUser,
+      latUser,
+      limit,
+      offset,
+    );
   }
 
   Future<Post> getDetailPost(int postId) {
