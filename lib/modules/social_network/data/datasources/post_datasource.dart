@@ -251,6 +251,16 @@ class PostDatasource {
           long
           name
         }
+        post_reacts_aggregate {
+      aggregate {
+        count
+      }
+    }
+    comments_aggregate {
+      aggregate {
+        count
+      }
+    }
         created_at
       }
     }

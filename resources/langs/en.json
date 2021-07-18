@@ -138,6 +138,7 @@
     "like_comment": " liked your comment"
   },
   "system": {
-    "comming_soon": "This feature will be coming soon"
+    "comming_soon": "This feature will be coming soon",
+    "press_to_exit": "Press again to exit"
   }
 }

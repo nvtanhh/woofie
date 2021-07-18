@@ -38,11 +38,15 @@ class PostItemInListView extends StatelessWidget {
           ImagesViewWidget(
             medias: post.medias ?? [],
           ),
-          Text(
-            post.content ?? "",
-            maxLines: 4,
-            style: UITextStyle.text_body_14_w500,
-            overflow: TextOverflow.ellipsis,
+          Row(
+            children: [
+              Text(
+                post.content ?? "",
+                maxLines: 4,
+                style: UITextStyle.text_body_14_w500,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
           SizedBox(
             height: 13.h,

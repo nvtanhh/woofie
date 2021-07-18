@@ -4,21 +4,28 @@ import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 class SendCommentWidget extends StatelessWidget {
-  final User? user;
+  User? user;
   final TextEditingController commentEditingController;
   final Function onSendComment;
 
-  const SendCommentWidget({
+  SendCommentWidget({
     Key? key,
-    required this.user,
     required this.commentEditingController,
     required this.onSendComment,
-  }) : super(key: key);
+  }) : super(key: key) {
+    loadUserFromLocal();
+  }
+
+  void loadUserFromLocal() {
+    user = injector<UserStorage>().get();
+  }
 
   @override
   Widget build(BuildContext context) {

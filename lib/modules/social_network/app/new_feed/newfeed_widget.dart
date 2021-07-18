@@ -30,7 +30,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
         children: [
           const SizedBox(height: 10),
           Obx(
-            () => Column(children: viewModel.postService.prependedWidgets),
+            () => Column(children: viewModel.postService.prependedWidgets.value),
           ),
           Expanded(
             child: RefreshIndicator(

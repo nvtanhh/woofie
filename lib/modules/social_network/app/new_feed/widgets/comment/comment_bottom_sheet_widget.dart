@@ -105,7 +105,6 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
               ),
             ),
             SendCommentWidget(
-              user: viewModel.user,
               commentEditingController: viewModel.commentEditingController,
               onSendComment: viewModel.onSendComment,
             )

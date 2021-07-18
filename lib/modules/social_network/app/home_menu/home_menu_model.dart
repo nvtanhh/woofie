@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/explore/explore_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/newfeed_widget.dart';
 import 'package:meowoof/modules/social_network/app/notification/notification_widget.dart';
@@ -19,8 +22,15 @@ class HomeMenuWidgetModel extends BaseViewModel {
   final RxInt _countUnreadNotify = RxInt(0);
   final CountNotificationUnreadUsecase _countNotificationUnreadUsecase;
   final ReadAllNotificationUsecase _allNotificationUsecase;
+  final ToastService toastService;
+  DateTime? currentBackPressTime;
+  DateTime? now;
 
-  HomeMenuWidgetModel(this._countNotificationUnreadUsecase, this._allNotificationUsecase);
+  HomeMenuWidgetModel(
+    this._countNotificationUnreadUsecase,
+    this._allNotificationUsecase,
+    this.toastService,
+  );
 
   late Timer _timer;
 
@@ -29,6 +39,16 @@ class HomeMenuWidgetModel extends BaseViewModel {
     getNumberNotificationUnread();
     _timer = Timer.periodic(const Duration(seconds: 10), (_) => getNumberNotificationUnread());
     super.initState();
+  }
+
+  Future<bool> onWillPop() {
+    now = DateTime.now();
+    if (currentBackPressTime == null || now!.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      toastService.error(message: LocaleKeys.system_press_to_exit.trans(), context: Get.context!);
+      return Future.value(false);
+    }
+    return Future.value(true);
   }
 
   Future getNumberNotificationUnread() async {
