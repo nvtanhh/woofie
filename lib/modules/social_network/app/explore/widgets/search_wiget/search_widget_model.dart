@@ -83,10 +83,11 @@ class SearchWidgetModel extends BaseViewModel {
 
   void followPet(int idPet) {
     call(
-          () async => _followPetUsecase.call(idPet),
+      () async => _followPetUsecase.call(idPet),
       showLoading: false,
     );
   }
+
   void searchData() {
     if (keyWord?.isEmpty == true) return;
     if (pets.isEmpty && tabController.index == 0) {

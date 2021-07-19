@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -13,10 +12,8 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class CommentBottomSheetWidgetModel extends BaseViewModel {
-  User? user;
   List<Comment> _comments = [];
   final GetCommentInPostUsecase _getCommentInPostUsecase;
-  final UserStorage _userStorage;
   final CreateCommentUsecase _createCommentUsecase;
   final LikeCommentUsecase _likeCommentUsecase;
   TextEditingController commentEditingController = TextEditingController();
@@ -28,7 +25,6 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
 
   CommentBottomSheetWidgetModel(
     this._getCommentInPostUsecase,
-    this._userStorage,
     this._createCommentUsecase,
     this._likeCommentUsecase,
   ) {
@@ -55,17 +51,8 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
     );
   }
 
-  void loadUserLocal() {
-    call(
-      () async => user = _userStorage.get(),
-      showLoading: false,
-      onSuccess: () {},
-    );
-  }
-
   @override
   void initState() {
-    loadUserLocal();
     pagingController.addPageRequestListener(
       (pageKey) {
         _loadComments(pageKey);
@@ -93,7 +80,10 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   }
 
   void onLikeCommentClick(int idComment) {
-    call(() => _likeCommentUsecase.call(idComment), showLoading: false, onSuccess: () {});
+    call(
+      () => _likeCommentUsecase.run(idComment: idComment, idPost: post.id),
+      showLoading: false,
+    );
   }
 
   @override

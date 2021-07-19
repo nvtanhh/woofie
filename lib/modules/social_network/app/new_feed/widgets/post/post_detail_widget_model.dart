@@ -15,7 +15,6 @@ import 'package:suga_core/suga_core.dart';
 class PostDetailWidgetModel extends BaseViewModel {
   late Post post;
   TextEditingController commentEditingController = TextEditingController();
-  User? user;
   final UserStorage _userStorage;
   final LikePostUsecase _likePostUsecase;
   final GetCommentInPostUsecase _getCommentInPostUsecase;
@@ -33,8 +32,12 @@ class PostDetailWidgetModel extends BaseViewModel {
     this._getCommentInPostUsecase,
     this._createCommentUsecase,
     this._getDetailPostUsecase,
-  ) {
+  );
+  @override
+  void initState() {
     pagingController = PagingController(firstPageKey: 0);
+    checkNeedReloadPost();
+    super.initState();
   }
 
   void onLikeCommentClick(int commentId) {}
@@ -47,18 +50,12 @@ class PostDetailWidgetModel extends BaseViewModel {
     );
   }
 
-  @override
-  void initState() {
-    checkNeedReloadPost();
-    _loadUserLocal();
-    super.initState();
-  }
-
   Future checkNeedReloadPost() async {
     if (post.creator == null) {
       await call(
         () async => post = await _getDetailPostUsecase.call(post.id),
         onSuccess: () {
+          _loadComments(nextPageKey);
           pagingController.addPageRequestListener((pageKey) {
             _loadComments(pageKey);
           });
@@ -92,13 +89,6 @@ class PostDetailWidgetModel extends BaseViewModel {
       onFailure: (err) {
         pagingController.error = err;
       },
-    );
-  }
-
-  void _loadUserLocal() {
-    call(
-      () async => user = _userStorage.get(),
-      showLoading: false,
     );
   }
 

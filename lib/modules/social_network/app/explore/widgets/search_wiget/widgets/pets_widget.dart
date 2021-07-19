@@ -27,7 +27,7 @@ class PetsWidget extends StatelessWidget {
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, pet, index) {
           return InkWell(
-            onTap: ()=>Get.to(()=>PetProfile(pet: pet)),
+            onTap: () => Get.to(() => PetProfile(pet: pet)),
             child: Container(
               padding: EdgeInsets.all(10.w),
               height: 165.h,

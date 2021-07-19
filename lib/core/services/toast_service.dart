@@ -9,10 +9,6 @@ enum ToastType { info, warning, success, error }
 @lazySingleton
 class ToastService {
   static const Duration toastDuration = Duration(seconds: 1);
-  static Color colorError = UIColor.accent;
-  static Color colorSuccess = UIColor.accent2;
-  static Color colorInfo = UIColor.primary;
-  static Color colorWarning = UIColor.waringColor;
 
   void warning({
     required String message,
@@ -83,20 +79,20 @@ class ToastService {
   }
 
   Color _getToastColor(ToastType type) {
-    var color = colorSuccess;
+    var color = UIColor.accent2;
 
     switch (type) {
       case ToastType.error:
-        color = colorError;
+        color = UIColor.accent;
         break;
       case ToastType.info:
-        color = colorInfo;
+        color = UIColor.primary;
         break;
       case ToastType.success:
-        color = colorSuccess;
+        color = UIColor.accent2;
         break;
       case ToastType.warning:
-        color = colorWarning;
+        color = UIColor.waringColor;
         break;
     }
 

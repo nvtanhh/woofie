@@ -37,16 +37,16 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           height: Get.height,
           width: Get.width,
-          child: Column(
-            children: [
-              Obx(
-                () => Column(children: viewModel.postService.prependedWidgets),
-              ),
-              Expanded(
-                child: Obx(
-                  () {
-                    if (viewModel.isLoaded) {
-                      return PagedListView<int, Post>(
+          child: Obx(
+            () {
+              if (viewModel.isLoaded) {
+                return Column(
+                  children: [
+                    Obx(
+                      () => Column(children: viewModel.postService.prependedWidgets.value),
+                    ),
+                    Expanded(
+                      child: PagedListView<int, Post>(
                         pagingController: viewModel.postService.pagingController,
                         builderDelegate: PagedChildBuilderDelegate(
                           itemBuilder: (context, post, index) {
@@ -69,14 +69,14 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
                             );
                           },
                         ),
-                      );
-                    } else {
-                      return ShimmerPage();
-                    }
-                  },
-                ),
-              ),
-            ],
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return const ShimmerPage();
+              }
+            },
           ),
         ),
         endDrawer: Drawer(

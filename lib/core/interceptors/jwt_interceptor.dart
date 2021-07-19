@@ -17,10 +17,9 @@ class JwtInterceptor extends Interceptor {
 
   @override
   Future onError(HasuraError request) async {
-    if (jwtToken == null) {
-      printError(info: request.message);
-      return;
-    }
+    jwtToken = await auth.currentUser?.getIdToken(true);
+    printInfo(info: jwtToken?.substring(0, ((jwtToken?.length ?? 0) / 2).floor() + 3) ?? "");
+    printInfo(info: jwtToken?.substring(((jwtToken?.length ?? 0) / 2).floor(), jwtToken?.length ?? 0) ?? "");
     printError(info: request.message);
   }
 
@@ -39,8 +38,6 @@ class JwtInterceptor extends Interceptor {
   Future? onRequest(Request request) async {
     jwtToken = null;
     jwtToken = await auth.currentUser?.getIdToken();
-    printInfo(info: jwtToken?.substring(0, ((jwtToken?.length ?? 0) / 2).floor() + 3) ?? "");
-    printInfo(info: jwtToken?.substring(((jwtToken?.length ?? 0) / 2).floor(), jwtToken?.length ?? 0) ?? "");
     if (jwtToken != null) {
       request.headers["Authorization"] = "Bearer $jwtToken";
       return request;

@@ -95,7 +95,6 @@ class _PostDetailState extends BaseViewState<PostDetail, PostDetailWidgetModel> 
               ),
             ),
             SendCommentWidget(
-              user: viewModel.user,
               commentEditingController: viewModel.commentEditingController,
               onSendComment: viewModel.onSendComment,
             )

@@ -5,18 +5,26 @@ import 'package:meowoof/theme/ui_color.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerPage extends StatelessWidget {
+  final double? width;
+  final double? height;
+
+  const ShimmerPage({
+    this.width,
+    this.height,
+  });
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: Get.width,
-      height: Get.height,
+      width: width ?? Get.width,
+      height: height ?? Get.height,
       child: Shimmer.fromColors(
         baseColor: UIColor.white,
         highlightColor: UIColor.silverSand,
-        child: Expanded(
-          child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: UIColor.white),
-            margin: EdgeInsets.only(right: 10.w),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.r),
+            color: UIColor.white,
           ),
         ),
       ),

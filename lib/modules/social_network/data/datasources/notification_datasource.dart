@@ -14,14 +14,12 @@ class NotificationDatasource {
     final query = """
     query MyQuery {
       notifications(limit: $limit, offset: $offset) {
-        actor_uuid
         created_at
         id
         is_read
-        owner_id
-        owner_uuid
         pet_id
         type
+        post_id
         actor {
           id
           name
