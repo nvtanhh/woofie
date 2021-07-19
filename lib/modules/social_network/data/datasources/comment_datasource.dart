@@ -31,7 +31,16 @@ mutation MyMutation {
     return Comment.fromJson(affectedRows as Map<String, dynamic>);
   }
 
-  Future<bool> likeComment(int idComment) async {
-    return true;
+  Future<bool> likeComment(int idComment,int idPost,) async {
+    final mutation = """
+    mutation MyMutation {
+      likeComment(post_id: $idPost,comment_id: $idComment) {
+        id
+      }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(mutation);
+    final affectedRows = GetMapFromHasura.getMap(data as Map)["likeComment"] as Map;
+    return int.tryParse("${affectedRows["id"]}") != null;
   }
 }

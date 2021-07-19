@@ -80,7 +80,10 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   }
 
   void onLikeCommentClick(int idComment) {
-    call(() => _likeCommentUsecase.call(idComment), showLoading: false, onSuccess: () {});
+    call(
+      () => _likeCommentUsecase.run(idComment: idComment, idPost: post.id),
+      showLoading: false,
+    );
   }
 
   @override

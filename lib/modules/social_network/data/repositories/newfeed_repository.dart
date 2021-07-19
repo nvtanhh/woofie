@@ -43,8 +43,8 @@ class NewFeedRepository {
     return _commentDatasource.createComment(postId, content, userTag);
   }
 
-  Future<bool> likeComment(int idComment) {
-    return _commentDatasource.likeComment(idComment);
+  Future<bool> likeComment(int idComment,int idPost,) {
+    return _commentDatasource.likeComment(idComment,idPost);
   }
 
   Future<bool> deletePost(int post) {

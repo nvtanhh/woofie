@@ -55,7 +55,7 @@ class PostDatasource {
   Future<bool> likePost(int idPost) async {
     final mutation = """
     mutation MyMutation {
-      likePost(post_id: "$idPost") {
+      likePost(post_id: $idPost) {
         id
       }
     }

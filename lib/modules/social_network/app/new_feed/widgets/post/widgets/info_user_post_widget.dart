@@ -29,7 +29,7 @@ class InfoUserPostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50.w,
+      height: 55.w,
       child: Row(
         children: [
           ImageWithPlaceHolderWidget(
