@@ -5,7 +5,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/modules/social_network/app/commons/shimmer_page.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/shimmer_comment_widget.dart';

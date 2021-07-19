@@ -4,9 +4,6 @@ import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccin
 import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable

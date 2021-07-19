@@ -11,7 +11,6 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccinated/vaccinated_widget_model.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';

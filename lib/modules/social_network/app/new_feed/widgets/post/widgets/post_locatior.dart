@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class PostLocator extends StatelessWidget {

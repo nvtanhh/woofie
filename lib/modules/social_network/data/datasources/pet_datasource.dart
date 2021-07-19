@@ -9,7 +9,6 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 
 @lazySingleton
 class PetDatasource {
