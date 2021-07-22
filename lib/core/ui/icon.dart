@@ -154,6 +154,7 @@ class MWIcons {
   static final icMatting = MWIconData(assetImageFile: Assets.resources.images.explore.icMatting);
   static final icLose = MWIconData(assetImageFile: Assets.resources.images.explore.icLose);
   static final icReact = MWIconData(assetImageFile: Assets.resources.images.explore.icReact);
+  static final createChat = MWIconData(assetImageFile: Assets.resources.icons.icCreateChat);
 }
 
 enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }

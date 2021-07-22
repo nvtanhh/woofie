@@ -31,7 +31,10 @@ mutation MyMutation {
     return Comment.fromJson(affectedRows as Map<String, dynamic>);
   }
 
-  Future<bool> likeComment(int idComment,int idPost,) async {
+  Future<bool> likeComment(
+    int idComment,
+    int idPost,
+  ) async {
     final mutation = """
     mutation MyMutation {
       likeComment(post_id: $idPost,comment_id: $idComment) {
