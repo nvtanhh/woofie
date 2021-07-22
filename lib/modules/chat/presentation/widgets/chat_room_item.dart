@@ -15,11 +15,11 @@ class ChatRoomItem extends StatelessWidget {
       dense: true,
       contentPadding: EdgeInsets.zero,
       leading: MWAvatar(
-        avatarUrl: '',
+        avatarUrl: room.avatarUrl ?? '',
         borderRadius: 10.r,
       ),
       title: Text(
-        room.name,
+        room.displayName ?? '',
         style: UITextStyle.heading_16_semiBold,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,

@@ -38,34 +38,21 @@ class User extends UpdatableModel<User> {
   @JsonKey(name: "location")
   Location? location;
 
-  User(
-      {required this.id,
-      this.uuid,
-      this.name,
-      this.phoneNumber,
-      this.email,
-      this.currentPets,
-      this.avatar,
-      this.bio,
-      this.dob,
-      this.avatarUrl})
+  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob, this.avatarUrl})
       : super(uuid);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
   }
 
-  factory User.fromJsonString(String jsonString) =>
-      User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory User.fromJsonString(String jsonString) => User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   String toJsonString() => json.encode(toJson());
 
   static List<Pet>? allPetsFromJson(List<dynamic>? list) {
-    return list
-        ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
-        .toList();
+    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
   }
 
   @override
@@ -80,9 +67,7 @@ class User extends UpdatableModel<User> {
       email = json['email'] as String;
     }
     if (json['current_pets'] != null) {
-      currentPets = (json['current_pets'] as List<dynamic>?)
-          ?.map((e) => Pet.fromJson(e as Map<String, dynamic>))
-          .toList();
+      currentPets = (json['current_pets'] as List<dynamic>?)?.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
     }
     if (json['all_pet'] != null) {
       currentPets = allPetsFromJson(json['current_pets'] as List?);
@@ -110,6 +95,10 @@ class User extends UpdatableModel<User> {
   static final factory = UserFactory(key: 'uuid');
 
   bool get isHavePets => currentPets != null && currentPets!.isNotEmpty;
+
+  static User? getUserFromCache({dynamic key}) {
+    return factory.getItemWithIdFromCache(key);
+  }
 }
 
 class UserFactory extends UpdatableModelFactory<User> {

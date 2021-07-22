@@ -2,27 +2,30 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
+import 'package:meowoof/modules/social_network/domain/models/updatable_model.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
-import './updatable_model.dart';
-
 class ChatRoom extends UpdatableModel {
-  String name;
-  bool isGroupChat;
+  final String id;
+  String rawName;
   List<String> memberUuids;
+  late String? displayName;
+  late List<User?>? members;
+  late String? avatarUrl;
   List<Message> messages;
+  bool isGroup;
   String? creatorUuid;
   DateTime? createdAt;
 
   ChatRoom({
-    required String objectId,
-    required this.name,
-    required this.isGroupChat,
+    required this.id,
+    required this.rawName,
+    required this.isGroup,
     required this.memberUuids,
     this.creatorUuid,
     this.messages = const [],
     this.createdAt,
-  }) : super(objectId);
+  }) : super(id);
 
   String get lastMessage => messages.isNotEmpty ? messages.last.content : '';
 
@@ -50,34 +53,33 @@ class ChatRoom extends UpdatableModel {
 
   static final factory = ChatRoomFactory();
 
+  @override
+  void updateFromJson(Map json) {}
+
   factory ChatRoom.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
   }
-
-  @override
-  void updateFromJson(Map json) {}
 }
 
 class ChatRoomFactory extends UpdatableModelFactory<ChatRoom> {
   @override
   ChatRoom makeFromJson(Map<String, dynamic> json) {
     return ChatRoom(
-      objectId: json['id'] as String,
-      name: parseGroupName(json['name'] as String),
-      isGroupChat: json['isGroup'] as bool,
+      id: json['id'] as String,
+      rawName: parseGroupName(json['name'] as String,
+          isGroup: json['isGroup'] as bool?),
+      isGroup: json['isGroup'] as bool,
       memberUuids: List<String>.from(json['members'] as List<dynamic>),
       creatorUuid: json['creator'] as String,
-      messages: parseMessages(json['messages'] as List<dynamic>?),
+      messages: parseMessages((json['messages'] as List<dynamic>?) ?? []),
       createdAt: parseDateTime(json['createdAt'] as String?),
     );
   }
 
-  List<Message> parseMessages(List<dynamic>? list) {
+  List<Message> parseMessages(List<dynamic> list) {
     return list
-            ?.map(
-                (message) => Message.fromJson(message as Map<String, dynamic>))
-            .toList() ??
-        [];
+        .map((message) => Message.fromJson(message as Map<String, dynamic>))
+        .toList();
   }
 
   DateTime? parseDateTime(String? time) {
@@ -89,7 +91,8 @@ List<User> parseMember(Map<String, dynamic> json) {
   return [];
 }
 
-String parseGroupName(String rawName) {
+String parseGroupName(String rawName, {bool? isGroup = false}) {
+  if (isGroup ?? false) return rawName;
   final loggedInUserUuid = injector<LoggedInUser>().user?.uuid;
   return rawName.replaceFirst(loggedInUserUuid!, '').replaceFirst('_', '');
 }
