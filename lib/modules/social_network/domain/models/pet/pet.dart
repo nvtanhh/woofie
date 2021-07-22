@@ -16,9 +16,7 @@ part 'pet.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Pet extends UpdatableModel<Pet> {
-  @override
   @JsonKey(name: "id")
-  // ignore: overridden_fields
   int id;
   @JsonKey(name: "uuid")
   String? uuid;
@@ -74,11 +72,13 @@ class Pet extends UpdatableModel<Pet> {
       this.petVaccinates,
       this.petWormFlushes,
       this.petWeights,
-      this.avatarUrl});
+      this.avatarUrl})
+      : super(id);
 
   factory Pet.fromJson(Map<String, dynamic> json) => _$PetFromJson(json);
 
-  factory Pet.fromJsonString(String jsonString) => Pet.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Pet.fromJsonString(String jsonString) =>
+      Pet.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PetToJson(this);
 
@@ -94,13 +94,17 @@ class Pet extends UpdatableModel<Pet> {
   }
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Pet && runtimeType == other.runtimeType && id == other.id;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Pet && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
 
   static List<User>? allOwnersFromJson(List<dynamic>? list) {
-    return list?.map((e) => User.fromJson(e["owner"] as Map<String, dynamic>)).toList();
+    return list
+        ?.map((e) => User.fromJson(e["owner"] as Map<String, dynamic>))
+        .toList();
   }
 
   static final factory = PetFactory();
@@ -127,7 +131,8 @@ class Pet extends UpdatableModel<Pet> {
       currentOwnerUuid = json['current_owner_id'] as String;
     }
     if (json['current_owner'] != null) {
-      currentOwner = User.fromJson(json['current_owner'] as Map<String, dynamic>);
+      currentOwner =
+          User.fromJson(json['current_owner'] as Map<String, dynamic>);
     }
     if (json['pet_owners'] != null) {
       allOwners = allOwnersFromJson(json['pet_owners'] as List<dynamic>);
@@ -148,13 +153,19 @@ class Pet extends UpdatableModel<Pet> {
       isFollowing = json['is_following'] as bool;
     }
     if (json['pet_vaccinateds'] != null) {
-      petVaccinates = (json['pet_vaccinateds'] as List<dynamic>?)?.map((e) => PetVaccinated.fromJson(e as Map<String, dynamic>)).toList();
+      petVaccinates = (json['pet_vaccinateds'] as List<dynamic>?)
+          ?.map((e) => PetVaccinated.fromJson(e as Map<String, dynamic>))
+          .toList();
     }
     if (json['pet_worm_flusheds'] != null) {
-      petWormFlushes = (json['pet_worm_flusheds'] as List<dynamic>?)?.map((e) => PetWormFlushed.fromJson(e as Map<String, dynamic>)).toList();
+      petWormFlushes = (json['pet_worm_flusheds'] as List<dynamic>?)
+          ?.map((e) => PetWormFlushed.fromJson(e as Map<String, dynamic>))
+          .toList();
     }
     if (json['pet_weights'] != null) {
-      petWeights = (json['pet_weights'] as List<dynamic>?)?.map((e) => PetWeight.fromJson(e as Map<String, dynamic>)).toList();
+      petWeights = (json['pet_weights'] as List<dynamic>?)
+          ?.map((e) => PetWeight.fromJson(e as Map<String, dynamic>))
+          .toList();
     }
     if (json['avatar_url'] != null) {
       avatarUrl = json['avatar_url'] as String;

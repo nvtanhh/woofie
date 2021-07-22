@@ -5,13 +5,13 @@ import 'package:dcache/dcache.dart';
 import 'package:get/get.dart';
 
 abstract class UpdatableModel<T> {
-  final dynamic id;
+  final dynamic internalId;
 
   T get updateSubjectValue => _updateChangeSubject.value as T;
   Rxn<T> get rxUpdateSubject => _updateChangeSubject;
   final Rxn<T> _updateChangeSubject = Rxn<T>();
 
-  UpdatableModel({required this.id}) {
+  UpdatableModel(this.internalId) {
     notifyUpdate();
   }
   void resetObject() {
@@ -72,7 +72,7 @@ abstract class UpdatableModelFactory<T extends UpdatableModel> {
   }
 
   void addToCache(T item) {
-    cache!.set(item.id, item);
+    cache!.set(item.internalId, item);
   }
 
   void clearCache() {
@@ -80,7 +80,8 @@ abstract class UpdatableModelFactory<T extends UpdatableModel> {
   }
 }
 
-class UpdatableModelSimpleStorage<K, V extends UpdatableModel> implements Storage<K, V> {
+class UpdatableModelSimpleStorage<K, V extends UpdatableModel>
+    implements Storage<K, V> {
   static int maxInt = pow(2, 30) - 1 as int; // (for 32 bit OS)
 
   late Map<K, CacheEntry<K, V>> _internalMap;
@@ -138,7 +139,8 @@ class UpdatableModelSimpleStorage<K, V extends UpdatableModel> implements Storag
   List<K> get keys => this._internalMap.keys.toList(growable: true);
 
   @override
-  List<CacheEntry<K, V>> get values => this._internalMap.values.toList(growable: true);
+  List<CacheEntry<K, V>> get values =>
+      this._internalMap.values.toList(growable: true);
 
   @override
   int get capacity => this._size;

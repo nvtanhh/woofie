@@ -22,7 +22,7 @@ class ChatRoom extends UpdatableModel {
     this.creatorUuid,
     this.messages = const [],
     this.createdAt,
-  }) : super(id: objectId);
+  }) : super(objectId);
 
   String get lastMessage => messages.isNotEmpty ? messages.last.content : '';
 
@@ -39,10 +39,14 @@ class ChatRoom extends UpdatableModel {
   }
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ChatRoom && runtimeType == other.runtimeType && id == other.id;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ChatRoom &&
+          runtimeType == other.runtimeType &&
+          internalId == other.internalId;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode => internalId.hashCode;
 
   static final factory = ChatRoomFactory();
 
@@ -69,7 +73,11 @@ class ChatRoomFactory extends UpdatableModelFactory<ChatRoom> {
   }
 
   List<Message> parseMessages(List<dynamic>? list) {
-    return list?.map((message) => Message.fromJson(message as Map<String, dynamic>)).toList() ?? [];
+    return list
+            ?.map(
+                (message) => Message.fromJson(message as Map<String, dynamic>))
+            .toList() ??
+        [];
   }
 
   DateTime? parseDateTime(String? time) {
