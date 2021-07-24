@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/get_detail_post_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_comment_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_comment_in_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -15,22 +13,18 @@ import 'package:suga_core/suga_core.dart';
 class PostDetailWidgetModel extends BaseViewModel {
   late Post post;
   TextEditingController commentEditingController = TextEditingController();
-  final UserStorage _userStorage;
   final LikePostUsecase _likePostUsecase;
   final GetCommentInPostUsecase _getCommentInPostUsecase;
   final int pageSize = 10;
   int nextPageKey = 0;
   late PagingController<int, Comment> pagingController;
-  final CreateCommentUsecase _createCommentUsecase;
   final GetDetailPostUsecase _getDetailPostUsecase;
   final List<User> tagUsers = [];
   List<Comment> comments = [];
 
   PostDetailWidgetModel(
-    this._userStorage,
     this._likePostUsecase,
     this._getCommentInPostUsecase,
-    this._createCommentUsecase,
     this._getDetailPostUsecase,
   );
   @override
@@ -92,22 +86,11 @@ class PostDetailWidgetModel extends BaseViewModel {
     );
   }
 
-  void onSendComment() {
-    if (commentEditingController.text.isEmpty) {
-      return;
-    }
-    call(
-      () async {
-        final Comment? comment = await _createCommentUsecase.call(post.id, commentEditingController.text, tagUsers);
-        if (comment != null) {
-          pagingController.itemList?.insert(1, comment);
-          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-          pagingController.notifyListeners();
-          commentEditingController.clear();
-        }
-      },
-      showLoading: false,
-    );
+  void onSendComment(Comment comment) {
+    pagingController.itemList?.insert(1, comment);
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    pagingController.notifyListeners();
+    commentEditingController.clear();
   }
 
   Future onRefresh() async {

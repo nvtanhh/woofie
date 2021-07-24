@@ -8,7 +8,7 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/comment_bottom_sheet_widget_model.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/comment_widget.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment/send_comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/shimmer_comment_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -105,8 +105,8 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
               ),
             ),
             SendCommentWidget(
-              commentEditingController: viewModel.commentEditingController,
               onSendComment: viewModel.onSendComment,
+              post: viewModel.post,
             )
           ],
         ),

@@ -46,9 +46,16 @@ class CommentWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                comment.creator?.name ?? "",
-                style: UITextStyle.text_header_14_w600,
+              InkWell(
+                onTap: () => Get.to(
+                  () => UserProfile(
+                    user: comment.creator,
+                  ),
+                ),
+                child: Text(
+                  comment.creator?.name ?? "",
+                  style: UITextStyle.text_header_14_w600,
+                ),
               ),
               SizedBox(
                 height: 5.h,
@@ -102,32 +109,62 @@ class CommentWidget extends StatelessWidget {
     onLikeCommentClick(comment.id);
   }
 
-  bool isLastList(int index, int length) {
-    return index == length;
-  }
-
   List<InlineSpan> createTagUser() {
     final List<InlineSpan> inLineSpan = [];
-    for (var i = 0; i < (comment.commentTagUser?.length ?? 0); i++) {
-      inLineSpan.insert(
-        0,
+    String perfix = "@";
+    String pattern = "";
+    // ignore: unnecessary_raw_strings
+    if (comment.commentTagUser != null && comment.commentTagUser!.isNotEmpty) {
+      // ignore: prefer_interpolation_to_compose_strings, unnecessary_raw_strings
+      pattern = r'(?<=' + perfix + ')(' + comment.commentTagUser!.map((e) => e.name!).join('|') + r')';
+      RegExp _regex = RegExp(pattern);
+      comment.content?.splitMapJoin(
+        _regex,
+        onMatch: (s) {
+          pattern = comment.content!.trim().substring(s.start, s.end);
+          inLineSpan.add(
+            TextSpan(
+              text: pattern,
+              style: UITextStyle.text_header_16_w600,
+              recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(getUser(pattern)),
+            ),
+          );
+          return pattern;
+        },
+        onNonMatch: (s) {
+          inLineSpan.add(
+            TextSpan(
+              text: s,
+              style: UITextStyle.text_body_14_w400,
+            ),
+          );
+          return s;
+        },
+      );
+    } else {
+      inLineSpan.add(
         TextSpan(
-          text: "${comment.commentTagUser?[i].user?.name ?? ""}${isLastList(i, (comment.commentTagUser?.length ?? 0) - 1) ? " " : ", "}",
-          style: UITextStyle.text_header_16_w600,
-          recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(comment.commentTagUser![i].user!),
+          text: comment.content,
+          style: UITextStyle.text_body_14_w400,
         ),
       );
     }
-    inLineSpan.add(
-      TextSpan(
-        text: comment.content,
-        style: UITextStyle.text_body_14_w400,
-      ),
-    );
+
     return inLineSpan;
   }
 
-  void openProfileUser(User user) {
+  User? getUser(String useName) {
+    try {
+      return comment.commentTagUser?.singleWhere(
+        (element) => element.name == useName,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void openProfileUser(User? user) {
+    if (user == null) return;
     Get.to(
       () => UserProfile(
         user: user,

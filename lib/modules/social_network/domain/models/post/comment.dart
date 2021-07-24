@@ -19,12 +19,14 @@ class Comment {
   String? creatorUUID;
   @JsonKey(name: "is_liked")
   bool? isLiked;
+  @JsonKey(name: "is_my_comment")
+  bool? isMyComment;
   @JsonKey(name: "user")
   User? creator;
   @JsonKey(name: "comment_reacts_aggregate", fromJson: Post.aggregateCountFromJson)
   int? commentReactsAggregate;
-  @JsonKey(name: "comment_tag_users")
-  List<CommentTagUser>? commentTagUser;
+  @JsonKey(name: "comment_tag_users", fromJson: allUsersFromJson)
+  List<User>? commentTagUser;
   @JsonKey(name: "created_at")
   DateTime? createdAt;
 
@@ -39,6 +41,10 @@ class Comment {
     this.commentTagUser,
     this.createdAt,
   });
+
+  static List<User>? allUsersFromJson(List<dynamic>? list) {
+    return list?.map((e) => CommentTagUser.fromJson(e as Map<String, dynamic>).user!).toList();
+  }
 
   factory Comment.fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
 

@@ -5,9 +5,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/modules/social_network/app/commons/shimmer_page.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/comment_widget.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment/send_comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/shimmer_comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_detail_widget_model.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_item_in_listview.dart';
@@ -95,8 +94,8 @@ class _PostDetailState extends BaseViewState<PostDetail, PostDetailWidgetModel> 
               ),
             ),
             SendCommentWidget(
-              commentEditingController: viewModel.commentEditingController,
               onSendComment: viewModel.onSendComment,
+              post: viewModel.post,
             )
           ],
         ),

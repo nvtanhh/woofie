@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/injector.dart';
