@@ -10,9 +10,8 @@ part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User extends UpdatableModel<User> {
-  @override
   @JsonKey(name: "id")
-  int id;
+  final int id;
   @JsonKey(name: "uuid")
   String? uuid;
   @JsonKey(name: "name")
@@ -38,7 +37,8 @@ class User extends UpdatableModel<User> {
   @JsonKey(name: "location")
   Location? location;
 
-  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob, this.avatarUrl});
+  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob, this.avatarUrl})
+      : super(uuid);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
@@ -91,12 +91,17 @@ class User extends UpdatableModel<User> {
     }
   }
 
-  static final factory = UserFactory();
+  static final factory = UserFactory(key: 'uuid');
 
   bool get isHavePets => currentPets != null && currentPets!.isNotEmpty;
+
+  static User? getUserFromCache({dynamic key}) {
+    return factory.getItemWithIdFromCache(key);
+  }
 }
 
 class UserFactory extends UpdatableModelFactory<User> {
+  UserFactory({String? key}) : super(key: key);
   @override
   User makeFromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }

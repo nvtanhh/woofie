@@ -5,13 +5,13 @@ import 'package:dcache/dcache.dart';
 import 'package:get/get.dart';
 
 abstract class UpdatableModel<T> {
-  final int? id;
+  final dynamic internalId;
 
   T get updateSubjectValue => _updateChangeSubject.value as T;
   Rxn<T> get rxUpdateSubject => _updateChangeSubject;
   final Rxn<T> _updateChangeSubject = Rxn<T>();
 
-  UpdatableModel({this.id}) {
+  UpdatableModel(this.internalId) {
     notifyUpdate();
   }
   void resetObject() {
@@ -36,15 +36,17 @@ abstract class UpdatableModel<T> {
 }
 
 abstract class UpdatableModelFactory<T extends UpdatableModel> {
-  SimpleCache<int, T>? cache;
+  SimpleCache<dynamic, T>? cache;
+  String? key;
 
-  UpdatableModelFactory({this.cache}) {
+  UpdatableModelFactory({this.cache, this.key}) {
     cache ??= SimpleCache(storage: UpdatableModelSimpleStorage(size: 50));
+    key ??= 'id';
   }
 
   T fromJson(Map<String, dynamic> json) {
-    int? itemId;
-    if (json.containsKey('id')) itemId = json['id'] as int;
+    dynamic itemId;
+    if (json.containsKey(key)) itemId = json[key];
 
     late UpdatableModel? item;
     if (itemId != null) {
@@ -65,12 +67,12 @@ abstract class UpdatableModelFactory<T extends UpdatableModel> {
 
   T makeFromJson(Map<String, dynamic> json);
 
-  T? getItemWithIdFromCache(int itemId) {
+  T? getItemWithIdFromCache(dynamic itemId) {
     return cache!.get(itemId);
   }
 
   void addToCache(T item) {
-    cache!.set(item.id!, item);
+    cache!.set(item.internalId, item);
   }
 
   void clearCache() {
@@ -79,19 +81,19 @@ abstract class UpdatableModelFactory<T extends UpdatableModel> {
 }
 
 class UpdatableModelSimpleStorage<K, V extends UpdatableModel> implements Storage<K, V> {
-  static int MAX_INT = pow(2, 30) - 1 as int; // (for 32 bit OS)
+  static int maxInt = pow(2, 30) - 1 as int; // (for 32 bit OS)
 
   late Map<K, CacheEntry<K, V>> _internalMap;
   late int _size;
 
   UpdatableModelSimpleStorage({required int size}) {
-    _size = size > MAX_INT ? MAX_INT : size;
+    _size = size > maxInt ? maxInt : size;
     _internalMap = LinkedHashMap();
   }
 
   @override
   CacheEntry<K, V>? operator [](K key) {
-    var ce = _internalMap[key];
+    final ce = _internalMap[key];
     return ce;
   }
 

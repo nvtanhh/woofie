@@ -19,7 +19,8 @@ class HasuraDatasource {
     """;
     final data = await _hasuraConnect.query(queryCountPetFromUser);
     try {
-      final listUser = GetMapFromHasura.getMap(data as Map)["pet_owners_aggregate"] as Map;
+      final listUser =
+          GetMapFromHasura.getMap(data as Map)["pet_owners_aggregate"] as Map;
       if ((listUser["aggregate"]["count"] as int) > 0) {
         return true;
       } else {
@@ -30,7 +31,7 @@ class HasuraDatasource {
     }
   }
 
-  Future<User?> getUser(String uuid) async {
+  Future<User> getUser(String uuid) async {
     final queryGetUser = """
     query MyQuery {
       users(where: {uuid: {_eq: "$uuid"}}) {

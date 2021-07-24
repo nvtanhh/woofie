@@ -147,11 +147,15 @@ class PostService extends BaseViewModel {
 
   Future<bool> _startEditPost(EditedPostData editedPostData) async {
     bool isEdited = false;
-    await call(() async {
-      isEdited = await _editPostUsecase.call(editedPostData);
-    }, onFailure: (error) {
-      printError(info: error.toString());
-    });
+    await call(
+      () async {
+        isEdited = await _editPostUsecase.call(editedPostData);
+      },
+      onFailure: (error) {
+        printError(info: error.toString());
+      },
+      showLoading: false,
+    );
     return isEdited;
   }
 

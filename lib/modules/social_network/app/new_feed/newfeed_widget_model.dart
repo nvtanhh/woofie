@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
+import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/save_post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -70,6 +71,10 @@ class NewFeedWidgetModel extends BaseViewModel {
     } catch (error) {
       postService.pagingController.error = error;
     }
+  }
+
+  void onWantsToGoToChat() {
+    injector<NavigationService>().navigateToChatDashboard();
   }
 
   Future<void> onRefresh() async {
