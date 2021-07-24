@@ -9,6 +9,7 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class PetDatasource {
@@ -257,5 +258,21 @@ mutation MyMutation {
 """;
     final data = await _hasuraConnect.mutation(manution);
     return GetMapFromHasura.getMap(data as Map)["update_pets_by_pk"] as Map<String, dynamic>;
+  }
+
+  Future<List<User>> getAllUserInPost(int postId, int limit, int offset) async {
+    final query = """
+    query getPostDetail {
+  get_all_user_in_post(post_id: $postId) {
+    avatar_url
+    id
+    name
+    uuid
+  }
+  }
+""";
+    final data = await _hasuraConnect.query(query);
+    final petWormFlushes = GetMapFromHasura.getMap(data as Map)["get_all_user_in_post"] as List;
+    return petWormFlushes.map((e) => User.fromJson(e as Map<String, dynamic>)).toList();
   }
 }

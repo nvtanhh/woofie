@@ -7,7 +7,7 @@ class LikeCommentUsecase {
 
   LikeCommentUsecase(this._newFeedRepository);
 
-  Future<bool> run({required int idComment,required int idPost}) {
-    return _newFeedRepository.likeComment(idComment,idPost);
+  Future<bool> run({required int idComment, required int idPost}) {
+    return _newFeedRepository.likeComment(idComment, idPost);
   }
 }

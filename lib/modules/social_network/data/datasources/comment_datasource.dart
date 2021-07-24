@@ -11,10 +11,10 @@ class CommentDatasource {
   CommentDatasource(this._hasuraConnect);
 
   Future<Comment?> createComment(int postId, String content, List<User> userTag) async {
-    final listPetTag = userTag.map((e) => {"user_id": e.id}).toList();
+    final listUserTag = userTag.map((e) => {"user_id": e.id,"post_id":postId}).toList();
     final mutation = """
 mutation MyMutation {
-  insert_comments_one(object: {content: "$content", post_id: $postId, comment_tag_users: {data: ${listPetTag.toString()}}}) {
+  insert_comments_one(object: {content: "$content", post_id: $postId, comment_tag_users: {data: ${listUserTag.toString()}}}) {
     created_at
     content
     id
@@ -31,7 +31,10 @@ mutation MyMutation {
     return Comment.fromJson(affectedRows as Map<String, dynamic>);
   }
 
-  Future<bool> likeComment(int idComment,int idPost,) async {
+  Future<bool> likeComment(
+    int idComment,
+    int idPost,
+  ) async {
     final mutation = """
     mutation MyMutation {
       likeComment(post_id: $idPost,comment_id: $idComment) {

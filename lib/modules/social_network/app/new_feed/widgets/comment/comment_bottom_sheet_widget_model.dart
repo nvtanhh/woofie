@@ -4,8 +4,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_comment_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_comment_in_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_comment_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -14,18 +12,15 @@ import 'package:suga_core/suga_core.dart';
 class CommentBottomSheetWidgetModel extends BaseViewModel {
   List<Comment> _comments = [];
   final GetCommentInPostUsecase _getCommentInPostUsecase;
-  final CreateCommentUsecase _createCommentUsecase;
   final LikeCommentUsecase _likeCommentUsecase;
   TextEditingController commentEditingController = TextEditingController();
   late Post post;
   late PagingController<int, Comment> pagingController;
   final int pageSize = 10;
-  final List<User> tagUsers = [];
   int nextPageKey = 0;
 
   CommentBottomSheetWidgetModel(
     this._getCommentInPostUsecase,
-    this._createCommentUsecase,
     this._likeCommentUsecase,
   ) {
     pagingController = PagingController(firstPageKey: 0);
@@ -61,22 +56,11 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
     super.initState();
   }
 
-  void onSendComment() {
-    if (commentEditingController.text.isEmpty) return;
-    call(
-        () async {
-          final Comment? comment = await _createCommentUsecase.call(post.id, commentEditingController.text.replaceAll("\n", "\\n"), tagUsers);
-          if (comment != null) {
-            pagingController.itemList?.insert(0, comment);
-            // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-            pagingController.notifyListeners();
-            commentEditingController.clear();
-          }
-        },
-        showLoading: false,
-        onSuccess: () {
-          post.increasePostCommentsCount();
-        });
+  void onSendComment(Comment comment) {
+    pagingController.itemList?.insert(0, comment);
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    pagingController.notifyListeners();
+    commentEditingController.clear();
   }
 
   void onLikeCommentClick(int idComment) {
