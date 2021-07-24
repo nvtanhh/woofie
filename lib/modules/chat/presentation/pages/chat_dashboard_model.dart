@@ -1,10 +1,13 @@
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/services/navigation_service.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_chat_rooms_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:suga_core/suga_core.dart';
+import 'package:get/get.dart';
 
 @injectable
 class ChatManagerModel extends BaseViewModel {
@@ -51,18 +54,19 @@ class ChatManagerModel extends BaseViewModel {
 
   Future<void> _getDisplayedNameAndAvatarSync(ChatRoom room) async {
     // Bcz room.rawName is a processed string which is userUuid
-    final userUuid = room.rawName;
-    final user = await _getUserWithUuid(userUuid);
-    if (user != null) {
-      room.displayName = user.name;
-      room.avatarUrl = user.avatar?.url ?? user.avatarUrl;
-    } else {
-      room.displayName = room.rawName;
+    if (!room.isGroup) {
+      final userUuid = room.rawName;
+      final user = await _getUserWithUuid(userUuid);
+      try {
+        room.privateChatPartner = user;
+        room.notifyUpdate();
+      } catch (error) {
+        printError(info: error.toString());
+      }
     }
-    room.notifyUpdate();
   }
 
-  Future<User?> _getUserWithUuid(String userUuid) async {
+  Future<User> _getUserWithUuid(String userUuid) async {
     final User? user = User.getUserFromCache(key: userUuid);
     if (user != null) return user;
     return _getUserWithUuidUsecase.call(userUuid);
@@ -77,4 +81,8 @@ class ChatManagerModel extends BaseViewModel {
   void onWantsToCreateNewChat() {}
 
   Future<void> onRefresh() async {}
+
+  void onChatRoomPressed(ChatRoom room) {
+    injector<NavigationService>().navigateToChatRoom(room);
+  }
 }

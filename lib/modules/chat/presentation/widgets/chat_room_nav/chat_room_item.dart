@@ -6,20 +6,24 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class ChatRoomItem extends StatelessWidget {
   final ChatRoom room;
+  final VoidCallback onChatRoomPressed;
 
-  const ChatRoomItem({Key? key, required this.room}) : super(key: key);
+  const ChatRoomItem(
+      {Key? key, required this.room, required this.onChatRoomPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: onChatRoomPressed,
       dense: true,
       contentPadding: EdgeInsets.zero,
       leading: MWAvatar(
-        avatarUrl: room.avatarUrl ?? '',
+        avatarUrl: room.privateChatPartner?.avatarUrl ?? '',
         borderRadius: 10.r,
       ),
       title: Text(
-        room.displayName ?? '',
+        room.privateChatPartner?.name ?? '',
         style: UITextStyle.heading_16_semiBold,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,

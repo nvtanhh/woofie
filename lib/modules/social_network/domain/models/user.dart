@@ -10,9 +10,8 @@ part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User extends UpdatableModel<User> {
-  @override
   @JsonKey(name: "id")
-  int id;
+  final int id;
   @JsonKey(name: "uuid")
   String? uuid;
   @JsonKey(name: "name")

@@ -8,7 +8,7 @@ class GetUserWithUuidUsecase {
 
   GetUserWithUuidUsecase(this._authRepository);
 
-  Future<User?> call(String uid) {
+  Future<User> call(String uid) {
     return _authRepository.getUser(uid);
   }
 }

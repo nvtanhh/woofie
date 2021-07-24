@@ -9,9 +9,9 @@ class ChatRoom extends UpdatableModel {
   final String id;
   String rawName;
   List<String> memberUuids;
-  late String? displayName;
-  late List<User?>? members;
-  late String? avatarUrl;
+  // view variables
+  late List<User> members;
+  late User? privateChatPartner;
   List<Message> messages;
   bool isGroup;
   String? creatorUuid;
