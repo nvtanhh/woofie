@@ -53,7 +53,10 @@
     "delete_post": "Xoá bài viết",
     "report_post": "Báo cáo bài viết này",
     "need_choose_at_least_one_pet": "Cần chọn ít nhất một thú cưng",
-    "require_access_location": "Cần có quyền truy cập vị trí để sử dụng chức năng"
+    "require_access_location": "Cần có quyền truy cập vị trí để sử dụng chức năng",
+    "edit_comment": "Chỉnh sửa bình luận",
+    "delete_comment": "Xoá bình luận",
+    "report_comment": "Báo cáo bình luận này"
   },
   "explore": {
     "search": "Tìm kiếm",

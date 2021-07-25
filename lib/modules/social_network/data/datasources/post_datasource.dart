@@ -13,6 +13,7 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 class PostDatasource {
   final HasuraConnect _hasuraConnect;
   final UserStorage _userStorage;
+  User? user;
 
   PostDatasource(this._hasuraConnect, this._userStorage);
 
@@ -22,7 +23,7 @@ class PostDatasource {
   }
 
   Future<List<Comment>> getCommentsInPost(int postId, int limit, int offset) async {
-    User? user = _userStorage.get();
+    user = _userStorage.get();
     final query = """
     query MyQuery {
       comments(where: {post_id: {_eq: $postId}}, order_by: {created_at: desc}, offset: $offset, limit: $limit) {
@@ -42,6 +43,7 @@ class PostDatasource {
         id
         is_liked
         created_at
+        post_id
         user {
           avatar_url
           id
@@ -86,7 +88,6 @@ class PostDatasource {
         id
         uuid
         is_liked
-        is_my_post
         reactions_counts
         medias {
           id

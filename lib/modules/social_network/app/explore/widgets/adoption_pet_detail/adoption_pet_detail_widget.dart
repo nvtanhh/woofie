@@ -222,7 +222,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                 ),
               );
             } else {
-              return ShimmerPage();
+              return const ShimmerPage();
             }
           },
         ),

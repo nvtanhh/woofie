@@ -1,8 +1,13 @@
+import 'dart:async';
+
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
+import 'package:meowoof/modules/social_network/domain/events/comment/comment_updated_event.dart';
+import 'package:meowoof/modules/social_network/domain/events/comment/comment_updating_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -16,27 +21,30 @@ class SendCommentWidgetModel extends BaseViewModel {
   final GetAllUserInPostUsecase _getAllUserInPostUsecase;
   final CreateCommentUsecase _createCommentUsecase;
   final UserStorage _userStorage;
-  List<SuggestedDataWrapper<User>> data = [];
   final RxList<SuggestedDataWrapper<User>> _dataFilter = RxList([]);
   final GlobalKey<EditableTextState> tfKey = GlobalKey();
   final GlobalKey suggestionWidgetKey = GlobalKey();
+  final EventBus _eventBus;
 
   late Function(Comment) onSendComment;
   late Post post;
   late Function showSuggestionDialog;
   late TextSpan Function(SuggestedDataWrapper<User>) customSpan;
-
+  Comment? comment;
   User? user;
+  List<SuggestedDataWrapper<User>> data = [];
   List<User> tagUsers = [];
   TypeAheadTextFieldController? controller;
   PrefixMatchState? filterState;
   OverlayEntry? overlayEntry;
-  FocusNode focusNode = FocusNode();
+  bool isUpdate = false;
+  StreamSubscription? _commentUpdatingStreamSubscription, _commentUpdatedStreamSubscription;
 
   SendCommentWidgetModel(
     this._getAllUserInPostUsecase,
     this._userStorage,
     this._createCommentUsecase,
+    this._eventBus,
   ) {
     _loadUserFromLocal();
   }
@@ -44,7 +52,8 @@ class SendCommentWidgetModel extends BaseViewModel {
   @override
   void initState() {
     initController();
-    focusNode.addListener(() => _listenKeyBoard());
+    _registerCommentUpdatingStreamSubscription();
+    _registerCommentUpdatedStreamSubscription();
     super.initState();
   }
 
@@ -80,18 +89,53 @@ class SendCommentWidgetModel extends BaseViewModel {
     );
   }
 
+  void _registerCommentUpdatingStreamSubscription() {
+    _commentUpdatingStreamSubscription = _eventBus.on<CommentUpdatingEvent>().listen(
+      (event) {
+        isUpdate = true;
+        comment = event.comment;
+        tagUsers = comment!.commentTagUser!.toList();
+        controller!.text = comment!.content!;
+        reInstallData();
+      },
+    );
+  }
+
+  void _registerCommentUpdatedStreamSubscription() {
+    _commentUpdatedStreamSubscription = _eventBus.on<CommentUpdatedEvent>().listen(
+      (event) {
+        isUpdate = false;
+        controller?.clear();
+
+      },
+    );
+  }
+
+  void reInstallData() {
+    // ignore: avoid_function_literals_in_foreach_calls
+    comment?.commentTagUser?.forEach(
+      (e) {
+        try {
+          controller?.approveSelection(
+            PrefixMatchState("@", e.name ?? ""),
+            SuggestedDataWrapper<User>(
+              prefix: "@",
+              id: e.name ?? "",
+              item: e,
+            ),
+          );
+        } catch (e) {
+          // ignore: empty_catches
+        }
+      },
+    );
+  }
+
   void filterData() {
     dataFilter = data
         .where((element) =>
             element.item?.name?.toLowerCase().contains((filterState?.text ?? " ").substring(1, filterState?.text.length ?? 1).toLowerCase()) == true)
         .toList();
-  }
-
-  void _listenKeyBoard() {
-    printInfo(info: focusNode.hasFocus.toString());
-    if (!focusNode.hasFocus) {
-      removeOverlay();
-    }
   }
 
   void _loadUserFromLocal() {
@@ -132,22 +176,32 @@ class SendCommentWidgetModel extends BaseViewModel {
     if (controller!.text.isEmpty) {
       return;
     }
-    call(
-      () async {
-        final Comment? comment = await _createCommentUsecase.call(
+    Comment? newComment;
+    if (!isUpdate) {
+      call(
+        () async => newComment = await _createCommentUsecase.call(
           post.id,
           controller!.text.replaceAll("\n", "\\n"),
           tagUsers,
-        );
-        if (comment != null) {
-          controller?.clear();
-          comment.commentTagUser = tagUsers.toList();
-          post.increasePostCommentsCount();
-          onSendComment(comment);
-        }
-      },
-      showLoading: false,
-    );
+        ),
+        onSuccess: () {
+          if (newComment != null) {
+            controller?.clear();
+            newComment!.commentTagUser = tagUsers.toList();
+            post.increasePostCommentsCount();
+            onSendComment(newComment!);
+          }
+        },
+      );
+    } else {
+      newComment = Comment(
+        id: 0,
+        postId: post.id,
+        content: controller!.text.replaceAll("\n", "\\n"),
+        commentTagUser: tagUsers.toList(),
+      );
+      onSendComment(newComment);
+    }
   }
 
   void onSubmitted() {
@@ -175,8 +229,8 @@ class SendCommentWidgetModel extends BaseViewModel {
   @override
   void disposeState() {
     controller!.dispose();
-    focusNode.removeListener(_listenKeyBoard);
-    focusNode.dispose();
+    _commentUpdatingStreamSubscription?.cancel();
+    _commentUpdatedStreamSubscription?.cancel();
     super.disposeState();
   }
 }
