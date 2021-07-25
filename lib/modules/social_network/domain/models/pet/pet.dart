@@ -16,9 +16,7 @@ part 'pet.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Pet extends UpdatableModel<Pet> {
-  @override
   @JsonKey(name: "id")
-  // ignore: overridden_fields
   int id;
   @JsonKey(name: "uuid")
   String? uuid;
@@ -74,7 +72,8 @@ class Pet extends UpdatableModel<Pet> {
       this.petVaccinates,
       this.petWormFlushes,
       this.petWeights,
-      this.avatarUrl});
+      this.avatarUrl})
+      : super(id);
 
   factory Pet.fromJson(Map<String, dynamic> json) => _$PetFromJson(json);
 

@@ -69,7 +69,7 @@ class Post extends UpdatableModel<Post> {
     this.comments,
     this.taggegPets = const [],
     this.location,
-  });
+  }) : super(id);
 
   bool get isIncludeLocation => location != null;
 
