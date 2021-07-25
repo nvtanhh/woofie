@@ -31,8 +31,7 @@ class ChatRoomPageModel extends BaseViewModel {
 
   final RxList<MediaFile> _sendingMedias = <MediaFile>[].obs;
   ScrollController scrollController = ScrollController();
-  final TextEditingController messageSenderTextController =
-      TextEditingController();
+  final TextEditingController messageSenderTextController = TextEditingController();
   final RxBool _isCanSendMessage = false.obs;
 
   late PagingController<int, Message> pagingController;
@@ -125,8 +124,7 @@ class ChatRoomPageModel extends BaseViewModel {
 
   bool checkIsDisplayAvatar(int index) {
     // final messages = pagingController.itemList!;
-    return index == messages.length - 1 ||
-        messages[index].senderId != messages[index + 1].senderId;
+    return index == messages.length - 1 || messages[index].senderId != messages[index + 1].senderId;
   }
 
   Future<void> onMediaPicked(List<MediaFile> media) async {
@@ -143,12 +141,8 @@ class ChatRoomPageModel extends BaseViewModel {
         () async {
           // final uploadedMediaUrl = await _startUploadMedia();
           final messageType = _getMessageType();
-          final content = messageType == MessageType.text
-              ? messageSenderTextController.text
-              : await _startUploadMedia();
-          final description = messageType != MessageType.text
-              ? messageSenderTextController.text
-              : null;
+          final content = messageType == MessageType.text ? messageSenderTextController.text : await _startUploadMedia();
+          final description = messageType != MessageType.text ? messageSenderTextController.text : null;
           final senderId = injector<LoggedInUser>().user!.uuid!;
           final Message fakeNewMessage = Message(
             objectId: const Uuid().v4(),
@@ -186,10 +180,8 @@ class ChatRoomPageModel extends BaseViewModel {
   Future<String> _startUploadMedia() async {
     final compressedImage = await _compressPostMediaItem(_sendingMedias.first);
     final String fileName = basename(compressedImage.file.path);
-    final String preSignedUrl =
-        await _getPresignedUrlUsecase.call(fileName, room.id);
-    final uploadedMediaUrl =
-        await _uploadMediaUsecase.call(preSignedUrl, compressedImage.file);
+    final String preSignedUrl = await _getPresignedUrlUsecase.call(fileName, room.id);
+    final uploadedMediaUrl = await _uploadMediaUsecase.call(preSignedUrl, compressedImage.file);
     return uploadedMediaUrl!;
   }
 

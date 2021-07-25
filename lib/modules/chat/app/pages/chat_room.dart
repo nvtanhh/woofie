@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
-import 'package:meowoof/modules/chat/presentation/pages/chat_room_model.dart';
-import 'package:meowoof/modules/chat/presentation/widgets/chat_room_nav/chat_room_nav.dart';
-import 'package:meowoof/modules/chat/presentation/widgets/message/message_item.dart';
-import 'package:meowoof/modules/chat/presentation/widgets/message_sender.dart';
+import 'package:meowoof/modules/chat/app/pages/chat_room_model.dart';
+import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/chat_room_nav.dart';
+import 'package:meowoof/modules/chat/app/widgets/message/message_item.dart';
+import 'package:meowoof/modules/chat/app/widgets/message_sender.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,8 +18,7 @@ class ChatRoomPage extends StatefulWidget {
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomPageState
-    extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
+class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
   @override
   ChatRoomPageModel createViewModel() => injector<ChatRoomPageModel>();
 

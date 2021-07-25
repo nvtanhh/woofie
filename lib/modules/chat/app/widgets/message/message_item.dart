@@ -3,8 +3,8 @@ import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
-import 'package:meowoof/modules/chat/presentation/widgets/active_status_avatar.dart';
-import 'package:meowoof/modules/chat/presentation/widgets/message/message_body.dart';
+import 'package:meowoof/modules/chat/app/widgets/active_status_avatar.dart';
+import 'package:meowoof/modules/chat/app/widgets/message/message_body.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,9 +13,7 @@ class MessageWidget extends StatelessWidget {
   final User? chatPartner;
   final bool isDisplayAvatar;
 
-  const MessageWidget(this.message,
-      {this.chatPartner, Key? key, this.isDisplayAvatar = true})
-      : super(key: key);
+  const MessageWidget(this.message, {this.chatPartner, Key? key, this.isDisplayAvatar = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +25,7 @@ class MessageWidget extends StatelessWidget {
         bottom: 5,
       ),
       child: Row(
-        crossAxisAlignment:
-            isMyMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: isMyMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           if (!isMyMessage) _buildMessageIdentifierAvatar(isMyMessage),
           Expanded(
@@ -43,10 +40,7 @@ class MessageWidget extends StatelessWidget {
   }
 
   Widget _buildMessageIdentifierAvatar(bool isMyMessage) {
-    final avatarUrl = (!isMyMessage
-            ? chatPartner?.avatarUrl
-            : injector<LoggedInUser>().user?.avatarUrl) ??
-        '';
+    final avatarUrl = (!isMyMessage ? chatPartner?.avatarUrl : injector<LoggedInUser>().user?.avatarUrl) ?? '';
     return Padding(
       padding: EdgeInsets.only(
         right: !isMyMessage ? 10 : 0,

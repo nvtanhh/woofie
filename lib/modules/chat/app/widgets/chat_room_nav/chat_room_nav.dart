@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
-import 'package:meowoof/modules/chat/presentation/widgets/chat_room_nav/chat_identifier.dart';
+import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/chat_identifier.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 class ChatRoomNav extends StatelessWidget {

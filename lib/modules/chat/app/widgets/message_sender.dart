@@ -55,9 +55,7 @@ class MessageSender extends StatelessWidget {
                           (file) => MediaButton(
                             key: ObjectKey(file),
                             mediaFile: file,
-                            onRemove: onRemoveSeedingMedia != null
-                                ? () => onRemoveSeedingMedia!(file)
-                                : null,
+                            onRemove: onRemoveSeedingMedia != null ? () => onRemoveSeedingMedia!(file) : null,
                             allowEditMedia: false,
                           ),
                         )
@@ -91,8 +89,7 @@ class MessageSender extends StatelessWidget {
                 trailing: IconButton(
                   icon: Icon(
                     Icons.send,
-                    color:
-                        isCanSendMessage ? UIColor.primary : UIColor.textBody,
+                    color: isCanSendMessage ? UIColor.primary : UIColor.textBody,
                   ),
                   onPressed: isCanSendMessage ? onSendMessage : null,
                 ),
@@ -105,8 +102,7 @@ class MessageSender extends StatelessWidget {
   }
 
   Future _pickImage() async {
-    final List<MediaFile> medias =
-        await injector<MediaService>().pickMedias(allowMultiple: false);
+    final List<MediaFile> medias = await injector<MediaService>().pickMedias(allowMultiple: false);
     if (medias.isNotEmpty) {
       onMediaPicked(medias);
     }
