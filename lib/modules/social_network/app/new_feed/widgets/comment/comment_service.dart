@@ -71,26 +71,23 @@ class CommentServiceModel extends BaseViewModel {
   void onEditComment({required Comment oldComment, required Comment newComment}) {
     Comment? comment;
     call(
-      // ignore: parameter_assignments
-      () async => comment = await _editCommentUsecase.run(oldComment, newComment),
-      onSuccess: () {
-        comment?.commentTagUser = newComment.commentTagUser?.toList();
-        comment?.creator = oldComment.creator;
-        comment?.commentReactsAggregate = oldComment.commentReactsAggregate;
-        pagingController.itemList?.replaceRange(
-          indexOldComment!,
-          indexOldComment! + 1,
-          [comment!],
-        );
-        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-        pagingController.notifyListeners();
-        commentUpdate = null;
-        _eventBus.fire(CommentUpdatedEvent(comment!));
-      },
-      onFailure: (err){
-        printError(info: err.toString());
-      }
-    );
+        // ignore: parameter_assignments
+        () async => comment = await _editCommentUsecase.run(oldComment, newComment), onSuccess: () {
+      comment?.commentTagUser = newComment.commentTagUser?.toList();
+      comment?.creator = oldComment.creator;
+      comment?.commentReactsAggregate = oldComment.commentReactsAggregate;
+      pagingController.itemList?.replaceRange(
+        indexOldComment!,
+        indexOldComment! + 1,
+        [comment!],
+      );
+      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+      pagingController.notifyListeners();
+      commentUpdate = null;
+      _eventBus.fire(CommentUpdatedEvent(comment!));
+    }, onFailure: (err) {
+      printError(info: err.toString());
+    });
   }
 
   void setOldComment(Comment comment, int index) {

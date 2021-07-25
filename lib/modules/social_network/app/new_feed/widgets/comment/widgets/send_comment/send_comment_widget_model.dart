@@ -106,7 +106,6 @@ class SendCommentWidgetModel extends BaseViewModel {
       (event) {
         isUpdate = false;
         controller?.clear();
-
       },
     );
   }

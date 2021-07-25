@@ -86,8 +86,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
             SizedBox(
               width: 16.w,
             ),
-            InkWell(
-              onTap: () {},
+            GestureDetector(
+              onTap: viewModel.onWantsToGoToChat,
               child: MWIcon(
                 MWIcons.message,
                 customSize: 28,

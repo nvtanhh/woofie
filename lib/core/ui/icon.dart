@@ -141,6 +141,8 @@ class MWIcons {
   static const cancel = MWIconData(nativeIcon: Icons.close);
   static const retry = MWIconData(nativeIcon: Icons.refresh);
   static const camera = MWIconData(nativeIcon: Icons.camera_alt_outlined);
+  static const info = MWIconData(nativeIcon: Icons.info_rounded);
+
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);
@@ -154,6 +156,7 @@ class MWIcons {
   static final icMatting = MWIconData(assetImageFile: Assets.resources.images.explore.icMatting);
   static final icLose = MWIconData(assetImageFile: Assets.resources.images.explore.icLose);
   static final icReact = MWIconData(assetImageFile: Assets.resources.images.explore.icReact);
+  static final createChat = MWIconData(assetImageFile: Assets.resources.icons.icCreateChat);
 }
 
 enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }
