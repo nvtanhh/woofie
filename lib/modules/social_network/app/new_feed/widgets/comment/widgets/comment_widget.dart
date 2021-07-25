@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/comment_actions_popup.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -17,11 +18,17 @@ class CommentWidget extends StatelessWidget {
   final Comment comment;
   final Function(int) onLikeCommentClick;
   final RxBool isLiked = RxBool(false);
+  final Function? onDelete;
+  final Function? onEdit;
+  final Function? onReport;
 
   CommentWidget({
     Key? key,
     required this.comment,
     required this.onLikeCommentClick,
+    this.onDelete,
+    this.onEdit,
+    this.onReport,
   }) : super(key: key) {
     isLiked.value = comment.isLiked ?? false;
   }
@@ -60,17 +67,23 @@ class CommentWidget extends StatelessWidget {
               SizedBox(
                 height: 5.h,
               ),
-              Container(
-                width: Get.width * 0.7.w,
-                padding: EdgeInsets.all(10.w),
-                decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
-                child: Text.rich(
-                  TextSpan(
-                    text: "",
-                    children: createTagUser(),
-                    style: UITextStyle.text_body_14_w400,
+              CommentActionsTrailing(
+                comment: comment,
+                onDeleteComment: () => onDelete?.call(),
+                onEditComment: () => onEdit?.call(),
+                onReportComment: () => onReport?.call(),
+                widget: Container(
+                  width: Get.width * 0.7.w,
+                  padding: EdgeInsets.all(10.w),
+                  decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
+                  child: Text.rich(
+                    TextSpan(
+                      text: "",
+                      children: createTagUser(),
+                      style: UITextStyle.text_body_14_w400,
+                    ),
+                    overflow: TextOverflow.fade,
                   ),
-                  overflow: TextOverflow.fade,
                 ),
               ),
               SizedBox(
@@ -111,7 +124,7 @@ class CommentWidget extends StatelessWidget {
 
   List<InlineSpan> createTagUser() {
     final List<InlineSpan> inLineSpan = [];
-    String perfix = "@";
+    const perfix = "@";
     String pattern = "";
     // ignore: unnecessary_raw_strings
     if (comment.commentTagUser != null && comment.commentTagUser!.isNotEmpty) {

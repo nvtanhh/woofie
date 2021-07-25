@@ -19,11 +19,13 @@ import 'package:type_ahead_text_field/type_ahead_text_field.dart';
 class SendCommentWidget extends StatefulWidget {
   final Function(Comment) onSendComment;
   final Post post;
+  final Comment? comment;
 
   const SendCommentWidget({
     Key? key,
     required this.onSendComment,
     required this.post,
+    this.comment,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
   @override
   void loadArguments() {
     viewModel.post = widget.post;
+    viewModel.comment = widget.comment;
     viewModel.onSendComment = widget.onSendComment;
     viewModel.showSuggestionDialog = showSuggestionDialog;
     viewModel.customSpan = customSpan;
@@ -92,7 +95,6 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
             width: 250.w,
             child: TextField(
               key: viewModel.tfKey,
-              focusNode: viewModel.focusNode,
               decoration: InputDecoration(
                 hintText: LocaleKeys.new_feed_write_a_comment.trans(),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),

@@ -80,12 +80,17 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
           children: [
             Expanded(
               child: PagedListView<int, Comment>(
-                pagingController: viewModel.pagingController,
+                pagingController: viewModel.commentServiceModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Comment>(
                   itemBuilder: (context, item, index) {
                     return CommentWidget(
                       comment: item,
-                      onLikeCommentClick: viewModel.onLikeCommentClick,
+                      onLikeCommentClick: (_) => viewModel.commentServiceModel.onLikeComment(item, viewModel.post.id),
+                      onDelete: () => viewModel.commentServiceModel.onDeleteComment(item, index),
+                      onReport: () => viewModel.commentServiceModel.onReportComment(item, ""),
+                      onEdit: () {
+                        viewModel.commentServiceModel.setOldComment(item, index);
+                      },
                     );
                   },
                   firstPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
@@ -107,6 +112,7 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
             SendCommentWidget(
               onSendComment: viewModel.onSendComment,
               post: viewModel.post,
+              comment: viewModel.commentServiceModel.commentUpdate,
             )
           ],
         ),

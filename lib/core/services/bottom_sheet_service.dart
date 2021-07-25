@@ -16,9 +16,9 @@ class BottomSheetService {
       topLeft: Radius.circular(30.r),
     ),
   );
-  void showComments(Post post) {
+  void showComments(Post post, BuildContext context) {
     showMaterialModalBottomSheet(
-      context: Get.context!,
+      context: context,
       builder: (context) => CommentBottomSheetWidget(
         post: post,
       ),

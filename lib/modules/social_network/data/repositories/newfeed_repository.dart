@@ -61,4 +61,16 @@ class NewFeedRepository {
   Future<List<User>> getAllUserInPost(int postId, int limit, int offset) {
     return _petDatasource.getAllUserInPost(postId, limit, offset);
   }
+
+  Future deleteComment(int commentId) {
+    return _commentDatasource.deleteComment(commentId);
+  }
+
+  Future reportComment(int commentId, String content) {
+    return _commentDatasource.reportComment(commentId, content);
+  }
+
+  Future<Comment> editComment(Comment oldComment, Comment newComment) {
+    return _commentDatasource.editComment(oldComment, newComment);
+  }
 }

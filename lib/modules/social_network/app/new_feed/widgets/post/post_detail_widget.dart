@@ -62,7 +62,7 @@ class _PostDetailState extends BaseViewState<PostDetail, PostDetailWidgetModel> 
               child: RefreshIndicator(
                 onRefresh: () => viewModel.onRefresh(),
                 child: PagedListView<int, Comment>(
-                  pagingController: viewModel.pagingController,
+                  pagingController: viewModel.commentServiceModel.pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Comment>(
                     itemBuilder: (context, item, index) {
                       if (index == 0) {
@@ -73,13 +73,18 @@ class _PostDetailState extends BaseViewState<PostDetail, PostDetailWidgetModel> 
                       }
                       return CommentWidget(
                         comment: item,
-                        onLikeCommentClick: viewModel.onLikeCommentClick,
+                        onLikeCommentClick: (_) => viewModel.commentServiceModel.onLikeComment(
+                          item,
+                          viewModel.post.id,
+                        ),
+                        onReport: () => viewModel.commentServiceModel.onReportComment(item, "content"),
+                        onDelete: () => viewModel.commentServiceModel.onDeleteComment(item, index),
+                        onEdit: () => viewModel.commentServiceModel.setOldComment(item, index),
                       );
                     },
                     firstPageProgressIndicatorBuilder: (_) => Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // ShimmerPage(),
                         ShimmerCommentWidget(),
                       ],
                     ),
@@ -96,6 +101,7 @@ class _PostDetailState extends BaseViewState<PostDetail, PostDetailWidgetModel> 
             SendCommentWidget(
               onSendComment: viewModel.onSendComment,
               post: viewModel.post,
+              comment: viewModel.commentServiceModel.commentUpdate,
             )
           ],
         ),
