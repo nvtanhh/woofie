@@ -11,9 +11,7 @@ class MessageWidget extends StatelessWidget {
   final User? chatPartner;
   final bool isDisplayAvatar;
 
-  const MessageWidget(this.message,
-      {this.chatPartner, Key? key, this.isDisplayAvatar = false})
-      : super(key: key);
+  const MessageWidget(this.message, {this.chatPartner, Key? key, this.isDisplayAvatar = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

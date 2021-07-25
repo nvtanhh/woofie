@@ -6,8 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class MessageSender extends StatelessWidget {
   final TextEditingController textController;
 
-  const MessageSender({Key? key, required this.textController})
-      : super(key: key);
+  const MessageSender({Key? key, required this.textController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
