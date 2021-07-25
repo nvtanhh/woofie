@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
@@ -35,6 +38,8 @@ class ChatRoomPageModel extends BaseViewModel {
   late PagingController<int, Message> pagingController;
   static const int _pageSize = 10;
 
+  final keyboardVisibilityController = KeyboardVisibilityController();
+
   ChatRoomPageModel(
     this._mediaService,
     this._getPresignedUrlUsecase,
@@ -50,7 +55,36 @@ class ChatRoomPageModel extends BaseViewModel {
     // pagingController
     //     .addPageRequestListener((pageKey) => _loadMorePost(pageKey));
 
+    _addScrollListener();
+
     _setupListenCanSendMessage();
+  }
+
+  void _addScrollListener() {
+    //  scrollController.addListener(() {
+    //   bool topReached = widget.inverted
+    //       ? scrollController.offset >=
+    //               scrollController.position.maxScrollExtent &&
+    //           !scrollController.position.outOfRange
+    //       : scrollController.offset <=
+    //               scrollController.position.minScrollExtent &&
+    //           !scrollController.position.outOfRange;
+
+    //   if (widget.shouldShowLoadEarlier) {
+    //     if (topReached) {
+    //       setState(() {
+    //         showLoadMore = true;
+    //       });
+    //     } else {
+    //       setState(() {
+    //         showLoadMore = false;
+    //       });
+    //     }
+    //   } else if (topReached) {
+    //     widget.onLoadEarlier!();
+    //   }
+    // });
+    // }
   }
 
   Future<void> _loadMorePost(int pageKey) async {
@@ -70,7 +104,7 @@ class ChatRoomPageModel extends BaseViewModel {
 
   void _setupListenCanSendMessage() {
     messageSenderTextController.addListener(() {
-      if (messageSenderTextController.text.isNotEmpty) {
+      if (messageSenderTextController.text.trim().isNotEmpty) {
         _isCanSendMessage.value = true;
       } else {
         _isCanSendMessage.value = false;
@@ -128,7 +162,9 @@ class ChatRoomPageModel extends BaseViewModel {
           // pagingController
           //     .appendPage([fakeNewMessage], pagingController.nextPageKey);
 
-          messages.insert(0, fakeNewMessage);
+          messages.add(fakeNewMessage);
+
+          scrollToBottom();
         },
         onFailure: (error) {
           Get.snackbar(
@@ -179,5 +215,20 @@ class ChatRoomPageModel extends BaseViewModel {
   void _cleanSender() {
     _sendingMedias.clear();
     messageSenderTextController.clear();
+  }
+
+  void scrollToBottom() {
+    Timer(
+      const Duration(milliseconds: 200),
+      () {
+        if (scrollController.hasClients) {
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.fastOutSlowIn,
+          );
+        }
+      },
+    );
   }
 }

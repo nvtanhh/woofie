@@ -26,13 +26,14 @@ class _ChatRoomPageState
   @override
   void loadArguments() {
     viewModel.room = widget.room;
-    viewModel.messages.addAll(widget.room.messages);
+    viewModel.messages = widget.room.messages.toList().obs;
     super.loadArguments();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: _buildAppBar(),
       body: _buildMessage(),
       bottomNavigationBar: _buildMessageSender(),
@@ -52,9 +53,7 @@ class _ChatRoomPageState
         controller: viewModel.scrollController,
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         itemCount: viewModel.messages.length,
-        reverse: true,
         itemBuilder: (context, index) {
-          // final reverseIndex = viewModel.messages.length - 1 - index;
           final bool isDisplayAvatar = viewModel.checkIsDisplayAvatar(index);
           return MessageWidget(
             viewModel.messages[index],
@@ -83,6 +82,7 @@ class _ChatRoomPageState
           onRemoveSeedingMedia: viewModel.onRemoveSeedingMedia,
           onSendMessage: viewModel.onSendMessage,
           isCanSendMessage: viewModel.isCanSendMessage,
+          onTap: viewModel.scrollToBottom,
         ),
       ),
     );
