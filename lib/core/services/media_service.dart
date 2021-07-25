@@ -148,4 +148,33 @@ class MediaService {
       return null;
     }
   }
+
+  Future<List<MediaFile>> pickMedias({bool allowMultiple = true, FileType type = FileType.media}) async {
+    final List<MediaFile> medias = [];
+    List<File>? files;
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: allowMultiple, type: type);
+    if (result != null) {
+      files = result.paths.map((path) => File(path!)).toList();
+    } else {
+      // User canceled the picker
+    }
+    if (files != null) {
+      await Future.wait(files.map((file) async {
+        final MediaFile media = await convertToMediaFile(file);
+        medias.add(media);
+      }));
+    }
+    return medias;
+  }
+
+  Future<MediaFile> compressPostMediaItem(MediaFile postMediaItem) async {
+    if (postMediaItem.isImage) {
+      postMediaItem.file = await compressImage(postMediaItem.file);
+    } else if (postMediaItem.isVideo) {
+      postMediaItem.file = await compressVideo(postMediaItem.file);
+    } else {
+      printError(info: 'Unsupported media type for compression');
+    }
+    return postMediaItem;
+  }
 }

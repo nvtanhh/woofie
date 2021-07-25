@@ -19,10 +19,12 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
   final GestureConfig Function(ExtendedImageState)? initGestureConfigHandler;
   final ExtendedImageMode? mode;
 
+  final String? placeHolderImage;
+
   const ImageWithPlaceHolderWidget({
+    required this.imageUrl,
     this.width,
     this.height,
-    required this.imageUrl,
     this.topLeftRadius,
     this.topRightRadius,
     this.bottomLeftRadius,
@@ -31,6 +33,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
     this.fit,
     this.initGestureConfigHandler,
     this.mode,
+    this.placeHolderImage,
   });
 
   @override
@@ -93,8 +96,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomLeft: Radius.circular(radius ?? bottomLeftRadius ?? 0),
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
-        image: const DecorationImage(
-          image: AssetGenImage("resources/icons/ic_person.png"),
+        image: DecorationImage(
+          image: AssetGenImage(placeHolderImage ?? "resources/images/fallbacks/avatar-fallback.jpg"),
           fit: BoxFit.cover,
         ),
       ),

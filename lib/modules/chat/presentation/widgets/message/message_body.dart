@@ -6,7 +6,9 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class MessageBody extends StatelessWidget {
   final Message message;
-  const MessageBody(this.message, {Key? key}) : super(key: key);
+  final bool isMyMessage;
+
+  const MessageBody(this.message, {Key? key, required this.isMyMessage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class MessageBody extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           child: ImageWithPlaceHolderWidget(
             imageUrl: message.content,
+            placeHolderImage: 'resources/images/fallbacks/media-fallback.png',
           ),
         );
         break;
@@ -38,7 +41,7 @@ class MessageBody extends StatelessWidget {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: !isMyMessage ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
         body,
       ],

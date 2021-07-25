@@ -17,8 +17,17 @@ class PostImagePreviewer extends StatelessWidget {
 
   static const double buttonSize = 20;
 
-  const PostImagePreviewer({Key? key, this.postMedia, this.postImageFile, this.onRemove, this.onWillEditImage, this.onPostImageEdited})
-      : super(key: key);
+  final bool allowEditImage;
+
+  const PostImagePreviewer({
+    Key? key,
+    this.postMedia,
+    this.postImageFile,
+    this.onRemove,
+    this.onWillEditImage,
+    this.onPostImageEdited,
+    this.allowEditImage = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +62,7 @@ class PostImagePreviewer extends StatelessWidget {
           right: 5,
           child: _buildRemoveButton(),
         ),
-        if (isFileImage)
+        if (isFileImage && allowEditImage)
           Positioned(
             bottom: 5,
             left: 5,

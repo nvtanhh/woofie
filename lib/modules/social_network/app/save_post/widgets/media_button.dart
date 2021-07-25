@@ -17,7 +17,17 @@ class MediaButton extends StatelessWidget {
   final Function()? onRemove;
   final ValueChanged<MediaFile>? onImageEdited;
 
-  const MediaButton({Key? key, this.mediaFile, this.postMedia, this.onMediasPicked, this.onRemove, this.onImageEdited}) : super(key: key);
+  final bool allowEditMedia;
+
+  const MediaButton({
+    Key? key,
+    this.mediaFile,
+    this.postMedia,
+    this.onMediasPicked,
+    this.onRemove,
+    this.onImageEdited,
+    this.allowEditMedia = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +37,13 @@ class MediaButton extends StatelessWidget {
       width: 80.w,
       height: 80.h,
       child: !isEmptyImage
-          ? MediaPreviewer(mediaFile: mediaFile, postMedia: postMedia, onRemove: onRemove, onImageEidted: onImageEdited)
+          ? MediaPreviewer(
+              mediaFile: mediaFile,
+              postMedia: postMedia,
+              onRemove: onRemove,
+              onImageEidted: onImageEdited,
+              allowEditMedia: allowEditMedia,
+            )
           : GestureDetector(
               onTap: _pickMedia,
               child: Container(
@@ -42,20 +58,7 @@ class MediaButton extends StatelessWidget {
   }
 
   Future _pickMedia() async {
-    final List<MediaFile> medias = [];
-    List<File>? files;
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true, type: FileType.media);
-    if (result != null) {
-      files = result.paths.map((path) => File(path!)).toList();
-    } else {
-      // User canceled the picker
-    }
-    if (files != null) {
-      await Future.wait(files.map((file) async {
-        final MediaFile media = await injector<MediaService>().convertToMediaFile(file);
-        medias.add(media);
-      }));
-    }
-    if (onMediasPicked != null) onMediasPicked!(medias);
+    final List<MediaFile> medias = await injector<MediaService>().pickMedias();
+    if (medias.isNotEmpty && onMediasPicked != null) onMediasPicked!(medias);
   }
 }

@@ -170,6 +170,9 @@ dependencies:
 #  #On most operating systems, permissions aren't just granted to apps at install time.
 #  permission_handler: 8.1.2
 
+  # ListView with items that can be scrolled infinitely in both directions.
+  infinite_listview: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

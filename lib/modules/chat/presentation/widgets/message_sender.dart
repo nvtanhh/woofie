@@ -1,45 +1,106 @@
 import 'package:flutter/material.dart';
+import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/core/ui/icon.dart';
+import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/save_post/widgets/media_button.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MessageSender extends StatelessWidget {
   final TextEditingController textController;
 
-  const MessageSender({Key? key, required this.textController}) : super(key: key);
+  final Function(List<MediaFile>) onMediaPicked;
+  final Function(MediaFile)? onRemoveSeedingMedia;
+
+  final List<MediaFile> seendingMedias;
+
+  final VoidCallback onSendMessage;
+
+  final bool isCanSendMessage;
+
+  const MessageSender({
+    Key? key,
+    required this.textController,
+    required this.onMediaPicked,
+    required this.seendingMedias,
+    required this.onSendMessage,
+    this.onRemoveSeedingMedia,
+    this.isCanSendMessage = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: UIColor.holder,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: const IconButton(
-          onPressed: null,
-          icon: MWIcon(MWIcons.camera),
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: 170.h),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: UIColor.holder.withOpacity(.5),
+          borderRadius: BorderRadius.circular(12),
         ),
-        title: TextField(
-          controller: textController,
-          decoration: const InputDecoration(
-            hintText: 'Soạn tin nhắn...',
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-          ),
-        ),
-        trailing: const IconButton(
-          icon: Icon(
-            Icons.send,
-            color: UIColor.primary,
-          ),
-          onPressed: null,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (seendingMedias.isNotEmpty)
+              SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    children: seendingMedias
+                        .map(
+                          (file) => MediaButton(
+                            key: ObjectKey(file),
+                            mediaFile: file,
+                            onRemove: onRemoveSeedingMedia != null ? () => onRemoveSeedingMedia!(file) : null,
+                            allowEditMedia: false,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: UIColor.holder,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: IconButton(
+                  onPressed: _pickImage,
+                  icon: const MWIcon(MWIcons.camera),
+                ),
+                title: TextField(
+                  controller: textController,
+                  decoration: const InputDecoration(
+                    hintText: 'Soạn tin nhắn...',
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                  ),
+                ),
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.send,
+                    color: isCanSendMessage ? UIColor.primary : UIColor.textBody,
+                  ),
+                  onPressed: isCanSendMessage ? onSendMessage : null,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Future _pickImage() async {
+    final List<MediaFile> medias = await injector<MediaService>().pickMedias(allowMultiple: false);
+    if (medias.isNotEmpty) {
+      onMediaPicked(medias);
+    }
   }
 }

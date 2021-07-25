@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
+import 'package:meowoof/modules/chat/domain/models/message.dart';
 
 @lazySingleton
 class ChatDatasource {
@@ -11,5 +12,9 @@ class ChatDatasource {
 
     final list = json.decode(rawJson)['rooms'] as List;
     return list.map((room) => ChatRoom.fromJson(room as Map<String, dynamic>)).toList();
+  }
+
+  Future<List<Message>> getMessages(int limit, int skip) async {
+    return [];
   }
 }

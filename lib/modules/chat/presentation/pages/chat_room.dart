@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/presentation/pages/chat_room_model.dart';
@@ -17,14 +18,15 @@ class ChatRoomPage extends StatefulWidget {
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
+class _ChatRoomPageState
+    extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
   @override
   ChatRoomPageModel createViewModel() => injector<ChatRoomPageModel>();
 
   @override
   void loadArguments() {
     viewModel.room = widget.room;
-    viewModel.messages = widget.room.messages;
+    viewModel.messages.addAll(widget.room.messages);
     super.loadArguments();
   }
 
@@ -45,20 +47,24 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
   }
 
   Widget _buildMessage() {
-    return ListView.builder(
+    return Obx(
+      () => ListView.builder(
         controller: viewModel.scrollController,
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         itemCount: viewModel.messages.length,
         reverse: true,
         itemBuilder: (context, index) {
-          final reverseIndex = viewModel.messages.length - 1 - index;
-          final bool isDisplayAvatar = viewModel.checkIsDisplayAvatar(reverseIndex);
+          // final reverseIndex = viewModel.messages.length - 1 - index;
+          final bool isDisplayAvatar = viewModel.checkIsDisplayAvatar(index);
           return MessageWidget(
-            viewModel.messages[reverseIndex],
+            viewModel.messages[index],
+            key: ObjectKey(viewModel.messages[index].objectId),
             chatPartner: viewModel.room.privateChatPartner,
             isDisplayAvatar: isDisplayAvatar,
           );
-        });
+        },
+      ),
+    );
   }
 
   Widget _buildMessageSender() {
@@ -69,8 +75,15 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
         top: 16.h,
         bottom: MediaQuery.of(context).viewInsets.bottom + 16.h,
       ),
-      child: MessageSender(
-        textController: viewModel.messageSenderTextController,
+      child: Obx(
+        () => MessageSender(
+          textController: viewModel.messageSenderTextController,
+          onMediaPicked: viewModel.onMediaPicked,
+          seendingMedias: viewModel.sendingMedias,
+          onRemoveSeedingMedia: viewModel.onRemoveSeedingMedia,
+          onSendMessage: viewModel.onSendMessage,
+          isCanSendMessage: viewModel.isCanSendMessage,
+        ),
       ),
     );
   }

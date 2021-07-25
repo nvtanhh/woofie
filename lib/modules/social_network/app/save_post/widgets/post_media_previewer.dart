@@ -11,7 +11,16 @@ class MediaPreviewer extends StatelessWidget {
 
   final ValueChanged<MediaFile>? onImageEidted;
 
-  const MediaPreviewer({Key? key, this.postMedia, this.mediaFile, this.onRemove, this.onImageEidted}) : super(key: key);
+  final bool allowEditMedia;
+
+  const MediaPreviewer({
+    Key? key,
+    this.postMedia,
+    this.mediaFile,
+    this.onRemove,
+    this.onImageEidted,
+    this.allowEditMedia = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +29,7 @@ class MediaPreviewer extends StatelessWidget {
         postImageFile: mediaFile!.file,
         onRemove: onRemove,
         onPostImageEdited: onImageEidted,
+        allowEditImage: allowEditMedia,
       );
     } else if (mediaFile != null && mediaFile!.isVideo) {
       return PostVideoPreviewer(
