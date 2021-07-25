@@ -66,11 +66,15 @@ class NewFeedRepository {
     return _commentDatasource.deleteComment(commentId);
   }
 
-  Future reportComment(int commentId, String content) {
-    return _commentDatasource.reportComment(commentId, content);
+  Future reportComment(Comment comment, String content) {
+    return _commentDatasource.reportComment(comment, content);
   }
 
   Future<Comment> editComment(Comment oldComment, Comment newComment) {
     return _commentDatasource.editComment(oldComment, newComment);
+  }
+
+  Future reportPost(Post post, String content) {
+    return _postDatasource.reportPost(post, content);
   }
 }

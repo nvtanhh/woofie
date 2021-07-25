@@ -47,6 +47,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                       onPostClick: viewModel.postService.onPostClick,
                       onDeletePost: () => viewModel.postService.onPostDeleted(index),
                       onEditPost: () => viewModel.postService.onWantsToEditPost(item),
+                      onReportPost: () => viewModel.postService.onReportPost(item),
                     ),
                   ),
                 ),
