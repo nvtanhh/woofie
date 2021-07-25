@@ -2,6 +2,9 @@ import 'package:event_bus/event_bus.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/services/dialog_service.dart';
+import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/domain/events/comment/comment_updated_event.dart';
 import 'package:meowoof/modules/social_network/domain/events/comment/comment_updating_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
@@ -54,10 +57,17 @@ class CommentServiceModel extends BaseViewModel {
     );
   }
 
-  void onReportComment(Comment comment, String content) {
-    call(
-      () async => _reportCommentUsecase.run(comment.id, content),
-      onSuccess: () {},
+  Future onReportComment(Comment comment, String content) async {
+    String? content = await injector<DialogService>().showInputReport() as String?;
+    if (content == null) return;
+    await call(
+      () async => _reportCommentUsecase.run(comment, content),
+      onSuccess: () {
+        injector<ToastService>().success(
+          message: "Reported",
+          context: Get.context!,
+        );
+      },
     );
   }
 
@@ -71,23 +81,27 @@ class CommentServiceModel extends BaseViewModel {
   void onEditComment({required Comment oldComment, required Comment newComment}) {
     Comment? comment;
     call(
-        // ignore: parameter_assignments
-        () async => comment = await _editCommentUsecase.run(oldComment, newComment), onSuccess: () {
-      comment?.commentTagUser = newComment.commentTagUser?.toList();
-      comment?.creator = oldComment.creator;
-      comment?.commentReactsAggregate = oldComment.commentReactsAggregate;
-      pagingController.itemList?.replaceRange(
-        indexOldComment!,
-        indexOldComment! + 1,
-        [comment!],
-      );
-      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-      pagingController.notifyListeners();
-      commentUpdate = null;
-      _eventBus.fire(CommentUpdatedEvent(comment!));
-    }, onFailure: (err) {
-      printError(info: err.toString());
-    });
+      // ignore: parameter_assignments
+      () async => comment = await _editCommentUsecase.run(oldComment, newComment),
+      onSuccess: () {
+        comment?.commentTagUser = newComment.commentTagUser?.toList();
+        comment?.creator = oldComment.creator;
+        comment?.postId = oldComment.postId;
+        comment?.commentReactsAggregate = oldComment.commentReactsAggregate;
+        pagingController.itemList?.replaceRange(
+          indexOldComment!,
+          indexOldComment! + 1,
+          [comment!],
+        );
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        pagingController.notifyListeners();
+        commentUpdate = null;
+        _eventBus.fire(CommentUpdatedEvent(comment!));
+      },
+      onFailure: (err) {
+        printError(info: err.toString());
+      },
+    );
   }
 
   void setOldComment(Comment comment, int index) {

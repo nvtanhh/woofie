@@ -379,4 +379,17 @@ class PostDatasource {
   String _mediaToJson(UploadedMedia e) {
     return '{url: "${e.uploadedUrl}", type: ${e.type}}';
   }
+
+  Future reportPost(Post post, String content) async {
+    final manution = """
+    mutation MyMutation {
+    insert_report_post(objects: {content: "$content", post_id: ${post.id}, type: 0}) {
+    affected_rows
+    }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(manution);
+    GetMapFromHasura.getMap(data as Map)["insert_report_post"] as Map;
+    return;
+  }
 }

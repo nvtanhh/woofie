@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
+import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
@@ -18,6 +19,7 @@ import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/refresh_post_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/new_feed/report_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/edit_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/get_presigned_url_usecase.dart';
@@ -37,6 +39,7 @@ class PostService extends BaseViewModel {
   final DeletePostUsecase _deletePostUsecase;
   final ToastService _toastService;
   final RefreshPostsUsecase _refreshPostsUsecase;
+  final ReportPostUsecase _reportPostUsecase;
   RxList<Widget> prependedWidgets = <Widget>[].obs;
   RxList<NewPostData> newPostsData = <NewPostData>[].obs;
   final HashMap _prependedWidgetsRemover = HashMap<String, VoidCallback>();
@@ -52,6 +55,7 @@ class PostService extends BaseViewModel {
     this._deletePostUsecase,
     this._toastService,
     this._refreshPostsUsecase,
+    this._reportPostUsecase,
   );
 
   @override
@@ -260,6 +264,20 @@ class PostService extends BaseViewModel {
         pagingController.notifyListeners();
       },
       showLoading: false,
+    );
+  }
+
+  Future onReportPost(Post post) async {
+    String? content = await injector<DialogService>().showInputReport() as String?;
+    if (content == null) return;
+    await call(
+      () async => _reportPostUsecase.run(post, content),
+      onSuccess: () {
+        _toastService.success(
+          message: "Reported",
+          context: Get.context!,
+        );
+      },
     );
   }
 

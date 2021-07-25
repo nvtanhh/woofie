@@ -14,6 +14,7 @@ class PostItem extends StatefulWidget {
   final Function(Post)? onPostClick;
   final VoidCallback onEditPost;
   final VoidCallback onDeletePost;
+  final VoidCallback? onReportPost;
 
   const PostItem({
     Key? key,
@@ -23,6 +24,7 @@ class PostItem extends StatefulWidget {
     required this.onDeletePost,
     this.onCommentClick,
     this.onPostClick,
+    this.onReportPost,
   }) : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class _PostItemState extends State<PostItem> {
           post: widget.post,
           onDeletePost: widget.onDeletePost,
           onEditPost: widget.onEditPost,
+          onReportPost: widget.onReportPost,
         ),
         InkWell(
           onTap: () => widget.onPostClick?.call(widget.post),

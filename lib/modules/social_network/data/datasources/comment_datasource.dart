@@ -63,7 +63,16 @@ mutation MyMutation {
     return;
   }
 
-  Future reportComment(int commentId, String content) async {
+  Future reportComment(Comment comment, String content) async {
+    final manution = """
+    mutation MyMutation {
+    insert_report_comment(objects: {comment_id: ${comment.id} ,content: "$content", post_id: ${comment.postId!}, type: 0}) {
+    affected_rows
+    }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(manution);
+    GetMapFromHasura.getMap(data as Map)["insert_report_comment"] as Map;
     return;
   }
 
@@ -198,7 +207,6 @@ mutation MyMutation {
     }
     }
     """;
-    print(manution);
     final data = await _hasuraConnect.mutation(manution);
     final comment = GetMapFromHasura.getMap(data as Map)["update_comments_by_pk"] as Map<String, dynamic>;
     return Comment.fromJson(comment);
