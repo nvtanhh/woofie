@@ -53,7 +53,10 @@
     "delete_post": "Delete post",
     "report_post": "Report this post",
     "need_choose_at_least_one_pet": "Need to choose at least one pet",
-    "require_access_location": "Location access is required to use the function"
+    "require_access_location": "Location access is required to use the function",
+    "edit_comment": "Edit comment",
+    "delete_comment": "Delete comment",
+    "report_comment": "Report this comment"
   },
   "explore": {
     "search": "Search",

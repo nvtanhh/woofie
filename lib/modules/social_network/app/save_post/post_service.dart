@@ -100,7 +100,7 @@ class PostService extends BaseViewModel {
   }
 
   void onCommentClick(Post post) {
-    _bottomSheetService.showComments(post);
+    _bottomSheetService.showComments(post, Get.context!);
   }
 
   void onDeletePost(Post post, int index) {

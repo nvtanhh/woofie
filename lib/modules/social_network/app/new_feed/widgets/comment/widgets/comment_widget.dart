@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/comment_actions_popup.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -17,11 +18,17 @@ class CommentWidget extends StatelessWidget {
   final Comment comment;
   final Function(int) onLikeCommentClick;
   final RxBool isLiked = RxBool(false);
+  final Function? onDelete;
+  final Function? onEdit;
+  final Function? onReport;
 
   CommentWidget({
     Key? key,
     required this.comment,
     required this.onLikeCommentClick,
+    this.onDelete,
+    this.onEdit,
+    this.onReport,
   }) : super(key: key) {
     isLiked.value = comment.isLiked ?? false;
   }
@@ -46,24 +53,37 @@ class CommentWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                comment.creator?.name ?? "",
-                style: UITextStyle.text_header_14_w600,
+              InkWell(
+                onTap: () => Get.to(
+                  () => UserProfile(
+                    user: comment.creator,
+                  ),
+                ),
+                child: Text(
+                  comment.creator?.name ?? "",
+                  style: UITextStyle.text_header_14_w600,
+                ),
               ),
               SizedBox(
                 height: 5.h,
               ),
-              Container(
-                width: Get.width * 0.7.w,
-                padding: EdgeInsets.all(10.w),
-                decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
-                child: Text.rich(
-                  TextSpan(
-                    text: "",
-                    children: createTagUser(),
-                    style: UITextStyle.text_body_14_w400,
+              CommentActionsTrailing(
+                comment: comment,
+                onDeleteComment: () => onDelete?.call(),
+                onEditComment: () => onEdit?.call(),
+                onReportComment: () => onReport?.call(),
+                widget: Container(
+                  width: Get.width * 0.7.w,
+                  padding: EdgeInsets.all(10.w),
+                  decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
+                  child: Text.rich(
+                    TextSpan(
+                      text: "",
+                      children: createTagUser(),
+                      style: UITextStyle.text_body_14_w400,
+                    ),
+                    overflow: TextOverflow.fade,
                   ),
-                  overflow: TextOverflow.fade,
                 ),
               ),
               SizedBox(
@@ -102,32 +122,62 @@ class CommentWidget extends StatelessWidget {
     onLikeCommentClick(comment.id);
   }
 
-  bool isLastList(int index, int length) {
-    return index == length;
-  }
-
   List<InlineSpan> createTagUser() {
     final List<InlineSpan> inLineSpan = [];
-    for (var i = 0; i < (comment.commentTagUser?.length ?? 0); i++) {
-      inLineSpan.insert(
-        0,
+    const perfix = "@";
+    String pattern = "";
+    // ignore: unnecessary_raw_strings
+    if (comment.commentTagUser != null && comment.commentTagUser!.isNotEmpty) {
+      // ignore: prefer_interpolation_to_compose_strings, unnecessary_raw_strings
+      pattern = r'(?<=' + perfix + ')(' + comment.commentTagUser!.map((e) => e.name!).join('|') + r')';
+      RegExp _regex = RegExp(pattern);
+      comment.content?.splitMapJoin(
+        _regex,
+        onMatch: (s) {
+          pattern = comment.content!.trim().substring(s.start, s.end);
+          inLineSpan.add(
+            TextSpan(
+              text: pattern,
+              style: UITextStyle.text_header_16_w600,
+              recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(getUser(pattern)),
+            ),
+          );
+          return pattern;
+        },
+        onNonMatch: (s) {
+          inLineSpan.add(
+            TextSpan(
+              text: s,
+              style: UITextStyle.text_body_14_w400,
+            ),
+          );
+          return s;
+        },
+      );
+    } else {
+      inLineSpan.add(
         TextSpan(
-          text: "${comment.commentTagUser?[i].user?.name ?? ""}${isLastList(i, (comment.commentTagUser?.length ?? 0) - 1) ? " " : ", "}",
-          style: UITextStyle.text_header_16_w600,
-          recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(comment.commentTagUser![i].user!),
+          text: comment.content,
+          style: UITextStyle.text_body_14_w400,
         ),
       );
     }
-    inLineSpan.add(
-      TextSpan(
-        text: comment.content,
-        style: UITextStyle.text_body_14_w400,
-      ),
-    );
+
     return inLineSpan;
   }
 
-  void openProfileUser(User user) {
+  User? getUser(String useName) {
+    try {
+      return comment.commentTagUser?.singleWhere(
+        (element) => element.name == useName,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void openProfileUser(User? user) {
+    if (user == null) return;
     Get.to(
       () => UserProfile(
         user: user,

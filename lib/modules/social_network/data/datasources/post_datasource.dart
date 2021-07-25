@@ -1,17 +1,21 @@
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
+import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class PostDatasource {
   final HasuraConnect _hasuraConnect;
+  final UserStorage _userStorage;
+  User? user;
 
-  PostDatasource(this._hasuraConnect);
+  PostDatasource(this._hasuraConnect, this._userStorage);
 
   Future<List<Post>> getPosts({int limit = 10, int offset = 0, DateTime? lastValue}) async {
     await Future.delayed(const Duration(seconds: 1));
@@ -19,6 +23,7 @@ class PostDatasource {
   }
 
   Future<List<Comment>> getCommentsInPost(int postId, int limit, int offset) async {
+    user = _userStorage.get();
     final query = """
     query MyQuery {
       comments(where: {post_id: {_eq: $postId}}, order_by: {created_at: desc}, offset: $offset, limit: $limit) {
@@ -38,6 +43,7 @@ class PostDatasource {
         id
         is_liked
         created_at
+        post_id
         user {
           avatar_url
           id
@@ -49,7 +55,12 @@ class PostDatasource {
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["comments"] as List;
-    return listPost.map((e) => Comment.fromJson(e as Map<String, dynamic>)).toList();
+    Comment comment;
+    return listPost.map((e) {
+      comment = Comment.fromJson(e as Map<String, dynamic>);
+      comment.isMyComment = comment.creator!.uuid == user!.uuid;
+      return comment;
+    }).toList();
   }
 
   Future<bool> likePost(int idPost) async {
@@ -77,7 +88,6 @@ class PostDatasource {
         id
         uuid
         is_liked
-        is_my_post
         reactions_counts
         medias {
           id

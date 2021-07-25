@@ -15,7 +15,7 @@ class PostItem extends StatefulWidget {
   final VoidCallback onEditPost;
   final VoidCallback onDeletePost;
 
-  PostItem({
+  const PostItem({
     Key? key,
     required this.post,
     required this.onLikeClick,

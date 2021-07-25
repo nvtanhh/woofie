@@ -1,4 +1,5 @@
 import 'package:better_player/better_player.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,6 +40,15 @@ class ImagesViewWidget extends StatelessWidget {
                       imageUrl: medias[index].url ?? "",
                       radius: 20.r,
                       fit: BoxFit.cover,
+                      initGestureConfigHandler: (state) {
+                        return GestureConfig(
+                          minScale: 0.9,
+                          animationMinScale: 0.7,
+                          maxScale: 3.0,
+                          animationMaxScale: 3.5,
+                        );
+                      },
+                      mode: ExtendedImageMode.gesture,
                     );
                   } else if (medias[index].type == MediaType.video) {
                     return BetterPlayer.network(
