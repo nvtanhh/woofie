@@ -9,11 +9,9 @@ class ChatRoomPageModel extends BaseViewModel {
   late ChatRoom room;
   late List<Message> messages;
   ScrollController scrollController = ScrollController();
-  final TextEditingController messageSenderTextController =
-      TextEditingController();
+  final TextEditingController messageSenderTextController = TextEditingController();
 
   bool checkIsDisplayAvatar(int index) {
-    return index == messages.length - 1 ||
-        messages[index].senderId != messages[index + 1].senderId;
+    return index == messages.length - 1 || messages[index].senderId != messages[index + 1].senderId;
   }
 }

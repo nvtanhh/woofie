@@ -17,8 +17,7 @@ class ChatRoomPage extends StatefulWidget {
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomPageState
-    extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
+class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
   @override
   ChatRoomPageModel createViewModel() => injector<ChatRoomPageModel>();
 
@@ -53,8 +52,7 @@ class _ChatRoomPageState
         reverse: true,
         itemBuilder: (context, index) {
           final reverseIndex = viewModel.messages.length - 1 - index;
-          final bool isDisplayAvatar =
-              viewModel.checkIsDisplayAvatar(reverseIndex);
+          final bool isDisplayAvatar = viewModel.checkIsDisplayAvatar(reverseIndex);
           return MessageWidget(
             viewModel.messages[reverseIndex],
             chatPartner: viewModel.room.privateChatPartner,

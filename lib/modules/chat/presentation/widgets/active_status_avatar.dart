@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
-import 'package:meowoof/theme/ui_color.dart';
 
 class ActiveStatusAvatar extends StatelessWidget {
   final String avatarUrl;
