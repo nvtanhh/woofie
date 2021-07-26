@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
@@ -59,10 +60,16 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
                   pagingController: viewModel.pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Post>(
                     itemBuilder: (context, item, index) {
+                      item.distanceUserToPost = Geolocator.distanceBetween(
+                        viewModel.location!.lat!,
+                        viewModel.location!.long!,
+                        item.location!.lat!,
+                        item.location!.long!,
+                      ).toPrecision(1);
                       return PetItemWidget(
+                        post: item,
                         pet: item.taggegPets![0],
                         onClick: () => viewModel.onItemClick(item),
-                        distance: (item.distanceUserToPost ?? 0).toPrecision(1),
                         postType: item.type,
                       );
                     },

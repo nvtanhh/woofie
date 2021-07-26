@@ -49,28 +49,34 @@ class PreviewFollowPet extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ImageWithPlaceHolderWidget(
-              imageUrl: pet.avatarUrl ?? "",
-              width: 60.w,
-              height: 60.w,
-              radius: 10.r,
+            Obx(
+              () => ImageWithPlaceHolderWidget(
+                imageUrl: pet.updateSubjectValue.avatarUrl ?? "",
+                width: 60.w,
+                height: 60.w,
+                radius: 10.r,
+              ),
             ),
             SizedBox(
               height: 5.h,
             ),
-            Text(
-              pet.name ?? "",
-              style: UITextStyle.text_header_18_w600,
+            Obx(
+              () => Text(
+                pet.updateSubjectValue.name ?? "",
+                style: UITextStyle.text_header_18_w600,
+              ),
             ),
             SizedBox(
               height: 5.h,
             ),
             Expanded(
-              child: Text(
-                pet.bio ?? "",
-                style: UITextStyle.text_body_12_w600,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              child: Obx(
+                () => Text(
+                  pet.updateSubjectValue.bio ?? "",
+                  style: UITextStyle.text_body_12_w600,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
             SizedBox(

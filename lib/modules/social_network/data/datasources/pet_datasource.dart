@@ -2,13 +2,14 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class PetDatasource {
@@ -17,7 +18,7 @@ class PetDatasource {
 
   PetDatasource(
     this._hasuraConnect,
-    @Named("current_user_storage") this._userStorage,
+    this._userStorage,
   );
 
   Future<List<PetType>> getPetTypes() async {
@@ -57,8 +58,9 @@ class PetDatasource {
     }
     final mutationInsertPet = """
     mutation MyMutation {
-    insert_pets_one(object: {bio: "${pet.bio ?? ""}", dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar: {data: {url: "${pet.avatarUrl ?? ""}"}},current_owner_uuid:"$userUUID",avatar_url:"${pet.avatarUrl ?? ""}"}) {
+    insert_pets_one(object: {bio: "${pet.bio ?? ""}",uuid:"${pet.uuid}" ,dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar: {data: {url: "${pet.avatarUrl ?? ""}"}},current_owner_uuid:"$userUUID",avatar_url:"${pet.avatarUrl ?? ""}"}) {
     id
+    uuid
     name
     dob
     bio
@@ -163,12 +165,14 @@ mutation MyMutation {
     query MyQuery {
   pets(limit: 1, where: {id: {_eq: $idPet}}) {
     avatar_url
+    uuid
     bio
     dob
     gender
     id
     name
     is_following
+    pet_type_id
     pet_vaccinateds(limit: 2, order_by: {created_at: desc, date: desc}) {
       description
       id
@@ -197,31 +201,20 @@ mutation MyMutation {
   }
 
   Future<List<Pet>> searchPet(String keyWord, int offset, int limit) async {
-    await Future.delayed(const Duration(seconds: 1));
-    if (keyWord.isEmpty) {
-      return const <Pet>[];
-    } else {
-      return <Pet>[
-        Pet(
-          id: 0,
-          name: "Vàng",
-          avatar: Media(
-            id: 0,
-            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-            type: MediaType.image,
-          ),
-        ),
-        Pet(
-          id: 1,
-          name: "Đỏ",
-          avatar: Media(
-            id: 0,
-            url: "http://thucanhviet.com/wp-content/uploads/2018/03/Pom-2-thang-mat-cuc-xinh-696x528.jpg",
-            type: MediaType.image,
-          ),
-        ),
-      ];
-    }
+    final query = """
+query MyQuery {
+  pets(where: {name: {_ilike: "$keyWord%"}}) {
+    id
+    avatar_url
+    name
+    bio
+    is_following
+  }
+}
+    """;
+    final data = await _hasuraConnect.query(query);
+    final list = GetMapFromHasura.getMap(data as Map)["pets"] as List;
+    return list.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<List<Pet>> getPetsOfUser(String userUUID) async {
@@ -238,5 +231,48 @@ query MyQuery {
     final data = await _hasuraConnect.query(query);
     final list = GetMapFromHasura.getMap(data as Map)["pets"] as List;
     return list.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  Future<Map<String, dynamic>> updatePetInformation(
+      int petId, String? name, String? bio, int? breedId, String? avatarUrl, String? uuid, DateTime? dob, Gender? gender) async {
+    final nName = name == null ? "" : 'name: "$name",';
+    final nBio = bio == null ? "" : 'bio: "$bio",';
+    final nDob = dob == null ? "" : 'dob: "${dob.toString()}"';
+    final nPetBreedId = breedId == null ? "" : 'pet_breed_id: "$breedId",';
+    final nGender = gender == null ? "" : 'gender: "${gender.index}",';
+    final nUuid = uuid == null ? "" : 'uuid: "$uuid",';
+    final nAvatarUrl = avatarUrl == null ? "" : 'avatar_url: "$avatarUrl"';
+    final manution = """
+mutation MyMutation {
+  update_pets_by_pk(pk_columns: {id: $petId}, _set: {$nName $nBio $nDob $nPetBreedId $nGender $nUuid $nAvatarUrl}) {
+    avatar_url
+    bio
+    dob
+    gender
+    name
+    uuid
+    pet_breed_id
+  }
+}
+
+""";
+    final data = await _hasuraConnect.mutation(manution);
+    return GetMapFromHasura.getMap(data as Map)["update_pets_by_pk"] as Map<String, dynamic>;
+  }
+
+  Future<List<User>> getAllUserInPost(int postId, int limit, int offset) async {
+    final query = """
+    query getPostDetail {
+  get_all_user_in_post(post_id: $postId) {
+    avatar_url
+    id
+    name
+    uuid
+  }
+  }
+""";
+    final data = await _hasuraConnect.query(query);
+    final petWormFlushes = GetMapFromHasura.getMap(data as Map)["get_all_user_in_post"] as List;
+    return petWormFlushes.map((e) => User.fromJson(e as Map<String, dynamic>)).toList();
   }
 }

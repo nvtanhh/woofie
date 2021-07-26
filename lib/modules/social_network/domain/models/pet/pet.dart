@@ -15,11 +15,11 @@ import '../updatable_model.dart';
 part 'pet.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Pet extends UpdatableModel {
-  @override
+class Pet extends UpdatableModel<Pet> {
   @JsonKey(name: "id")
-  // ignore: overridden_fields
   int id;
+  @JsonKey(name: "uuid")
+  String? uuid;
   @JsonKey(name: "name")
   String? name;
   @JsonKey(name: "bio")
@@ -72,7 +72,8 @@ class Pet extends UpdatableModel {
       this.petVaccinates,
       this.petWormFlushes,
       this.petWeights,
-      this.avatarUrl});
+      this.avatarUrl})
+      : super(id);
 
   factory Pet.fromJson(Map<String, dynamic> json) => _$PetFromJson(json);
 
@@ -81,6 +82,15 @@ class Pet extends UpdatableModel {
   Map<String, dynamic> toJson() => _$PetToJson(this);
 
   String toJsonString() => json.encode(toJson());
+  void followPet() {
+    isFollowing = true;
+    notifyUpdate();
+  }
+
+  void unFollowPet() {
+    isFollowing = false;
+    notifyUpdate();
+  }
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Pet && runtimeType == other.runtimeType && id == other.id;
@@ -98,6 +108,9 @@ class Pet extends UpdatableModel {
   void updateFromJson(Map json) {
     if (json['name'] != null) {
       name = json['name'] as String;
+    }
+    if (json['uuid'] != null) {
+      uuid = json['uuid'] as String;
     }
     if (json['pet_type_id'] != null) petTypeId = json['pet_type_id'] as int;
     if (json['gender'] != null) {

@@ -8,6 +8,6 @@ class GetPresignedUrlUsecase {
   GetPresignedUrlUsecase(this._savePostRepository);
 
   Future<String?> call(String fileName, String postUuid) async {
-    return _savePostRepository.getPresignedUrl(fileName, postUuid);
+    return _savePostRepository.getPresignedPostMediaUrl(fileName, postUuid);
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/commons/shimmer_page.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile_model.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/info_user_widget.dart';
@@ -34,37 +35,46 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
       child: Scaffold(
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
+          height: Get.height,
+          width: Get.width,
           child: Obx(
             () {
               if (viewModel.isLoaded) {
-                return PagedListView<int, Post>(
-                  pagingController: viewModel.pagingController,
-                  builderDelegate: PagedChildBuilderDelegate(
-                    itemBuilder: (context, post, index) {
-                      if (index == 0) {
-                        return InfoUserWidget(
-                          user: viewModel.user!,
-                          onFollowPet: viewModel.onFollowPet,
-                          isMe: viewModel.isMe,
-                          onUserBlock: viewModel.onUserBlock,
-                          onUserReport: viewModel.onUserReport,
-                        );
-                      }
-                      return PostItem(
-                        post: post,
-                        onLikeClick: viewModel.onLikeClick,
-                        onEditPost: () => viewModel.onPostEdited(post),
-                        onDeletePost: () => viewModel.onPostDeleted(post, index),
-                        onCommentClick: viewModel.onCommentClick,
-                        onPostClick: viewModel.onPostClick,
-                      );
-                    },
-                  ),
+                return Column(
+                  children: [
+                    Obx(
+                      () => Column(children: viewModel.postService.prependedWidgets.value),
+                    ),
+                    Expanded(
+                      child: PagedListView<int, Post>(
+                        pagingController: viewModel.postService.pagingController,
+                        builderDelegate: PagedChildBuilderDelegate(
+                          itemBuilder: (context, post, index) {
+                            if (index == 0) {
+                              return InfoUserWidget(
+                                user: viewModel.user!,
+                                onFollowPet: viewModel.onFollowPet,
+                                isMe: viewModel.isMe,
+                                onUserBlock: viewModel.onUserBlock,
+                                onUserReport: viewModel.onUserReport,
+                              );
+                            }
+                            return PostItem(
+                              post: post,
+                              onLikeClick: viewModel.postService.onLikeClick,
+                              onEditPost: () => viewModel.postService.onWantsToEditPost(post),
+                              onDeletePost: () => viewModel.onPostDeleted(post, index),
+                              onCommentClick: viewModel.postService.onCommentClick,
+                              onPostClick: viewModel.postService.onPostClick,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const ShimmerPage();
               }
             },
           ),

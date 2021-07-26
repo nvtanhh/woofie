@@ -10,24 +10,22 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed_model.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:timelines/timelines.dart';
 
 class WormFlushedWidget extends StatefulWidget {
-  final int petId;
+  final Pet pet;
   final bool isMyPet;
   final bool? addData;
-  final Function(PetWormFlushed)? onAddWormFlushed;
 
   const WormFlushedWidget({
     Key? key,
-    required this.petId,
+    required this.pet,
     required this.isMyPet,
     this.addData,
-    this.onAddWormFlushed,
   }) : super(key: key);
 
   @override
@@ -37,9 +35,8 @@ class WormFlushedWidget extends StatefulWidget {
 class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlushedWidgetModel> {
   @override
   void loadArguments() {
-    viewModel.petId = widget.petId;
+    viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
-    viewModel.onAddWormFlushed = widget.onAddWormFlushed;
     if (widget.addData == true) {
       SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }

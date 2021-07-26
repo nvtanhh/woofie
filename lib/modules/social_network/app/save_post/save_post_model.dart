@@ -1,13 +1,16 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
+import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
@@ -25,7 +28,7 @@ class SavePostModel extends BaseViewModel {
   late TextEditingController contentController;
   User? _user;
   late final Rx<PostType> _postType = PostType.activity.obs;
-  final RxList<MediaFile> _files = <MediaFile>[].obs;
+  final RxList<MediaFile> _newAddedFiles = <MediaFile>[].obs;
   final RxList<Media> _postMedia = <Media>[].obs;
   final RxBool _isDisable = true.obs;
   final RxList<Pet> _taggedPets = <Pet>[].obs;
@@ -33,11 +36,12 @@ class SavePostModel extends BaseViewModel {
   RxString currentAddress = ''.obs;
   Placemark? currentPlacemark;
   RxBool isLoadingAddress = false.obs;
-  Position? currentPosition;
 
   late bool isPostEditing;
 
   final List<Media> _deletedMedia = [];
+
+  final Rxn<Location> _currentLocation = Rxn<Location>();
 
   SavePostModel(
     this._getPetsOfUserUsecase,
@@ -48,14 +52,19 @@ class SavePostModel extends BaseViewModel {
     super.initState();
     _user = injector<LoggedInUser>().user;
     _postType.value = post?.type ?? PostType.activity;
-    _files.stream.listen(onFilesChanged);
     _taggedPets.addAll(post?.taggegPets ?? []);
     _postMedia.addAll(post?.medias ?? []);
     contentController = TextEditingController();
-    contentController.addListener(onTextChanged);
     contentController.text = post?.content ?? "";
+    _currentLocation.value = post?.location;
+
+    _newAddedFiles.stream.listen(onNewAddedFilesChanged);
+    _postMedia.stream.listen(onPostMediaChanged);
+    contentController.addListener(onTextChanged);
     getPetsOfUser();
   }
+
+  Location? get currentLocation => _currentLocation.value;
 
   @override
   void disposeState() {
@@ -86,27 +95,34 @@ class SavePostModel extends BaseViewModel {
       if (isResetDisable) _isDisable.value = false;
       return;
     }
-    currentPosition = null;
+    _currentLocation.value = null;
     return;
   }
 
   Future onMediasPicked(List<MediaFile> pickedFiles) async {
-    _files.addAll(pickedFiles);
+    _newAddedFiles.addAll(pickedFiles);
   }
 
   Future onRemoveMedia(MediaFile file) async {
-    _files.remove(file);
+    _newAddedFiles.remove(file);
   }
 
   void onTextChanged() {
-    if (contentController.text.isNotEmpty || _files.isNotEmpty) {
-      _isDisable.value = false;
+    if (isPostEditing) {
+      _checkIsPostEdited();
     } else {
-      _isDisable.value = true;
+      if (contentController.text.isNotEmpty || _newAddedFiles.isNotEmpty) {
+        _isDisable.value = false;
+      } else {
+        _isDisable.value = true;
+      }
     }
   }
 
-  void onFilesChanged(List<MediaFile>? event) {
+  void onNewAddedFilesChanged(List<MediaFile>? event) {
+    if (isPostEditing) {
+      _checkIsPostEdited();
+    } else {}
     if ((event != null && event.isNotEmpty) || contentController.text.isNotEmpty) {
       _isDisable.value = false;
     } else {
@@ -115,13 +131,14 @@ class SavePostModel extends BaseViewModel {
   }
 
   void onImageEdited(MediaFile oldFile, MediaFile editedFile) {
-    final index = _files.indexOf(oldFile);
-    _files.removeAt(index);
-    _files.insert(index, editedFile);
+    final index = _newAddedFiles.indexOf(oldFile);
+    _newAddedFiles.removeAt(index);
+    _newAddedFiles.insert(index, editedFile);
   }
 
   List<Pet> get taggedPets => _taggedPets.toList();
-  List<MediaFile> get mediaFiles => _files.toList();
+
+  List<MediaFile> get newAddedFiles => _newAddedFiles.toList();
 
   set taggedPets(List<Pet> value) {
     _taggedPets.assignAll(value);
@@ -129,16 +146,12 @@ class SavePostModel extends BaseViewModel {
 
   bool get isDisable => _isDisable.value;
 
-  set isDisable(bool value) {
-    _isDisable.value = value;
-  }
-
-  List<MediaFile> get addedMediaFiles => _files;
+  List<MediaFile> get addedMediaFiles => _newAddedFiles;
 
   List<Media> get postMedias => _postMedia;
 
   set addedMediaFiles(List<MediaFile> value) {
-    _files.assignAll(value);
+    _newAddedFiles.assignAll(value);
   }
 
   PostType get postType => _postType.value;
@@ -167,6 +180,9 @@ class SavePostModel extends BaseViewModel {
     } else {
       _taggedPets.add(pet);
     }
+    if (isPostEditing) {
+      _checkIsPostEdited();
+    }
   }
 
   Future _getCurrentAddress() async {
@@ -186,7 +202,12 @@ class SavePostModel extends BaseViewModel {
     } finally {
       isLoadingAddress.value = false;
     }
-    currentPosition = await locationService.determinePosition();
+    final currentPosition = await locationService.determinePosition();
+    _currentLocation.value = Location(
+      long: currentPosition.longitude,
+      lat: currentPosition.latitude,
+      name: currentAddress.value,
+    );
   }
 
   Future _showDialogAlert() async {
@@ -201,44 +222,80 @@ class SavePostModel extends BaseViewModel {
     }
   }
 
+  Location? getCurrentLocationForUpdate() {
+    if (post?.location == currentLocation) return null;
+    return currentLocation;
+  }
+
   void _onSavePost() {
+    final newTaggedPets = taggedPets.where((element) => !(post?.taggegPets ?? []).contains(element)).toList();
+
+    final deletedTaggedPet = (post?.taggegPets ?? []).where((element) => !taggedPets.contains(element)).toList();
+
     final EditedPostData editedPostData = EditedPostData(
-      oldPost: post!,
-      content: contentController.text,
-      taggegPets: taggedPets,
-      newAddedFiles: mediaFiles,
+      originPost: post!,
+      newContent: contentController.text,
+      newTaggedPets: newTaggedPets,
+      deletedTaggedPets: deletedTaggedPet,
+      newAddedFiles: newAddedFiles,
       deletedMedias: _deletedMedia,
-      location: currentPosition == null
-          ? null
-          : Location(
-              long: currentPosition!.longitude,
-              lat: currentPosition!.latitude,
-              name: currentAddress.value,
-            ),
+      location: getCurrentLocationForUpdate(),
     );
     Get.back(result: editedPostData);
   }
 
   void _onCreateNewPost() {
+    if (!_validateDataBeforeCreatePost()) return;
     final NewPostData newPostData = NewPostData(
-      content: contentController.text,
+      content: contentController.text.trim().replaceAll("\n", "\\n"),
       type: postType,
       taggegPets: taggedPets,
-      mediaFiles: mediaFiles,
-      location: currentPosition == null
-          ? null
-          : Location(
-              long: currentPosition!.longitude,
-              lat: currentPosition!.latitude,
-              name: currentAddress.value,
-            ),
+      mediaFiles: newAddedFiles,
+      location: currentLocation,
     );
 
     Get.back(result: newPostData);
   }
 
+  bool _validateDataBeforeCreatePost() {
+    ToastService toastService = injector<ToastService>();
+    if (postType.index >= 1) {
+      if (taggedPets.isEmpty) {
+        toastService.warning(
+          message: LocaleKeys.new_feed_need_choose_at_least_one_pet.trans(),
+          context: Get.context!,
+        );
+        return false;
+      }
+      if (postType.index == 4 || currentLocation == null) {
+        toastService.warning(
+          message: LocaleKeys.new_feed_require_access_location.trans(),
+          context: Get.context!,
+        );
+        return false;
+      }
+    }
+    return true;
+  }
+
   void onRemovePostMedia(Media media) {
     _postMedia.remove(media);
     _deletedMedia.add(media);
+  }
+
+  void _checkIsPostEdited() {
+    final Function eq = const ListEquality().equals;
+    final bool isContentChanged = contentController.text != (post?.content ?? '');
+    final bool isTaggedPetsChanged = !(eq(taggedPets, post?.taggegPets ?? []) as bool);
+    final bool isLocationChanged = _currentLocation != post?.location;
+    final isMediaChanged = _newAddedFiles.isNotEmpty || (postMedias.length != (post?.medias?.length ?? 0));
+
+    _isDisable.value = !(isContentChanged || isTaggedPetsChanged || isLocationChanged || isMediaChanged);
+  }
+
+  void onPostMediaChanged(List<Media>? event) {
+    if (isPostEditing) {
+      _checkIsPostEdited();
+    }
   }
 }

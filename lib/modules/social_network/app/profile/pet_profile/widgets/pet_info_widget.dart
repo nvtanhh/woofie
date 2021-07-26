@@ -6,6 +6,7 @@ import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/profile/edit_pet_profile/edit_pet_profile.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/other_info_menu_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -37,24 +38,30 @@ class PetInfoWidget extends StatelessWidget {
         SizedBox(
           height: 5.h,
         ),
-        MWAvatar(
-          avatarUrl: pet.avatarUrl,
-          customSize: 80.w,
-          borderRadius: 15.r,
+        Obx(
+          () => MWAvatar(
+            avatarUrl: pet.updateSubjectValue.avatarUrl,
+            customSize: 80.w,
+            borderRadius: 15.r,
+          ),
         ),
         SizedBox(
           height: 10.h,
         ),
-        Text(
-          pet.name ?? "Unknown",
-          style: UITextStyle.text_header_24_w600,
+        Obx(
+          () => Text(
+            pet.updateSubjectValue.name ?? "Unknown",
+            style: UITextStyle.text_header_24_w600,
+          ),
         ),
         SizedBox(
           height: 10.h,
         ),
-        Text(
-          pet.bio ?? "Unknown",
-          style: UITextStyle.text_body_14_w500,
+        Obx(
+          () => Text(
+            pet.updateSubjectValue.bio ?? "Unknown",
+            style: UITextStyle.text_body_14_w500,
+          ),
         ),
         SizedBox(
           height: 20.h,
@@ -66,7 +73,7 @@ class PetInfoWidget extends StatelessWidget {
                 () => ButtonWidget(
                   onPress: () {
                     if (isMyPet) {
-                      // Get.to(page)
+                      Get.to(() => EditPetProfileWidget(pet: pet));
                     } else {
                       isFollowing.value = !isFollowing.value;
                       followPet?.call(pet);

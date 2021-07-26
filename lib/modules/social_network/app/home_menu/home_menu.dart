@@ -27,10 +27,13 @@ class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetM
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: TabBarView(
-          controller: viewModel.tabController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: viewModel.listScreen,
+        body: WillPopScope(
+          onWillPop: viewModel.onWillPop,
+          child: TabBarView(
+            controller: viewModel.tabController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: viewModel.listScreen,
+          ),
         ),
         resizeToAvoidBottomInset: true,
         bottomNavigationBar: Obx(

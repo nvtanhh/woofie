@@ -51,7 +51,12 @@
     "no_comments_yet": "No comments yet",
     "edit_post": "Edit post",
     "delete_post": "Delete post",
-    "report_post": "Report this post"
+    "report_post": "Report this post",
+    "need_choose_at_least_one_pet": "Need to choose at least one pet",
+    "require_access_location": "Location access is required to use the function",
+    "edit_comment": "Edit comment",
+    "delete_comment": "Delete comment",
+    "report_comment": "Report this comment"
   },
   "explore": {
     "search": "Search",
@@ -99,7 +104,15 @@
     "vaccinate_name_invalid": "Vaccinate name invalid",
     "weight_invalid": "Weight invalid",
     "description": "Description",
-    "vaccine_name": "Vaccine name"
+    "vaccine_name": "Vaccine name",
+    "user_information": "User Information",
+    "pet_information": "Pet Information",
+    "save": "Save",
+    "email": "Email",
+    "introduce": "Introduce",
+    "birthday": "Birthday",
+    "bread": "Bread",
+    "address": "Address"
   },
   "year": "year",
   "month": "month",
@@ -128,6 +141,7 @@
     "like_comment": " liked your comment"
   },
   "system": {
-    "comming_soon": "This feature will be coming soon"
+    "comming_soon": "This feature will be coming soon",
+    "press_to_exit": "Press again to exit"
   }
 }

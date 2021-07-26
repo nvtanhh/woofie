@@ -1,15 +1,15 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:injectable/injectable.dart';
 import 'package:get/get.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/ui/button.dart';
 import 'package:meowoof/modules/social_network/app/commons/video_dialog.dart';
 import 'package:meowoof/modules/social_network/app/commons/zoom_photo.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/report_dialog_widget.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
+import 'package:wakelock/wakelock.dart';
 
 @lazySingleton
 class DialogService {
@@ -94,5 +94,9 @@ class DialogService {
         ),
       ),
     );
+  }
+
+  Future showInputReport() async {
+    return Get.dialog(ReportDialogWidget(), barrierDismissible: true);
   }
 }

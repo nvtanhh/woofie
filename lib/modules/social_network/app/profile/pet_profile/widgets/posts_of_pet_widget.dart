@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_detail_widget.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_item_shimmer.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post_item.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_posts_of_pet_usecase.dart';
 
@@ -20,7 +20,9 @@ class PostsOfPetWidget extends StatelessWidget {
   PostsOfPetWidget({
     Key? key,
     required this.idPet,
-  }) : super(key: key);
+  }) : super(key: key) {
+    registerEvent();
+  }
 
   Future _loadMorePost(int pageKey) async {
     _post = [];
@@ -46,7 +48,6 @@ class PostsOfPetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    registerEvent();
     return PagedListView<int, Post>(
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate(

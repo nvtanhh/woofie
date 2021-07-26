@@ -7,6 +7,7 @@ import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/commons/shimmer_page.dart';
 import 'package:meowoof/modules/social_network/app/notification/notification_widget_model.dart';
 import 'package:meowoof/modules/social_network/domain/models/notification/notification.dart';
 import 'package:meowoof/modules/social_network/domain/models/notification/notification_type.dart';
@@ -54,33 +55,35 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                 onRefresh: () => viewModel.onRefresh(),
                 child: PagedListView<int, Notification>(
                   pagingController: viewModel.pagingController,
-                  builderDelegate: PagedChildBuilderDelegate(
-                    itemBuilder: (context, item, index) {
-                      return ListTile(
-                        leading: MWAvatar(
-                          avatarUrl: item.actor?.avatarUrl,
-                          customSize: 45.w,
-                          borderRadius: 10.r,
-                        ),
-                        onTap: () => viewModel.onItemTab(item),
-                        title: generateContentTitle(item),
-                        trailing: defineIcon(item),
-                        subtitle: Text(
-                          time_ago.format(item.createdAt!, locale: 'vi'),
-                          style: UITextStyle.second_12_medium,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.h),
-                      );
-                    },
-                    noItemsFoundIndicatorBuilder: (_) {
-                      return Center(
-                        child: Text(
-                          "No have notification",
-                          style: UITextStyle.text_body_14_w600,
-                        ),
-                      );
-                    },
-                  ),
+                  builderDelegate: PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
+                    return ListTile(
+                      leading: MWAvatar(
+                        avatarUrl: item.actor?.avatarUrl,
+                        customSize: 45.w,
+                        borderRadius: 10.r,
+                      ),
+                      onTap: () => viewModel.onItemTab(item),
+                      title: generateContentTitle(item),
+                      trailing: defineIcon(item),
+                      subtitle: Text(
+                        time_ago.format(item.createdAt!, locale: 'vi'),
+                        style: UITextStyle.second_12_medium,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+                    );
+                  }, noItemsFoundIndicatorBuilder: (_) {
+                    return Center(
+                      child: Text(
+                        "No have notification",
+                        style: UITextStyle.text_body_14_w600,
+                      ),
+                    );
+                  }, firstPageProgressIndicatorBuilder: (_) {
+                    return ShimmerPage(
+                      width: Get.width,
+                      height: 150.h,
+                    );
+                  }),
                 ),
               ),
             ),

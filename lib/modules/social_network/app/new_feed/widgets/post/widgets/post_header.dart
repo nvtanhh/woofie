@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_locatior.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -47,9 +48,22 @@ class PostHeader extends StatelessWidget {
             recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(user)),
         maxLines: 2,
       ),
-      subtitle: Text(
-        time_ago.format(post.createdAt!, locale: 'vi'),
-        style: UITextStyle.second_12_medium,
+      subtitle: Row(
+        children: [
+          Text(
+            time_ago.format(post.createdAt!, locale: 'vi'),
+            style: UITextStyle.second_12_medium,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: PostLocator(
+                location: post.location,
+                iconSize: 16,
+              ),
+            ),
+          ),
+        ],
       ),
       trailing: PostActionsTrailing(
         post: post,

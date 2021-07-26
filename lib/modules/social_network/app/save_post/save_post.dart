@@ -8,9 +8,8 @@ import 'package:meowoof/core/ui/button.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_locatior.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/media_button.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -267,24 +266,10 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
 
     return viewModel.isLoadingAddress.value
         ? _buildLoadingAddressWidget()
-        : viewModel.currentAddress.value.isNotEmpty
-            ? Row(children: [
-                const MWIcon(
-                  MWIcons.location,
-                  themeColor: MWIconThemeColor.primary,
-                  customSize: 20,
-                ),
-                const SizedBox(width: 5),
-                Expanded(
-                  child: Text(
-                    viewModel.currentAddress.value,
-                    style: UITextStyle.body_10_medium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ])
-            : const SizedBox();
+        : PostLocator(
+            location: viewModel.currentLocation,
+            maxLines: 2,
+          );
   }
 
   Widget _buildLoadingAddressWidget() {

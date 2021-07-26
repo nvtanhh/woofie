@@ -51,7 +51,12 @@
     "no_comments_yet": "Chưa có bình luận nào",
     "edit_post": "Chỉnh sửa bài viết",
     "delete_post": "Xoá bài viết",
-    "report_post": "Báo cáo bài viết này"
+    "report_post": "Báo cáo bài viết này",
+    "need_choose_at_least_one_pet": "Cần chọn ít nhất một thú cưng",
+    "require_access_location": "Cần có quyền truy cập vị trí để sử dụng chức năng",
+    "edit_comment": "Chỉnh sửa bình luận",
+    "delete_comment": "Xoá bình luận",
+    "report_comment": "Báo cáo bình luận này"
   },
   "explore": {
     "search": "Tìm kiếm",
@@ -99,7 +104,15 @@
     "vaccinate_name_invalid": "Tên tiêm ngừa không hợp lệ",
     "weight_invalid": "Cân nặng không hợp lệ",
     "description": "Mô tả",
-    "vaccine_name": "Tên vaccine"
+    "vaccine_name": "Tên vaccine",
+    "user_information": "Thông tin cá nhân",
+    "pet_information": "Thông tin thú cưng",
+    "save": "Lưu",
+    "email": "Email",
+    "introduce": "Giới thiệu",
+    "birthday": "Ngày sinh",
+    "bread": "Giống",
+    "address": "Địa chỉ"
   },
   "year": "năm",
   "month": "tháng",
@@ -128,6 +141,7 @@
     "like_comment": " đã thích bình luận của bạn"
   },
   "system": {
-    "comming_soon": "Tính năng này sẽ sớm ra mắt"
+    "comming_soon": "Tính năng này sẽ sớm ra mắt",
+    "press_to_exit": "Nhấn lần nữa để thoát"
   }
 }

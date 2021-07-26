@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -16,9 +17,13 @@ class MediaFile {
   }
 }
 
-class MediaFileUploader {
+class UploadedMedia {
   final String uploadedUrl;
   final int type;
 
-  MediaFileUploader(this.uploadedUrl, this.type);
+  UploadedMedia(this.uploadedUrl, this.type);
+
+  Map<String, dynamic> toJson() => <String, dynamic>{'url': uploadedUrl, 'type': type};
+
+  String toJsonString() => json.encode(toJson());
 }

@@ -48,10 +48,9 @@ class PetProfileModel extends BaseViewModel {
   void onPetBlock(Pet pet) {}
 
   void followPet(Pet pet) {
-    call(
-      () => _followPetUsecase.call(pet.id),
-      onSuccess: () {},
-    );
+    call(() => _followPetUsecase.call(pet.id), onSuccess: () {}, onFailure: (err) {
+      printError(info: err.toString());
+    });
   }
 
   void onPetReport(Pet pet) {}
@@ -69,7 +68,7 @@ class PetProfileModel extends BaseViewModel {
   void onAddVaccinatedClick() {
     Get.to(
       VaccinatedWidget(
-        petId: pet.id,
+        pet: pet,
         isMyPet: isMyPet!,
         addData: true,
       ),
@@ -89,7 +88,7 @@ class PetProfileModel extends BaseViewModel {
   void onAddWormFlushedClick() {
     Get.to(
       WormFlushedWidget(
-        petId: pet.id,
+        pet: pet,
         isMyPet: isMyPet!,
         addData: true,
       ),

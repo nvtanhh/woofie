@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/updatable_model.dart';
@@ -9,9 +10,8 @@ part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User extends UpdatableModel<User> {
-  @override
   @JsonKey(name: "id")
-  int id;
+  final int id;
   @JsonKey(name: "uuid")
   String? uuid;
   @JsonKey(name: "name")
@@ -32,8 +32,13 @@ class User extends UpdatableModel<User> {
   String? avatarUrl;
   @JsonKey(name: "dob")
   DateTime? dob;
+  @JsonKey(name: "location_id")
+  int? locationId;
+  @JsonKey(name: "location")
+  Location? location;
 
-  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob, this.avatarUrl});
+  User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob, this.avatarUrl})
+      : super(uuid);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
@@ -78,14 +83,25 @@ class User extends UpdatableModel<User> {
     if (json['avatar_url'] != null) {
       avatarUrl = json['avatar_url'] as String;
     }
+    if (json['location_id'] != null) {
+      locationId = json['location_id'] as int;
+    }
+    if (json['location'] != null) {
+      location = Location.fromJson(json['location'] as Map<String, dynamic>);
+    }
   }
 
-  static final factory = UserFactory();
+  static final factory = UserFactory(key: 'uuid');
 
   bool get isHavePets => currentPets != null && currentPets!.isNotEmpty;
+
+  static User? getUserFromCache({dynamic key}) {
+    return factory.getItemWithIdFromCache(key);
+  }
 }
 
 class UserFactory extends UpdatableModelFactory<User> {
+  UserFactory({String? key}) : super(key: key);
   @override
   User makeFromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }

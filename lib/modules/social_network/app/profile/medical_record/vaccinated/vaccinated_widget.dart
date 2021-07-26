@@ -10,24 +10,22 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccinated/vaccinated_widget_model.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:timelines/timelines.dart';
 
 class VaccinatedWidget extends StatefulWidget {
-  final int petId;
+  final Pet pet;
   final bool isMyPet;
   final bool? addData;
-  final Function(PetVaccinated)? onAddVaccinated;
 
   const VaccinatedWidget({
     Key? key,
-    required this.petId,
+    required this.pet,
     this.addData,
     required this.isMyPet,
-    this.onAddVaccinated,
   }) : super(key: key);
 
   @override
@@ -37,9 +35,8 @@ class VaccinatedWidget extends StatefulWidget {
 class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedWidgetModel> {
   @override
   void loadArguments() {
-    viewModel.petId = widget.petId;
+    viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
-    viewModel.onAddVaccinated = widget.onAddVaccinated;
     if (widget.addData == true) {
       SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }

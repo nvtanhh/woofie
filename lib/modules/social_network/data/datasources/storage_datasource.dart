@@ -12,11 +12,16 @@ import 'package:meowoof/modules/social_network/domain/models/post/media_file.dar
 class StorageDatasource {
   // ignore: constant_identifier_names
   static const String POST_MEDIA_SUBFOLDER = '{user_uuid}/{post_uuid}';
+
   // ignore: constant_identifier_names
-  static const String AVATAR_SUBFOLDER = '{user_uuid}';
+  static const String AVATAR_USER_SUBFOLDER = '{user_uuid}';
+  // ignore: constant_identifier_names
+  static const String AVATAR_PET_SUBFOLDER = '{user_uuid}/{pet_uuid}';
   // ignore: constant_identifier_names
   static const String POST_MEDIA_DEFAULT_BUCKET_NAME = 'medias';
 
+// ignore: constant_identifier_names
+  static const String AVATAR_DEFAULT_BUCKET_NAME = 'avatars';
   final UrlParser _urlParser;
 
   final HasuraConnect _hasuraConnect;
@@ -32,6 +37,14 @@ class StorageDatasource {
     this._loggedInUser,
   );
 
+  Future<String?> getPresignedUrlForAvatar(String objectName) async {
+    final userUuid = _loggedInUser.user!.uuid;
+
+    final String subFolder = _urlParser.parse(AVATAR_USER_SUBFOLDER, {'user_uuid': userUuid});
+
+    return _getPresignedUrl('$subFolder/$objectName', AVATAR_DEFAULT_BUCKET_NAME);
+  }
+
   Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {
     final userUuid = _loggedInUser.user!.uuid;
 
@@ -40,16 +53,24 @@ class StorageDatasource {
     return _getPresignedUrl('$subFolder/$objectName', POST_MEDIA_DEFAULT_BUCKET_NAME);
   }
 
+  Future<String?> getPresignedAvatarPetUrl(String fileName, String petUUID) {
+    final userUuid = _loggedInUser.user!.uuid;
+
+    final String subFolder = _urlParser.parse(AVATAR_PET_SUBFOLDER, {'user_uuid': userUuid, 'pet_uuid': petUUID});
+
+    return _getPresignedUrl('$subFolder/$fileName', AVATAR_DEFAULT_BUCKET_NAME);
+  }
+
   Future<String?> _getPresignedUrl(String objectName, String bucketName) async {
     final String query = """
     mutation MyMutation {
-      get_presigned_url(file_name: "$objectName", bucket_name: "$bucketName") {
+      getPresignedUrl(fileName: "$objectName", bucketName: "$bucketName") {
         url
       }
     }
     """;
     final data = await _hasuraConnect.mutation(query);
-    final result = GetMapFromHasura.getMap(data as Map)["get_presigned_url"] as Map;
+    final result = GetMapFromHasura.getMap(data as Map)["getPresignedUrl"] as Map;
     return result['url'] as String;
   }
 
@@ -61,7 +82,7 @@ class StorageDatasource {
     throw Exception('Put object to s3 failed');
   }
 
-  Future addMediaToPost(List<MediaFileUploader> medias, int postId) async {
+  Future addMediaToPost(List<UploadedMedia> medias, int postId) async {
     late String mediasData;
     if (medias.isNotEmpty) {
       mediasData = medias.map((e) => _mediaToJson(e, postId)).toList().toString();
@@ -87,7 +108,7 @@ class StorageDatasource {
     }
   }
 
-  String _mediaToJson(MediaFileUploader e, int id) {
+  String _mediaToJson(UploadedMedia e, int id) {
     return '{post_id: $id, url: "${e.uploadedUrl}", type: ${e.type}}';
   }
 }

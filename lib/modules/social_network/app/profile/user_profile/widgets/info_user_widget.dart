@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart ';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/profile/edit_user_profile/edit_user_profile.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/pets_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/user_menu_action_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -47,27 +49,30 @@ class InfoUserWidget extends StatelessWidget {
             ),
           ],
         ),
-        // SizedBox(
-        //   height: 5.h,
-        // ),
-        MWAvatar(
-          avatarUrl: user.avatarUrl,
-          customSize: 80.w,
-          borderRadius: 15.r,
+        Obx(
+          () => MWAvatar(
+            avatarUrl: user.updateSubjectValue.avatarUrl,
+            customSize: 80.w,
+            borderRadius: 15.r,
+          ),
         ),
         SizedBox(
           height: 10.h,
         ),
-        Text(
-          user.name ?? "Unknown",
-          style: UITextStyle.text_header_24_w600,
+        Obx(
+          () => Text(
+            user.updateSubjectValue.name ?? "Unknown",
+            style: UITextStyle.text_header_24_w600,
+          ),
         ),
         SizedBox(
           height: 10.h,
         ),
-        Text(
-          user.bio ?? "Unknown",
-          style: UITextStyle.text_body_14_w500,
+        Obx(
+          () => Text(
+            user.updateSubjectValue.bio ?? "Unknown",
+            style: UITextStyle.text_body_14_w500,
+          ),
         ),
         SizedBox(
           height: 20.h,
@@ -76,7 +81,7 @@ class InfoUserWidget extends StatelessWidget {
           children: [
             Expanded(
               child: ButtonWidget(
-                onPress: () => isMe ? null : null,
+                onPress: () => isMe ? goToEditUserProfile() : null,
                 height: 40.h,
                 title: isMe ? LocaleKeys.profile_edit_profile.trans() : LocaleKeys.profile_contact.trans(),
                 borderRadius: 10.r,
@@ -102,6 +107,14 @@ class InfoUserWidget extends StatelessWidget {
           height: 10.h,
         ),
       ],
+    );
+  }
+
+  void goToEditUserProfile() {
+    Get.to(
+      () => EditUserProfileWidget(
+        user: user,
+      ),
     );
   }
 }

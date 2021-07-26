@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/datasources/media_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/storage_datasource.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -22,7 +21,7 @@ class SavePostRepository {
     return _postDatasource.createDraftPost(data);
   }
 
-  Future<String?> getPresignedUrl(String objectName, String postUuid) async {
+  Future<String?> getPresignedPostMediaUrl(String objectName, String postUuid) async {
     return _storageDatasource.getPresignedUrlForPostMedia(objectName, postUuid);
   }
 
@@ -35,7 +34,7 @@ class SavePostRepository {
     }
   }
 
-  Future addMediaToPost(List<MediaFileUploader> medias, int id) {
+  Future addMediaToPost(List<UploadedMedia> medias, int id) {
     return _storageDatasource.addMediaToPost(medias, id);
   }
 
@@ -55,7 +54,15 @@ class SavePostRepository {
     return _mediaDatasource.deleteMedia(mediaIds);
   }
 
-  Future<Post> editPost(EditedPostData editedPostData) {
+  Future<bool> editPost(EditedPostData editedPostData) {
     return _postDatasource.editPost(editedPostData);
+  }
+
+  Future<String?> getPresignedAvatarUserUrl(String fileName) {
+    return _storageDatasource.getPresignedUrlForAvatar(fileName);
+  }
+
+  Future<String?> getPresignedAvatarPetUrl(String fileName, String petUUID) {
+    return _storageDatasource.getPresignedAvatarPetUrl(fileName, petUUID);
   }
 }

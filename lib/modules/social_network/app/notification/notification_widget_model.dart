@@ -25,13 +25,13 @@ class NotificationWidgetModel extends BaseViewModel {
     pagingController = PagingController(firstPageKey: nextPageKey);
     pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        cancelableOperation = CancelableOperation.fromFuture(_loadMoreNotification(pageKey));
       },
     );
     super.initState();
   }
 
-  Future _loadMorePost(int pageKey) async {
+  Future _loadMoreNotification(int pageKey) async {
     try {
       notifications = await _getNotificationUsecase.run(offset: nextPageKey);
       final isLastPage = notifications.length < pageSize;
@@ -43,7 +43,6 @@ class NotificationWidgetModel extends BaseViewModel {
         pagingController.appendPage(notifications, nextPageKey);
       }
     } catch (error) {
-      print(error.toString());
       pagingController.error = error;
     }
   }
@@ -57,27 +56,36 @@ class NotificationWidgetModel extends BaseViewModel {
   void onItemTab(Notification item) {
     switch (item.type) {
       case NotificationType.react:
+        return;
       case NotificationType.follow:
+        return;
       case NotificationType.comment:
-        goToPost(item.post!);
+        goToPost(item.postId!);
         return;
       case NotificationType.adoption:
       case NotificationType.matting:
-        goToPost(item.post!);
+        goToPost(item.postId!);
         return;
       case NotificationType.lose:
-        goToPost(item.post!);
+        goToPost(item.postId!);
         return;
       case NotificationType.commentTagUser:
-        goToPost(item.post!);
+        goToPost(item.postId!);
         return;
       case NotificationType.reactComment:
-        goToPost(item.post!);
+        goToPost(item.postId!);
         return;
     }
   }
 
-  void goToPost(Post post) {
-    Get.to(() => PostDetail(post: post));
+  void goToPost(int postId) {
+    Get.to(() => PostDetail(post: Post(id: postId, uuid: "", type: PostType.activity)));
+  }
+
+  @override
+  void disposeState() {
+    cancelableOperation?.cancel();
+    pagingController.dispose();
+    super.disposeState();
   }
 }

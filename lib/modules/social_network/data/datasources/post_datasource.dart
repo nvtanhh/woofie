@@ -1,17 +1,21 @@
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
+import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class PostDatasource {
   final HasuraConnect _hasuraConnect;
+  final UserStorage _userStorage;
+  User? user;
 
-  PostDatasource(this._hasuraConnect);
+  PostDatasource(this._hasuraConnect, this._userStorage);
 
   Future<List<Post>> getPosts({int limit = 10, int offset = 0, DateTime? lastValue}) async {
     await Future.delayed(const Duration(seconds: 1));
@@ -19,6 +23,7 @@ class PostDatasource {
   }
 
   Future<List<Comment>> getCommentsInPost(int postId, int limit, int offset) async {
+    user = _userStorage.get();
     final query = """
     query MyQuery {
       comments(where: {post_id: {_eq: $postId}}, order_by: {created_at: desc}, offset: $offset, limit: $limit) {
@@ -38,6 +43,7 @@ class PostDatasource {
         id
         is_liked
         created_at
+        post_id
         user {
           avatar_url
           id
@@ -49,13 +55,18 @@ class PostDatasource {
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["comments"] as List;
-    return listPost.map((e) => Comment.fromJson(e as Map<String, dynamic>)).toList();
+    Comment comment;
+    return listPost.map((e) {
+      comment = Comment.fromJson(e as Map<String, dynamic>);
+      comment.isMyComment = comment.creator!.uuid == user!.uuid;
+      return comment;
+    }).toList();
   }
 
   Future<bool> likePost(int idPost) async {
     final mutation = """
     mutation MyMutation {
-      likePost(post_id: "$idPost") {
+      likePost(post_id: $idPost) {
         id
       }
     }
@@ -77,7 +88,6 @@ class PostDatasource {
         id
         uuid
         is_liked
-        is_my_post
         reactions_counts
         medias {
           id
@@ -108,6 +118,12 @@ class PostDatasource {
           name
           avatar_url
           uuid
+        }
+        location {
+          id
+          lat
+          long
+          name
         }
       }
     }
@@ -175,13 +191,24 @@ class PostDatasource {
     return affectedRows >= 1;
   }
 
-  Future<List<Post>> getPostByType(PostType postType, int distance, int limit, int offset) async {
+  Future<List<Post>> getPostByType(
+    PostType postType,
+    double longUser,
+    double latUser,
+    int limit,
+    int offset,
+  ) async {
     final query = """
     query MyQuery {
-      get_posts_by_type(args: {post_type: ${postType.index}, distance_kms: $distance }, order_by: {created_at: desc}, limit: $limit, offset: $offset) {
+      get_posts_by_type(args: {post_type: ${postType.index},long_user: $longUser,lat_user: $latUser , mlimit: $limit, moffset: $offset }, order_by: {created_at: desc},) {
         id
         type
         uuid
+        location {
+          id
+          lat
+          long
+        }
         post_pets {
           pet {
             avatar_url
@@ -195,7 +222,6 @@ class PostDatasource {
             name
           }
         }
-        distance_user_to_post
       }
     }
     """;
@@ -206,24 +232,46 @@ class PostDatasource {
 
   Future<Post> getDetailPost(int postId) async {
     final query = """
-    query MyQuery {
+    query getPostDetail {
       posts_by_pk(id: $postId) {
-        content
-        created_at
-        distance_user_to_post
         id
         uuid
+        content
+        type
         medias {
           id
-          type
           url
+          type
         }
-        status
-        type
-        location {
+        user {
           id
           name
+          avatar_url
         }
+        post_pets {
+          pet {
+            id
+            name
+            avatar_url
+          }
+        }
+        location {
+          id
+          lat
+          long
+          name
+        }
+        post_reacts_aggregate {
+      aggregate {
+        count
+      }
+    }
+    comments_aggregate {
+      aggregate {
+        count
+      }
+    }
+        created_at
       }
     }
     """;
@@ -309,60 +357,39 @@ class PostDatasource {
 
   Future<Post?> getPostWithId(int postId) async {}
 
-  Future<Post> editPost(EditedPostData editedPostData) async {
-    late String mediasData;
-    if (editedPostData.uploadedMediasToAddToPost.isNotEmpty) {
-      mediasData = editedPostData.uploadedMediasToAddToPost.map((e) => _mediaToJson(e, editedPostData.oldPost.id)).toList().toString();
-    } else {
-      mediasData = '[]';
-    }
-
-    final taggedPets = editedPostData.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
+  Future<bool> editPost(EditedPostData editedPostData) async {
+    final mediasData = editedPostData.newAddedMedias?.map((e) => _mediaToJson(e)).toList().toString() ?? "[]";
 
     final location = editedPostData.location == null
         ? ""
-        : 'location: {data: {long: "${editedPostData.location?.long}", lat: "${editedPostData.location?.lat}", name: "${editedPostData.location?.name}"}},';
+        : 'location: {long: "${editedPostData.location?.long}", lat: "${editedPostData.location?.lat}", name: "${editedPostData.location?.name}"},';
 
     final String query = """
-    mutation MyMutation {
-      update_posts_by_pk(pk_columns: {id: ${editedPostData.oldPost.id}}, _set: {content: "${editedPostData.content}"}) {
-        id
-        uuid
-        content
-        type
-        medias {
-          id
-          url
-          type
-        }
-        user {
-          id
-          name
-          avatar_url
-        }
-        post_pets {
-          pet {
-            id
-            name
-            avatar_url
-          }
-        }
-        location {
-          id
-          lat
-          long
-          name
-        }
-        created_at
+    mutation EditPost {
+      editPost(originPostId: ${editedPostData.originPost.id}, newContent: "${editedPostData.newContent}", newTaggedPetIds: ${editedPostData.newTaggedPetIds.toString()}, deletedTaggedPetIds: ${editedPostData.deletedTaggedPetIds.toString()}, deletedMediaIds: ${editedPostData.deletedMediaIds.toString()}, newAddedMedias: $mediasData, $location) {
+          status
       }
     }
     """;
-    final data = await _hasuraConnect.mutation(query);
-    final postJson = GetMapFromHasura.getMap(data as Map)["update_posts_by_pk"] as Map;
-    return Post.fromJson(postJson as Map<String, dynamic>);
+
+    await _hasuraConnect.mutation(query);
+    return true;
   }
 
-  String _mediaToJson(MediaFileUploader file, int id) {
-    return '{post_id: $id, url: "${file.uploadedUrl}", type: ${file.type}}';
+  String _mediaToJson(UploadedMedia e) {
+    return '{url: "${e.uploadedUrl}", type: ${e.type}}';
+  }
+
+  Future reportPost(Post post, String content) async {
+    final manution = """
+    mutation MyMutation {
+    insert_report_post(objects: {content: "$content", post_id: ${post.id}, type: 0}) {
+    affected_rows
+    }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(manution);
+    GetMapFromHasura.getMap(data as Map)["insert_report_post"] as Map;
+    return;
   }
 }

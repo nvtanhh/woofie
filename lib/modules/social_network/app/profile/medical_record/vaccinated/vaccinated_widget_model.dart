@@ -4,6 +4,7 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/dialog/add_caccinated_dialog.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/add_vaccinated_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_vaccinates_usecase.dart';
@@ -11,7 +12,7 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class VaccinatedWidgetModel extends BaseViewModel {
-  late int petId;
+  late Pet pet;
   late bool isMyPet;
   final RxList<PetVaccinated> _vaccinates = RxList<PetVaccinated>();
   final GetVaccinatesUsecase _getVaccinatesUsecase;
@@ -21,7 +22,6 @@ class VaccinatedWidgetModel extends BaseViewModel {
   bool isLastPage = false;
   int pageSize = 10, pageKey = 0;
   PetVaccinated? vaccinated;
-  Function(PetVaccinated)? onAddVaccinated;
   VaccinatedWidgetModel(
     this._getVaccinatesUsecase,
     this._addVaccinatedUsecase,
@@ -42,14 +42,14 @@ class VaccinatedWidgetModel extends BaseViewModel {
     if (vaccinated == null) {
       return;
     }
-    vaccinated?.petId = petId;
+    vaccinated?.petId = pet.id;
     await call(
       () async {
         final data = await _addVaccinatedUsecase.call(vaccinated!);
         vaccinated!.id = data.id;
       },
       onSuccess: () {
-        onAddVaccinated?.call(vaccinated!);
+        onAddVaccinated(vaccinated!);
         _vaccinates.insert(0, vaccinated!);
         _vaccinates.refresh();
       },
@@ -60,12 +60,18 @@ class VaccinatedWidgetModel extends BaseViewModel {
     );
   }
 
+  void onAddVaccinated(PetVaccinated petVaccinated) {
+    pet.petVaccinates?.insert(0, petVaccinated);
+    if ((pet.petVaccinates?.length ?? 0) > 2) pet.petVaccinates?.removeLast();
+    pet.notifyUpdate();
+  }
+
   Future getVaccinates() async {
     if (isLastPage) return;
     await call(
       () async {
         receivePetVaccinated = await _getVaccinatesUsecase.call(
-          petId,
+          pet.id,
           offset: _vaccinates.length,
         );
 

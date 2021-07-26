@@ -10,7 +10,7 @@ class UserDatasource {
 
   UserDatasource(this._hasuraConnect);
 
-  Future<String?> followPet(int petID) async {
+  Future<int?> followPet(int petID) async {
     final manution = """
   mutation MyMutation {
   follow(pet_id:"$petID") {
@@ -20,7 +20,7 @@ class UserDatasource {
 """;
     final data = await _hasuraConnect.mutation(manution);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["follow"] as Map;
-    return affectedRows["id"] as String;
+    return affectedRows["id"] as int;
   }
 
   Future blockUser(int userID) async {
@@ -39,6 +39,13 @@ class UserDatasource {
         email
         dob
         phone_number
+        location_id
+        location{
+        id
+        long
+        lat
+        name
+        }
         current_pets {
           id
           name
@@ -60,5 +67,25 @@ class UserDatasource {
 
   Future updateTokenNotify(String tokenNotify) async {
     return OneSignal.shared.setExternalUserId(tokenNotify);
+  }
+
+  Future<Map<String, dynamic>> updateUserInformationLocation(int userId, {String? name, String? bio, int? locationId, String? avatarUrl}) async {
+    final nName = name == null ? "" : 'name: "$name",';
+    final nBio = bio == null ? "" : 'bio: "$bio",';
+    final nLocationId = locationId == null ? "" : 'location_id: $locationId,';
+    final nPhoneNumber = name == null ? "" : 'phone_number: "$name",';
+    final nAvatarUrl = avatarUrl == null ? "" : 'avatar_url: "$avatarUrl"';
+    final manution = """
+mutation MyMutation {
+  update_users_by_pk(pk_columns: {id: $userId}, _set: {$nName $nLocationId $nBio $nAvatarUrl}) {
+    avatar_url
+    bio
+    location_id
+    name
+  }
+}
+""";
+    final data = await _hasuraConnect.mutation(manution);
+    return GetMapFromHasura.getMap(data as Map)["update_users_by_pk"] as Map<String, dynamic>;
   }
 }

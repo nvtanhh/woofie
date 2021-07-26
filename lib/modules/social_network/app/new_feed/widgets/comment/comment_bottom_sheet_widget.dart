@@ -8,7 +8,7 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/comment_bottom_sheet_widget_model.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/comment_widget.dart';
-import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/send_comment/send_comment_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/widgets/shimmer_comment_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -80,12 +80,17 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
           children: [
             Expanded(
               child: PagedListView<int, Comment>(
-                pagingController: viewModel.pagingController,
+                pagingController: viewModel.commentServiceModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Comment>(
                   itemBuilder: (context, item, index) {
                     return CommentWidget(
                       comment: item,
-                      onLikeCommentClick: viewModel.onLikeCommentClick,
+                      onLikeCommentClick: (_) => viewModel.commentServiceModel.onLikeComment(item, viewModel.post.id),
+                      onDelete: () => viewModel.commentServiceModel.onDeleteComment(item, index),
+                      onReport: () => viewModel.commentServiceModel.onReportComment(item, ""),
+                      onEdit: () {
+                        viewModel.commentServiceModel.setOldComment(item, index);
+                      },
                     );
                   },
                   firstPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
@@ -105,9 +110,9 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
               ),
             ),
             SendCommentWidget(
-              user: viewModel.user,
-              commentEditingController: viewModel.commentEditingController,
               onSendComment: viewModel.onSendComment,
+              post: viewModel.post,
+              comment: viewModel.commentServiceModel.commentUpdate,
             )
           ],
         ),

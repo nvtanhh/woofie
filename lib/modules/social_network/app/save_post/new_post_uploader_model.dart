@@ -163,7 +163,7 @@ class NewPostUploaderModel extends BaseViewModel {
       uploadedMediaUrl = await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
     }
     if (uploadedMediaUrl != null) {
-      final MediaFileUploader mediaFileUploader = MediaFileUploader(uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
+      final UploadedMedia mediaFileUploader = UploadedMedia(uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
       data.uploadedMediasToAddToPost.add(mediaFileUploader);
       data.compressedMedia.remove(mediaFile);
     }

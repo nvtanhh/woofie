@@ -43,11 +43,38 @@ class NewFeedRepository {
     return _commentDatasource.createComment(postId, content, userTag);
   }
 
-  Future<bool> likeComment(int idComment) {
-    return _commentDatasource.likeComment(idComment);
+  Future<bool> likeComment(
+    int idComment,
+    int idPost,
+  ) {
+    return _commentDatasource.likeComment(idComment, idPost);
   }
 
   Future<bool> deletePost(int post) {
     return _postDatasource.deletePost(post);
+  }
+
+  Future<Post> refreshPost(int postId) {
+    return _postDatasource.getDetailPost(postId);
+  }
+
+  Future<List<User>> getAllUserInPost(int postId, int limit, int offset) {
+    return _petDatasource.getAllUserInPost(postId, limit, offset);
+  }
+
+  Future deleteComment(int commentId) {
+    return _commentDatasource.deleteComment(commentId);
+  }
+
+  Future reportComment(Comment comment, String content) {
+    return _commentDatasource.reportComment(comment, content);
+  }
+
+  Future<Comment> editComment(Comment oldComment, Comment newComment) {
+    return _commentDatasource.editComment(oldComment, newComment);
+  }
+
+  Future reportPost(Post post, String content) {
+    return _postDatasource.reportPost(post, content);
   }
 }

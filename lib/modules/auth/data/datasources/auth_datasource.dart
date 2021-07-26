@@ -15,7 +15,7 @@ class AuthDatasource {
     this._googleSignIn,
     this._firebaseAuth,
     this._facebookAuth,
-    @Named("current_user_storage") this._userStorage,
+    this._userStorage,
   );
 
   Future<User?> loginWithGoogle() async {

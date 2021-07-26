@@ -31,18 +31,22 @@ class PostItemInListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InfoUserPostWidget(
-            pets: post.taggegPets??[],
+            pets: post.taggegPets ?? [],
             postCreatedAt: post.createdAt!,
             user: post.creator!,
           ),
           ImagesViewWidget(
             medias: post.medias ?? [],
           ),
-          Text(
-            post.content ?? "",
-            maxLines: 4,
-            style: UITextStyle.text_body_14_w500,
-            overflow: TextOverflow.ellipsis,
+          Row(
+            children: [
+              Text(
+                post.content ?? "",
+                maxLines: 4,
+                style: UITextStyle.text_body_14_w500,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
           SizedBox(
             height: 13.h,
@@ -57,7 +61,7 @@ class PostItemInListView extends StatelessWidget {
                       onTap: () => likeClick(),
                       child: Obx(
                         () => MWIcon(
-                          post.updateSubject.isLiked! ? MWIcons.react : MWIcons.unReact,
+                          post.updateSubjectValue.isLiked! ? MWIcons.react : MWIcons.unReact,
                           size: MWIconSize.small,
                         ),
                       ),
@@ -67,7 +71,7 @@ class PostItemInListView extends StatelessWidget {
                     ),
                     Obx(
                       () => Text(
-                        "${post.updateSubject.postReactsCount ?? 0}",
+                        "${post.updateSubjectValue.postReactsCount ?? 0}",
                         style: UITextStyle.black_14_w600,
                       ),
                     ),
@@ -93,7 +97,7 @@ class PostItemInListView extends StatelessWidget {
                     ),
                     Obx(
                       () => Text(
-                        "${post.updateSubject.postCommentsCount ?? 0}",
+                        "${post.updateSubjectValue.postCommentsCount ?? 0}",
                         style: UITextStyle.black_14_w600,
                       ),
                     ),

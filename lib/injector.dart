@@ -19,17 +19,17 @@ import 'injector.config.dart';
 final injector = GetIt.instance;
 
 @injectableInit
-void setupInjector() => $initGetIt(injector, environment: Environment.dev);
+Future setupInjector() async => $initGetIt(injector, environment: Environment.dev);
 
 @module
 abstract class RegisterModule {
   @lazySingleton
   @preResolve
-  Future<FirebaseApp> getFirebaseApp() async => Firebase.initializeApp();
+  Future<FirebaseApp> getFirebaseApp() => Firebase.initializeApp();
 
   @lazySingleton
   @preResolve
-  Future<SharedPreferences> getSharePreferences() async => SharedPreferences.getInstance();
+  Future<SharedPreferences> getSharePreferences() => SharedPreferences.getInstance();
 
   @lazySingleton
   Logger getLogger() => Logger(
@@ -52,8 +52,4 @@ abstract class RegisterModule {
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {
     return HasuraConnect(BackendConfig.BASE_HASURA_URL, interceptors: [interceptor]);
   }
-
-  @singleton
-  @Named('current_user_storage')
-  UserStorage getCurrentUserStorage(SharedPreferences prefs) => UserStorage(prefs, 'current_user');
 }

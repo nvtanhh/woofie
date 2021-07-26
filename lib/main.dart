@@ -17,7 +17,7 @@ import 'package:meowoof/configs/app_config.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  setupInjector();
+  await setupInjector();
   setupEasyLoading();
   setupOneSignal();
   // set up google_fonts
