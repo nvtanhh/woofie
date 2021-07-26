@@ -18,24 +18,23 @@ class ChatRoomPage extends StatefulWidget {
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
+class _ChatRoomPageState
+    extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
   @override
   ChatRoomPageModel createViewModel() => injector<ChatRoomPageModel>();
 
   @override
   void loadArguments() {
     viewModel.room = widget.room;
-    viewModel.messages = widget.room.messages.toList().obs;
+    viewModel.messages = widget.room.messages.obs;
     super.loadArguments();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: _buildAppBar(),
-      body: _buildMessage(),
-      bottomNavigationBar: _buildMessageSender(),
+      body: _buildBody(),
     );
   }
 
@@ -46,22 +45,33 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
     );
   }
 
-  Widget _buildMessage() {
-    return Obx(
-      () => ListView.builder(
-        controller: viewModel.scrollController,
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        itemCount: viewModel.messages.length,
-        itemBuilder: (context, index) {
-          final bool isDisplayAvatar = viewModel.checkIsDisplayAvatar(index);
-          return MessageWidget(
-            viewModel.messages[index],
-            key: ObjectKey(viewModel.messages[index].objectId),
-            chatPartner: viewModel.room.privateChatPartner,
-            isDisplayAvatar: isDisplayAvatar,
-          );
-        },
-      ),
+  Widget _buildBody() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: Obx(
+            () => ListView.builder(
+              controller: viewModel.scrollController,
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              itemCount: viewModel.messages.length,
+              reverse: true,
+              itemBuilder: (context, index) {
+                final bool isDisplayAvatar =
+                    viewModel.checkIsDisplayAvatar(index);
+                return MessageWidget(
+                  viewModel.messages[index],
+                  key: ObjectKey(viewModel.messages[index]),
+                  chatPartner: viewModel.room.privateChatPartner,
+                  isDisplayAvatar: isDisplayAvatar,
+                );
+              },
+            ),
+          ),
+        ),
+        _buildMessageSender(),
+      ],
     );
   }
 
@@ -71,7 +81,7 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
         right: 16.w,
         left: 16.w,
         top: 16.h,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 16.h,
+        bottom: 16.h,
       ),
       child: Obx(
         () => MessageSender(
