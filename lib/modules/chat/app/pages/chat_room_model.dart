@@ -27,7 +27,7 @@ class ChatRoomPageModel extends BaseViewModel {
   final GetMessagesUseCase _getMessagesUseCase;
 
   late ChatRoom room;
-  late RxList<Message> messages = <Message>[].obs;
+  // late RxList<Message> messages = <Message>[].obs;
 
   final RxList<MediaFile> _sendingMedias = <MediaFile>[].obs;
   ScrollController scrollController = ScrollController();
@@ -53,41 +53,12 @@ class ChatRoomPageModel extends BaseViewModel {
   @override
   void initState() {
     super.initState();
-    // pagingController = PagingController(firstPageKey: room.messages.length);
-    // pagingController.appendPage(room.messages, room.messages.length);
-    // pagingController
-    //     .addPageRequestListener((pageKey) => _loadMorePost(pageKey));
-
-    _addScrollListener();
+    pagingController = PagingController(firstPageKey: room.messages.length);
+    pagingController.appendPage(room.messages, room.messages.length);
+    pagingController
+        .addPageRequestListener((pageKey) => _loadMorePost(pageKey));
 
     _setupListenCanSendMessage();
-  }
-
-  void _addScrollListener() {
-    //  scrollController.addListener(() {
-    //   bool topReached = widget.inverted
-    //       ? scrollController.offset >=
-    //               scrollController.position.maxScrollExtent &&
-    //           !scrollController.position.outOfRange
-    //       : scrollController.offset <=
-    //               scrollController.position.minScrollExtent &&
-    //           !scrollController.position.outOfRange;
-
-    //   if (widget.shouldShowLoadEarlier) {
-    //     if (topReached) {
-    //       setState(() {
-    //         showLoadMore = true;
-    //       });
-    //     } else {
-    //       setState(() {
-    //         showLoadMore = false;
-    //       });
-    //     }
-    //   } else if (topReached) {
-    //     widget.onLoadEarlier!();
-    //   }
-    // });
-    // }
   }
 
   Future<void> _loadMorePost(int pageKey) async {
@@ -127,7 +98,7 @@ class ChatRoomPageModel extends BaseViewModel {
   bool get isCanSendMessage => _isCanSendMessage.value;
 
   bool checkIsDisplayAvatar(int index) {
-    // final messages = pagingController.itemList!;
+    final messages = pagingController.itemList!;
     return index == messages.length - 1 ||
         messages[index].senderId != messages[index + 1].senderId;
   }
@@ -162,12 +133,9 @@ class ChatRoomPageModel extends BaseViewModel {
             createdAt: DateTime.now(),
           );
 
-          // pagingController
-          //     .appendPage([fakeNewMessage], pagingController.nextPageKey);
-
-          messages.insert(0, fakeNewMessage);
-
-          // scrollToBottom();
+          pagingController.itemList!.insert(0, fakeNewMessage);
+          // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
+          pagingController.notifyListeners();
         },
         onFailure: (error) {
           Get.snackbar(
@@ -226,7 +194,7 @@ class ChatRoomPageModel extends BaseViewModel {
       () {
         if (scrollController.hasClients) {
           scrollController.animateTo(
-            scrollController.position.maxScrollExtent,
+            0,
             duration: const Duration(milliseconds: 300),
             curve: Curves.fastOutSlowIn,
           );

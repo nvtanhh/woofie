@@ -20,6 +20,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
   final ExtendedImageMode? mode;
 
   final String? placeHolderImage;
+  final bool isConstraintsSize;
 
   const ImageWithPlaceHolderWidget({
     required this.imageUrl,
@@ -34,6 +35,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
     this.initGestureConfigHandler,
     this.mode,
     this.placeHolderImage,
+    this.isConstraintsSize = true,
   });
 
   @override
@@ -50,8 +52,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
         ),
         child: ExtendedImage.network(
           imageUrl,
-          height: height ?? 180.0.h,
-          width: width ?? 180.0.w,
+          height: isConstraintsSize ? height ?? 180.0.h : null,
+          width: isConstraintsSize ? width ?? 180.0.w : null,
           fit: fit ?? BoxFit.fill,
           initGestureConfigHandler: initGestureConfigHandler,
           mode: mode ?? ExtendedImageMode.none,
@@ -97,7 +99,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
         image: DecorationImage(
-          image: AssetGenImage(placeHolderImage ?? "resources/images/fallbacks/avatar-fallback.jpg"),
+          image: AssetGenImage(placeHolderImage ??
+              "resources/images/fallbacks/avatar-fallback.jpg"),
           fit: BoxFit.cover,
         ),
       ),

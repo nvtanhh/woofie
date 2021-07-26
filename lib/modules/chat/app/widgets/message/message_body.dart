@@ -19,12 +19,14 @@ class MessageBody extends StatelessWidget {
         body = Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: UIColor.holder,
-            borderRadius: BorderRadius.circular(5),
+            color: isMyMessage ? UIColor.primary : UIColor.holder,
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Text(
             message.content,
-            style: UITextStyle.body_14_medium,
+            style: isMyMessage
+                ? UITextStyle.body_14_medium.apply(color: Colors.white)
+                : UITextStyle.body_14_medium,
           ),
         );
         break;
@@ -34,6 +36,7 @@ class MessageBody extends StatelessWidget {
           child: ImageWithPlaceHolderWidget(
             imageUrl: message.content,
             placeHolderImage: 'resources/images/fallbacks/media-fallback.png',
+            isConstraintsSize: false,
           ),
         );
         break;

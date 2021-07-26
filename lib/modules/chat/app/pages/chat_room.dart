@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/app/pages/chat_room_model.dart';
 import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/chat_room_nav.dart';
 import 'package:meowoof/modules/chat/app/widgets/message/message_item.dart';
 import 'package:meowoof/modules/chat/app/widgets/message_sender.dart';
+import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -26,7 +28,7 @@ class _ChatRoomPageState
   @override
   void loadArguments() {
     viewModel.room = widget.room;
-    viewModel.messages = widget.room.messages.obs;
+    // viewModel.messages = widget.room.messages.obs;
     super.loadArguments();
   }
 
@@ -51,18 +53,18 @@ class _ChatRoomPageState
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          child: Obx(
-            () => ListView.builder(
-              controller: viewModel.scrollController,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              itemCount: viewModel.messages.length,
-              reverse: true,
-              itemBuilder: (context, index) {
+          child: PagedListView<int, Message>(
+            scrollController: viewModel.scrollController,
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
+            pagingController: viewModel.pagingController,
+            reverse: true,
+            builderDelegate: PagedChildBuilderDelegate<Message>(
+              itemBuilder: (context, message, index) {
                 final bool isDisplayAvatar =
                     viewModel.checkIsDisplayAvatar(index);
                 return MessageWidget(
-                  viewModel.messages[index],
-                  key: ObjectKey(viewModel.messages[index]),
+                  message,
+                  key: Key(message.objectId),
                   chatPartner: viewModel.room.privateChatPartner,
                   isDisplayAvatar: isDisplayAvatar,
                 );
