@@ -15,7 +15,7 @@ class PrivateChatIdentifier extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: ActiveStatusAvatar(
         avatarUrl: chatUser?.avatarUrl ?? '',
-        isActive: true,
+        isActive: false,
       ),
       title: Text(
         chatUser?.name ?? '',

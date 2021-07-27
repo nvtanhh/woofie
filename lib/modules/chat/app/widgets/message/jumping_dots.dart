@@ -18,8 +18,7 @@ class JumpingDots extends StatefulWidget {
   _JumpingDotsState createState() => _JumpingDotsState();
 }
 
-class _JumpingDotsState extends State<JumpingDots>
-    with TickerProviderStateMixin {
+class _JumpingDotsState extends State<JumpingDots> with TickerProviderStateMixin {
   late List<AnimationController> _animationControllers;
   late final List<Animation<double>> _animations = [];
   int animationDuration = 200;
@@ -44,8 +43,7 @@ class _JumpingDotsState extends State<JumpingDots>
     _animationControllers = List.generate(
       widget.numberOfDots,
       (index) {
-        return AnimationController(
-            vsync: this, duration: Duration(milliseconds: animationDuration));
+        return AnimationController(vsync: this, duration: Duration(milliseconds: animationDuration));
       },
     ).toList();
 
@@ -54,8 +52,7 @@ class _JumpingDotsState extends State<JumpingDots>
     ///end value is amount of jump.
     ///and we want our dot to jump in upward direction
     for (int i = 0; i < widget.numberOfDots; i++) {
-      _animations.add(Tween<double>(begin: 0, end: widget.jumpHeight)
-          .animate(_animationControllers[i]));
+      _animations.add(Tween<double>(begin: 0, end: widget.jumpHeight).animate(_animationControllers[i]));
     }
     for (int i = 0; i < widget.numberOfDots; i++) {
       _animationControllers[i].addStatusListener((status) {
@@ -70,8 +67,7 @@ class _JumpingDotsState extends State<JumpingDots>
         }
         //if last dot is back to its original postion then start animation of the first dot.
         // now this animation will be repeated infinitely
-        if (i == widget.numberOfDots - 1 &&
-            status == AnimationStatus.dismissed) {
+        if (i == widget.numberOfDots - 1 && status == AnimationStatus.dismissed) {
           _animationControllers[0].forward();
         }
       });
@@ -113,8 +109,7 @@ class DotWidget extends StatelessWidget {
   final double? radius;
   final Color? color;
 
-  const DotWidget({Key? key, this.color = Colors.black, this.radius = 5})
-      : super(key: key);
+  const DotWidget({Key? key, this.color = Colors.black, this.radius = 5}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -11,6 +11,7 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/message/get_messages_usecase.dart';
+import 'package:meowoof/modules/chat/domain/usecases/room/get_messages_usecase.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_presined_url_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
@@ -25,6 +26,7 @@ class ChatRoomPageModel extends BaseViewModel {
   final GetPresignedUrlForChatUsecase _getPresignedUrlUsecase;
   final UploadMediaUsecase _uploadMediaUsecase;
   final GetMessagesUseCase _getMessagesUseCase;
+  final SendMessagesUsecase _sendMessagesUsecase;
 
   late ChatRoom room;
   // late RxList<Message> messages = <Message>[].obs;
@@ -46,6 +48,7 @@ class ChatRoomPageModel extends BaseViewModel {
     this._getPresignedUrlUsecase,
     this._uploadMediaUsecase,
     this._getMessagesUseCase,
+    this._sendMessagesUsecase,
   );
 
   @override
@@ -115,23 +118,21 @@ class ChatRoomPageModel extends BaseViewModel {
         () async {
           // final uploadedMediaUrl = await _startUploadMedia();
           final messageType = _getMessageType();
+          if (messageType != MessageType.text) return;
           final content = messageType == MessageType.text
               ? messageSenderTextController.text
               : await _startUploadMedia();
           final description = messageType != MessageType.text
               ? messageSenderTextController.text
               : null;
-          final senderId = injector<LoggedInUser>().user!.uuid!;
-          final Message fakeNewMessage = Message(
-            objectId: const Uuid().v4(),
-            content: content,
-            description: description,
-            type: messageType,
-            senderId: senderId,
-            createdAt: DateTime.now(),
-          );
 
-          pagingController.itemList!.insert(0, fakeNewMessage);
+          final message = await _sendMessagesUsecase.call(
+              roomId: room.id,
+              content: content,
+              type: messageType,
+              description: description);
+
+          pagingController.itemList!.insert(0, message);
           // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
           pagingController.notifyListeners();
         },

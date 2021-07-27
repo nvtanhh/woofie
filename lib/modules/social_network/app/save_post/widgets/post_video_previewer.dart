@@ -17,14 +17,7 @@ class PostVideoPreviewer extends StatelessWidget {
   final double? width;
   final double? height;
 
-  const PostVideoPreviewer(
-      {Key? key,
-      this.postVideoFile,
-      this.postVideo,
-      this.onRemove,
-      this.playIconSize = 30,
-      this.width,
-      this.height})
+  const PostVideoPreviewer({Key? key, this.postVideoFile, this.postVideo, this.onRemove, this.playIconSize = 30, this.width, this.height})
       : super(key: key);
 
   static double avatarBorderRadius = 10.0;
@@ -36,8 +29,7 @@ class PostVideoPreviewer extends StatelessWidget {
 
     final Widget videoPreview = isFileVideo
         ? FutureBuilder<Uint8List?>(
-            future: injector<MediaService>()
-                .getVideoThumbnailFromFile(postVideoFile!),
+            future: injector<MediaService>().getVideoThumbnailFromFile(postVideoFile!),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const SizedBox();
               return _wrapImageWidgetForThumbnail(
@@ -48,8 +40,7 @@ class PostVideoPreviewer extends StatelessWidget {
               );
             })
         : FutureBuilder<String?>(
-            future: injector<MediaService>()
-                .getVideoThumbnailFromUrl(postVideo?.url ?? ""),
+            future: injector<MediaService>().getVideoThumbnailFromUrl(postVideo?.url ?? ""),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const SizedBox();
               return _wrapImageWidgetForThumbnail(
@@ -88,8 +79,7 @@ class PostVideoPreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
-        heroTag: Key(
-            'postVideoPreviewerRemoveButton${postVideoFile?.path}${postVideo?.url}'),
+        heroTag: Key('postVideoPreviewerRemoveButton${postVideoFile?.path}${postVideo?.url}'),
         onPressed: onRemove,
         backgroundColor: Colors.black54,
         child: const MWIcon(
@@ -106,8 +96,7 @@ class PostVideoPreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
-        heroTag: Key(
-            'postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}'),
+        heroTag: Key('postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}'),
         backgroundColor: Colors.black54,
         onPressed: () => _onWantsToPlay(context),
         child: const Icon(
@@ -131,9 +120,7 @@ class PostVideoPreviewer extends StatelessWidget {
     return SizedBox(
       height: 80.h,
       width: 80.w,
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(avatarBorderRadius),
-          child: image),
+      child: ClipRRect(borderRadius: BorderRadius.circular(avatarBorderRadius), child: image),
     );
   }
 }

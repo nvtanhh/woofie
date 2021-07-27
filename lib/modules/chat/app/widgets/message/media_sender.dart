@@ -8,13 +8,12 @@ class MediasSenderWidget extends StatelessWidget {
 
   final Function(MediaFile)? onRemoveMedia;
 
-  const MediasSenderWidget({Key? key, required this.medias, this.onRemoveMedia})
-      : super(key: key);
+  const MediasSenderWidget({Key? key, required this.medias, this.onRemoveMedia}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.all(12),
         children: medias
             .map(
@@ -23,8 +22,7 @@ class MediasSenderWidget extends StatelessWidget {
                 height: 80.h,
                 width: 80.w,
                 mediaFile: file,
-                onRemove:
-                    onRemoveMedia != null ? () => onRemoveMedia!(file) : null,
+                onRemove: onRemoveMedia != null ? () => onRemoveMedia!(file) : null,
                 allowEditMedia: false,
               ),
             )

@@ -66,6 +66,7 @@ class _ChatDashboardState extends BaseViewState<ChatDashboard, ChatManagerModel>
         builderDelegate: PagedChildBuilderDelegate<ChatRoom>(
           itemBuilder: (context, room, index) => Obx(
             () => ChatRoomItem(
+              key: Key(room.id),
               room: room.updateSubjectValue as ChatRoom,
               onChatRoomPressed: () => viewModel.onChatRoomPressed(room),
             ),

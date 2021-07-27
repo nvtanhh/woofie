@@ -11,8 +11,8 @@ class ChatRepository {
 
   ChatRepository(this._datasource, this._storageDatasource);
 
-  Future<List<ChatRoom>> getChatRooms() {
-    return _datasource.getChatRooms();
+  Future<List<ChatRoom>> getChatRooms(int limit, int skip) {
+    return _datasource.getChatRooms(limit, skip);
   }
 
   Future<String> getPresignedChatMediaUrl(String fileName, String chatRoomId) {
@@ -21,5 +21,14 @@ class ChatRepository {
 
   Future<List<Message>> getMessages(int limit, int skip) {
     return _datasource.getMessages(limit, skip);
+  }
+
+  Future<Message> sendMessages({
+    required String roomId,
+    required String content,
+    required MessageType type,
+    String? description,
+  }) {
+    return _datasource.sendMessages(roomId: roomId, content: content, type: type, description: description);
   }
 }

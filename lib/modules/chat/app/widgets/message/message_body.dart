@@ -8,8 +8,7 @@ class MessageBody extends StatelessWidget {
   final Message message;
   final bool isMyMessage;
 
-  const MessageBody(this.message, {Key? key, required this.isMyMessage})
-      : super(key: key);
+  const MessageBody(this.message, {Key? key, required this.isMyMessage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +23,7 @@ class MessageBody extends StatelessWidget {
           ),
           child: Text(
             message.content,
-            style: isMyMessage
-                ? UITextStyle.body_14_medium.apply(color: Colors.white)
-                : UITextStyle.body_14_medium,
+            style: isMyMessage ? UITextStyle.body_14_medium.apply(color: Colors.white) : UITextStyle.body_14_medium,
           ),
         );
         break;
@@ -45,8 +42,7 @@ class MessageBody extends StatelessWidget {
     }
 
     return Column(
-      crossAxisAlignment:
-          !isMyMessage ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+      crossAxisAlignment: !isMyMessage ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
         body,
       ],

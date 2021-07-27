@@ -9,9 +9,7 @@ class TypingWidget extends StatelessWidget {
   final bool isTyping;
   final User chatPartner;
 
-  const TypingWidget(
-      {Key? key, required this.isTyping, required this.chatPartner})
-      : super(key: key);
+  const TypingWidget({Key? key, required this.isTyping, required this.chatPartner}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

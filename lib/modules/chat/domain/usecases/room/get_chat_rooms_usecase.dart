@@ -8,7 +8,7 @@ class GetChatRoomsUseCase {
 
   GetChatRoomsUseCase(this._chatRoomRepository);
 
-  Future<List<ChatRoom>> call() {
-    return _chatRoomRepository.getChatRooms();
+  Future<List<ChatRoom>> call({int limit = 10, int skip = 0}) {
+    return _chatRoomRepository.getChatRooms(limit, skip);
   }
 }
