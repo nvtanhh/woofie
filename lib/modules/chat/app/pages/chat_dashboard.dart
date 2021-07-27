@@ -6,7 +6,7 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/app/pages/chat_dashboard_model.dart';
-import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/chat_room_item.dart';
+import 'package:meowoof/modules/chat/app/widgets/chat_room_item.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';

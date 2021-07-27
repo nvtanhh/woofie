@@ -6,10 +6,13 @@ import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/private_chat_iden
 class ChatIndentifierWidget extends StatelessWidget {
   final ChatRoom chatRoom;
 
-  const ChatIndentifierWidget({Key? key, required this.chatRoom}) : super(key: key);
+  const ChatIndentifierWidget({Key? key, required this.chatRoom})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return !chatRoom.isGroup ? PrivateChatIdentifier(chatUser: chatRoom.privateChatPartner) : const GroupChatIndentifier();
+    return !chatRoom.isGroup
+        ? PrivateChatIdentifier(chatUser: chatRoom.privateChatPartner)
+        : const GroupChatIndentifier();
   }
 }

@@ -6,7 +6,8 @@ import 'package:meowoof/theme/ui_text_style.dart';
 class PrivateChatIdentifier extends StatelessWidget {
   final User? chatUser;
 
-  const PrivateChatIdentifier({Key? key, required this.chatUser}) : super(key: key);
+  const PrivateChatIdentifier({Key? key, required this.chatUser})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class PrivateChatIdentifier extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
       ),
-      subtitle: const Text('Active'),
+      subtitle: Text(chatUser?.bio ?? ''),
     );
   }
 }

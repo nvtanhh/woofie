@@ -10,20 +10,13 @@ import 'package:meowoof/core/helpers/file_helper.dart';
 
 @injectable
 class HttpieService {
-  String? accessToken;
+  // String? accessToken;
   late Client client;
   final FirebaseAuth auth;
 
   HttpieService(this.auth) {
     final HttpClient httpClient = HttpClient()..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
     client = IOClient(httpClient);
-    // client = RetryClient(
-    //   client,
-    //   when: _retryWhenResponse,
-    //   whenError: _retryWhenError,
-    //   onRetry: _onRetry,
-    // );
-    auth.currentUser?.getIdToken().then((value) => accessToken = value);
   }
 
   // bool _retryWhenResponse(BaseResponse response) {
@@ -45,18 +38,6 @@ class HttpieService {
   //   _refreshToken = refreshToken;
   // }
 
-  set authorizationToken(String? token) {
-    accessToken = token;
-  }
-
-  String? get authorizationToken {
-    return accessToken;
-  }
-
-  void removeAuthorizationToken() {
-    accessToken = null;
-  }
-
   void setProxy(String? proxy) {
     final overrides = HttpOverrides.current as HttpieOverrides?;
     if (overrides != null) {
@@ -72,7 +53,7 @@ class HttpieService {
     bool? appendLanguageHeader,
     bool? appendAuthorizationToken,
   }) async {
-    final finalHeaders = _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     final uri = Uri.parse(url);
 
@@ -87,7 +68,7 @@ class HttpieService {
   }
 
   Future<HttpieResponse> put(String url, {Map<String, String>? headers, Object? body, Encoding? encoding, bool? appendAuthorizationToken}) async {
-    final finalHeaders = _getHeadersWithConfig(
+    final finalHeaders = await _getHeadersWithConfig(
       headers: headers,
       appendAuthorizationToken: appendAuthorizationToken,
     );
@@ -112,7 +93,7 @@ class HttpieService {
     Encoding? encoding,
     bool? appendAuthorizationToken,
   }) async {
-    final finalHeaders = _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     final uri = Uri.parse(url);
 
@@ -134,7 +115,7 @@ class HttpieService {
     Encoding? encoding,
     bool? appendAuthorizationToken,
   }) async {
-    final finalHeaders = _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     final uri = Uri.parse(url);
 
@@ -155,7 +136,7 @@ class HttpieService {
     Map<String, dynamic>? queryParameters,
     bool? appendAuthorizationToken,
   }) async {
-    final finalHeaders = _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     if (queryParameters != null && queryParameters.keys.isNotEmpty) {
       // ignore: parameter_assignments
@@ -182,7 +163,7 @@ class HttpieService {
   }) {
     final String jsonBody = json.encode(body);
 
-    Map<String, String> jsonHeaders = _getJsonHeaders();
+    final Map<String, String> jsonHeaders = _getJsonHeaders();
 
     jsonHeaders.addAll(headers);
 
@@ -229,7 +210,7 @@ class HttpieService {
 
   Future<HttpieResponse> get(String url,
       {Map<String, String>? headers, Map<String, dynamic>? queryParameters, bool? appendLanguageHeader, bool? appendAuthorizationToken}) async {
-    final finalHeaders = _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     if (queryParameters != null && queryParameters.keys.isNotEmpty) {
       // ignore: parameter_assignments
@@ -313,7 +294,7 @@ class HttpieService {
       bool? appendAuthorizationToken}) async {
     final request = http.MultipartRequest(method, Uri.parse(url));
 
-    final finalHeaders = _getHeadersWithConfig(
+    final finalHeaders = await _getHeadersWithConfig(
       headers: headers,
       appendAuthorizationToken: appendAuthorizationToken,
     );
@@ -378,14 +359,15 @@ class HttpieService {
     return http.MultipartFile.fromPath(key, value.path);
   }
 
-  Map<String, String> _getHeadersWithConfig({
+  Future<Map<String, String>> _getHeadersWithConfig({
     Map<String, String>? headers,
     bool? appendAuthorizationToken,
-  }) {
+  }) async {
     final Map<String, String> finalHeaders = Map.from(headers ??= const {});
 
-    if (appendAuthorizationToken ??= true && accessToken != null) {
-      finalHeaders['Authorization'] = 'Bearer $accessToken';
+    if (appendAuthorizationToken ??= true) {
+      final String? accessKey = await _getIdToken();
+      finalHeaders['Authorization'] = 'Bearer ${accessKey ?? ""}';
     }
 
     return finalHeaders;
@@ -439,6 +421,10 @@ class HttpieService {
       return value.map((valueItem) => _stringifyQueryStringValue(valueItem)).join(',');
     }
     throw 'Unsupported query string value';
+  }
+
+  Future<String>? _getIdToken() {
+    return auth.currentUser?.getIdToken();
   }
 }
 
@@ -534,7 +520,7 @@ class HttpieRequestError<T extends HttpieBaseResponse> implements Exception {
     } else if (statusCode == HttpStatus.internalServerError) {
       readableMessage = "We're experiencing server errors. Please try again later.";
     } else if (statusCode == HttpStatus.serviceUnavailable || statusCode == HttpStatus.serviceUnavailable) {
-      readableMessage = "We\'re experiencing server errors. Please try again later.";
+      readableMessage = "We're experiencing server errors. Please try again later.";
     } else {
       readableMessage = 'Server error';
     }

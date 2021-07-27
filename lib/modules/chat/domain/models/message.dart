@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/injector.dart';
 
-class Message extends Equatable {
+class Message extends Equatable implements Comparable<Message> {
   final String objectId;
   final String content;
   final String? description;
@@ -28,7 +28,7 @@ class Message extends Equatable {
 
   Map<String, dynamic> toJson() => {};
 
-  bool get isMyMessage => senderId == injector<LoggedInUser>().user!.uuid;
+  bool get isSentByMe => senderId == injector<LoggedInUser>().user!.uuid;
 
   @override
   // TODO: implement props
@@ -45,6 +45,11 @@ class Message extends Equatable {
       default:
         throw Exception('Unsupported message type: $type');
     }
+  }
+
+  @override
+  int compareTo(Message other) {
+    return other.createdAt.compareTo(createdAt);
   }
 }
 

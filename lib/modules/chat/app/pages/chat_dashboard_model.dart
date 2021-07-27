@@ -4,6 +4,7 @@ import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
+import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_chat_rooms_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:suga_core/suga_core.dart';
@@ -23,12 +24,13 @@ class ChatManagerModel extends BaseViewModel {
   @override
   void initState() {
     pagingController = PagingController(firstPageKey: 0);
-    pagingController.addPageRequestListener((pageKey) => _loadMorePost(pageKey));
+    pagingController
+        .addPageRequestListener((pageKey) => _loadMoreChatRoom(pageKey));
     _lastRefeshTime = DateTime.now();
     super.initState();
   }
 
-  Future<void> _loadMorePost(int pageKey) async {
+  Future<void> _loadMoreChatRoom(int pageKey) async {
     try {
       final newItems = await _getChatRoomsUseCase.call();
       newItems.forEach(_getMoreChatRoomInformation);
@@ -72,12 +74,16 @@ class ChatManagerModel extends BaseViewModel {
   }
 
   Future<void> _getMembersSync(ChatRoom room) async {
-    room.members = await Future.wait(room.memberUuids.map((userUuid) async => _getUserWithUuid(userUuid)).toList());
+    room.members = await Future.wait(room.memberUuids
+        .map((userUuid) async => _getUserWithUuid(userUuid))
+        .toList());
   }
 
   void onWantsToCreateNewChat() {}
 
-  Future<void> onRefresh() async {}
+  Future<void> onRefresh() async {
+    pagingController.refresh();
+  }
 
   void onChatRoomPressed(ChatRoom room) {
     injector<NavigationService>().navigateToChatRoom(room);

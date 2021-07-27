@@ -28,7 +28,9 @@ class ChatRoomNav extends StatelessWidget {
       ),
       actions: <Widget>[
         IconButton(
-          icon: const MWIcon(MWIcons.info),
+          icon: const MWIcon(
+            MWIcons.info,
+          ),
           onPressed: () {},
         )
       ],

@@ -5,9 +5,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/media_service.dart';
-import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/message/get_messages_usecase.dart';
@@ -18,7 +16,6 @@ import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:path/path.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:uuid/uuid.dart';
 
 @injectable
 class ChatRoomPageModel extends BaseViewModel {
@@ -29,7 +26,6 @@ class ChatRoomPageModel extends BaseViewModel {
   final SendMessagesUsecase _sendMessagesUsecase;
 
   late ChatRoom room;
-  // late RxList<Message> messages = <Message>[].obs;
 
   final RxList<MediaFile> _sendingMedias = <MediaFile>[].obs;
   ScrollController scrollController = ScrollController();
@@ -42,6 +38,7 @@ class ChatRoomPageModel extends BaseViewModel {
 
   final keyboardVisibilityController = KeyboardVisibilityController();
   final RxBool isTyping = false.obs;
+  late Function(List<Message>) popOutCallback;
 
   ChatRoomPageModel(
     this._mediaService,
@@ -57,12 +54,19 @@ class ChatRoomPageModel extends BaseViewModel {
     pagingController = PagingController(firstPageKey: room.messages.length);
     pagingController.appendPage(room.messages, room.messages.length);
     pagingController
-        .addPageRequestListener((pageKey) => _loadMorePost(pageKey));
+        .addPageRequestListener((pageKey) => _loadMoreMessage(pageKey));
 
     _setupListenCanSendMessage();
   }
 
-  Future<void> _loadMorePost(int pageKey) async {
+  @override
+  void disposeState() {
+    // popOutCallback(pagingController.itemList ?? []);
+    pagingController.dispose();
+    super.disposeState();
+  }
+
+  Future<void> _loadMoreMessage(int pageKey) async {
     try {
       final newItems = await _getMessagesUseCase.call(skip: pageKey);
       final isLastPage = newItems.length < _pageSize;
@@ -112,16 +116,19 @@ class ChatRoomPageModel extends BaseViewModel {
     _sendingMedias.remove(media);
   }
 
-  void onSendMessage() {
+  Future<void> onSendMessage() async {
     if (isCanSendMessage) {
-      call(
+      await call(
         () async {
-          // final uploadedMediaUrl = await _startUploadMedia();
           final messageType = _getMessageType();
-          if (messageType != MessageType.text) return;
-          final content = messageType == MessageType.text
-              ? messageSenderTextController.text
-              : await _startUploadMedia();
+          String content = '';
+          if (messageType == MessageType.text) {
+            content = messageSenderTextController.text;
+          } else if (messageType == MessageType.image ||
+              messageType == MessageType.video) {
+            content = await _startUploadMedia();
+          }
+
           final description = messageType != MessageType.text
               ? messageSenderTextController.text
               : null;
@@ -135,6 +142,7 @@ class ChatRoomPageModel extends BaseViewModel {
           pagingController.itemList!.insert(0, message);
           // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
           pagingController.notifyListeners();
+          room.updateMessage(message);
         },
         onFailure: (error) {
           Get.snackbar(
@@ -173,7 +181,7 @@ class ChatRoomPageModel extends BaseViewModel {
       final media = sendingMedias.first;
       if (media.isImage) {
         type = MessageType.image;
-      } else if (media.isImage) {
+      } else if (media.isVideo) {
         type = MessageType.video;
       }
     } else {

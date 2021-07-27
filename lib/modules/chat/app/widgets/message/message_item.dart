@@ -17,7 +17,7 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMyMessage = message.isMyMessage;
+    final isMyMessage = message.isSentByMe;
     return Padding(
       padding: EdgeInsets.only(
         right: !isMyMessage ? 0.15.sw : 0,

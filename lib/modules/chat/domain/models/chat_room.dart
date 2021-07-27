@@ -12,7 +12,7 @@ class ChatRoom extends UpdatableModel {
   // view variables
   late List<User> members;
   late User privateChatPartner;
-  List<Message> messages;
+  late List<Message> _messages;
   bool isGroup;
   String? creatorUuid;
   DateTime? createdAt;
@@ -23,15 +23,19 @@ class ChatRoom extends UpdatableModel {
     required this.isGroup,
     required this.memberUuids,
     this.creatorUuid,
-    this.messages = const [],
+    List<Message> messages = const [],
     this.createdAt,
-  }) : super(id);
+  }) : super(id) {
+    _messages = messages;
+  }
 
-  String get lastMessage => messages.isNotEmpty ? messages.last.content : '';
+  String get firstMessage => messages.isNotEmpty ? messages.first.content : '';
 
-  String lastSeenTime() {
+  List<Message> get messages => _messages.toSet().toList();
+
+  String lastActiveTime() {
     if (messages.isEmpty) return '';
-    final lastMessageCreatedTime = messages.last.createdAt;
+    final lastMessageCreatedTime = messages.first.createdAt;
     DateFormat formatter;
     if (lastMessageCreatedTime.difference(DateTime.now()).inDays != 0) {
       formatter = DateFormat.Md();
@@ -42,7 +46,11 @@ class ChatRoom extends UpdatableModel {
   }
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ChatRoom && runtimeType == other.runtimeType && internalId == other.internalId;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ChatRoom &&
+          runtimeType == other.runtimeType &&
+          internalId == other.internalId;
 
   @override
   int get hashCode => internalId.hashCode;
@@ -50,7 +58,39 @@ class ChatRoom extends UpdatableModel {
   static final factory = ChatRoomFactory();
 
   @override
-  void updateFromJson(Map json) {}
+  void updateFromJson(Map json) {
+    if (json.containsKey('messages')) {
+      final newMessages =
+          factory.parseMessages((json['messages'] as List<dynamic>?) ?? []);
+      if (newMessages.isEmpty) {
+        _messages = newMessages;
+      } else {
+        updateMessages(newMessages);
+      }
+    }
+  }
+
+  static const int maxStoredMessages = 50;
+
+  void updateMessages(List<Message> newMessages) {
+    final List<Message> tempMessage = [..._messages, ...newMessages];
+    tempMessage.sort();
+    final tempMessageSet = tempMessage.toSet();
+    if (tempMessageSet.length > maxStoredMessages) {
+      _messages = tempMessageSet.take(maxStoredMessages).toList();
+    } else {
+      _messages = tempMessageSet.toList();
+    }
+    notifyUpdate();
+  }
+
+  void updateMessage(Message newMessage) {
+    _messages.add(newMessage);
+    if (_messages.length > maxStoredMessages) {
+      _messages.sublist(0, maxStoredMessages);
+    }
+    notifyUpdate();
+  }
 
   factory ChatRoom.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
@@ -62,7 +102,8 @@ class ChatRoomFactory extends UpdatableModelFactory<ChatRoom> {
   ChatRoom makeFromJson(Map<String, dynamic> json) {
     return ChatRoom(
       id: json['id'] as String,
-      rawName: parseGroupName(json['name'] as String, isGroup: json['isGroup'] as bool?),
+      rawName: parseGroupName(json['name'] as String,
+          isGroup: json['isGroup'] as bool?),
       isGroup: json['isGroup'] as bool,
       memberUuids: List<String>.from(json['members'] as List<dynamic>),
       creatorUuid: json['creator'] as String,
@@ -72,7 +113,10 @@ class ChatRoomFactory extends UpdatableModelFactory<ChatRoom> {
   }
 
   List<Message> parseMessages(List<dynamic> list) {
-    return list.map((message) => Message.fromJson(message as Map<String, dynamic>)).toList();
+    return list
+        .map((message) => Message.fromJson(message as Map<String, dynamic>))
+        .toSet()
+        .toList();
   }
 
   DateTime? parseDateTime(String? time) {

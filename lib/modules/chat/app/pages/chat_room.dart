@@ -21,15 +21,20 @@ class ChatRoomPage extends StatefulWidget {
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
+class _ChatRoomPageState
+    extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
   @override
   ChatRoomPageModel createViewModel() => injector<ChatRoomPageModel>();
 
   @override
   void loadArguments() {
     viewModel.room = widget.room;
-    // viewModel.messages = widget.room.messages.obs;
     super.loadArguments();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -60,7 +65,8 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
             reverse: true,
             builderDelegate: PagedChildBuilderDelegate<Message>(
               itemBuilder: (context, message, index) {
-                final bool isDisplayAvatar = viewModel.checkIsDisplayAvatar(index);
+                final bool isDisplayAvatar =
+                    viewModel.checkIsDisplayAvatar(index);
                 return MessageWidget(
                   message,
                   key: Key(message.objectId),
@@ -68,11 +74,14 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
                   isDisplayAvatar: isDisplayAvatar,
                 );
               },
+              noItemsFoundIndicatorBuilder: (_) => const SizedBox(),
             ),
           ),
         ),
         Obx(
-          () => TypingWidget(isTyping: viewModel.isTyping.value, chatPartner: viewModel.room.privateChatPartner),
+          () => TypingWidget(
+              isTyping: viewModel.isTyping.value,
+              chatPartner: viewModel.room.privateChatPartner),
         ),
         _buildMessageSender(),
       ],
