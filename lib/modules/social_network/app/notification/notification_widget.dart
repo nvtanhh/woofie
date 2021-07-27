@@ -56,20 +56,33 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                 child: PagedListView<int, Notification>(
                   pagingController: viewModel.pagingController,
                   builderDelegate: PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
-                    return ListTile(
-                      leading: MWAvatar(
-                        avatarUrl: item.actor?.avatarUrl,
-                        customSize: 45.w,
-                        borderRadius: 10.r,
+                    return Dismissible(
+                      key: ObjectKey(item.id),
+                      background: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: const [MWIcon(MWIcons.delete)],
                       ),
-                      onTap: () => viewModel.onItemTab(item),
-                      title: generateContentTitle(item),
-                      trailing: defineIcon(item),
-                      subtitle: Text(
-                        time_ago.format(item.createdAt!, locale: 'vi'),
-                        style: UITextStyle.second_12_medium,
+                      confirmDismiss: (DismissDirection direction) async {
+                        if (DismissDirection.endToStart == direction) {
+                          viewModel.onDeleteNotify(item);
+                          return true;
+                        }
+                      },
+                      child: ListTile(
+                        leading: MWAvatar(
+                          avatarUrl: item.actor?.avatarUrl,
+                          customSize: 45.w,
+                          borderRadius: 10.r,
+                        ),
+                        onTap: () => viewModel.onItemTab(item),
+                        title: generateContentTitle(item),
+                        trailing: defineIcon(item),
+                        subtitle: Text(
+                          time_ago.format(item.createdAt!, locale: 'vi'),
+                          style: UITextStyle.second_12_medium,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 10.h),
                       ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 10.h),
                     );
                   }, noItemsFoundIndicatorBuilder: (_) {
                     return Center(
