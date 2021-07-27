@@ -39,7 +39,7 @@ class MediaButton extends StatelessWidget {
       child: !isEmptyImage
           ? MediaPreviewer(
               mediaFile: mediaFile,
-              postMedia: postMedia,
+              media: postMedia,
               onRemove: onRemove,
               onImageEidted: onImageEdited,
               allowEditMedia: allowEditMedia,

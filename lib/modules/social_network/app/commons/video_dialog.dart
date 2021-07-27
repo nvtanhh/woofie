@@ -19,8 +19,20 @@ class VideoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child:
-          Container(color: Colors.black87.withOpacity(.6), child: video != null ? BetterPlayer.file(video!.path) : BetterPlayer.network(videoUrl!)),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black87.withOpacity(.6),
+          iconTheme: const IconThemeData(color: Colors.white),
+        ),
+        body: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Colors.black87.withOpacity(.6),
+          ),
+          child: video != null
+              ? BetterPlayer.file(video!.path)
+              : BetterPlayer.network(videoUrl!),
+        ),
+      ),
     );
   }
 }

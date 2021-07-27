@@ -5,7 +5,7 @@ import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 
 class MediaPreviewer extends StatelessWidget {
-  final Media? postMedia;
+  final Media? media;
   final MediaFile? mediaFile;
   final Function()? onRemove;
   final double? width;
@@ -17,7 +17,7 @@ class MediaPreviewer extends StatelessWidget {
 
   const MediaPreviewer({
     Key? key,
-    this.postMedia,
+    this.media,
     this.mediaFile,
     this.onRemove,
     this.onImageEidted,
@@ -46,13 +46,13 @@ class MediaPreviewer extends StatelessWidget {
       );
     }
 
-    if (postMedia != null && postMedia!.isImage) {
+    if (media != null && media!.isImage) {
       return PostImagePreviewer(
-        postMedia: postMedia,
+        postMedia: media,
         onRemove: onRemove,
       );
-    } else if (postMedia != null && mediaFile!.isVideo) {
-      return PostVideoPreviewer(postVideo: postMedia, onRemove: onRemove);
+    } else if (media != null && media!.isVideo) {
+      return PostVideoPreviewer(postVideo: media, onRemove: onRemove);
     }
     return const SizedBox();
   }
