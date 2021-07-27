@@ -18,6 +18,8 @@ class PostImagePreviewer extends StatelessWidget {
   static const double buttonSize = 20;
 
   final bool allowEditImage;
+  final double? width;
+  final double? height;
 
   const PostImagePreviewer({
     Key? key,
@@ -27,6 +29,8 @@ class PostImagePreviewer extends StatelessWidget {
     this.onWillEditImage,
     this.onPostImageEdited,
     this.allowEditImage = true,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -35,8 +39,8 @@ class PostImagePreviewer extends StatelessWidget {
     final bool isFileImage = postImageFile != null;
 
     final imagePreview = SizedBox(
-      height: 200.0,
-      width: 200,
+      width: width,
+      height: height,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(avatarBorderRadius),
         child: isFileImage
@@ -79,7 +83,8 @@ class PostImagePreviewer extends StatelessWidget {
         width: buttonSize,
         height: buttonSize,
         child: FloatingActionButton(
-          heroTag: Key('postImagePreviewerRemoveButton${postImageFile?.path}${postMedia?.url}'),
+          heroTag: Key(
+              'postImagePreviewerRemoveButton${postImageFile?.path}${postMedia?.url}'),
           onPressed: onRemove,
           backgroundColor: Colors.black54,
           child: const MWIcon(
@@ -97,7 +102,8 @@ class PostImagePreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
-        heroTag: Key('postImagePreviewerEditButton${postImageFile?.path}${postMedia?.url}'),
+        heroTag: Key(
+            'postImagePreviewerEditButton${postImageFile?.path}${postMedia?.url}'),
         onPressed: () => _onWantsToEditImage(context),
         backgroundColor: Colors.black54,
         child: const MWIcon(
@@ -115,7 +121,8 @@ class PostImagePreviewer extends StatelessWidget {
 
     final File? croppedFile = await mediaService.cropImage(postImageFile!);
     if (croppedFile != null && onPostImageEdited != null) {
-      final MediaFile media = await mediaService.convertToMediaFile(croppedFile);
+      final MediaFile media =
+          await mediaService.convertToMediaFile(croppedFile);
       onPostImageEdited!(media);
     }
   }

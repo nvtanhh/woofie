@@ -8,7 +8,9 @@ class ChatRoomItem extends StatelessWidget {
   final ChatRoom room;
   final VoidCallback onChatRoomPressed;
 
-  const ChatRoomItem({Key? key, required this.room, required this.onChatRoomPressed}) : super(key: key);
+  const ChatRoomItem(
+      {Key? key, required this.room, required this.onChatRoomPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +19,11 @@ class ChatRoomItem extends StatelessWidget {
       dense: true,
       contentPadding: EdgeInsets.zero,
       leading: MWAvatar(
-        avatarUrl: room.privateChatPartner?.avatarUrl ?? '',
+        avatarUrl: room.privateChatPartner.avatarUrl ?? '',
         borderRadius: 10.r,
       ),
       title: Text(
-        room.privateChatPartner?.name ?? '',
+        room.privateChatPartner.name ?? '',
         style: UITextStyle.heading_16_semiBold,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,

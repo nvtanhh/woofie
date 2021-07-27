@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/chat/app/widgets/message/typing_widget.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/app/pages/chat_room_model.dart';
 import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/chat_room_nav.dart';
@@ -72,6 +73,11 @@ class _ChatRoomPageState
             ),
           ),
         ),
+        Obx(
+          () => TypingWidget(
+              isTyping: viewModel.isTyping.value,
+              chatPartner: viewModel.room.privateChatPartner),
+        ),
         _buildMessageSender(),
       ],
     );
@@ -89,7 +95,7 @@ class _ChatRoomPageState
         () => MessageSender(
           textController: viewModel.messageSenderTextController,
           onMediaPicked: viewModel.onMediaPicked,
-          seendingMedias: viewModel.sendingMedias,
+          previewMediaMessage: viewModel.sendingMedias,
           onRemoveSeedingMedia: viewModel.onRemoveSeedingMedia,
           onSendMessage: viewModel.onSendMessage,
           isCanSendMessage: viewModel.isCanSendMessage,

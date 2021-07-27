@@ -39,6 +39,7 @@ class ChatRoomPageModel extends BaseViewModel {
   static const int _pageSize = 10;
 
   final keyboardVisibilityController = KeyboardVisibilityController();
+  final RxBool isTyping = false.obs;
 
   ChatRoomPageModel(
     this._mediaService,
@@ -46,9 +47,6 @@ class ChatRoomPageModel extends BaseViewModel {
     this._uploadMediaUsecase,
     this._getMessagesUseCase,
   );
-
-  // List<Message> get messages => _messages.toList();
-  // set messages(List<Message> list) => _messages.value = list;
 
   @override
   void initState() {

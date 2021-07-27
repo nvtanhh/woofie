@@ -8,6 +8,8 @@ class MediaPreviewer extends StatelessWidget {
   final Media? postMedia;
   final MediaFile? mediaFile;
   final Function()? onRemove;
+  final double? width;
+  final double? height;
 
   final ValueChanged<MediaFile>? onImageEidted;
 
@@ -20,6 +22,8 @@ class MediaPreviewer extends StatelessWidget {
     this.onRemove,
     this.onImageEidted,
     this.allowEditMedia = true,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -30,11 +34,15 @@ class MediaPreviewer extends StatelessWidget {
         onRemove: onRemove,
         onPostImageEdited: onImageEidted,
         allowEditImage: allowEditMedia,
+        width: width,
+        height: height,
       );
     } else if (mediaFile != null && mediaFile!.isVideo) {
       return PostVideoPreviewer(
         postVideoFile: mediaFile!.file,
         onRemove: onRemove,
+        width: width,
+        height: height,
       );
     }
 

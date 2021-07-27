@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/chat/app/widgets/message/media_sender.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/media_button.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/theme/ui_text_style.dart';
 
 class MessageSender extends StatelessWidget {
   final TextEditingController textController;
@@ -13,7 +16,7 @@ class MessageSender extends StatelessWidget {
   final Function(List<MediaFile>) onMediaPicked;
   final Function(MediaFile)? onRemoveSeedingMedia;
 
-  final List<MediaFile> seendingMedias;
+  final List<MediaFile> previewMediaMessage;
 
   final VoidCallback onSendMessage;
 
@@ -25,7 +28,7 @@ class MessageSender extends StatelessWidget {
     Key? key,
     required this.textController,
     required this.onMediaPicked,
-    required this.seendingMedias,
+    required this.previewMediaMessage,
     required this.onSendMessage,
     this.onRemoveSeedingMedia,
     this.isCanSendMessage = false,
@@ -44,24 +47,12 @@ class MessageSender extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (seendingMedias.isNotEmpty)
-              SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    children: seendingMedias
-                        .map(
-                          (file) => MediaButton(
-                            key: ObjectKey(file),
-                            mediaFile: file,
-                            onRemove: onRemoveSeedingMedia != null ? () => onRemoveSeedingMedia!(file) : null,
-                            allowEditMedia: false,
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
+            if (previewMediaMessage.isNotEmpty)
+              SizedBox(
+                height: 110.h,
+                child: MediasSenderWidget(
+                    medias: previewMediaMessage,
+                    onRemoveMedia: onRemoveSeedingMedia),
               ),
             DecoratedBox(
               decoration: BoxDecoration(
@@ -89,7 +80,8 @@ class MessageSender extends StatelessWidget {
                 trailing: IconButton(
                   icon: Icon(
                     Icons.send,
-                    color: isCanSendMessage ? UIColor.primary : UIColor.textBody,
+                    color:
+                        isCanSendMessage ? UIColor.primary : UIColor.textBody,
                   ),
                   onPressed: isCanSendMessage ? onSendMessage : null,
                 ),
@@ -102,7 +94,16 @@ class MessageSender extends StatelessWidget {
   }
 
   Future _pickImage() async {
-    final List<MediaFile> medias = await injector<MediaService>().pickMedias(allowMultiple: false);
+    if (previewMediaMessage.isNotEmpty) {
+      Get.snackbar(
+          'Sorry', 'Currently, You can only send at most 1 image each time.',
+          backgroundColor: UIColor.accent2.withOpacity(.8),
+          colorText: UIColor.white,
+          duration: const Duration(seconds: 2));
+      return;
+    }
+    final List<MediaFile> medias =
+        await injector<MediaService>().pickMedias(allowMultiple: false);
     if (medias.isNotEmpty) {
       onMediaPicked(medias);
     }
