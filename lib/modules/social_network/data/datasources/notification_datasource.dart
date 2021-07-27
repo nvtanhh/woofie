@@ -60,4 +60,16 @@ class NotificationDatasource {
     final affectedRows = GetMapFromHasura.getMap(data as Map)["readAllNotify"] as Map;
     return int.tryParse("${affectedRows["affectRow"]}");
   }
+
+  Future deleteNotificationUnread(int notifyId) async {
+    final mutation = """
+mutation MyMutation {
+  delete_notifications_by_pk(id: $notifyId) {
+    id
+  }
+}
+    """;
+    await _hasuraConnect.mutation(mutation);
+    return;
+  }
 }

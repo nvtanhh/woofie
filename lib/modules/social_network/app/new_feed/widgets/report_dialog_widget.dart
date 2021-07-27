@@ -15,7 +15,7 @@ class ReportDialogWidget extends StatelessWidget {
       child: Container(
         width: 200.w,
         height: 280.h,
-        padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         decoration: BoxDecoration(
           color: UIColor.white,
           borderRadius: BorderRadius.circular(20.r),
