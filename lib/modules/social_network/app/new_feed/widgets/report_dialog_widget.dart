@@ -22,21 +22,24 @@ class ReportDialogWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            ListTile(
-              title: Text(
-                "Report",
-                style: UITextStyle.text_header_18_w700,
-              ),
-              trailing: InkWell(
-                onTap: () => Get.back(),
-                child: const MWIcon(
-                  MWIcons.close,
-                  color: UIColor.black,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Report",
+                  style: UITextStyle.text_header_18_w700,
                 ),
-              ),
+                InkWell(
+                  onTap: () => Get.back(),
+                  child: const MWIcon(
+                    MWIcons.close,
+                    color: UIColor.black,
+                  ),
+                )
+              ],
             ),
             SizedBox(
-              height: 10.h,
+              height: 50.h,
             ),
             TextField(
               controller: textEditingController,
@@ -49,7 +52,7 @@ class ReportDialogWidget extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 30.h,
+              height: 50.h,
             ),
             Align(
               child: MWButton(
