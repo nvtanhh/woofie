@@ -29,15 +29,10 @@ class ChatDatasource {
     queryParameters['limit'] = limit;
     queryParameters['skip'] = skip;
 
-    final response = await _httpieService.get(
-        '$baseUrl/$GET_CHAT_ROOM_ENDPOINT',
-        queryParameters: queryParameters,
-        appendAuthorizationToken: true);
+    final response = await _httpieService.get('$baseUrl/$GET_CHAT_ROOM_ENDPOINT', queryParameters: queryParameters, appendAuthorizationToken: true);
     if (response.statusCode == 200) {
       final list = json.decode(response.body)['rooms'] as List;
-      return list
-          .map((room) => ChatRoom.fromJson(room as Map<String, dynamic>))
-          .toList();
+      return list.map((room) => ChatRoom.fromJson(room as Map<String, dynamic>)).toList();
     } else {
       printError(info: 'Failed to get chat rooms: $response');
       throw Error;
@@ -54,8 +49,7 @@ class ChatDatasource {
     required MessageType type,
     String? description,
   }) async {
-    final endpoint =
-        _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
+    final endpoint = _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
 
     final body = {
       'content': content,
@@ -65,11 +59,9 @@ class ChatDatasource {
       body['description'] = description;
     }
 
-    final response = await _httpieService.post('$baseUrl/$endpoint',
-        body: body, appendAuthorizationToken: true);
+    final response = await _httpieService.post('$baseUrl/$endpoint', body: body, appendAuthorizationToken: true);
     if (response.statusCode == 201) {
-      return Message.fromJson(
-          json.decode(response.body)['new_message'] as Map<String, dynamic>);
+      return Message.fromJson(json.decode(response.body)['new_message'] as Map<String, dynamic>);
     } else {
       printError(info: 'Failed to send message: $response');
       throw Error;

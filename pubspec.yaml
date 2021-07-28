@@ -165,13 +165,14 @@ dependencies:
 
   #The official BottomAppBar can only display a notch FAB with app bar, sometimes we need a convex FAB.
   convex_bottom_bar: ^3.0.0
+
   #Making Facebook-like type-to-tag dynamic TextField
   type_ahead_text_field: ^0.0.2
+
 #  #On most operating systems, permissions aren't just granted to apps at install time.
 #  permission_handler: 8.1.2
 
-  # React to keyboard visibility changes.
-  flutter_keyboard_visibility: ^5.0.3
+
 
 dev_dependencies:
   flutter_test:

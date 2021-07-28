@@ -15,20 +15,23 @@ class SavePostRepository {
   final StorageDatasource _storageDatasource;
   final MediaDatasource _mediaDatasource;
 
-  SavePostRepository(this._postDatasource, this._storageDatasource, this._mediaDatasource);
+  SavePostRepository(
+      this._postDatasource, this._storageDatasource, this._mediaDatasource);
 
   Future<Post?> createDraftPost(NewPostData data) async {
     return _postDatasource.createDraftPost(data);
   }
 
-  Future<String?> getPresignedPostMediaUrl(String objectName, String postUuid) async {
+  Future<String?> getPresignedPostMediaUrl(
+      String objectName, String postUuid) async {
     return _storageDatasource.getPresignedUrlForPostMedia(objectName, postUuid);
   }
 
   Future<String?> putObjectByPresignedUrl(String url, File object) async {
-    final bool? isSuccessed = await _storageDatasource.putObjectByPresignedUrl(url, object);
+    final bool? isSuccessed =
+        await _storageDatasource.putObjectByPresignedUrl(url, object);
     if (isSuccessed != null && isSuccessed) {
-      return url.substring(0, url.indexOf('?') + 1);
+      return url.substring(0, url.indexOf('?'));
     } else {
       return null;
     }

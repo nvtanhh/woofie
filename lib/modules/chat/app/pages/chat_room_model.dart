@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
@@ -36,7 +35,6 @@ class ChatRoomPageModel extends BaseViewModel {
   late PagingController<int, Message> pagingController;
   static const int _pageSize = 10;
 
-  final keyboardVisibilityController = KeyboardVisibilityController();
   final RxBool isTyping = false.obs;
   late Function(List<Message>) popOutCallback;
 
@@ -104,8 +102,8 @@ class ChatRoomPageModel extends BaseViewModel {
 
   bool checkIsDisplayAvatar(int index) {
     final messages = pagingController.itemList!;
-    return index == messages.length - 1 ||
-        messages[index].senderId != messages[index + 1].senderId;
+    return index == 0 ||
+        messages[index].senderId != messages[index - 1].senderId;
   }
 
   Future<void> onMediaPicked(List<MediaFile> media) async {
@@ -208,5 +206,8 @@ class ChatRoomPageModel extends BaseViewModel {
         }
       },
     );
+  }
+
+  onMessageTap(Message p1) {
   }
 }

@@ -85,7 +85,7 @@ class ChatRoom extends UpdatableModel {
   }
 
   void updateMessage(Message newMessage) {
-    _messages.add(newMessage);
+    _messages.insert(0, newMessage);
     if (_messages.length > maxStoredMessages) {
       _messages.sublist(0, maxStoredMessages);
     }

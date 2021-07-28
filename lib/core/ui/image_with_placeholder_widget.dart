@@ -64,8 +64,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
                   baseColor: UIColor.white,
                   highlightColor: UIColor.silverSand,
                   child: Container(
-                    width: width ?? 180.0.w,
-                    height: height ?? 180.0.h,
+                    width: isConstraintsSize ? width ?? 180.0.w : null,
+                    height: isConstraintsSize ? height ?? 180.0.h : null,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(10.r),
@@ -99,7 +99,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
         image: DecorationImage(
-          image: AssetGenImage(placeHolderImage ?? "resources/images/fallbacks/avatar-fallback.jpg"),
+          image: AssetGenImage(placeHolderImage ??
+              "resources/images/fallbacks/avatar-fallback.jpg"),
           fit: BoxFit.cover,
         ),
       ),
