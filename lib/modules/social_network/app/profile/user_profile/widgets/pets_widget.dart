@@ -1,32 +1,47 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
 import 'package:meowoof/modules/social_network/app/commons/preview_follow_pet.dart';
+import 'package:meowoof/modules/social_network/domain/events/pet/pet_deleted_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 // ignore: must_be_immutable
 class PetsWidget extends StatelessWidget {
-  final List<Pet> pets;
+  final User user;
   final Function(Pet)? onFollow;
   final bool isMyPets;
-  late RxList<Pet> _list;
+  final RxList<Pet> _list = RxList();
 
   PetsWidget({
     Key? key,
-    required this.pets,
+    required this.user,
     this.onFollow,
     required this.isMyPets,
   }) : super(key: key) {
-    _list = RxList<Pet>();
-    if (pets.isNotEmpty) {
-      _list.assignAll(pets);
+    if (user.currentPets == null) {
+      user.currentPets = [];
+      user.notifyUpdate();
+    } else {
+      user.currentPets?.forEach((element) {
+        printInfo(info: "init: ${element.name}");
+      });
+      _list.assignAll(user.currentPets!);
     }
+    injector<EventBus>().on<PetDeletedEvent>().listen(
+      (event) {
+        _list.removeWhere((element) => element.id == event.pet.id);
+        _list.refresh();
+      },
+    );
   }
 
   Future onPressAddPet() async {
@@ -36,8 +51,13 @@ class PetsWidget extends StatelessWidget {
       ),
     );
     if (petNew != null) {
+      user.currentPets?.forEach((element) {
+        printInfo(info: "addNew: ${element.name}");
+      });
       _list.add(petNew as Pet);
       _list.refresh();
+      user.currentPets?.add(petNew);
+      user.notifyUpdate();
     }
   }
 
@@ -55,7 +75,7 @@ class PetsWidget extends StatelessWidget {
         ),
         SizedBox(
           height: 180.h,
-          child: pets.isEmpty
+          child: user.currentPets?.isEmpty == true
               ? isMyPets
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,

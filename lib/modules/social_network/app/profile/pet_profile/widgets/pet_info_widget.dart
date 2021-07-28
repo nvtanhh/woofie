@@ -18,6 +18,7 @@ class PetInfoWidget extends StatelessWidget {
   final Function(Pet)? onPetReport;
   final Function(Pet)? onPetBlock;
   final Function(Pet)? followPet;
+  final Function(Pet)? onDeletePost;
   final RxBool isFollowing = RxBool(false);
 
   PetInfoWidget({
@@ -27,6 +28,7 @@ class PetInfoWidget extends StatelessWidget {
     this.onPetReport,
     this.onPetBlock,
     this.followPet,
+    this.onDeletePost,
   }) : super(key: key) {
     isFollowing.value = pet.isFollowing ?? false;
   }
@@ -90,7 +92,9 @@ class PetInfoWidget extends StatelessWidget {
             ),
             InkWell(
               onTap: () => Get.to(
-                () => OtherInfoMenuWidget(),
+                () => OtherInfoMenuWidget(
+                  onDeletePost: () => onDeletePost?.call(pet),
+                ),
               ),
               child: Container(
                 width: 40.w,

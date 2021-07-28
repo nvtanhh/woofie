@@ -275,4 +275,16 @@ mutation MyMutation {
     final petWormFlushes = GetMapFromHasura.getMap(data as Map)["get_all_user_in_post"] as List;
     return petWormFlushes.map((e) => User.fromJson(e as Map<String, dynamic>)).toList();
   }
+
+  Future<bool> deletePet(int petId) async {
+    final manution = """
+mutation MyMutation {
+  delete_pets_by_pk(id: $petId) {
+    id
+  }
+}
+    """;
+    await _hasuraConnect.mutation(manution);
+    return true;
+  }
 }

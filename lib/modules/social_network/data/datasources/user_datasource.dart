@@ -30,7 +30,7 @@ class UserDatasource {
   Future<User> getUserProfile(int userId) async {
     final query = """
     query MyQuery {
-      users(where: {id: {_eq: $userId}}) {
+      users_by_pk(id: $userId) {
         id
         uuid
         name
@@ -57,8 +57,7 @@ class UserDatasource {
     }
     """;
     final data = await _hasuraConnect.query(query);
-    final listUser = GetMapFromHasura.getMap(data as Map)["users"] as List;
-    return User.fromJson(listUser[0] as Map<String, dynamic>);
+    return User.fromJson(GetMapFromHasura.getMap(data as Map)["users_by_pk"] as Map<String, dynamic>);
   }
 
   Future reportUser(int userID) async {

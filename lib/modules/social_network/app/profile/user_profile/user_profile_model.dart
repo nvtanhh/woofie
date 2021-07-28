@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:async/async.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
@@ -7,6 +10,7 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
 import 'package:meowoof/modules/social_network/app/save_post/post_service.dart';
+import 'package:meowoof/modules/social_network/domain/events/pet/pet_deleted_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -22,6 +26,7 @@ class UserProfileModel extends BaseViewModel {
   int nextPageKey = 0;
   bool isMe = false;
   User? user;
+  StreamSubscription? _petDeletedStreamSubscription;
   final GetUseProfileUseacse _getUseProfileUseacse;
   final GetPostOfUserUsecase _getPostOfUserUsecase;
   final LogoutUsecase _logoutUsecase;
@@ -31,6 +36,7 @@ class UserProfileModel extends BaseViewModel {
   late List<Post> posts;
   final RxBool _isLoaded = RxBool(false);
   final PostService postService;
+  final EventBus _eventBus;
   CancelableOperation? _cancelableOperationLoadInit, _cancelableOperationLoadMorePost;
 
   UserProfileModel(
@@ -41,6 +47,7 @@ class UserProfileModel extends BaseViewModel {
     this._deletePostUsecase,
     this._toastService,
     this.postService,
+    this._eventBus,
   );
 
   @override
@@ -51,7 +58,18 @@ class UserProfileModel extends BaseViewModel {
       user = injector<LoggedInUser>().user;
     }
     _cancelableOperationLoadInit = CancelableOperation.fromFuture(initData());
+    registerListenPetDeleted();
     super.initState();
+  }
+
+  void registerListenPetDeleted() {
+    _petDeletedStreamSubscription = _eventBus.on<PetDeletedEvent>().listen(
+      (event) {
+        user?.currentPets?.removeWhere((element) => element.id == event.pet.id);
+        user?.notifyUpdate();
+        User.factory.addToCache(user!);
+      },
+    );
   }
 
   Future initData() async {
@@ -65,13 +83,17 @@ class UserProfileModel extends BaseViewModel {
   }
 
   Future _getUserProfile() async {
-    return call(() async => user = await _getUseProfileUseacse.call(user!.id), showLoading: false, onSuccess: () {});
+    return call(
+      () async => user = await _getUseProfileUseacse.call(user!.id),
+      showLoading: false,
+      onSuccess: () {},
+    );
   }
 
   Future _loadMorePost(int pageKey) async {
     try {
       posts = await _getPostOfUserUsecase.call(userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
-      if (postService.pagingController.itemList == null) {
+      if (postService.pagingController.itemList == null || postService.pagingController.itemList?.isEmpty == true) {
         posts.insert(
           0,
           Post(
@@ -135,6 +157,7 @@ class UserProfileModel extends BaseViewModel {
     postService.disposeState();
     _cancelableOperationLoadInit?.cancel();
     _cancelableOperationLoadMorePost?.cancel();
+    _petDeletedStreamSubscription?.cancel();
     super.disposeState();
   }
 }

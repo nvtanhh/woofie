@@ -60,6 +60,7 @@ class _PetProfileState extends BaseViewState<PetProfile, PetProfileModel> with T
                         onPetBlock: viewModel.onPetBlock,
                         followPet: viewModel.followPet,
                         onPetReport: viewModel.onPetReport,
+                        onDeletePost: viewModel.onDeletePost,
                       ),
                       TabBar(
                         tabs: [
