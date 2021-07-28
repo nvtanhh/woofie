@@ -94,6 +94,7 @@ class PetInfoWidget extends StatelessWidget {
               onTap: () => Get.to(
                 () => OtherInfoMenuWidget(
                   onDeletePost: () => onDeletePost?.call(pet),
+                  isMyPet: isMyPet,
                 ),
               ),
               child: Container(

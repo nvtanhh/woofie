@@ -47,7 +47,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
                     ),
                     Expanded(
                       child: RefreshIndicator(
-                        onRefresh: () async => viewModel.postService.onRefresh(),
+                        onRefresh: () async => viewModel.onRefresh(),
                         child: PagedListView<int, Post>(
                           pagingController: viewModel.postService.pagingController,
                           builderDelegate: PagedChildBuilderDelegate(

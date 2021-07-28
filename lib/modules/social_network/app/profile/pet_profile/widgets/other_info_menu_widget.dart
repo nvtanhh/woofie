@@ -7,9 +7,14 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class OtherInfoMenuWidget extends StatelessWidget {
+  final bool isMyPet;
   final Function? onDeletePost;
 
-  const OtherInfoMenuWidget({Key? key, this.onDeletePost}) : super(key: key);
+  const OtherInfoMenuWidget({
+    Key? key,
+    this.onDeletePost,
+    required this.isMyPet,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +75,7 @@ class OtherInfoMenuWidget extends StatelessWidget {
               SizedBox(
                 height: 20.h,
               ),
+              if(isMyPet)
               InkWell(
                 onTap: () {
                   Get.back();

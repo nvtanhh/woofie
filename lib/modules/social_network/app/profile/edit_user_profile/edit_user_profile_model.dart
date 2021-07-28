@@ -100,11 +100,14 @@ class EditUserProfileWidgetModel extends BaseViewModel {
         avatarUrl: newAvatarUrl,
         locationId: location?.id,
       );
-      user.locationId = location!.id;
-      user.location = location;
+      if(checkNeedUpdateOrCreateLocation()){
+        user.locationId = location!.id;
+        user.location = location;
+      }
       user.updateFromJson(map);
       user.notifyUpdate();
     } catch (err) {
+      printInfo(info: err.toString());
       _toastService.error(
         message: "Update error",
         context: Get.context!,
@@ -190,7 +193,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
 
   Future pickMedia() async {
     List<File>? files;
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ["jpg","png","JPG","PNG"]);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     } else {
