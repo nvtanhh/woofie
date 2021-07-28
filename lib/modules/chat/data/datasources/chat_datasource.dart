@@ -18,6 +18,8 @@ class ChatDatasource {
   // ignore: constant_identifier_names
   static const GET_CHAT_ROOM_ENDPOINT = 'api/room/';
   // ignore: constant_identifier_names
+  static const GET_MESSAGES_ENDPOINT = 'api/message/{room_id}';
+  // ignore: constant_identifier_names
   static const SEND_MESSAGE_ENDPOINT = 'api/message/{room_id}';
 
   ChatDatasource(this._httpieService, this._urlParser) {
@@ -29,18 +31,40 @@ class ChatDatasource {
     queryParameters['limit'] = limit;
     queryParameters['skip'] = skip;
 
-    final response = await _httpieService.get('$baseUrl/$GET_CHAT_ROOM_ENDPOINT', queryParameters: queryParameters, appendAuthorizationToken: true);
+    final response = await _httpieService.get(
+        '$baseUrl/$GET_CHAT_ROOM_ENDPOINT',
+        queryParameters: queryParameters,
+        appendAuthorizationToken: true);
     if (response.statusCode == 200) {
       final list = json.decode(response.body)['rooms'] as List;
-      return list.map((room) => ChatRoom.fromJson(room as Map<String, dynamic>)).toList();
+      return list
+          .map((room) => ChatRoom.fromJson(room as Map<String, dynamic>))
+          .toList();
     } else {
       printError(info: 'Failed to get chat rooms: $response');
       throw Error;
     }
   }
 
-  Future<List<Message>> getMessages(int limit, int skip) async {
-    return [];
+  Future<List<Message>> getMessagesWithRoomId(
+      int limit, int skip, String roomId) async {
+    final Map<String, dynamic> queryParameters = {
+      'limit': limit,
+      'skip': skip,
+    };
+    final endpoint =
+        _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
+    final response = await _httpieService.get('$baseUrl/$endpoint',
+        queryParameters: queryParameters, appendAuthorizationToken: true);
+    if (response.statusCode == 200) {
+      final list = json.decode(response.body)['messages'] as List;
+      return list
+          .map((room) => Message.fromJson(room as Map<String, dynamic>))
+          .toList();
+    } else {
+      printError(info: 'Failed to get more messages: $response');
+      throw Error;
+    }
   }
 
   Future<Message> sendMessages({
@@ -49,7 +73,8 @@ class ChatDatasource {
     required MessageType type,
     String? description,
   }) async {
-    final endpoint = _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
+    final endpoint =
+        _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
 
     final body = {
       'content': content,
@@ -59,9 +84,11 @@ class ChatDatasource {
       body['description'] = description;
     }
 
-    final response = await _httpieService.post('$baseUrl/$endpoint', body: body, appendAuthorizationToken: true);
+    final response = await _httpieService.post('$baseUrl/$endpoint',
+        body: body, appendAuthorizationToken: true);
     if (response.statusCode == 201) {
-      return Message.fromJson(json.decode(response.body)['new_message'] as Map<String, dynamic>);
+      return Message.fromJson(
+          json.decode(response.body)['new_message'] as Map<String, dynamic>);
     } else {
       printError(info: 'Failed to send message: $response');
       throw Error;

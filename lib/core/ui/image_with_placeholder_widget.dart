@@ -99,8 +99,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
         image: DecorationImage(
-          image: AssetGenImage(placeHolderImage ??
-              "resources/images/fallbacks/avatar-fallback.jpg"),
+          image: AssetGenImage(placeHolderImage ?? "resources/images/fallbacks/avatar-fallback.jpg"),
           fit: BoxFit.cover,
         ),
       ),

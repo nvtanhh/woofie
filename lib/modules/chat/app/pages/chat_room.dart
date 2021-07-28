@@ -70,7 +70,6 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
                   key: Key(message.objectId),
                   chatPartner: viewModel.room.privateChatPartner,
                   isDisplayAvatar: isDisplayAvatar,
-                  onMessageTap: viewModel.onMessageTap,
                 );
               },
               noItemsFoundIndicatorBuilder: (_) => const SizedBox(),

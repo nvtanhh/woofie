@@ -46,11 +46,7 @@ class ChatRoom extends UpdatableModel {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ChatRoom &&
-          runtimeType == other.runtimeType &&
-          internalId == other.internalId;
+  bool operator ==(Object other) => identical(this, other) || other is ChatRoom && runtimeType == other.runtimeType && internalId == other.internalId;
 
   @override
   int get hashCode => internalId.hashCode;
@@ -60,8 +56,7 @@ class ChatRoom extends UpdatableModel {
   @override
   void updateFromJson(Map json) {
     if (json.containsKey('messages')) {
-      final newMessages =
-          factory.parseMessages((json['messages'] as List<dynamic>?) ?? []);
+      final newMessages = factory.parseMessages((json['messages'] as List<dynamic>?) ?? []);
       if (newMessages.isEmpty) {
         _messages = newMessages;
       } else {
@@ -102,8 +97,7 @@ class ChatRoomFactory extends UpdatableModelFactory<ChatRoom> {
   ChatRoom makeFromJson(Map<String, dynamic> json) {
     return ChatRoom(
       id: json['id'] as String,
-      rawName: parseGroupName(json['name'] as String,
-          isGroup: json['isGroup'] as bool?),
+      rawName: parseGroupName(json['name'] as String, isGroup: json['isGroup'] as bool?),
       isGroup: json['isGroup'] as bool,
       memberUuids: List<String>.from(json['members'] as List<dynamic>),
       creatorUuid: json['creator'] as String,
@@ -113,10 +107,7 @@ class ChatRoomFactory extends UpdatableModelFactory<ChatRoom> {
   }
 
   List<Message> parseMessages(List<dynamic> list) {
-    return list
-        .map((message) => Message.fromJson(message as Map<String, dynamic>))
-        .toSet()
-        .toList();
+    return list.map((message) => Message.fromJson(message as Map<String, dynamic>)).toSet().toList();
   }
 
   DateTime? parseDateTime(String? time) {

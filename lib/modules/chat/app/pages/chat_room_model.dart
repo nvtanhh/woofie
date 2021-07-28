@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
@@ -14,15 +16,19 @@ import 'package:meowoof/modules/social_network/domain/models/post/media_file.dar
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:path/path.dart';
+// ignore: library_prefixes
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class ChatRoomPageModel extends BaseViewModel {
-  final MediaService _mediaService;
   final GetPresignedUrlForChatUsecase _getPresignedUrlUsecase;
   final UploadMediaUsecase _uploadMediaUsecase;
   final GetMessagesUseCase _getMessagesUseCase;
   final SendMessagesUsecase _sendMessagesUsecase;
+
+  final MediaService _mediaService;
+  final FirebaseAuth _auth;
 
   late ChatRoom room;
 
@@ -38,12 +44,15 @@ class ChatRoomPageModel extends BaseViewModel {
   final RxBool isTyping = false.obs;
   late Function(List<Message>) popOutCallback;
 
+  late IO.Socket _socket;
+
   ChatRoomPageModel(
     this._mediaService,
     this._getPresignedUrlUsecase,
     this._uploadMediaUsecase,
     this._getMessagesUseCase,
     this._sendMessagesUsecase,
+    this._auth,
   );
 
   @override
@@ -55,18 +64,32 @@ class ChatRoomPageModel extends BaseViewModel {
         .addPageRequestListener((pageKey) => _loadMoreMessage(pageKey));
 
     _setupListenCanSendMessage();
+    // _initChatSocket();
+  }
+
+  Future<void> _initChatSocket() async {
+    final token = await _auth.currentUser?.getIdToken();
+    _socket = IO.io(
+        BackendConfig.BASE_CHAT_URL,
+        IO.OptionBuilder().setQuery({
+          'token': token,
+        }).setTransports(['websocket']).build());
+    _socket.onConnect((_) {
+      _socket.emit('msg', 'test');
+    });
+    _socket.onDisconnect((_) {});
   }
 
   @override
   void disposeState() {
-    // popOutCallback(pagingController.itemList ?? []);
     pagingController.dispose();
     super.disposeState();
   }
 
   Future<void> _loadMoreMessage(int pageKey) async {
     try {
-      final newItems = await _getMessagesUseCase.call(skip: pageKey);
+      final newItems =
+          await _getMessagesUseCase.call(skip: pageKey, roomId: room.id);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
@@ -206,8 +229,5 @@ class ChatRoomPageModel extends BaseViewModel {
         }
       },
     );
-  }
-
-  onMessageTap(Message p1) {
   }
 }

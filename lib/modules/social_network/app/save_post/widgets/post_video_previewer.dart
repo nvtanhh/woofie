@@ -109,8 +109,7 @@ class PostVideoPreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
-        heroTag: Key(
-            'postVideoPreviewerRemoveButton${postVideoFile?.path}${postVideo?.url}'),
+        heroTag: Key('postVideoPreviewerRemoveButton${postVideoFile?.path}${postVideo?.url}'),
         onPressed: onRemove,
         backgroundColor: Colors.black54,
         child: const MWIcon(
@@ -127,16 +126,13 @@ class PostVideoPreviewer extends StatelessWidget {
       width: playIconSize ?? buttonSize,
       height: playIconSize ?? buttonSize,
       child: FloatingActionButton(
-        heroTag: Key(
-            'postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}'),
+        heroTag: Key('postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}'),
         backgroundColor: Colors.black54,
         onPressed: () => _onWantsToPlay(context),
         child: Icon(
           Icons.play_arrow,
           color: Colors.white,
-          size: playIconSize == null
-              ? 16
-              : (playIconSize! - playIconSize! / 6.toInt()),
+          size: playIconSize == null ? 16 : (playIconSize! - playIconSize! / 6.toInt()),
         ),
       ),
     );
@@ -150,8 +146,7 @@ class PostVideoPreviewer extends StatelessWidget {
     );
   }
 
-  Widget _wrapImageWidgetForThumbnail(Widget image,
-      {double? width, double? height, bool isConstraintsSize = true}) {
+  Widget _wrapImageWidgetForThumbnail(Widget image, {double? width, double? height, bool isConstraintsSize = true}) {
     return SizedBox(
       height: isConstraintsSize ? height ?? 80.h : null,
       width: isConstraintsSize ? width ?? 80.w : null,

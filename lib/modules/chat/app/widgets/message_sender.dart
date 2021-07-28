@@ -73,6 +73,9 @@ class MessageSender extends StatelessWidget {
                     errorBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
                   ),
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
                   onTap: onTap,
                 ),
                 trailing: IconButton(
