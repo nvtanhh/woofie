@@ -30,10 +30,12 @@ class PreviewFollowPet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.to(() => PetProfile(
-            pet: pet,
-            isMyPet: isMyPet,
-          )),
+      onTap: () => Get.to(
+        () => PetProfile(
+          pet: pet,
+          isMyPet: isMyPet,
+        ),
+      ),
       child: Container(
         width: 115.w,
         height: 180.h,

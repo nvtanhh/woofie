@@ -1,12 +1,16 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccinated/vaccinated_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed.dart';
+import 'package:meowoof/modules/social_network/domain/events/pet/pet_deleted_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_pet_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/follow_pet_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_detail_info_pet_usecase.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -18,10 +22,14 @@ class PetProfileModel extends BaseViewModel {
   final RxInt _tabIndex = RxInt(0);
   final GetDetailInfoPetUsecase _getDetailInfoPetUsecase;
   final FollowPetUsecase _followPetUsecase;
+  final DeletePetUsecase _deletePetUsecase;
+  final EventBus _eventBus;
 
   PetProfileModel(
     this._getDetailInfoPetUsecase,
     this._followPetUsecase,
+    this._deletePetUsecase,
+    this._eventBus,
   );
 
   @override
@@ -95,6 +103,37 @@ class PetProfileModel extends BaseViewModel {
     );
   }
 
+  void onDeletePost(Pet mPet) {
+    Get.defaultDialog(
+      title: "Do you want delete ${mPet.name}?",
+      content: const Text(""),
+      onCancel: () {
+        return;
+      },
+      onConfirm: () {
+        Get.back();
+        deletePet(mPet);
+        return;
+      },
+      barrierDismissible: false,
+      backgroundColor: UIColor.white,
+      buttonColor: UIColor.primary,
+      textCancel: "Cancel",
+      textConfirm: "Confirm",
+      confirmTextColor: UIColor.white,
+    );
+  }
+
+  void deletePet(Pet mPet) {
+    call(
+      () async => _deletePetUsecase.run(mPet.id),
+      onSuccess: () {
+        _eventBus.fire(PetDeletedEvent(mPet));
+        Get.back();
+      },
+    );
+  }
+
   bool get isLoaded => _isLoaded.value;
 
   set isLoaded(bool value) {
@@ -111,5 +150,11 @@ class PetProfileModel extends BaseViewModel {
 
   set tabIndex(int value) {
     _tabIndex.value = value;
+  }
+
+  @override
+  void disposeState() {
+    tabController.dispose();
+    super.disposeState();
   }
 }

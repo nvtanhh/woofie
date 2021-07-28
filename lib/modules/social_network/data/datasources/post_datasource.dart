@@ -179,16 +179,14 @@ class PostDatasource {
 
   Future<bool> deletePost(int idPost) async {
     final manution = """
-    mutation MyMutation {
-      delete_posts(where: {id: {_eq: $idPost}}) {
-        affected_rows
-      }
-    }
+mutation MyMutation {
+  delete_posts_by_pk(id: $idPost) {
+    id
+  }
+}
     """;
-    final data = await _hasuraConnect.mutation(manution);
-    final deletePosts = GetMapFromHasura.getMap(data as Map)["delete_posts"] as Map;
-    final affectedRows = deletePosts["affected_rows"] as int;
-    return affectedRows >= 1;
+    await _hasuraConnect.mutation(manution);
+    return true;
   }
 
   Future<List<Post>> getPostByType(

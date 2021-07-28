@@ -105,4 +105,8 @@ class ProfileRepository {
       int petId, String? name, String? bio, int? breed, String? avatarUrl, String? uuid, DateTime? dob, Gender? gender) {
     return _petDatasource.updatePetInformation(petId, name, bio, breed, avatarUrl, uuid, dob, gender);
   }
+
+  Future<bool> deletePet(int petId) {
+    return _petDatasource.deletePet(petId);
+  }
 }
