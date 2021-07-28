@@ -31,9 +31,6 @@ class PetsWidget extends StatelessWidget {
       user.currentPets = [];
       user.notifyUpdate();
     } else {
-      user.currentPets?.forEach((element) {
-        printInfo(info: "init: ${element.name}");
-      });
       _list.assignAll(user.currentPets!);
     }
     injector<EventBus>().on<PetDeletedEvent>().listen(
@@ -51,9 +48,6 @@ class PetsWidget extends StatelessWidget {
       ),
     );
     if (petNew != null) {
-      user.currentPets?.forEach((element) {
-        printInfo(info: "addNew: ${element.name}");
-      });
       _list.add(petNew as Pet);
       _list.refresh();
       user.currentPets?.add(petNew);

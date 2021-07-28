@@ -152,6 +152,10 @@ class UserProfileModel extends BaseViewModel {
     await Get.offAll(() => WelcomeWidget());
   }
 
+  void onRefresh() {
+    nextPageKey=0;
+    postService.onRefresh();
+  }
   @override
   void disposeState() {
     postService.disposeState();
@@ -160,4 +164,5 @@ class UserProfileModel extends BaseViewModel {
     _petDeletedStreamSubscription?.cancel();
     super.disposeState();
   }
+
 }

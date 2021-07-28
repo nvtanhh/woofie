@@ -267,9 +267,10 @@ class PostService extends BaseViewModel {
     );
   }
 
- void onRefresh() {
+  void onRefresh() {
     pagingController.refresh();
- }
+  }
+
   Future onReportPost(Post post) async {
     String? content = await injector<DialogService>().showInputReport() as String?;
     if (content == null) return;

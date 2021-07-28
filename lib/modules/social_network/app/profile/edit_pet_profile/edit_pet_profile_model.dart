@@ -93,7 +93,7 @@ class EditPetProfileWidgetModel extends BaseViewModel {
 
   Future onUpdateAvatarClick() async {
     List<File>? files;
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ["jpg","png","JPG","PNG"]);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -108,7 +108,6 @@ class EditPetProfileWidgetModel extends BaseViewModel {
   Future<String?> _uploadMediaItem(File mediaFile) async {
     final String fileName = basename(mediaFile.path);
     // get presigned URL
-    printInfo(info: 'Getting presigned URL');
     final String? preSignedUrl = await _getPresignedAvatarPetUrlUsecase.run(fileName, pet.uuid ??= const Uuid().v4());
     // upload media to s3
     if (preSignedUrl != null) {
