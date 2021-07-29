@@ -34,7 +34,7 @@ Future main() async {
       supportedLocales: const [
         Locale('vi'),
         Locale(
-          'en',
+          'en'
         )
       ],
       path: 'resources/langs',

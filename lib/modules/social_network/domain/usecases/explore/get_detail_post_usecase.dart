@@ -8,7 +8,7 @@ class GetDetailPostUsecase {
 
   GetDetailPostUsecase(this._exploreRepository);
 
-  Future<Post> call(int postId) {
+  Future<Map<String,dynamic>> call(int postId) {
     return _exploreRepository.getDetailPost(postId);
   }
 }

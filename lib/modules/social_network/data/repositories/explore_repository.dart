@@ -32,7 +32,7 @@ class ExploreRepository {
     );
   }
 
-  Future<Post> getDetailPost(int postId) {
+  Future<Map<String,dynamic>> getDetailPost(int postId) {
     return _postDatasource.getDetailPost(postId);
   }
 

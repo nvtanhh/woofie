@@ -54,8 +54,8 @@ class NewFeedRepository {
     return _postDatasource.deletePost(post);
   }
 
-  Future<Post> refreshPost(int postId) {
-    return _postDatasource.getDetailPost(postId);
+  Future<Post> refreshPost(int postId)async {
+    return Post.fromJson(await _postDatasource.getDetailPost(postId));
   }
 
   Future<List<User>> getAllUserInPost(int postId, int limit, int offset) {

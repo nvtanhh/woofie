@@ -22,7 +22,7 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
   Future getPostDetail() async {
     await call(
       () async {
-        post = await _getDetailPostUsecase.call(post.id);
+        post.update(await _getDetailPostUsecase.call(post.id));
       },
       onSuccess: () {
         isLoaded = true;

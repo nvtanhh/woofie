@@ -49,7 +49,7 @@ class PreviewFollowPet extends StatelessWidget {
           color: UIColor.white,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Obx(
               () => ImageWithPlaceHolderWidget(
@@ -71,32 +71,35 @@ class PreviewFollowPet extends StatelessWidget {
             SizedBox(
               height: 5.h,
             ),
-            Expanded(
-              child: Obx(
-                () => Text(
-                  pet.updateSubjectValue.bio ?? "",
-                  style: UITextStyle.text_body_12_w600,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+            Obx(
+              () => Text(
+                pet.updateSubjectValue.bio ?? "",
+                style: UITextStyle.text_body_12_w600,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             SizedBox(
               height: 5.h,
             ),
             if (onFollow != null)
-              Obx(
-                () => ButtonWidget(
-                  onPress: () {
-                    isFollowing.value = !isFollowing.value;
-                    onFollow?.call(pet);
-                  },
-                  title: isFollowing.value ? LocaleKeys.profile_un_follow.trans() : LocaleKeys.profile_follow.trans(),
-                  titleStyle: UITextStyle.white_10_w600,
-                  width: 60.w,
-                  height: 22.h,
-                  backgroundColor: isFollowing.value ? UIColor.textSecondary : UIColor.primary,
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Obx(
+                    () => ButtonWidget(
+                      onPress: () {
+                        isFollowing.value = !isFollowing.value;
+                        onFollow?.call(pet);
+                      },
+                      title: isFollowing.value ? LocaleKeys.profile_un_follow.trans() : LocaleKeys.profile_follow.trans(),
+                      titleStyle: UITextStyle.white_10_w600,
+                      width: 60.w,
+                      height: 22.h,
+                      backgroundColor: isFollowing.value ? UIColor.textSecondary : UIColor.primary,
+                    ),
+                  ),
+                ],
               ),
           ],
         ),

@@ -47,7 +47,7 @@ class PostDetailWidgetModel extends BaseViewModel {
   Future checkNeedReloadPost() async {
     if (post.creator == null) {
       await call(
-        () async => post = await _getDetailPostUsecase.call(post.id),
+        () async => post.update(await _getDetailPostUsecase.call(post.id)) ,
         onSuccess: () {
           _loadComments(nextPageKey);
           commentServiceModel.pagingController.addPageRequestListener((pageKey) {

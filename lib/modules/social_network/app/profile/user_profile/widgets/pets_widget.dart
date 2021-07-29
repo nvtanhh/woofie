@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
@@ -115,37 +116,37 @@ class PetsWidget extends StatelessWidget {
                   () => ListView.builder(
                     itemBuilder: (context, index) {
                       if (isMyPets && index == _list.length) {
-                        return Container(
-                          width: 115.w,
-                          height: 180.h,
-                          margin: EdgeInsets.all(5.w),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: UIColor.dimGray,
-                                blurRadius: 5,
-                                offset: Offset(2, 0),
-                                spreadRadius: 2,
-                              ),
-                            ],
-                            color: UIColor.white,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                onPressed: () => onPressAddPet(),
-                                icon: const Icon(
-                                  Icons.add_box_outlined,
+                        return InkWell(
+                          onTap: () => onPressAddPet(),
+                          child: Container(
+                            width: 115.w,
+                            height: 180.h,
+                            margin: EdgeInsets.all(5.w),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: UIColor.dimGray,
+                                  blurRadius: 5,
+                                  offset: Offset(2, 0),
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                              color: UIColor.white,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const MWIcon(
+                                  MWIcons.addOutlined,
                                   color: UIColor.textBody,
                                 ),
-                              ),
-                              Text(
-                                LocaleKeys.profile_add_pet.trans(),
-                                style: UITextStyle.text_body_12_w600,
-                              ),
-                            ],
+                                Text(
+                                  LocaleKeys.profile_add_pet.trans(),
+                                  style: UITextStyle.text_body_12_w600,
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }
@@ -160,13 +161,6 @@ class PetsWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                   ),
                 ),
-        ),
-        SizedBox(
-          height: 5.h,
-        ),
-        Text(
-          LocaleKeys.profile_post.trans(),
-          style: UITextStyle.text_header_18_w600,
         ),
       ],
     );

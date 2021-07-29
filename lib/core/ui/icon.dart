@@ -142,7 +142,7 @@ class MWIcons {
   static const retry = MWIconData(nativeIcon: Icons.refresh);
   static const camera = MWIconData(nativeIcon: Icons.camera_alt_outlined);
   static const info = MWIconData(nativeIcon: Icons.info_rounded);
-
+  static const addOutlined = MWIconData(nativeIcon: Icons.my_library_add_outlined);
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);

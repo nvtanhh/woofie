@@ -27,7 +27,7 @@ class UserDatasource {
     return;
   }
 
-  Future<User> getUserProfile(int userId) async {
+  Future<Map<String,dynamic>> getUserProfile(int userId) async {
     final query = """
     query MyQuery {
       users_by_pk(id: $userId) {
@@ -57,7 +57,7 @@ class UserDatasource {
     }
     """;
     final data = await _hasuraConnect.query(query);
-    return User.fromJson(GetMapFromHasura.getMap(data as Map)["users_by_pk"] as Map<String, dynamic>);
+    return GetMapFromHasura.getMap(data as Map)["users_by_pk"] as Map<String, dynamic>;
   }
 
   Future reportUser(int userID) async {

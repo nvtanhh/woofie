@@ -228,7 +228,7 @@ mutation MyMutation {
     return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
   }
 
-  Future<Post> getDetailPost(int postId) async {
+  Future<Map<String,dynamic>> getDetailPost(int postId) async {
     final query = """
     query getPostDetail {
       posts_by_pk(id: $postId) {
@@ -274,8 +274,7 @@ mutation MyMutation {
     }
     """;
     final data = await _hasuraConnect.query(query);
-    final post = GetMapFromHasura.getMap(data as Map)["posts_by_pk"] as Map<String, dynamic>;
-    return Post.fromJson(post);
+    return GetMapFromHasura.getMap(data as Map)["posts_by_pk"] as Map<String, dynamic>;
   }
 
   Future<Post> createDraftPost(NewPostData newPostData) async {

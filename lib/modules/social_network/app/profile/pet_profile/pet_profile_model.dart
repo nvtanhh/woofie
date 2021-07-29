@@ -41,7 +41,7 @@ class PetProfileModel extends BaseViewModel {
   Future _loadPetDetailInfo() async {
     await call(
       () async {
-        pet = await _getDetailInfoPetUsecase.call(pet.id);
+        pet.update(await _getDetailInfoPetUsecase.call(pet.id));
       },
       onSuccess: () {
         _isLoaded.value = true;
@@ -56,9 +56,13 @@ class PetProfileModel extends BaseViewModel {
   void onPetBlock(Pet pet) {}
 
   void followPet(Pet pet) {
-    call(() => _followPetUsecase.call(pet.id), onSuccess: () {}, onFailure: (err) {
-      printError(info: err.toString());
-    });
+    call(
+      () => _followPetUsecase.call(pet.id),
+      onSuccess: () {},
+      onFailure: (err) {
+        printError(info: err.toString());
+      },
+    );
   }
 
   void onPetReport(Pet pet) {}

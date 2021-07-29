@@ -84,7 +84,7 @@ class UserProfileModel extends BaseViewModel {
 
   Future _getUserProfile() async {
     return call(
-      () async => user = await _getUseProfileUseacse.call(user!.id),
+      () async => user?.update(await _getUseProfileUseacse.call(user!.id)) ,
       showLoading: false,
       onSuccess: () {},
     );
