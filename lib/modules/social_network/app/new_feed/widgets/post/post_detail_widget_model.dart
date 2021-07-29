@@ -47,12 +47,15 @@ class PostDetailWidgetModel extends BaseViewModel {
   Future checkNeedReloadPost() async {
     if (post.creator == null) {
       await call(
-        () async => post.update(await _getDetailPostUsecase.call(post.id)) ,
+        () async => post.update(await _getDetailPostUsecase.call(post.id)),
         onSuccess: () {
           _loadComments(nextPageKey);
-          commentServiceModel.pagingController.addPageRequestListener((pageKey) {
-            _loadComments(pageKey);
-          });
+          commentServiceModel.pagingController.addPageRequestListener(
+            (pageKey) {
+              _loadComments(pageKey);
+            },
+          );
+          commentServiceModel.registerSubscriptionComment(post.id,indexInsertToList: 1);
         },
       );
       return;
@@ -62,6 +65,7 @@ class PostDetailWidgetModel extends BaseViewModel {
         _loadComments(pageKey);
       },
     );
+    commentServiceModel.registerSubscriptionComment(post.id,indexInsertToList: 1);
   }
 
   void _loadComments(int pageKey) {
@@ -89,9 +93,11 @@ class PostDetailWidgetModel extends BaseViewModel {
   void onSendComment(Comment comment) {
     // create new comment
     if (commentServiceModel.commentUpdate == null) {
-      commentServiceModel.pagingController.itemList?.insert(1, comment);
-      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-      commentServiceModel.pagingController.notifyListeners();
+      if(commentServiceModel.canInsertToList(1, comment.id)) {
+        commentServiceModel.pagingController.itemList?.insert(1, comment);
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        commentServiceModel.pagingController.notifyListeners();
+      }
     } else {
       // update comment
       commentServiceModel.onEditComment(

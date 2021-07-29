@@ -93,7 +93,7 @@ class EditPetProfileWidgetModel extends BaseViewModel {
 
   Future onUpdateAvatarClick() async {
     List<File>? files;
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ["jpg","png","JPG","PNG"]);
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     } else {

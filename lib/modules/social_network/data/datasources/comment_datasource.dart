@@ -7,7 +7,6 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 @injectable
 class CommentDatasource {
   final HasuraConnect _hasuraConnect;
-
   CommentDatasource(this._hasuraConnect);
 
   Future<Comment?> createComment(int postId, String content, List<User> userTag) async {
@@ -175,25 +174,18 @@ mutation MyMutation {
     if (oldComment.content == newComment.content) {
       return oldComment;
     } else {
-      print(oldComment.commentTagUser?.length);
-      print(newComment.commentTagUser?.length);
       // check change tagUser
       map = d(oldComment.commentTagUser!, newComment.commentTagUser!);
     }
     int affectedRows = 0;
     if (map.isNotEmpty) {
-      print("isNotEmpty");
       if (map.length == 2) {
-        print("map.length == 2");
         affectedRows = await deleteOrAddCommentTagUser(map["add"]!, map["remove"]!, oldComment.id, oldComment.postId!);
       } else {
-        print("map.length != 2");
         if (map["remove"]?.isNotEmpty == true) {
-          print('map["remove"]?.isNotEmpty == true');
           affectedRows = await deleteCommentTagUsers(map["remove"]!, oldComment.id);
         }
         if (map["add"]?.isNotEmpty == true) {
-          print('map["add"]?.isNotEmpty == true');
           affectedRows = await addCommentTagUser(map["add"]!, oldComment.id, oldComment.postId!);
         }
       }
@@ -210,5 +202,33 @@ mutation MyMutation {
     final data = await _hasuraConnect.mutation(manution);
     final comment = GetMapFromHasura.getMap(data as Map)["update_comments_by_pk"] as Map<String, dynamic>;
     return Comment.fromJson(comment);
+  }
+
+  Future<Snapshot> subscriptComment(int postId) async {
+    final subscript = """
+subscription MySubscription {
+  comments(limit: 1, order_by: {created_at: desc}, where: {post_id: {_eq: $postId}}) {
+    content
+    id
+    created_at
+    creator_uuid
+    post_id
+    user {
+      id
+      name
+      avatar_url
+      uuid
+    }
+    comment_tag_users {
+      user {
+        id
+        name
+        uuid
+      }
+    }
+  }
+}
+    """;
+    return _hasuraConnect.subscription(subscript);
   }
 }

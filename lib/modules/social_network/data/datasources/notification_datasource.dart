@@ -13,7 +13,7 @@ class NotificationDatasource {
   Future<List<Notification>> getNotification(int limit, int offset) async {
     final query = """
     query MyQuery {
-      notifications(limit: $limit, offset: $offset) {
+      notifications(order_by: {created_at: desc},limit: $limit, offset: $offset) {
         created_at
         id
         is_read

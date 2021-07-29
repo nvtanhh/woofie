@@ -109,7 +109,7 @@ class SendCommentWidgetModel extends BaseViewModel {
       },
     );
   }
-
+// for edit
   void reInstallData() {
     // ignore: avoid_function_literals_in_foreach_calls
     comment?.commentTagUser?.forEach(
@@ -165,6 +165,8 @@ class SendCommentWidgetModel extends BaseViewModel {
               ),
             )
             .toList();
+        //avoid tag yourself
+        data.removeWhere((element) => element.item?.id==user?.id);
         filterData();
       },
     );

@@ -84,7 +84,7 @@ class UserProfileModel extends BaseViewModel {
 
   Future _getUserProfile() async {
     return call(
-      () async => user?.update(await _getUseProfileUseacse.call(user!.id)) ,
+      () async => user?.update(await _getUseProfileUseacse.call(user!.id)),
       showLoading: false,
       onSuccess: () {},
     );
@@ -153,9 +153,10 @@ class UserProfileModel extends BaseViewModel {
   }
 
   void onRefresh() {
-    nextPageKey=0;
+    nextPageKey = 0;
     postService.onRefresh();
   }
+
   @override
   void disposeState() {
     postService.disposeState();
@@ -164,5 +165,4 @@ class UserProfileModel extends BaseViewModel {
     _petDeletedStreamSubscription?.cancel();
     super.disposeState();
   }
-
 }

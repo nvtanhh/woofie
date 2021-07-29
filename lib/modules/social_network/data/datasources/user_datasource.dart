@@ -27,7 +27,7 @@ class UserDatasource {
     return;
   }
 
-  Future<Map<String,dynamic>> getUserProfile(int userId) async {
+  Future<Map<String, dynamic>> getUserProfile(int userId) async {
     final query = """
     query MyQuery {
       users_by_pk(id: $userId) {

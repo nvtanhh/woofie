@@ -8,7 +8,7 @@ class GetUseProfileUseacse {
 
   GetUseProfileUseacse(this._profileRepository);
 
-  Future<Map<String,dynamic>> call(int userId) async {
+  Future<Map<String, dynamic>> call(int userId) async {
     return _profileRepository.getUserProfile(userId);
   }
 }
