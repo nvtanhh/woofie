@@ -44,7 +44,9 @@ class ChatRoomPageModel extends BaseViewModel {
   final RxBool isTyping = false.obs;
   late Function(List<Message>) popOutCallback;
 
-  late IO.Socket _socket;
+  late IO.Socket? _socket;
+
+  Timer? _typingDisableTimer;
 
   ChatRoomPageModel(
     this._mediaService,
@@ -62,26 +64,42 @@ class ChatRoomPageModel extends BaseViewModel {
     pagingController.appendPage(room.messages, room.messages.length);
     pagingController
         .addPageRequestListener((pageKey) => _loadMoreMessage(pageKey));
-
+    _initChatSocket();
     _setupListenCanSendMessage();
-    // _initChatSocket();
   }
 
   Future<void> _initChatSocket() async {
+    printInfo(info: 'Initiating socket..........');
     final token = await _auth.currentUser?.getIdToken();
+
     _socket = IO.io(
-        BackendConfig.BASE_CHAT_URL,
-        IO.OptionBuilder().setQuery({
-          'token': token,
-        }).setTransports(['websocket']).build());
-    _socket.onConnect((_) {
-      _socket.emit('msg', 'test');
+      BackendConfig.BASE_CHAT_URL,
+      IO.OptionBuilder()
+          .setQuery({
+            'token': token,
+          })
+          .setTransports(['websocket'])
+          .enableForceNew()
+          .build(),
+    );
+
+    _socket?.onConnect((_) {
+      printInfo(info: 'Socket connected...');
     });
-    _socket.onDisconnect((_) {});
+
+    _socket?.on('authenticated', (data) {
+      printInfo(info: 'Socket authenticate status ${data.toString()}');
+    });
+
+    _socket?.on('is-typing', _onPartnerTyping);
+    _socket?.onDisconnect((_) {});
   }
 
   @override
   void disposeState() {
+    _socket?.dispose();
+    _typingDisableTimer?.cancel();
+    messageSenderTextController.dispose();
     pagingController.dispose();
     super.disposeState();
   }
@@ -109,6 +127,7 @@ class ChatRoomPageModel extends BaseViewModel {
       } else {
         _isCanSendMessage.value = false;
       }
+      _sentTypingEvent();
     });
     _sendingMedias.stream.listen((list) {
       if (list != null && list.isNotEmpty) {
@@ -229,5 +248,23 @@ class ChatRoomPageModel extends BaseViewModel {
         }
       },
     );
+  }
+
+  void _onPartnerTyping(data) {
+    // final String typingUserUuid = data as String;
+    isTyping.value = true;
+    startTypingTimeout();
+  }
+
+  void startTypingTimeout() {
+    if (_typingDisableTimer?.isActive ?? false) {
+      _typingDisableTimer?.cancel();
+    }
+    _typingDisableTimer =
+        Timer(const Duration(seconds: 2), () => isTyping.value = false);
+  }
+
+  void _sentTypingEvent() {
+    _socket?.emit('typing', room.creatorUuid);
   }
 }
