@@ -100,7 +100,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
         avatarUrl: newAvatarUrl,
         locationId: location?.id,
       );
-      if(checkNeedUpdateOrCreateLocation()){
+      if (checkNeedUpdateOrCreateLocation()) {
         user.locationId = location!.id;
         user.location = location;
       }
@@ -193,7 +193,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
 
   Future pickMedia() async {
     List<File>? files;
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ["jpg","png","JPG","PNG"]);
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     } else {

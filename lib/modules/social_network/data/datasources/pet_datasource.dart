@@ -160,7 +160,7 @@ mutation MyMutation {
     return petWeight;
   }
 
-  Future<Map<String,dynamic>> getDetailInfoPet(int idPet) async {
+  Future<Map<String, dynamic>> getDetailInfoPet(int idPet) async {
     final query = """
     query MyQuery {
    pets_by_pk(id: $idPet) {

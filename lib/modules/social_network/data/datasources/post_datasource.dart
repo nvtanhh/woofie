@@ -228,7 +228,7 @@ mutation MyMutation {
     return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
   }
 
-  Future<Map<String,dynamic>> getDetailPost(int postId) async {
+  Future<Map<String, dynamic>> getDetailPost(int postId) async {
     final query = """
     query getPostDetail {
       posts_by_pk(id: $postId) {

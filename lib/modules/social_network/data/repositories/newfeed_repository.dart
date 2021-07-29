@@ -1,3 +1,4 @@
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/datasources/comment_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
@@ -54,7 +55,7 @@ class NewFeedRepository {
     return _postDatasource.deletePost(post);
   }
 
-  Future<Post> refreshPost(int postId)async {
+  Future<Post> refreshPost(int postId) async {
     return Post.fromJson(await _postDatasource.getDetailPost(postId));
   }
 
@@ -76,5 +77,9 @@ class NewFeedRepository {
 
   Future reportPost(Post post, String content) {
     return _postDatasource.reportPost(post, content);
+  }
+
+  Future<Snapshot> subscriptionComment(int postId) {
+    return _commentDatasource.subscriptComment(postId);
   }
 }

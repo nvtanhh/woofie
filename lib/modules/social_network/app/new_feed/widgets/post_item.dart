@@ -5,6 +5,7 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_body.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_header.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class PostItem extends StatefulWidget {
@@ -86,6 +87,7 @@ class _PostItemState extends State<PostItem> {
           width: 60.w,
           child: InkWell(
             onTap: () => likeClick(),
+            highlightColor: UIColor.white,
             child: Row(
               children: [
                 Obx(
@@ -117,6 +119,7 @@ class _PostItemState extends State<PostItem> {
           width: 60.w,
           child: InkWell(
             onTap: () => widget.onCommentClick?.call(widget.post),
+            highlightColor: UIColor.white,
             child: Row(
               children: [
                 MWIcon(
