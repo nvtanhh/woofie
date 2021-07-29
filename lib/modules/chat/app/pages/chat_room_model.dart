@@ -41,12 +41,16 @@ class ChatRoomPageModel extends BaseViewModel {
   late PagingController<int, Message> pagingController;
   static const int _pageSize = 10;
 
-  final RxBool isTyping = false.obs;
+  final RxBool partnerTypingStatus = false.obs;
   late Function(List<Message>) popOutCallback;
 
   late IO.Socket? _socket;
 
-  Timer? _typingDisableTimer;
+  Timer? _sendEventStopTypingTimer;
+
+  // ignore: constant_identifier_names
+  static const int TYPING_INTEVAL_TIME = 2;
+  bool _isTyping = false;
 
   ChatRoomPageModel(
     this._mediaService,
@@ -58,14 +62,22 @@ class ChatRoomPageModel extends BaseViewModel {
   );
 
   @override
+  void disposeState() {
+    _socket?.dispose();
+    messageSenderTextController.dispose();
+    pagingController.dispose();
+    super.disposeState();
+  }
+
+  @override
   void initState() {
-    super.initState();
     pagingController = PagingController(firstPageKey: room.messages.length);
     pagingController.appendPage(room.messages, room.messages.length);
     pagingController
         .addPageRequestListener((pageKey) => _loadMoreMessage(pageKey));
     _initChatSocket();
     _setupListenCanSendMessage();
+    super.initState();
   }
 
   Future<void> _initChatSocket() async {
@@ -92,16 +104,40 @@ class ChatRoomPageModel extends BaseViewModel {
     });
 
     _socket?.on('is-typing', _onPartnerTyping);
+    _socket?.on('new-message', _onNewMessageComming);
     _socket?.onDisconnect((_) {});
   }
 
-  @override
-  void disposeState() {
-    _socket?.dispose();
-    _typingDisableTimer?.cancel();
-    messageSenderTextController.dispose();
-    pagingController.dispose();
-    super.disposeState();
+  void _onNewMessageComming(data) {
+    final newMessage =
+        Message.fromJson(data['message'] as Map<String, dynamic>);
+    _updateNewMessage(newMessage);
+  }
+
+  /// Hanlding on typing event - worked with private chat (for now).
+  void _onPartnerTyping(data) {
+    if (!room.isGroup) {
+      partnerTypingStatus.value = data['isTyping'] as bool;
+      // _startTypingTimeout();
+    }
+  }
+
+  void _updateNewMessage(Message message) {
+    pagingController.itemList!.insert(0, message);
+    // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
+    pagingController.notifyListeners();
+    room.updateMessage(message);
+  }
+
+  void _startSendTypingEventTimeout() {
+    if (_sendEventStopTypingTimer?.isActive ?? false) {
+      _sendEventStopTypingTimer?.cancel();
+    }
+    _sendTypingEvent(isTyping: true);
+    _sendEventStopTypingTimer = Timer(
+      const Duration(seconds: TYPING_INTEVAL_TIME),
+      () => _sendTypingEvent(isTyping: false),
+    );
   }
 
   Future<void> _loadMoreMessage(int pageKey) async {
@@ -127,7 +163,7 @@ class ChatRoomPageModel extends BaseViewModel {
       } else {
         _isCanSendMessage.value = false;
       }
-      _sentTypingEvent();
+      _startSendTypingEventTimeout();
     });
     _sendingMedias.stream.listen((list) {
       if (list != null && list.isNotEmpty) {
@@ -173,16 +209,13 @@ class ChatRoomPageModel extends BaseViewModel {
               ? messageSenderTextController.text
               : null;
 
-          final message = await _sendMessagesUsecase.call(
-              roomId: room.id,
-              content: content,
-              type: messageType,
-              description: description);
-
-          pagingController.itemList!.insert(0, message);
-          // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
-          pagingController.notifyListeners();
-          room.updateMessage(message);
+          final Message newMessage = await _sendMessagesUsecase.call(
+            roomId: room.id,
+            content: content,
+            type: messageType,
+            description: description,
+          );
+          _updateNewMessage(newMessage);
         },
         onFailure: (error) {
           Get.snackbar(
@@ -250,21 +283,22 @@ class ChatRoomPageModel extends BaseViewModel {
     );
   }
 
-  void _onPartnerTyping(data) {
-    // final String typingUserUuid = data as String;
-    isTyping.value = true;
-    startTypingTimeout();
-  }
-
-  void startTypingTimeout() {
-    if (_typingDisableTimer?.isActive ?? false) {
-      _typingDisableTimer?.cancel();
+  void _sendEventToSocket(String eventName, Object? data) {
+    try {
+      _socket?.emit(eventName, data);
+    } catch (error) {
+      printError(info: error.toString());
     }
-    _typingDisableTimer =
-        Timer(const Duration(seconds: 2), () => isTyping.value = false);
   }
 
-  void _sentTypingEvent() {
-    _socket?.emit('typing', room.creatorUuid);
+  void _sendTypingEvent({required bool isTyping}) {
+    if (_isTyping != isTyping) {
+      _isTyping = isTyping;
+      final Map data = {
+        'receiver': room.creatorUuid,
+        'isTyping': isTyping,
+      };
+      _sendEventToSocket('typing', data);
+    }
   }
 }

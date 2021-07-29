@@ -77,7 +77,7 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
           ),
         ),
         Obx(
-          () => TypingWidget(isTyping: viewModel.isTyping.value, chatPartner: viewModel.room.privateChatPartner),
+          () => TypingWidget(isTyping: viewModel.partnerTypingStatus.value, chatPartner: viewModel.room.privateChatPartner),
         ),
         _buildMessageSender(),
       ],
