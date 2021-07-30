@@ -15,6 +15,7 @@ import 'package:meowoof/modules/social_network/domain/usecases/new_feed/create_c
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/delete_comment_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/edit_comment_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_comment_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/new_feed/play_sound_receiver_comment.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/report_comment_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/subscription_comment_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -26,6 +27,7 @@ class CommentServiceModel extends BaseViewModel {
   final EditCommentUsecase _editCommentUsecase;
   final LikeCommentUsecase _likeCommentUsecase;
   final SubscriptionCommentUsecase _subscriptionCommentUsecase;
+  final PlaySoundReceiverComment _playSoundReceiverComment;
   final EventBus _eventBus;
   final CreateCommentUsecase _createCommentUsecase;
   final Rx<Comment?> _commentUpdate = Rx(null);
@@ -44,6 +46,7 @@ class CommentServiceModel extends BaseViewModel {
     this._createCommentUsecase,
     this._eventBus,
     this._subscriptionCommentUsecase,
+    this._playSoundReceiverComment,
   );
 
   @override
@@ -54,8 +57,7 @@ class CommentServiceModel extends BaseViewModel {
 
   void registerSubscriptionComment(int postId, {int indexInsertToList = 0}) {
     call(
-      () async =>
-      snapshot = await _subscriptionCommentUsecase.run(postId),
+      () async => snapshot = await _subscriptionCommentUsecase.run(postId),
       onFailure: (err) {
         printError(info: err.toString());
       },
@@ -68,12 +70,13 @@ class CommentServiceModel extends BaseViewModel {
     snapshot!.listen(
       (event) {
         try {
-          Comment? comment = Comment.fromJson((GetMapFromHasura.getMap(event as Map)["comments"])[0] as Map<String,dynamic>);
-          printInfo(info: comment.content??"");
-          if(canInsertToList(indexInsertToList, comment.id)) {
+          Comment? comment = Comment.fromJson((GetMapFromHasura.getMap(event as Map)["comments"])[0] as Map<String, dynamic>);
+          printInfo(info: comment.content ?? "");
+          if (canInsertToList(indexInsertToList, comment.id)) {
             pagingController.itemList?.insert(indexInsertToList, comment);
             // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
             pagingController.notifyListeners();
+            _playSoundReceiverComment.run();
           }
         } catch (e) {
           printError(info: e.toString());
@@ -81,9 +84,11 @@ class CommentServiceModel extends BaseViewModel {
       },
     );
   }
-  bool canInsertToList(int index,int commentId){
-    return pagingController.itemList?[index].id!=commentId;
+
+  bool canInsertToList(int index, int commentId) {
+    return pagingController.itemList?[index].id != commentId;
   }
+
   void onDeleteComment(Comment comment, int index) {
     call(
       () async => _deleteCommentUsecase.run(comment.id),

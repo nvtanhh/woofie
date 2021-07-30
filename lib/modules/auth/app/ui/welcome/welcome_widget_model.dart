@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
@@ -23,6 +24,7 @@ class WelcomeWidgetModel extends BaseViewModel {
   final SaveUserToLocalUsecase _saveUserToLocalUsecase;
   final UpdateTokenNotifyUsecase _updateTokenNotifyUsecase;
   final ToastService _toastService;
+  final LoggedInUser _loggedInUser;
 
   WelcomeWidgetModel(
     this._loginWithGoogleUsecase,
@@ -32,6 +34,7 @@ class WelcomeWidgetModel extends BaseViewModel {
     this._saveUserToLocalUsecase,
     this._updateTokenNotifyUsecase,
     this._toastService,
+    this._loggedInUser,
   );
 
   void onLoginClick() {
@@ -91,6 +94,7 @@ class WelcomeWidgetModel extends BaseViewModel {
         if (haUser != null) {
           updateTokenNotify(haUser.uuid!);
           await _saveUserToLocalUsecase.call(haUser);
+          await _loggedInUser.setLoggedUser(haUser);
           status = haUser.currentPets?.isNotEmpty == true;
         } else {
           return;

@@ -18,6 +18,7 @@ import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/new_feed/play_sound_react_post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/refresh_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/report_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_post_usecase.dart';
@@ -40,6 +41,7 @@ class PostService extends BaseViewModel {
   final ToastService _toastService;
   final RefreshPostsUsecase _refreshPostsUsecase;
   final ReportPostUsecase _reportPostUsecase;
+  final PlaySoundReactPost _playSoundReactPost;
   RxList<Widget> prependedWidgets = <Widget>[].obs;
   RxList<NewPostData> newPostsData = <NewPostData>[].obs;
   final HashMap _prependedWidgetsRemover = HashMap<String, VoidCallback>();
@@ -56,6 +58,7 @@ class PostService extends BaseViewModel {
     this._toastService,
     this._refreshPostsUsecase,
     this._reportPostUsecase,
+    this._playSoundReactPost,
   );
 
   @override
@@ -84,6 +87,7 @@ class PostService extends BaseViewModel {
   }
 
   void onLikeClick(int idPost) {
+    _playSoundReactPost.run();
     call(
       () => _likePostUsecase.call(idPost),
       showLoading: false,

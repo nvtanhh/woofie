@@ -5,11 +5,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
-import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/create_locaction_usecase.dart';
@@ -32,7 +32,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
   final UpdateLocationUsecase _updateLocationUsecase;
   final CreateLocationUsecase _createLocationUsecase;
   final UpdateUserInformationUsecase _updateUserInformationUsecase;
-  final UserStorage _userStorage;
+  final LoggedInUser _loggedInUser;
   Location? location;
   String? newAvatarUrl;
   Placemark? currentPlacemark;
@@ -45,7 +45,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
     this._updateLocationUsecase,
     this._createLocationUsecase,
     this._updateUserInformationUsecase,
-    this._userStorage,
+    this._loggedInUser,
   );
 
   @override
@@ -114,7 +114,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
       );
       return;
     }
-    _userStorage.set(user);
+    _loggedInUser.saveToLocal(user: user);
     _toastService.success(
       message: "Update success.",
       context: Get.context!,

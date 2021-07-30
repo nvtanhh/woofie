@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.1"
+  audioplayers:
+    dependency: "direct main"
+    description:
+      name: audioplayers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.19.1"
   better_player:
     dependency: "direct main"
     description:
@@ -166,13 +173,6 @@ packages:
     dependency: transitive
     description:
       name: convert
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
-  convex_bottom_bar:
-    dependency: "direct main"
-    description:
-      name: convex_bottom_bar
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"

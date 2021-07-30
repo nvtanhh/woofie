@@ -53,11 +53,15 @@ class NotificationWidgetModel extends BaseViewModel {
   }
 
   Future onRefresh() async {
+    nextPageKey = 0;
     pagingController.refresh();
   }
 
   void onDeleteNotify(Notification notification) {
-    call(() async => _deleteNotificationUsecase.run(notification.id));
+    call(
+      () async => _deleteNotificationUsecase.run(notification.id),
+      showLoading: false,
+    );
   }
 
   void onOptionTap() {}

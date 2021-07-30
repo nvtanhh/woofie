@@ -16,7 +16,7 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class HomeMenuWidgetModel extends BaseViewModel {
-  List<Widget> listScreen = [NewFeedWidget(), ExploreWidget(), NotificationWidget(), const UserProfile()];
+  List<Widget> listScreen = [NewFeedWidget(), ExploreWidget(), NotificationWidget(), UserProfile()];
   late TabController tabController;
   final RxInt _currentTab = RxInt(0);
   final RxInt _countUnreadNotify = RxInt(0);
@@ -91,6 +91,7 @@ class HomeMenuWidgetModel extends BaseViewModel {
   @override
   void disposeState() {
     _timer.cancel();
+    listScreen.clear();
     super.disposeState();
   }
 }

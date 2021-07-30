@@ -32,7 +32,7 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
   @override
   void loadArguments() {
     viewModel.post = widget.post;
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp)=>viewModel.startLoadingPaging());
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) => viewModel.startLoadingPaging());
     super.loadArguments();
   }
 
@@ -108,6 +108,7 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
                   left: 10.w,
                   right: 10.w,
                 ),
+                reverse: true,
               ),
             ),
             SendCommentWidget(

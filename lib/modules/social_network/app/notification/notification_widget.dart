@@ -114,7 +114,11 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
           LocaleKeys.notification_liked.trans(),
         );
       case NotificationType.follow:
-        return createTitle(notification.actor!, LocaleKeys.notification_following.trans(), pet: notification.pet);
+        return createTitle(
+          notification.actor!,
+          LocaleKeys.notification_following.trans(),
+          pet: notification.pet,
+        );
       case NotificationType.comment:
         return createTitle(
           notification.actor!,
@@ -141,12 +145,12 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
       case NotificationType.commentTagUser:
         return createTitle(
           notification.actor!,
-          LocaleKeys.notification_lose.trans(),
+          LocaleKeys.notification_tag.trans(),
         );
       case NotificationType.reactComment:
         return createTitle(
           notification.actor!,
-          LocaleKeys.notification_lose.trans(),
+          LocaleKeys.notification_like_comment.trans(),
         );
     }
   }

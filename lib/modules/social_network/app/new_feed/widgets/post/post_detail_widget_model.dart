@@ -55,7 +55,7 @@ class PostDetailWidgetModel extends BaseViewModel {
               _loadComments(pageKey);
             },
           );
-          commentServiceModel.registerSubscriptionComment(post.id,indexInsertToList: 1);
+          commentServiceModel.registerSubscriptionComment(post.id, indexInsertToList: 1);
         },
       );
       return;
@@ -65,7 +65,7 @@ class PostDetailWidgetModel extends BaseViewModel {
         _loadComments(pageKey);
       },
     );
-    commentServiceModel.registerSubscriptionComment(post.id,indexInsertToList: 1);
+    commentServiceModel.registerSubscriptionComment(post.id, indexInsertToList: 1);
   }
 
   void _loadComments(int pageKey) {
@@ -93,7 +93,7 @@ class PostDetailWidgetModel extends BaseViewModel {
   void onSendComment(Comment comment) {
     // create new comment
     if (commentServiceModel.commentUpdate == null) {
-      if(commentServiceModel.canInsertToList(1, comment.id)) {
+      if (commentServiceModel.canInsertToList(1, comment.id)) {
         commentServiceModel.pagingController.itemList?.insert(1, comment);
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         commentServiceModel.pagingController.notifyListeners();

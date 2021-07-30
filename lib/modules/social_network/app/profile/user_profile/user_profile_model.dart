@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/toast_service.dart';
-import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
 import 'package:meowoof/modules/social_network/app/save_post/post_service.dart';
@@ -37,6 +36,7 @@ class UserProfileModel extends BaseViewModel {
   final RxBool _isLoaded = RxBool(false);
   final PostService postService;
   final EventBus _eventBus;
+  final LoggedInUser _loggedInUser;
   CancelableOperation? _cancelableOperationLoadInit, _cancelableOperationLoadMorePost;
 
   UserProfileModel(
@@ -48,6 +48,7 @@ class UserProfileModel extends BaseViewModel {
     this._toastService,
     this.postService,
     this._eventBus,
+    this._loggedInUser,
   );
 
   @override
@@ -55,7 +56,7 @@ class UserProfileModel extends BaseViewModel {
     postService.initState();
     if (user == null) {
       isMe = true;
-      user = injector<LoggedInUser>().user;
+      user = _loggedInUser.user;
     }
     _cancelableOperationLoadInit = CancelableOperation.fromFuture(initData());
     registerListenPetDeleted();
@@ -86,7 +87,10 @@ class UserProfileModel extends BaseViewModel {
     return call(
       () async => user?.update(await _getUseProfileUseacse.call(user!.id)),
       showLoading: false,
-      onSuccess: () {},
+      onSuccess: () {
+        User.factory.addToCache(user!);
+        _loggedInUser.saveToLocal();
+      },
     );
   }
 
@@ -125,16 +129,20 @@ class UserProfileModel extends BaseViewModel {
 
   void onPostDeleted(Post post, int index) {
     bool result = false;
-    call(() async => result = await _deletePostUsecase.call(post.id), onSuccess: () {
-      if (result) {
-        _toastService.success(message: "Post deleted!", context: Get.context!);
-        postService.pagingController.itemList?.removeAt(index);
-        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-        postService.pagingController.notifyListeners();
-      }
-    }, onFailure: (err) {
-      _toastService.error(message: err.toString(), context: Get.context!);
-    });
+    call(
+      () async => result = await _deletePostUsecase.call(post.id),
+      onSuccess: () {
+        if (result) {
+          _toastService.success(message: "Post deleted!", context: Get.context!);
+          postService.pagingController.itemList?.removeAt(index);
+          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+          postService.pagingController.notifyListeners();
+        }
+      },
+      onFailure: (err) {
+        _toastService.error(message: err.toString(), context: Get.context!);
+      },
+    );
   }
 
   void onUserBlock(User user) {}
@@ -159,6 +167,7 @@ class UserProfileModel extends BaseViewModel {
 
   @override
   void disposeState() {
+    printInfo(info: "disposeState");
     postService.disposeState();
     _cancelableOperationLoadInit?.cancel();
     _cancelableOperationLoadMorePost?.cancel();
