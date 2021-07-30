@@ -31,7 +31,7 @@ class SendCommentWidgetModel extends BaseViewModel {
   late Function showSuggestionDialog;
   late TextSpan Function(SuggestedDataWrapper<User>) customSpan;
   Comment? comment;
-  User? user;
+  final Rx<User?> _user = Rx(null)  ;
   List<SuggestedDataWrapper<User>> data = [];
   List<User> tagUsers = [];
   TypeAheadTextFieldController? controller;
@@ -45,9 +45,7 @@ class SendCommentWidgetModel extends BaseViewModel {
     this._userStorage,
     this._createCommentUsecase,
     this._eventBus,
-  ) {
-    _loadUserFromLocal();
-  }
+  );
 
   @override
   void initState() {
@@ -137,7 +135,7 @@ class SendCommentWidgetModel extends BaseViewModel {
         .toList();
   }
 
-  void _loadUserFromLocal() {
+  void loadUserFromLocal() {
     user = _userStorage.get();
   }
 
@@ -225,6 +223,12 @@ class SendCommentWidgetModel extends BaseViewModel {
 
   set dataFilter(List<SuggestedDataWrapper<User>> value) {
     _dataFilter.assignAll(value);
+  }
+
+  User? get user => _user.value;
+
+  set user(User? value) {
+    _user.value = value;
   }
 
   @override

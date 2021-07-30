@@ -23,14 +23,18 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   void initState() {
     commentServiceModel.initState();
     commentServiceModel.post = post;
-    commentServiceModel.pagingController.addPageRequestListener(
-      (pageKey) {
-        _loadComments(pageKey);
-      },
-    );
     super.initState();
   }
-
+  void startLoadingPaging(){
+    if(commentServiceModel.pagingController.itemList==null) {
+      _loadComments(nextPageKey);
+      commentServiceModel.pagingController.addPageRequestListener(
+            (pageKey) {
+          _loadComments(pageKey);
+        },
+      );
+    }
+  }
   void _loadComments(int pageKey) {
     call(
       () async {

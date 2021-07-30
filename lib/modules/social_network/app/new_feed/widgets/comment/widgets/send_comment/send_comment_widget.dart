@@ -40,6 +40,7 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
     viewModel.onSendComment = widget.onSendComment;
     viewModel.showSuggestionDialog = showSuggestionDialog;
     viewModel.customSpan = customSpan;
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp)=>viewModel.loadUserFromLocal());
     super.loadArguments();
   }
 
@@ -66,7 +67,7 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
         children: [
           Obx(
             () {
-              if (viewModel.user?.updateSubjectValue == null) {
+              if (viewModel.user == null) {
                 return Container(
                   width: 45.w,
                   height: 45.w,

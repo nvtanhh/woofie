@@ -48,7 +48,6 @@ class CommentServiceModel extends BaseViewModel {
 
   @override
   void initState() {
-    printInfo(info: "init");
     pagingController = PagingController(firstPageKey: 0);
     super.initState();
   }
