@@ -8,7 +8,7 @@ import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
-import 'package:meowoof/modules/social_network/app/save_post/post_service.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/events/pet/pet_deleted_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
