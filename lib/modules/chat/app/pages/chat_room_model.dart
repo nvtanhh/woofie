@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -12,13 +12,15 @@ import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/message/get_messages_usecase.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_messages_usecase.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_presined_url_usecase.dart';
+import 'package:meowoof/modules/chat/domain/usecases/room/init_chat_room_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:path/path.dart';
+import 'package:suga_core/suga_core.dart';
 // ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:suga_core/suga_core.dart';
 
 @injectable
 class ChatRoomPageModel extends BaseViewModel {
@@ -26,11 +28,16 @@ class ChatRoomPageModel extends BaseViewModel {
   final UploadMediaUsecase _uploadMediaUsecase;
   final GetMessagesUseCase _getMessagesUseCase;
   final SendMessagesUsecase _sendMessagesUsecase;
+  final InitChatRoomsUseCase _initChatRoomsUseCase;
 
   final MediaService _mediaService;
   final FirebaseAuth _auth;
 
+  ChatRoom? inputRoom;
+  User? partner;
+
   late ChatRoom room;
+  final RxBool isLoaded = false.obs;
 
   final RxList<MediaFile> _sendingMedias = <MediaFile>[].obs;
   ScrollController scrollController = ScrollController();
@@ -44,9 +51,11 @@ class ChatRoomPageModel extends BaseViewModel {
   final RxBool partnerTypingStatus = false.obs;
   late Function(List<Message>) popOutCallback;
 
-  late IO.Socket? _socket;
+  IO.Socket? _socket;
 
   Timer? _sendEventStopTypingTimer;
+
+  // Timer? _startDisableTypingTimer;
 
   // ignore: constant_identifier_names
   static const int TYPING_INTEVAL_TIME = 2;
@@ -59,25 +68,53 @@ class ChatRoomPageModel extends BaseViewModel {
     this._getMessagesUseCase,
     this._sendMessagesUsecase,
     this._auth,
+    this._initChatRoomsUseCase,
   );
 
   @override
   void disposeState() {
-    _socket?.dispose();
+    _disposeSocket();
     messageSenderTextController.dispose();
     pagingController.dispose();
     super.disposeState();
   }
 
+  void _disposeSocket() {
+    _sendTypingEvent(isTyping: false);
+    _socket?.dispose();
+  }
+
   @override
   void initState() {
+    super.initState();
+    try {
+      if (inputRoom != null) {
+        room = inputRoom!;
+        _initModel();
+      } else {
+        _initChatRoom().then((chatRoom) {
+          room = chatRoom;
+          room.privateChatPartner = partner;
+          _initModel();
+        });
+      }
+    } catch (error) {
+      Get.back(result: true);
+    }
+  }
+
+  Future<ChatRoom> _initChatRoom() async {
+    return _initChatRoomsUseCase.call(partner!);
+  }
+
+  void _initModel() {
     pagingController = PagingController(firstPageKey: room.messages.length);
     pagingController.appendPage(room.messages, room.messages.length);
     pagingController
         .addPageRequestListener((pageKey) => _loadMoreMessage(pageKey));
     _initChatSocket();
     _setupListenCanSendMessage();
-    super.initState();
+    isLoaded.value = true;
   }
 
   Future<void> _initChatSocket() async {
@@ -95,7 +132,7 @@ class ChatRoomPageModel extends BaseViewModel {
           .build(),
     );
 
-    _socket?.onConnect((_) {
+    _socket?.onConnect((data) {
       printInfo(info: 'Socket connected...');
     });
 
@@ -105,12 +142,13 @@ class ChatRoomPageModel extends BaseViewModel {
 
     _socket?.on('is-typing', _onPartnerTyping);
     _socket?.on('new-message', _onNewMessageComming);
-    _socket?.onDisconnect((_) {});
+    _socket?.onDisconnect((data) {});
   }
 
   void _onNewMessageComming(data) {
     final newMessage =
         Message.fromJson(data['message'] as Map<String, dynamic>);
+
     _updateNewMessage(newMessage);
   }
 
@@ -122,8 +160,25 @@ class ChatRoomPageModel extends BaseViewModel {
     }
   }
 
+  // void _startTypingTimeout() {
+  //   if (_startDisableTypingTimer?.isActive ?? false) {
+  //     _startDisableTypingTimer?.cancel();
+  //   }
+  //   _startDisableTypingTimer = Timer(
+  //     const Duration(seconds: TYPING_INTEVAL_TIME * 2),
+  //     () => partnerTypingStatus.value = false,
+  //   );
+  // }
+
   void _updateNewMessage(Message message) {
-    pagingController.itemList!.insert(0, message);
+    if (pagingController.itemList!.isEmpty) {
+      pagingController.itemList!.add(message);
+    } else {
+      pagingController.itemList!.insert(0, message);
+    }
+    if (pagingController.nextPageKey == 0) {
+      pagingController.nextPageKey = 1;
+    }
     // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
     pagingController.notifyListeners();
     room.updateMessage(message);
@@ -295,7 +350,7 @@ class ChatRoomPageModel extends BaseViewModel {
     if (_isTyping != isTyping) {
       _isTyping = isTyping;
       final Map data = {
-        'receiver': room.creatorUuid,
+        'receiver': room.privateChatPartner?.uuid,
         'isTyping': isTyping,
       };
       _sendEventToSocket('typing', data);

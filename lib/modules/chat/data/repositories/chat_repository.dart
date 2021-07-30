@@ -3,6 +3,7 @@ import 'package:meowoof/modules/chat/data/datasources/chat_datasource.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/social_network/data/datasources/storage_datasource.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class ChatRepository {
@@ -19,8 +20,7 @@ class ChatRepository {
     return _storageDatasource.getPresignedChatMediaUrl(fileName, chatRoomId);
   }
 
-  Future<List<Message>> getMessagesWithRoomId(
-      int limit, int skip, String roomId) {
+  Future<List<Message>> getMessagesWithRoomId(int limit, int skip, String roomId) {
     return _datasource.getMessagesWithRoomId(limit, skip, roomId);
   }
 
@@ -30,7 +30,10 @@ class ChatRepository {
     required MessageType type,
     String? description,
   }) {
-    return _datasource.sendMessages(
-        roomId: roomId, content: content, type: type, description: description);
+    return _datasource.sendMessages(roomId: roomId, content: content, type: type, description: description);
+  }
+
+  Future<ChatRoom> initPrivateChatRoom(User user) {
+    return _datasource.initPrivateChatRoom(user);
   }
 }

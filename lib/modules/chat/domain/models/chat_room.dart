@@ -11,7 +11,7 @@ class ChatRoom extends UpdatableModel {
   List<String> memberUuids;
   // view variables
   late List<User> members;
-  late User privateChatPartner;
+  User? privateChatPartner;
   late List<Message> _messages;
   bool isGroup;
   String? creatorUuid;

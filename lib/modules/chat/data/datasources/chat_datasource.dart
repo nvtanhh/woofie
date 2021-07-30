@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/url_parser.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/httpie.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/configs/backend_config.dart';
 import 'package:get/get.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class ChatDatasource {
@@ -17,6 +20,8 @@ class ChatDatasource {
 
   // ignore: constant_identifier_names
   static const GET_CHAT_ROOM_ENDPOINT = 'api/room/';
+  // ignore: constant_identifier_names
+  static const INIT_CHAT_ROOM_ENDPOINT = 'api/room/';
   // ignore: constant_identifier_names
   static const GET_MESSAGES_ENDPOINT = 'api/message/{room_id}';
   // ignore: constant_identifier_names
@@ -91,6 +96,24 @@ class ChatDatasource {
           json.decode(response.body)['new_message'] as Map<String, dynamic>);
     } else {
       printError(info: 'Failed to send message: $response');
+      throw Error;
+    }
+  }
+
+  Future<ChatRoom> initPrivateChatRoom(User user) async {
+    final body = {
+      'members': [user.uuid],
+      'isGroup': false,
+    };
+    final response = await _httpieService.postJSON(
+        '$baseUrl/$INIT_CHAT_ROOM_ENDPOINT',
+        body: body,
+        appendAuthorizationToken: true);
+    if (response.statusCode == 200) {
+      return ChatRoom.fromJson(
+          json.decode(response.body)['chatRoom'] as Map<String, dynamic>);
+    } else {
+      printError(info: 'Failed to init chat room: $response');
       throw Error;
     }
   }

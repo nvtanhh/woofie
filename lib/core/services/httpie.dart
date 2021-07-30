@@ -16,11 +16,8 @@ class HttpieService {
   static const defaultConnectionTimeoutBySecond = 5;
 
   HttpieService(this.auth) {
-    final HttpClient httpClient = HttpClient()
-      ..badCertificateCallback =
-          ((X509Certificate cert, String host, int port) => true);
-    httpClient.connectionTimeout =
-        const Duration(seconds: defaultConnectionTimeoutBySecond);
+    final HttpClient httpClient = HttpClient()..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+    httpClient.connectionTimeout = const Duration(seconds: defaultConnectionTimeoutBySecond);
     client = IOClient(httpClient);
   }
 
@@ -58,15 +55,13 @@ class HttpieService {
     bool? appendLanguageHeader,
     bool? appendAuthorizationToken,
   }) async {
-    final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     final uri = Uri.parse(url);
 
     Response? response;
     try {
-      response = await client.post(uri,
-          headers: finalHeaders, body: body, encoding: encoding);
+      response = await client.post(uri, headers: finalHeaders, body: body, encoding: encoding);
     } catch (error) {
       _handleRequestError(error);
     }
@@ -74,11 +69,7 @@ class HttpieService {
     return HttpieResponse(response!);
   }
 
-  Future<HttpieResponse> put(String url,
-      {Map<String, String>? headers,
-      Object? body,
-      Encoding? encoding,
-      bool? appendAuthorizationToken}) async {
+  Future<HttpieResponse> put(String url, {Map<String, String>? headers, Object? body, Encoding? encoding, bool? appendAuthorizationToken}) async {
     final finalHeaders = await _getHeadersWithConfig(
       headers: headers,
       appendAuthorizationToken: appendAuthorizationToken,
@@ -89,8 +80,7 @@ class HttpieService {
     late Response response;
 
     try {
-      response = await client.put(uri,
-          headers: finalHeaders, body: body, encoding: encoding);
+      response = await client.put(uri, headers: finalHeaders, body: body, encoding: encoding);
     } catch (error) {
       _handleRequestError(error);
     }
@@ -105,16 +95,14 @@ class HttpieService {
     Encoding? encoding,
     bool? appendAuthorizationToken,
   }) async {
-    final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     final uri = Uri.parse(url);
 
     late Response response;
 
     try {
-      response = await client.patch(uri,
-          headers: finalHeaders, body: body, encoding: encoding);
+      response = await client.patch(uri, headers: finalHeaders, body: body, encoding: encoding);
     } catch (error) {
       _handleRequestError(error);
     }
@@ -129,8 +117,7 @@ class HttpieService {
     Encoding? encoding,
     bool? appendAuthorizationToken,
   }) async {
-    final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     final uri = Uri.parse(url);
 
@@ -151,8 +138,7 @@ class HttpieService {
     Map<String, dynamic>? queryParameters,
     bool? appendAuthorizationToken,
   }) async {
-    final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     if (queryParameters != null && queryParameters.keys.isNotEmpty) {
       // ignore: parameter_assignments
@@ -205,11 +191,7 @@ class HttpieService {
 
     jsonHeaders.addAll(headers);
 
-    return put(url,
-        headers: jsonHeaders,
-        body: jsonBody,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken);
+    return put(url, headers: jsonHeaders, body: jsonBody, encoding: encoding, appendAuthorizationToken: appendAuthorizationToken);
   }
 
   Future<HttpieResponse> patchJSON(
@@ -225,20 +207,12 @@ class HttpieService {
 
     jsonHeaders.addAll(headers);
 
-    return patch(url,
-        headers: jsonHeaders,
-        body: jsonBody,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken);
+    return patch(url, headers: jsonHeaders, body: jsonBody, encoding: encoding, appendAuthorizationToken: appendAuthorizationToken);
   }
 
   Future<HttpieResponse> get(String url,
-      {Map<String, String>? headers,
-      Map<String, dynamic>? queryParameters,
-      bool? appendLanguageHeader,
-      bool? appendAuthorizationToken}) async {
-    final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken);
+      {Map<String, String>? headers, Map<String, dynamic>? queryParameters, bool? appendLanguageHeader, bool? appendAuthorizationToken}) async {
+    final finalHeaders = await _getHeadersWithConfig(headers: headers, appendAuthorizationToken: appendAuthorizationToken);
 
     if (queryParameters != null && queryParameters.keys.isNotEmpty) {
       // ignore: parameter_assignments
@@ -258,8 +232,7 @@ class HttpieService {
     return HttpieResponse(response);
   }
 
-  Future<HttpieResponse> getWithHeader(
-      String url, Map<String, String>? header) async {
+  Future<HttpieResponse> getWithHeader(String url, Map<String, String>? header) async {
     late Response response;
     final uri = Uri.parse(url);
     try {
@@ -279,11 +252,7 @@ class HttpieService {
     bool? appendAuthorizationToken,
   }) {
     return _multipartRequest(url,
-        method: 'POST',
-        headers: headers,
-        body: body,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken);
+        method: 'POST', headers: headers, body: body, encoding: encoding, appendAuthorizationToken: appendAuthorizationToken);
   }
 
   Future<HttpieStreamedResponse> deleteMultiform(
@@ -294,11 +263,7 @@ class HttpieService {
     bool? appendAuthorizationToken,
   }) {
     return _multipartRequest(url,
-        method: 'DELETE',
-        headers: headers,
-        body: body,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken);
+        method: 'DELETE', headers: headers, body: body, encoding: encoding, appendAuthorizationToken: appendAuthorizationToken);
   }
 
   Future<HttpieStreamedResponse> patchMultiform(
@@ -309,11 +274,7 @@ class HttpieService {
     bool? appendAuthorizationToken,
   }) {
     return _multipartRequest(url,
-        method: 'PATCH',
-        headers: headers,
-        body: body,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken);
+        method: 'PATCH', headers: headers, body: body, encoding: encoding, appendAuthorizationToken: appendAuthorizationToken);
   }
 
   Future<HttpieStreamedResponse> putMultiform(
@@ -324,11 +285,7 @@ class HttpieService {
     bool? appendAuthorizationToken,
   }) {
     return _multipartRequest(url,
-        method: 'PUT',
-        headers: headers,
-        body: body,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken);
+        method: 'PUT', headers: headers, body: body, encoding: encoding, appendAuthorizationToken: appendAuthorizationToken);
   }
 
   Future<HttpieStreamedResponse> _multipartRequest(String url,
@@ -362,8 +319,7 @@ class HttpieService {
             fileFields.add(fileFuture);
           }
         } else {
-          request.fields[key] =
-              value.map((item) => item.toString()).toList().join(',');
+          request.fields[key] = value.map((item) => item.toString()).toList().join(',');
         }
       } else if (value is File) {
         final fileFuture = _convertToMultipartFile(key, value);
@@ -464,9 +420,7 @@ class HttpieService {
       return value.toString();
     }
     if (value is List) {
-      return value
-          .map((valueItem) => _stringifyQueryStringValue(valueItem))
-          .join(',');
+      return value.map((valueItem) => _stringifyQueryStringValue(valueItem)).join(',');
     }
     throw 'Unsupported query string value';
   }
@@ -566,12 +520,9 @@ class HttpieRequestError<T extends HttpieBaseResponse> implements Exception {
     } else if (statusCode == HttpStatus.badRequest) {
       readableMessage = 'Bad request';
     } else if (statusCode == HttpStatus.internalServerError) {
-      readableMessage =
-          "We're experiencing server errors. Please try again later.";
-    } else if (statusCode == HttpStatus.serviceUnavailable ||
-        statusCode == HttpStatus.serviceUnavailable) {
-      readableMessage =
-          "We're experiencing server errors. Please try again later.";
+      readableMessage = "We're experiencing server errors. Please try again later.";
+    } else if (statusCode == HttpStatus.serviceUnavailable || statusCode == HttpStatus.serviceUnavailable) {
+      readableMessage = "We're experiencing server errors. Please try again later.";
     } else {
       readableMessage = 'Server error';
     }
@@ -603,8 +554,7 @@ class HttpieRequestError<T extends HttpieBaseResponse> implements Exception {
       final HttpieResponse castedResponse = response as HttpieResponse;
       body = castedResponse.body;
     } else if (response is HttpieStreamedResponse) {
-      final HttpieStreamedResponse castedResponse =
-          response as HttpieStreamedResponse;
+      final HttpieStreamedResponse castedResponse = response as HttpieStreamedResponse;
       body = await castedResponse.readAsString();
     }
     return body;
@@ -623,13 +573,11 @@ class HttpieRequestError<T extends HttpieBaseResponse> implements Exception {
             return parsedError['message'] as String?;
           } else {
             final dynamic mapFirstValue = parsedError.values.toList().first;
-            final dynamic value =
-                mapFirstValue is List ? mapFirstValue[0] : null;
+            final dynamic value = mapFirstValue is List ? mapFirstValue[0] : null;
             if (value != null && value is String) {
               return value;
             } else {
-              return convertStatusCodeToHumanReadableMessage(
-                  response.statusCode);
+              return convertStatusCodeToHumanReadableMessage(response.statusCode);
             }
           }
         } else {

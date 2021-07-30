@@ -9,7 +9,9 @@ class ChatRoomItem extends StatelessWidget {
   final ChatRoom room;
   final VoidCallback onChatRoomPressed;
 
-  const ChatRoomItem({Key? key, required this.room, required this.onChatRoomPressed}) : super(key: key);
+  const ChatRoomItem(
+      {Key? key, required this.room, required this.onChatRoomPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +20,11 @@ class ChatRoomItem extends StatelessWidget {
       dense: true,
       contentPadding: EdgeInsets.zero,
       leading: MWAvatar(
-        avatarUrl: room.privateChatPartner.avatarUrl ?? '',
+        avatarUrl: room.privateChatPartner?.avatarUrl ?? '',
         borderRadius: 10.r,
       ),
       title: Text(
-        room.privateChatPartner.name ?? '',
+        room.privateChatPartner?.name ?? '',
         style: UITextStyle.heading_16_semiBold,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
@@ -74,7 +76,7 @@ class ChatRoomItem extends StatelessWidget {
     if (lastMessage.isSentByMe) {
       return 'Bạn • $subTitle';
     } else {
-      final String partnerName = room.privateChatPartner.name!;
+      final String partnerName = room.privateChatPartner?.name ?? '';
       return '$partnerName • $subTitle';
     }
   }

@@ -9,6 +9,7 @@ import 'package:meowoof/modules/social_network/app/save_post/save_post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class NavigationService {
@@ -38,7 +39,9 @@ class NavigationService {
     return Get.to(() => const ChatDashboard());
   }
 
-  Future navigateToChatRoom(ChatRoom room) async {
-    return Get.to(() => ChatRoomPage(room));
+  Future<bool?> navigateToChatRoom({ChatRoom? room, User? user}) async {
+    final isError =
+        await Get.to(() => ChatRoomPage(room: room, partner: user)) as bool?;
+    return isError;
   }
 }

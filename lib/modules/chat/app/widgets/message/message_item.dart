@@ -17,7 +17,12 @@ class MessageWidget extends StatelessWidget {
 
   final Function(Message)? onMessageTap;
 
-  const MessageWidget(this.message, {this.chatPartner, Key? key, this.isDisplayAvatar = true, this.onMessageTap}) : super(key: key);
+  const MessageWidget(this.message,
+      {this.chatPartner,
+      Key? key,
+      this.isDisplayAvatar = true,
+      this.onMessageTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,8 @@ class MessageWidget extends StatelessWidget {
 
     const double _messageBorderRadius = 15;
     final _borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(isMyMessage || !isDisplayAvatar ? _messageBorderRadius : 0),
+      bottomLeft: Radius.circular(
+          (isMyMessage || !isDisplayAvatar) ? _messageBorderRadius : 0),
       bottomRight: Radius.circular(isMyMessage
           ? !isDisplayAvatar
               ? _messageBorderRadius
@@ -37,7 +43,6 @@ class MessageWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(
         bottom: 4,
-        left: 20,
       ),
       alignment: isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
       child: Row(
@@ -46,7 +51,7 @@ class MessageWidget extends StatelessWidget {
         children: [
           if (!isMyMessage) _buildMessageIdentifierAvatar(isMyMessage),
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 0.8.sw),
+            constraints: BoxConstraints(maxWidth: 0.65.sw),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -54,7 +59,8 @@ class MessageWidget extends StatelessWidget {
                   onTap: () => _onMessageTap(context),
                   child: ClipRRect(
                     borderRadius: _borderRadius,
-                    child: MessageBody(message, isMyMessage: isMyMessage, partner: chatPartner),
+                    child: MessageBody(message,
+                        isMyMessage: isMyMessage, partner: chatPartner),
                   ),
                 ),
               ],
@@ -66,7 +72,10 @@ class MessageWidget extends StatelessWidget {
   }
 
   Widget _buildMessageIdentifierAvatar(bool isMyMessage) {
-    final avatarUrl = (!isMyMessage ? chatPartner?.avatarUrl : injector<LoggedInUser>().user?.avatarUrl) ?? '';
+    final avatarUrl = (!isMyMessage
+            ? chatPartner?.avatarUrl
+            : injector<LoggedInUser>().user?.avatarUrl) ??
+        '';
     return Padding(
       padding: EdgeInsets.only(
         right: !isMyMessage ? 10 : 0,

@@ -83,6 +83,6 @@ class ChatManagerModel extends BaseViewModel {
   }
 
   void onChatRoomPressed(ChatRoom room) {
-    injector<NavigationService>().navigateToChatRoom(room);
+    injector<NavigationService>().navigateToChatRoom(room: room);
   }
 }

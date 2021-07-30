@@ -7,7 +7,7 @@ import 'package:meowoof/theme/ui_color.dart';
 
 class TypingWidget extends StatelessWidget {
   final bool isTyping;
-  final User chatPartner;
+  final User? chatPartner;
 
   const TypingWidget(
       {Key? key, required this.isTyping, required this.chatPartner})
@@ -25,16 +25,16 @@ class TypingWidget extends StatelessWidget {
         left: 16,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
               padding: const EdgeInsets.only(right: 10),
               child: ActiveStatusAvatar(
-                avatarUrl: chatPartner.avatarUrl ?? '',
+                avatarUrl: chatPartner?.avatarUrl ?? '',
                 isSmallSize: true,
                 borderRadius: 8,
-                isActive: true,
+                isActive: false,
               )),
           Container(
             height: 30.h,

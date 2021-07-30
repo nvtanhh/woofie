@@ -9,25 +9,28 @@ import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/chat_room_nav.dar
 import 'package:meowoof/modules/chat/app/widgets/message/message_item.dart';
 import 'package:meowoof/modules/chat/app/widgets/message_sender.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatRoomPage extends StatefulWidget {
-  final ChatRoom room;
-
-  const ChatRoomPage(this.room, {Key? key}) : super(key: key);
+  final ChatRoom? room;
+  final User? partner;
+  const ChatRoomPage({Key? key, this.room, this.partner}) : super(key: key);
 
   @override
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
+class _ChatRoomPageState
+    extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
   @override
   ChatRoomPageModel createViewModel() => injector<ChatRoomPageModel>();
 
   @override
   void loadArguments() {
-    viewModel.room = widget.room;
+    viewModel.inputRoom = widget.room;
+    viewModel.partner = widget.partner;
     super.loadArguments();
   }
 
@@ -38,9 +41,15 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
+    return Obx(
+      () => viewModel.isLoaded.value
+          ? Scaffold(
+              appBar: _buildAppBar(),
+              body: _buildBody(),
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 
@@ -64,7 +73,8 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
             reverse: true,
             builderDelegate: PagedChildBuilderDelegate<Message>(
               itemBuilder: (context, message, index) {
-                final bool isDisplayAvatar = viewModel.checkIsDisplayAvatar(index);
+                final bool isDisplayAvatar =
+                    viewModel.checkIsDisplayAvatar(index);
                 return MessageWidget(
                   message,
                   key: Key(message.objectId),
@@ -77,7 +87,9 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
           ),
         ),
         Obx(
-          () => TypingWidget(isTyping: viewModel.partnerTypingStatus.value, chatPartner: viewModel.room.privateChatPartner),
+          () => TypingWidget(
+              isTyping: viewModel.partnerTypingStatus.value,
+              chatPartner: viewModel.room.privateChatPartner),
         ),
         _buildMessageSender(),
       ],

@@ -2,10 +2,12 @@ import 'package:async/async.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
+import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/social_network/app/save_post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -14,6 +16,7 @@ import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_po
 import 'package:meowoof/modules/social_network/domain/usecases/profile/follow_pet_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_posts_of_user_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_user_profile_usecase.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -31,7 +34,8 @@ class UserProfileModel extends BaseViewModel {
   late List<Post> posts;
   final RxBool _isLoaded = RxBool(false);
   final PostService postService;
-  CancelableOperation? _cancelableOperationLoadInit, _cancelableOperationLoadMorePost;
+  CancelableOperation? _cancelableOperationLoadInit,
+      _cancelableOperationLoadMorePost;
 
   UserProfileModel(
     this._getUseProfileUseacse,
@@ -46,9 +50,9 @@ class UserProfileModel extends BaseViewModel {
   @override
   void initState() {
     postService.initState();
-    if (user == null) {
+    if (user == null || user == injector<LoggedInUser>().user) {
       isMe = true;
-      user = injector<LoggedInUser>().user;
+      user ??= injector<LoggedInUser>().user;
     }
     _cancelableOperationLoadInit = CancelableOperation.fromFuture(initData());
     super.initState();
@@ -58,19 +62,22 @@ class UserProfileModel extends BaseViewModel {
     await Future.wait([_getUserProfile(), _loadMorePost(nextPageKey)]);
     postService.pagingController.addPageRequestListener(
       (pageKey) {
-        _cancelableOperationLoadMorePost = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        _cancelableOperationLoadMorePost =
+            CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     isLoaded = true;
   }
 
   Future _getUserProfile() async {
-    return call(() async => user = await _getUseProfileUseacse.call(user!.id), showLoading: false, onSuccess: () {});
+    return call(() async => user = await _getUseProfileUseacse.call(user!.id),
+        showLoading: false, onSuccess: () {});
   }
 
   Future _loadMorePost(int pageKey) async {
     try {
-      posts = await _getPostOfUserUsecase.call(userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
+      posts = await _getPostOfUserUsecase.call(
+          userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
       if (postService.pagingController.itemList == null) {
         posts.insert(
           0,
@@ -103,7 +110,8 @@ class UserProfileModel extends BaseViewModel {
 
   void onPostDeleted(Post post, int index) {
     bool result = false;
-    call(() async => result = await _deletePostUsecase.call(post.id), onSuccess: () {
+    call(() async => result = await _deletePostUsecase.call(post.id),
+        onSuccess: () {
       if (result) {
         _toastService.success(message: "Post deleted!", context: Get.context!);
         postService.pagingController.itemList?.removeAt(index);
@@ -136,5 +144,19 @@ class UserProfileModel extends BaseViewModel {
     _cancelableOperationLoadInit?.cancel();
     _cancelableOperationLoadMorePost?.cancel();
     super.disposeState();
+  }
+
+  Future<void> onWantsToContact(User user) async {
+    final isError =
+        await injector<NavigationService>().navigateToChatRoom(user: user);
+    if (isError != null && isError) {
+      Get.snackbar(
+        "Sorry",
+        "Unable to init chat room, please try again later.",
+        duration: const Duration(seconds: 1),
+        backgroundColor: UIColor.danger,
+        colorText: UIColor.white,
+      );
+    }
   }
 }
