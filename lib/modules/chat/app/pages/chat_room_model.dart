@@ -44,10 +44,12 @@ class ChatRoomPageModel extends BaseViewModel {
 
   final RxList<MediaFile> _sendingMedias = <MediaFile>[].obs;
   ScrollController scrollController = ScrollController();
-  final TextEditingController messageSenderTextController = TextEditingController();
+  final TextEditingController messageSenderTextController =
+      TextEditingController();
   final RxBool _isCanSendMessage = false.obs;
 
-  late PagingController<int, Message> pagingController = PagingController(firstPageKey: 0);
+  late PagingController<int, Message> pagingController =
+      PagingController(firstPageKey: 0);
   static const int _pageSize = 10;
 
   final RxBool partnerTypingStatus = false.obs;
@@ -121,7 +123,8 @@ class ChatRoomPageModel extends BaseViewModel {
   void _initModel() {
     pagingController = PagingController(firstPageKey: room.messages.length);
     pagingController.appendPage(room.messages, room.messages.length);
-    pagingController.addPageRequestListener((pageKey) => _loadMoreMessage(pageKey));
+    pagingController
+        .addPageRequestListener((pageKey) => _loadMoreMessage(pageKey));
     _initChatSocket();
     _setupListenCanSendMessage();
     isLoaded.value = true;
@@ -156,7 +159,8 @@ class ChatRoomPageModel extends BaseViewModel {
   }
 
   void _onNewMessageComming(data) {
-    final newMessage = Message.fromJson(data['message'] as Map<String, dynamic>);
+    final newMessage =
+        Message.fromJson(data['message'] as Map<String, dynamic>);
     if (room.isMyMessage(newMessage)) {
       _updateNewMessage(newMessage);
       // when a new message comes, we should stop the typing animation
@@ -210,7 +214,8 @@ class ChatRoomPageModel extends BaseViewModel {
 
   Future<void> _loadMoreMessage(int pageKey) async {
     try {
-      final newItems = await _getMessagesUseCase.call(skip: pageKey, roomId: room.id);
+      final newItems =
+          await _getMessagesUseCase.call(skip: pageKey, roomId: room.id);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
@@ -247,7 +252,8 @@ class ChatRoomPageModel extends BaseViewModel {
 
   bool checkIsDisplayAvatar(int index) {
     final messages = pagingController.itemList!;
-    return index == 0 || messages[index].senderId != messages[index - 1].senderId;
+    return index == 0 ||
+        messages[index].senderId != messages[index - 1].senderId;
   }
 
   Future<void> onMediaPicked(List<MediaFile> media) async {
@@ -279,9 +285,11 @@ class ChatRoomPageModel extends BaseViewModel {
             _updateNewMessage(sendingMessage, notifyChatRoom: false);
             _cleanSender();
             newMessage = await _sendMessage(sendingMessage.clone());
-          } else if (sendingMessage.type == MessageType.image || sendingMessage.type == MessageType.video) {
+          } else if (sendingMessage.type == MessageType.image ||
+              sendingMessage.type == MessageType.video) {
             sendingMessage.content = _sendingMedias.first.file.path;
-            sendingMessage.description = messageSenderTextController.text.trim();
+            sendingMessage.description =
+                messageSenderTextController.text.trim();
             _updateNewMessage(sendingMessage.clone(), notifyChatRoom: false);
 
             final MediaFile mediaToUpload = _sendingMedias.first;
@@ -293,7 +301,8 @@ class ChatRoomPageModel extends BaseViewModel {
           // find the new message in the recent message list ==> mark it as sent
           if (newMessage != null) {
             final List<Message> messages = pagingController.itemList!;
-            final index = messages.indexWhere((message) => _isMessageSelf(message, newMessage!));
+            final index = messages
+                .indexWhere((message) => _isMessageSelf(message, newMessage!));
             messages.removeAt(index);
             messages.insert(index, newMessage);
             // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
@@ -317,7 +326,9 @@ class ChatRoomPageModel extends BaseViewModel {
   }
 
   bool _isMessageSelf(Message message, Message newMessage) {
-    return (message.localUuid != null && newMessage.localUuid != null && message.localUuid == newMessage.localUuid) ||
+    return (message.localUuid != null &&
+            newMessage.localUuid != null &&
+            message.localUuid == newMessage.localUuid) ||
         (message.createdAt == newMessage.createdAt);
   }
 
@@ -328,8 +339,10 @@ class ChatRoomPageModel extends BaseViewModel {
   Future<String> _startUploadMedia(MediaFile meida) async {
     final compressedImage = await _compressPostMediaItem(meida);
     final String fileName = basename(compressedImage.file.path);
-    final String preSignedUrl = await _getPresignedUrlUsecase.call(fileName, room.id);
-    final uploadedMediaUrl = await _uploadMediaUsecase.call(preSignedUrl, compressedImage.file);
+    final String preSignedUrl =
+        await _getPresignedUrlUsecase.call(fileName, room.id);
+    final uploadedMediaUrl =
+        await _uploadMediaUsecase.call(preSignedUrl, compressedImage.file);
     return uploadedMediaUrl!;
   }
 
