@@ -45,7 +45,8 @@ class ChatRoomPageModel extends BaseViewModel {
       TextEditingController();
   final RxBool _isCanSendMessage = false.obs;
 
-  late PagingController<int, Message> pagingController;
+  late PagingController<int, Message> pagingController =
+      PagingController(firstPageKey: 0);
   static const int _pageSize = 10;
 
   final RxBool partnerTypingStatus = false.obs;
@@ -148,8 +149,11 @@ class ChatRoomPageModel extends BaseViewModel {
   void _onNewMessageComming(data) {
     final newMessage =
         Message.fromJson(data['message'] as Map<String, dynamic>);
-
-    _updateNewMessage(newMessage);
+    if (room.isMyMessage(newMessage)) {
+      _updateNewMessage(newMessage);
+    } else {
+      // hanlde other room's messages
+    }
   }
 
   /// Hanlding on typing event - worked with private chat (for now).
@@ -259,6 +263,9 @@ class ChatRoomPageModel extends BaseViewModel {
               messageType == MessageType.video) {
             content = await _startUploadMedia();
           }
+
+          
+
 
           final description = messageType != MessageType.text
               ? messageSenderTextController.text

@@ -77,7 +77,7 @@ class _ChatRoomPageState
                     viewModel.checkIsDisplayAvatar(index);
                 return MessageWidget(
                   message,
-                  key: Key(message.objectId),
+                  key: Key(message.id),
                   chatPartner: viewModel.room.privateChatPartner,
                   isDisplayAvatar: isDisplayAvatar,
                 );
