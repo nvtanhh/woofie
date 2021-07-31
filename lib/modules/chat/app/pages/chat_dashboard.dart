@@ -19,8 +19,7 @@ class ChatDashboard extends StatefulWidget {
   _ChatDashboardState createState() => _ChatDashboardState();
 }
 
-class _ChatDashboardState
-    extends BaseViewState<ChatDashboard, ChatManagerModel> {
+class _ChatDashboardState extends BaseViewState<ChatDashboard, ChatManagerModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +43,7 @@ class _ChatDashboardState
       title: Text(
         'Nhắn tin',
         maxLines: 1,
-        style:
-            GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w600),
+        style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w600),
       ),
       // actions: <Widget>[
       //   IconButton(

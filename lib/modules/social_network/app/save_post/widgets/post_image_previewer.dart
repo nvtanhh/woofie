@@ -46,9 +46,7 @@ class PostImagePreviewer extends StatelessWidget {
       width: isConstraintsSize ? width ?? 200 : null,
       height: isConstraintsSize ? height ?? 200 : null,
       child: ClipRRect(
-        borderRadius: !noBorder
-            ? BorderRadius.circular(avatarBorderRadius)
-            : BorderRadius.zero,
+        borderRadius: !noBorder ? BorderRadius.circular(avatarBorderRadius) : BorderRadius.zero,
         child: isFileImage
             ? Image.file(
                 postImageFile!,
@@ -89,8 +87,7 @@ class PostImagePreviewer extends StatelessWidget {
         width: buttonSize,
         height: buttonSize,
         child: FloatingActionButton(
-          heroTag: Key(
-              'postImagePreviewerRemoveButton${postImageFile?.path}${postMedia?.url}'),
+          heroTag: Key('postImagePreviewerRemoveButton${postImageFile?.path}${postMedia?.url}'),
           onPressed: onRemove,
           backgroundColor: Colors.black54,
           child: const MWIcon(
@@ -108,8 +105,7 @@ class PostImagePreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
-        heroTag: Key(
-            'postImagePreviewerEditButton${postImageFile?.path}${postMedia?.url}'),
+        heroTag: Key('postImagePreviewerEditButton${postImageFile?.path}${postMedia?.url}'),
         onPressed: () => _onWantsToEditImage(context),
         backgroundColor: Colors.black54,
         child: const MWIcon(
@@ -127,8 +123,7 @@ class PostImagePreviewer extends StatelessWidget {
 
     final File? croppedFile = await mediaService.cropImage(postImageFile!);
     if (croppedFile != null && onPostImageEdited != null) {
-      final MediaFile media =
-          await mediaService.convertToMediaFile(croppedFile);
+      final MediaFile media = await mediaService.convertToMediaFile(croppedFile);
       onPostImageEdited!(media);
     }
   }

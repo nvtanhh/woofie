@@ -40,8 +40,7 @@ class NavigationService {
   }
 
   Future<bool?> navigateToChatRoom({ChatRoom? room, User? user}) async {
-    final isError =
-        await Get.to(() => ChatRoomPage(room: room, partner: user)) as bool?;
+    final isError = await Get.to(() => ChatRoomPage(room: room, partner: user)) as bool?;
     return isError;
   }
 }

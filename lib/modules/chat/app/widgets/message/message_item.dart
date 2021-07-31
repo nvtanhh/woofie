@@ -16,12 +16,7 @@ class MessageWidget extends StatelessWidget {
 
   final Function(Message)? onMessageTap;
 
-  const MessageWidget(this.message,
-      {this.chatPartner,
-      Key? key,
-      this.isDisplayAvatar = true,
-      this.onMessageTap})
-      : super(key: key);
+  const MessageWidget(this.message, {this.chatPartner, Key? key, this.isDisplayAvatar = true, this.onMessageTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +24,7 @@ class MessageWidget extends StatelessWidget {
 
     const double _messageBorderRadius = 15;
     final _borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(
-          (isMyMessage || !isDisplayAvatar) ? _messageBorderRadius : 0),
+      bottomLeft: Radius.circular((isMyMessage || !isDisplayAvatar) ? _messageBorderRadius : 0),
       bottomRight: Radius.circular(isMyMessage
           ? !isDisplayAvatar
               ? _messageBorderRadius
@@ -64,8 +58,7 @@ class MessageWidget extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: isMyMessage ? UIColor.primary : UIColor.holder,
                         ),
-                        child: MessageBody(message,
-                            isMyMessage: isMyMessage, partner: chatPartner),
+                        child: MessageBody(message, isMyMessage: isMyMessage, partner: chatPartner),
                       ),
                     ),
                   ),

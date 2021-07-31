@@ -20,8 +20,7 @@ class ChatRepository {
     return _storageDatasource.getPresignedChatMediaUrl(fileName, chatRoomId);
   }
 
-  Future<List<Message>> getMessagesWithRoomId(
-      int limit, int skip, String roomId) {
+  Future<List<Message>> getMessagesWithRoomId(int limit, int skip, String roomId) {
     return _datasource.getMessagesWithRoomId(limit, skip, roomId);
   }
 

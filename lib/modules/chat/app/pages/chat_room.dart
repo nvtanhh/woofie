@@ -22,8 +22,7 @@ class ChatRoomPage extends StatefulWidget {
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomPageState
-    extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
+class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
   @override
   ChatRoomPageModel createViewModel() => injector<ChatRoomPageModel>();
 
@@ -73,8 +72,7 @@ class _ChatRoomPageState
             reverse: true,
             builderDelegate: PagedChildBuilderDelegate<Message>(
               itemBuilder: (context, message, index) {
-                final bool isDisplayAvatar =
-                    viewModel.checkIsDisplayAvatar(index);
+                final bool isDisplayAvatar = viewModel.checkIsDisplayAvatar(index);
                 return MessageWidget(
                   message,
                   key: Key(message.id ?? message.createdAt.toString()),
@@ -87,9 +85,7 @@ class _ChatRoomPageState
           ),
         ),
         Obx(
-          () => TypingWidget(
-              isTyping: viewModel.partnerTypingStatus.value,
-              chatPartner: viewModel.room.privateChatPartner),
+          () => TypingWidget(isTyping: viewModel.partnerTypingStatus.value, chatPartner: viewModel.room.privateChatPartner),
         ),
         _buildMessageSender(),
       ],

@@ -45,10 +45,7 @@ class Message implements Comparable<Message> {
       identical(this, other) ||
       other is Message &&
           runtimeType == other.runtimeType &&
-          ((id != null && other.id != null && id == other.id) ||
-              (localUuid != null &&
-                  other.localUuid != null &&
-                  localUuid == other.localUuid));
+          ((id != null && other.id != null && id == other.id) || (localUuid != null && other.localUuid != null && localUuid == other.localUuid));
 
   @override
   int get hashCode => id.hashCode;

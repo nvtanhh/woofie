@@ -18,9 +18,7 @@ class ShimmerCommentWidget extends StatelessWidget {
             Container(
               width: 40.w,
               height: 40.w,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: UIColor.white),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: UIColor.white),
               margin: EdgeInsets.only(right: 10.w),
             ),
             Column(
@@ -29,9 +27,7 @@ class ShimmerCommentWidget extends StatelessWidget {
                 Container(
                   width: 50.w,
                   height: 10.h,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      color: UIColor.white),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: UIColor.white),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -39,9 +35,7 @@ class ShimmerCommentWidget extends StatelessWidget {
                 Container(
                   width: (Get.width * 0.7).w,
                   height: 60.h,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.r),
-                      color: UIColor.white),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), color: UIColor.white),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -51,9 +45,7 @@ class ShimmerCommentWidget extends StatelessWidget {
                     Container(
                       width: 50.w,
                       height: 10.h,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: UIColor.white),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: UIColor.white),
                     ),
                     SizedBox(
                       width: 26.w,

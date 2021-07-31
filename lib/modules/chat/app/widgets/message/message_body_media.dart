@@ -18,8 +18,7 @@ class MessageBodyMedia extends StatelessWidget {
 
   final User? partner;
 
-  const MessageBodyMedia(this.message, {Key? key, required this.partner})
-      : super(key: key);
+  const MessageBodyMedia(this.message, {Key? key, required this.partner}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +80,7 @@ class MessageBodyMedia extends StatelessWidget {
           children: [
             Text(
               message.description!,
-              style: message.isSentByMe
-                  ? UITextStyle.body_14_medium.apply(color: Colors.white)
-                  : UITextStyle.body_14_medium,
+              style: message.isSentByMe ? UITextStyle.body_14_medium.apply(color: Colors.white) : UITextStyle.body_14_medium,
             ),
             const SizedBox(height: 10),
             if (message.type == MessageType.video)
@@ -102,9 +99,7 @@ class MessageBodyMedia extends StatelessWidget {
 
   Widget _videoMessage(Message message, User? partner) {
     const String sendVideoText = 'Đã gửi 1 video';
-    final String subTitle = message.isSentByMe
-        ? 'Bạn • $sendVideoText'
-        : '${partner?.name ?? ""} • $sendVideoText';
+    final String subTitle = message.isSentByMe ? 'Bạn • $sendVideoText' : '${partner?.name ?? ""} • $sendVideoText';
 
     return Container(
       height: 80,
@@ -114,9 +109,7 @@ class MessageBodyMedia extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: message.isSentByMe
-                  ? UIColor.white.withOpacity(.3)
-                  : UIColor.textBody.withOpacity(.3),
+              color: message.isSentByMe ? UIColor.white.withOpacity(.3) : UIColor.textBody.withOpacity(.3),
               borderRadius: BorderRadius.circular(21),
             ),
             height: 42,
@@ -140,9 +133,7 @@ class MessageBodyMedia extends StatelessWidget {
                     maxLines: 1,
                     textWidthBasis: TextWidthBasis.longestLine,
                     overflow: TextOverflow.ellipsis,
-                    style: message.isSentByMe
-                        ? UITextStyle.body_14_medium.apply(color: Colors.white)
-                        : UITextStyle.body_14_medium,
+                    style: message.isSentByMe ? UITextStyle.body_14_medium.apply(color: Colors.white) : UITextStyle.body_14_medium,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -150,9 +141,7 @@ class MessageBodyMedia extends StatelessWidget {
                     ),
                     child: Text(
                       subTitle,
-                      style: message.isSentByMe
-                          ? UITextStyle.body_12_reg.apply(color: Colors.white70)
-                          : UITextStyle.body_12_reg,
+                      style: message.isSentByMe ? UITextStyle.body_12_reg.apply(color: Colors.white70) : UITextStyle.body_12_reg,
                     ),
                   ),
                 ],

@@ -36,36 +36,26 @@ class ChatDatasource {
     queryParameters['limit'] = limit;
     queryParameters['skip'] = skip;
 
-    final response = await _httpieService.get(
-        '$baseUrl/$GET_CHAT_ROOM_ENDPOINT',
-        queryParameters: queryParameters,
-        appendAuthorizationToken: true);
+    final response = await _httpieService.get('$baseUrl/$GET_CHAT_ROOM_ENDPOINT', queryParameters: queryParameters, appendAuthorizationToken: true);
     if (response.statusCode == 200) {
       final list = json.decode(response.body)['rooms'] as List;
-      return list
-          .map((room) => ChatRoom.fromJson(room as Map<String, dynamic>))
-          .toList();
+      return list.map((room) => ChatRoom.fromJson(room as Map<String, dynamic>)).toList();
     } else {
       printError(info: 'Failed to get chat rooms: $response');
       throw Error;
     }
   }
 
-  Future<List<Message>> getMessagesWithRoomId(
-      int limit, int skip, String roomId) async {
+  Future<List<Message>> getMessagesWithRoomId(int limit, int skip, String roomId) async {
     final Map<String, dynamic> queryParameters = {
       'limit': limit,
       'skip': skip,
     };
-    final endpoint =
-        _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
-    final response = await _httpieService.get('$baseUrl/$endpoint',
-        queryParameters: queryParameters, appendAuthorizationToken: true);
+    final endpoint = _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
+    final response = await _httpieService.get('$baseUrl/$endpoint', queryParameters: queryParameters, appendAuthorizationToken: true);
     if (response.statusCode == 200) {
       final list = json.decode(response.body)['messages'] as List;
-      return list
-          .map((room) => Message.fromJson(room as Map<String, dynamic>))
-          .toList();
+      return list.map((room) => Message.fromJson(room as Map<String, dynamic>)).toList();
     } else {
       printError(info: 'Failed to get more messages: $response');
       throw Error;
@@ -73,24 +63,20 @@ class ChatDatasource {
   }
 
   Future<Message> sendMessages(Message sendingMessage) async {
-    final endpoint = _urlParser
-        .parse(SEND_MESSAGE_ENDPOINT, {'room_id': sendingMessage.roomId});
+    final endpoint = _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': sendingMessage.roomId});
 
     final body = {
       'content': sendingMessage.content,
       'type': _pareMessageType(sendingMessage.type),
       'createdAt': sendingMessage.createdAt.toString(),
     };
-    if (sendingMessage.description != null &&
-        sendingMessage.description!.isNotEmpty) {
+    if (sendingMessage.description != null && sendingMessage.description!.isNotEmpty) {
       body['description'] = sendingMessage.description!;
     }
 
-    final response = await _httpieService.post('$baseUrl/$endpoint',
-        body: body, appendAuthorizationToken: true);
+    final response = await _httpieService.post('$baseUrl/$endpoint', body: body, appendAuthorizationToken: true);
     if (response.statusCode == 201) {
-      final Message newMessage = Message.fromJson(
-          json.decode(response.body)['new_message'] as Map<String, dynamic>);
+      final Message newMessage = Message.fromJson(json.decode(response.body)['new_message'] as Map<String, dynamic>);
       newMessage.localUuid = sendingMessage.localUuid;
       return newMessage;
     } else {
@@ -104,13 +90,9 @@ class ChatDatasource {
       'members': [user.uuid],
       'isGroup': false,
     };
-    final response = await _httpieService.postJSON(
-        '$baseUrl/$INIT_CHAT_ROOM_ENDPOINT',
-        body: body,
-        appendAuthorizationToken: true);
+    final response = await _httpieService.postJSON('$baseUrl/$INIT_CHAT_ROOM_ENDPOINT', body: body, appendAuthorizationToken: true);
     if (response.statusCode == 200) {
-      return ChatRoom.fromJson(
-          json.decode(response.body)['chatRoom'] as Map<String, dynamic>);
+      return ChatRoom.fromJson(json.decode(response.body)['chatRoom'] as Map<String, dynamic>);
     } else {
       printError(info: 'Failed to init chat room: $response');
       throw Exception();

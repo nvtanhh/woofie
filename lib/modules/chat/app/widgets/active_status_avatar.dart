@@ -21,9 +21,7 @@ class ActiveStatusAvatar extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: isActive
-              ? const EdgeInsets.only(bottom: 3, right: 3)
-              : EdgeInsets.zero,
+          padding: isActive ? const EdgeInsets.only(bottom: 3, right: 3) : EdgeInsets.zero,
           child: MWAvatar(
             avatarUrl: avatarUrl,
             borderRadius: borderRadius,
