@@ -113,7 +113,7 @@ class ChatDatasource {
           json.decode(response.body)['chatRoom'] as Map<String, dynamic>);
     } else {
       printError(info: 'Failed to init chat room: $response');
-      throw Error;
+      throw Exception();
     }
   }
 

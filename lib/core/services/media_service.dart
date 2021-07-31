@@ -23,9 +23,8 @@ class MediaService {
   Map _thumbnail_cache = {};
   static const Uuid _uuid = Uuid();
 
-  MediaService() {}
-
-  Future<Uint8List?> getVideoThumbnailFromFile(File videoFile, {double? maxWidth, bool isConstraintsSize = true, int? quality}) async {
+  Future<Uint8List?> getVideoThumbnailFromFile(File videoFile,
+      {double? maxWidth, bool isConstraintsSize = true, int? quality}) async {
     return VideoThumbnail.thumbnailData(
       video: videoFile.path,
       imageFormat: ImageFormat.JPEG,
@@ -34,7 +33,8 @@ class MediaService {
     );
   }
 
-  Future<String?> getVideoThumbnailFromUrl(String url, {double? maxWidth, bool isConstraintsSize = true, int? quality}) async {
+  Future<String?> getVideoThumbnailFromUrl(String url,
+      {double? maxWidth, bool isConstraintsSize = true, int? quality}) async {
     final filePath = await VideoThumbnail.thumbnailFile(
       video: url,
       thumbnailPath: await _getThumbnailCachePath(defaultThumbnailCacheUrl),
@@ -50,7 +50,9 @@ class MediaService {
   Future<File?> cropImage(File image, {double? ratioX, double? ratioY}) async {
     return ImageCropper.cropImage(
       sourcePath: image.path,
-      aspectRatio: ratioX != null && ratioY != null ? CropAspectRatio(ratioX: ratioX, ratioY: ratioY) : null,
+      aspectRatio: ratioX != null && ratioY != null
+          ? CropAspectRatio(ratioX: ratioX, ratioY: ratioY)
+          : null,
       androidUiSettings: const AndroidUiSettings(
         toolbarColor: Colors.black,
         statusBarColor: Colors.black,
@@ -82,12 +84,15 @@ class MediaService {
 
   Future<File> compressImage(File image) async {
     File resultFile;
-    final Uint8List? compressedImageData = await FlutterImageCompress.compressWithFile(
+    final Uint8List? compressedImageData =
+        await FlutterImageCompress.compressWithFile(
       image.absolute.path,
       quality: 80,
     );
     if (compressedImageData != null) {
-      printInfo(info: 'Compressed image from ${image.lengthSync()} ===> ${compressedImageData.length}');
+      printInfo(
+          info:
+              'Compressed image from ${image.lengthSync()} ===> ${compressedImageData.length}');
       final String imageName = basename(image.path);
       final tempPath = await _getTempPath();
       final String thumbnailPath = '$tempPath/$imageName';
@@ -110,8 +115,8 @@ class MediaService {
     final path = await _getTempPath();
     final String resultFilePath = '$path/$videoName';
 
-    final int exitCode =
-        await _flutterFFmpeg.execute('-i ${video.path} -filter:v scale=720:-2 -vcodec libx264 -crf 23 -preset veryfast ${resultFilePath}');
+    final int exitCode = await _flutterFFmpeg.execute(
+        '-i ${video.path} -filter:v scale=720:-2 -vcodec libx264 -crf 23 -preset veryfast ${resultFilePath}');
 
     if (exitCode == 0) {
       resultFile = File(resultFilePath);
@@ -125,7 +130,8 @@ class MediaService {
 
   Future<String> _getTempPath() async {
     final Directory applicationsDocumentsDir = await getTemporaryDirectory();
-    Directory mediaCacheDir = Directory(join(applicationsDocumentsDir.path, 'mediaCache'));
+    Directory mediaCacheDir =
+        Directory(join(applicationsDocumentsDir.path, 'mediaCache'));
 
     if (await mediaCacheDir.exists()) return mediaCacheDir.path;
 
@@ -151,10 +157,12 @@ class MediaService {
     }
   }
 
-  Future<List<MediaFile>> pickMedias({bool allowMultiple = true, FileType type = FileType.media}) async {
+  Future<List<MediaFile>> pickMedias(
+      {bool allowMultiple = true, FileType type = FileType.media}) async {
     final List<MediaFile> medias = [];
     List<File>? files;
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: allowMultiple, type: type);
+    final FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowMultiple: allowMultiple, type: type);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -181,7 +189,8 @@ class MediaService {
   }
 
   Future<String> _getThumbnailCachePath(String dir) async {
-    final String path = (await getTemporaryDirectory()).path + defaultThumbnailCacheUrl;
+    final String path =
+        (await getTemporaryDirectory()).path + defaultThumbnailCacheUrl;
     final dir = Directory(path);
     if (!(await dir.exists())) {
       await dir.create();

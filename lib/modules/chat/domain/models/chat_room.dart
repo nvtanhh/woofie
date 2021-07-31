@@ -15,7 +15,6 @@ class ChatRoom extends UpdatableModel {
   late List<Message> _messages;
   bool isGroup;
   String? creatorUuid;
-  DateTime? createdAt;
 
   ChatRoom({
     required this.id,
@@ -24,7 +23,6 @@ class ChatRoom extends UpdatableModel {
     required this.memberUuids,
     this.creatorUuid,
     List<Message> messages = const [],
-    this.createdAt,
   }) : super(id) {
     _messages = messages;
   }
@@ -112,7 +110,6 @@ class ChatRoomFactory extends UpdatableModelFactory<ChatRoom> {
       memberUuids: List<String>.from(json['members'] as List<dynamic>),
       creatorUuid: json['creator'] as String,
       messages: parseMessages((json['messages'] as List<dynamic>?) ?? []),
-      createdAt: parseDateTime(json['createdAt'] as String?),
     );
   }
 

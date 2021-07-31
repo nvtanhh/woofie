@@ -81,6 +81,12 @@ class MWAvatar extends StatelessWidget {
         width: avatarSize.w,
         fit: BoxFit.cover,
         retries: 0,
+        loadStateChanged: (ExtendedImageState state) {
+          if (state.extendedImageLoadState == LoadState.loading ||
+              state.extendedImageLoadState == LoadState.failed) {
+            return _getAvatarPlaceholder(avatarSize);
+          }
+        },
       );
 
       if (isZoomable) {

@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
@@ -41,6 +43,17 @@ class MessageBodyMedia extends StatelessWidget {
           placeHolderImage: 'resources/images/fallbacks/media-fallback.png',
           isConstraintsSize: false,
         );
+        // return ExtendedImage.network(
+        //   message.content,
+        //   fit: BoxFit.cover,
+        //   retries: 0,
+        //   loadStateChanged: (ExtendedImageState state) {
+        //     if (state.extendedImageLoadState == LoadState.loading ||
+        //         state.extendedImageLoadState == LoadState.failed) {
+        //       return _getImagePlaceHolder();
+        //     }
+        //   },
+        // );
       } else {
         return PostImagePreviewer(
           postImageFile: File(message.content),

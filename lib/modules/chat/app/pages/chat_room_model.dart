@@ -91,24 +91,33 @@ class ChatRoomPageModel extends BaseViewModel {
   @override
   void initState() {
     super.initState();
-    try {
-      if (inputRoom != null) {
-        room = inputRoom!;
+    if (inputRoom != null) {
+      room = inputRoom!;
+      _initModel();
+    } else {
+      _initChatRoom().then((chatRoom) {
+        if (chatRoom == null) {
+          return;
+        }
+        room = chatRoom;
+        room.privateChatPartner = partner;
         _initModel();
-      } else {
-        _initChatRoom().then((chatRoom) {
-          room = chatRoom;
-          room.privateChatPartner = partner;
-          _initModel();
-        });
-      }
-    } catch (error) {
-      Get.back(result: true);
+      });
     }
   }
 
-  Future<ChatRoom> _initChatRoom() async {
-    return _initChatRoomsUseCase.call(partner!);
+  Future<ChatRoom?> _initChatRoom() async {
+    ChatRoom? chatRoom;
+    await call(
+      () async {
+        chatRoom = await _initChatRoomsUseCase.call(partner!);
+      },
+      onFailure: (e) {
+        Get.back(result: true);
+      },
+      showLoading: false,
+    );
+    return chatRoom;
   }
 
   void _initModel() {
@@ -154,6 +163,8 @@ class ChatRoomPageModel extends BaseViewModel {
         Message.fromJson(data['message'] as Map<String, dynamic>);
     if (room.isMyMessage(newMessage)) {
       _updateNewMessage(newMessage);
+      // when a new message comes, we should stop the typing animation
+      partnerTypingStatus.value = false;
     } else {
       // hanlde other room's messages
     }
@@ -163,7 +174,6 @@ class ChatRoomPageModel extends BaseViewModel {
   void _onPartnerTyping(data) {
     if (!room.isGroup) {
       partnerTypingStatus.value = data['isTyping'] as bool;
-      // _startTypingTimeout();
     }
   }
 
@@ -263,7 +273,7 @@ class ChatRoomPageModel extends BaseViewModel {
             content: '',
             type: _getMessageType(),
             senderId: injector<LoggedInUser>().user!.uuid!,
-            createdAt: DateTime.now(),
+            createdAt: DateTime.now().toUtc(),
             isSent: false,
           );
           sendingMessage.localUuid = const Uuid().v4();
@@ -271,14 +281,15 @@ class ChatRoomPageModel extends BaseViewModel {
           Message? newMessage;
           // Insert sending message to message list
           if (sendingMessage.type == MessageType.text) {
-            sendingMessage.content = messageSenderTextController.text;
+            sendingMessage.content = messageSenderTextController.text.trim();
             _updateNewMessage(sendingMessage, notifyChatRoom: false);
             _cleanSender();
             newMessage = await _sendMessage(sendingMessage.clone());
           } else if (sendingMessage.type == MessageType.image ||
               sendingMessage.type == MessageType.video) {
             sendingMessage.content = _sendingMedias.first.file.path;
-            sendingMessage.description = messageSenderTextController.text;
+            sendingMessage.description =
+                messageSenderTextController.text.trim();
             _updateNewMessage(sendingMessage.clone(), notifyChatRoom: false);
 
             final MediaFile mediaToUpload = _sendingMedias.first;

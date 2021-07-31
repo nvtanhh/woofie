@@ -68,7 +68,7 @@ class _ChatRoomPageState
         Expanded(
           child: PagedListView<int, Message>(
             scrollController: viewModel.scrollController,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
             pagingController: viewModel.pagingController,
             reverse: true,
             builderDelegate: PagedChildBuilderDelegate<Message>(
@@ -99,8 +99,8 @@ class _ChatRoomPageState
   Widget _buildMessageSender() {
     return Padding(
       padding: EdgeInsets.only(
-        right: 16.w,
-        left: 16.w,
+        right: 12.w,
+        left: 12.w,
         top: 16.h,
         bottom: 16.h,
       ),

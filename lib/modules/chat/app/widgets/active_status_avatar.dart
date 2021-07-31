@@ -4,7 +4,6 @@ import 'package:meowoof/core/ui/avatar/avatar.dart';
 class ActiveStatusAvatar extends StatelessWidget {
   final String avatarUrl;
   final bool isActive;
-
   final bool isSmallSize;
 
   final double borderRadius;
