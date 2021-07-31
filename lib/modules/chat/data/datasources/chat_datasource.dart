@@ -72,28 +72,27 @@ class ChatDatasource {
     }
   }
 
-  Future<Message> sendMessages({
-    required String roomId,
-    required String content,
-    required MessageType type,
-    String? description,
-  }) async {
-    final endpoint =
-        _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
+  Future<Message> sendMessages(Message sendingMessage) async {
+    final endpoint = _urlParser
+        .parse(SEND_MESSAGE_ENDPOINT, {'room_id': sendingMessage.roomId});
 
     final body = {
-      'content': content,
-      'type': _pareMessageType(type),
+      'content': sendingMessage.content,
+      'type': _pareMessageType(sendingMessage.type),
+      'createdAt': sendingMessage.createdAt.toString(),
     };
-    if (description != null && description.isNotEmpty) {
-      body['description'] = description;
+    if (sendingMessage.description != null &&
+        sendingMessage.description!.isNotEmpty) {
+      body['description'] = sendingMessage.description!;
     }
 
     final response = await _httpieService.post('$baseUrl/$endpoint',
         body: body, appendAuthorizationToken: true);
     if (response.statusCode == 201) {
-      return Message.fromJson(
+      final Message newMessage = Message.fromJson(
           json.decode(response.body)['new_message'] as Map<String, dynamic>);
+      newMessage.localUuid = sendingMessage.localUuid;
+      return newMessage;
     } else {
       printError(info: 'Failed to send message: $response');
       throw Error;

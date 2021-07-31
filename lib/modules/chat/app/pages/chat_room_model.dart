@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/configs/backend_config.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/media_service.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/message/get_messages_usecase.dart';
@@ -21,6 +23,7 @@ import 'package:path/path.dart';
 import 'package:suga_core/suga_core.dart';
 // ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:uuid/uuid.dart';
 
 @injectable
 class ChatRoomPageModel extends BaseViewModel {
@@ -174,7 +177,7 @@ class ChatRoomPageModel extends BaseViewModel {
   //   );
   // }
 
-  void _updateNewMessage(Message message) {
+  void _updateNewMessage(Message message, {bool notifyChatRoom = true}) {
     if (pagingController.itemList!.isEmpty) {
       pagingController.itemList!.add(message);
     } else {
@@ -185,7 +188,7 @@ class ChatRoomPageModel extends BaseViewModel {
     }
     // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
     pagingController.notifyListeners();
-    room.updateMessage(message);
+    if (notifyChatRoom) room.updateMessage(message);
   }
 
   void _startSendTypingEventTimeout() {
@@ -255,29 +258,46 @@ class ChatRoomPageModel extends BaseViewModel {
     if (isCanSendMessage) {
       await call(
         () async {
-          final messageType = _getMessageType();
-          String content = '';
-          if (messageType == MessageType.text) {
-            content = messageSenderTextController.text;
-          } else if (messageType == MessageType.image ||
-              messageType == MessageType.video) {
-            content = await _startUploadMedia();
+          final Message sendingMessage = Message(
+            roomId: room.id,
+            content: '',
+            type: _getMessageType(),
+            senderId: injector<LoggedInUser>().user!.uuid!,
+            createdAt: DateTime.now(),
+            isSent: false,
+          );
+          sendingMessage.localUuid = const Uuid().v4();
+
+          Message? newMessage;
+          // Insert sending message to message list
+          if (sendingMessage.type == MessageType.text) {
+            sendingMessage.content = messageSenderTextController.text;
+            _updateNewMessage(sendingMessage, notifyChatRoom: false);
+            _cleanSender();
+            newMessage = await _sendMessage(sendingMessage.clone());
+          } else if (sendingMessage.type == MessageType.image ||
+              sendingMessage.type == MessageType.video) {
+            sendingMessage.content = _sendingMedias.first.file.path;
+            sendingMessage.description = messageSenderTextController.text;
+            _updateNewMessage(sendingMessage.clone(), notifyChatRoom: false);
+
+            final MediaFile mediaToUpload = _sendingMedias.first;
+            _cleanSender();
+            sendingMessage.content = await _startUploadMedia(mediaToUpload);
+            newMessage = await _sendMessage(sendingMessage);
           }
 
-          
-
-
-          final description = messageType != MessageType.text
-              ? messageSenderTextController.text
-              : null;
-
-          final Message newMessage = await _sendMessagesUsecase.call(
-            roomId: room.id,
-            content: content,
-            type: messageType,
-            description: description,
-          );
-          _updateNewMessage(newMessage);
+          // find the new message in the recent message list ==> mark it as sent
+          if (newMessage != null) {
+            final List<Message> messages = pagingController.itemList!;
+            final index = messages
+                .indexWhere((message) => _isMessageSelf(message, newMessage!));
+            messages.removeAt(index);
+            messages.insert(index, newMessage);
+            // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
+            pagingController.notifyListeners();
+            room.updateMessage(newMessage);
+          }
         },
         onFailure: (error) {
           Get.snackbar(
@@ -288,16 +308,25 @@ class ChatRoomPageModel extends BaseViewModel {
             colorText: UIColor.white,
           );
         },
-        onSuccess: () {
-          _cleanSender();
-        },
+        onSuccess: () {},
         showLoading: false,
       );
     }
   }
 
-  Future<String> _startUploadMedia() async {
-    final compressedImage = await _compressPostMediaItem(_sendingMedias.first);
+  bool _isMessageSelf(Message message, Message newMessage) {
+    return (message.localUuid != null &&
+            newMessage.localUuid != null &&
+            message.localUuid == newMessage.localUuid) ||
+        (message.createdAt == newMessage.createdAt);
+  }
+
+  Future<Message> _sendMessage(Message sendingMessage) async {
+    return _sendMessagesUsecase.call(sendingMessage);
+  }
+
+  Future<String> _startUploadMedia(MediaFile meida) async {
+    final compressedImage = await _compressPostMediaItem(meida);
     final String fileName = basename(compressedImage.file.path);
     final String preSignedUrl =
         await _getPresignedUrlUsecase.call(fileName, room.id);

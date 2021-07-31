@@ -20,17 +20,13 @@ class ChatRepository {
     return _storageDatasource.getPresignedChatMediaUrl(fileName, chatRoomId);
   }
 
-  Future<List<Message>> getMessagesWithRoomId(int limit, int skip, String roomId) {
+  Future<List<Message>> getMessagesWithRoomId(
+      int limit, int skip, String roomId) {
     return _datasource.getMessagesWithRoomId(limit, skip, roomId);
   }
 
-  Future<Message> sendMessages({
-    required String roomId,
-    required String content,
-    required MessageType type,
-    String? description,
-  }) {
-    return _datasource.sendMessages(roomId: roomId, content: content, type: type, description: description);
+  Future<Message> sendMessages(Message message) {
+    return _datasource.sendMessages(message);
   }
 
   Future<ChatRoom> initPrivateChatRoom(User user) {

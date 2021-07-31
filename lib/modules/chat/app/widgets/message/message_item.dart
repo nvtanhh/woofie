@@ -8,6 +8,7 @@ import 'package:meowoof/modules/chat/app/widgets/active_status_avatar.dart';
 import 'package:meowoof/modules/chat/app/widgets/message/message_body.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:path/path.dart';
 
 class MessageWidget extends StatelessWidget {
@@ -51,7 +52,7 @@ class MessageWidget extends StatelessWidget {
         children: [
           if (!isMyMessage) _buildMessageIdentifierAvatar(isMyMessage),
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 0.65.sw),
+            constraints: BoxConstraints(maxWidth: 0.7.sw),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -59,8 +60,16 @@ class MessageWidget extends StatelessWidget {
                   onTap: () => _onMessageTap(context),
                   child: ClipRRect(
                     borderRadius: _borderRadius,
-                    child: MessageBody(message,
-                        isMyMessage: isMyMessage, partner: chatPartner),
+                    child: Opacity(
+                      opacity: message.isSent ? 1 : 0.6,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: isMyMessage ? UIColor.primary : UIColor.holder,
+                        ),
+                        child: MessageBody(message,
+                            isMyMessage: isMyMessage, partner: chatPartner),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -95,20 +104,22 @@ class MessageWidget extends StatelessWidget {
   }
 
   void _onMessageTap(BuildContext context) {
-    switch (message.type) {
-      case MessageType.image:
-        injector<DialogService>().showZoomablePhotoBoxView(
-          imageUrl: message.content,
-          context: context,
-        );
-        break;
-      case MessageType.video:
-        injector<DialogService>().showVideo(
-          videoUrl: message.content,
-          context: context,
-        );
-        break;
-      default:
+    if (message.isSent) {
+      switch (message.type) {
+        case MessageType.image:
+          injector<DialogService>().showZoomablePhotoBoxView(
+            imageUrl: message.content,
+            context: context,
+          );
+          break;
+        case MessageType.video:
+          injector<DialogService>().showVideo(
+            videoUrl: message.content,
+            context: context,
+          );
+          break;
+        default:
+      }
     }
   }
 }

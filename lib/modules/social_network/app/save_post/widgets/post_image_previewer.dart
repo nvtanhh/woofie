@@ -20,6 +20,8 @@ class PostImagePreviewer extends StatelessWidget {
   final bool allowEditImage;
   final double? width;
   final double? height;
+  final bool isConstraintsSize;
+  final bool noBorder;
 
   const PostImagePreviewer({
     Key? key,
@@ -31,6 +33,8 @@ class PostImagePreviewer extends StatelessWidget {
     this.allowEditImage = true,
     this.width,
     this.height,
+    this.isConstraintsSize = true,
+    this.noBorder = false,
   }) : super(key: key);
 
   @override
@@ -39,10 +43,12 @@ class PostImagePreviewer extends StatelessWidget {
     final bool isFileImage = postImageFile != null;
 
     final imagePreview = SizedBox(
-      width: width ?? 200,
-      height: height ?? 200,
+      width: isConstraintsSize ? width ?? 200 : null,
+      height: isConstraintsSize ? height ?? 200 : null,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(avatarBorderRadius),
+        borderRadius: !noBorder
+            ? BorderRadius.circular(avatarBorderRadius)
+            : BorderRadius.zero,
         child: isFileImage
             ? Image.file(
                 postImageFile!,
@@ -83,7 +89,8 @@ class PostImagePreviewer extends StatelessWidget {
         width: buttonSize,
         height: buttonSize,
         child: FloatingActionButton(
-          heroTag: Key('postImagePreviewerRemoveButton${postImageFile?.path}${postMedia?.url}'),
+          heroTag: Key(
+              'postImagePreviewerRemoveButton${postImageFile?.path}${postMedia?.url}'),
           onPressed: onRemove,
           backgroundColor: Colors.black54,
           child: const MWIcon(
@@ -101,7 +108,8 @@ class PostImagePreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
-        heroTag: Key('postImagePreviewerEditButton${postImageFile?.path}${postMedia?.url}'),
+        heroTag: Key(
+            'postImagePreviewerEditButton${postImageFile?.path}${postMedia?.url}'),
         onPressed: () => _onWantsToEditImage(context),
         backgroundColor: Colors.black54,
         child: const MWIcon(
@@ -119,7 +127,8 @@ class PostImagePreviewer extends StatelessWidget {
 
     final File? croppedFile = await mediaService.cropImage(postImageFile!);
     if (croppedFile != null && onPostImageEdited != null) {
-      final MediaFile media = await mediaService.convertToMediaFile(croppedFile);
+      final MediaFile media =
+          await mediaService.convertToMediaFile(croppedFile);
       onPostImageEdited!(media);
     }
   }

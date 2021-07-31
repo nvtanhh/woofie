@@ -1,25 +1,29 @@
-import 'package:equatable/equatable.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/injector.dart';
 
 // ignore: must_be_immutable
-class Message extends Equatable implements Comparable<Message> {
-  final String id;
+class Message implements Comparable<Message> {
+  String? id;
   final String roomId;
-  final String content;
-  final String? description;
-  final MessageType type;
+  String content;
+  String? description;
+  MessageType type;
   final DateTime createdAt;
   final String senderId;
 
-  const Message({
-    required this.id,
+  bool isSent;
+  String? localUuid;
+
+  Message({
+    this.id,
     required this.roomId,
     required this.content,
     required this.type,
     required this.senderId,
     required this.createdAt,
+    required this.isSent,
     this.description,
+    this.localUuid,
   });
 
   Message.fromJson(Map<String, dynamic> json)
@@ -29,15 +33,25 @@ class Message extends Equatable implements Comparable<Message> {
         description = json['description'] as String?,
         type = parseType(json['type'] as String),
         senderId = json['sender'] as String,
-        createdAt = DateTime.parse(json['createdAt'] as String).toLocal();
+        createdAt = DateTime.parse(json['createdAt'] as String).toLocal(),
+        isSent = true;
 
   Map<String, dynamic> toJson() => {};
 
   bool get isSentByMe => senderId == injector<LoggedInUser>().user!.uuid;
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [id];
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Message &&
+          runtimeType == other.runtimeType &&
+          ((id != null && other.id != null && id == other.id) ||
+              (localUuid != null &&
+                  other.localUuid != null &&
+                  localUuid == other.localUuid));
+
+  @override
+  int get hashCode => id.hashCode;
 
   static MessageType parseType(String type) {
     switch (type) {
@@ -50,6 +64,20 @@ class Message extends Equatable implements Comparable<Message> {
       default:
         throw Exception('Unsupported message type: $type');
     }
+  }
+
+  Message clone() {
+    return Message(
+      id: id,
+      roomId: roomId,
+      content: content,
+      type: type,
+      senderId: senderId,
+      createdAt: createdAt,
+      description: description,
+      isSent: isSent,
+      localUuid: localUuid,
+    );
   }
 
   @override

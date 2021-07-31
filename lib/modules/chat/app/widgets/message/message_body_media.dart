@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
+import 'package:meowoof/modules/social_network/app/save_post/widgets/post_image_previewer.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -18,67 +21,66 @@ class MessageBodyMedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-          color: message.isSentByMe ? UIColor.primary : UIColor.holder),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          _mediaDescriptionWidget(message),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 300.h),
-            child: _mediaWidget(message, partner),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        _mediaDescriptionWidget(message),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 300.h),
+          child: _mediaWidget(message, partner),
+        ),
+      ],
     );
   }
 
-  // MediaType _getMediaType(message) {
-  //   switch (message.type) {
-  //     case MessageType.image:
-  //       return MediaType.image;
-  //     case MessageType.video:
-  //       return MediaType.video;
-  //     default:
-  //       throw Exception('Unsupported message type: ${message.type}');
-  //   }
-  // }
-
   Widget _mediaWidget(Message message, User? partner) {
     if (message.type == MessageType.image) {
-      return ImageWithPlaceHolderWidget(
-        imageUrl: message.content,
-        placeHolderImage: 'resources/images/fallbacks/media-fallback.png',
-        isConstraintsSize: false,
-      );
+      if (message.isSent) {
+        return ImageWithPlaceHolderWidget(
+          imageUrl: message.content,
+          placeHolderImage: 'resources/images/fallbacks/media-fallback.png',
+          isConstraintsSize: false,
+        );
+      } else {
+        return PostImagePreviewer(
+          postImageFile: File(message.content),
+          allowEditImage: false,
+          isConstraintsSize: false,
+          noBorder: true,
+        );
+      }
     } else if (message.type == MessageType.video) {
-      // final Media media =
-      //     Media(id: -1, url: message.content, type: MediaType.video);
-      // return PostVideoPreviewer(
-      //   key: Key(message.objectId),
-      //   postVideo: media,
-      //   isConstraintsSize: false,
-      //   playIconSize: 30,
-      //   playIconMargin: 10,
-      // );
       return _videoMessage(message, partner);
     }
     return const SizedBox();
   }
 
   Widget _mediaDescriptionWidget(Message message) {
-    if (message.description != null) {
+    if (message.description != null && message.description!.isNotEmpty) {
       return Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 10,
+        padding: const EdgeInsets.only(
+          left: 18,
+          right: 18,
+          top: 10,
         ),
-        child: Text(
-          message.description!,
-          style: message.isSentByMe
-              ? UITextStyle.body_14_medium.apply(color: Colors.white)
-              : UITextStyle.body_14_medium,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              message.description!,
+              style: message.isSentByMe
+                  ? UITextStyle.body_14_medium.apply(color: Colors.white)
+                  : UITextStyle.body_14_medium,
+            ),
+            const SizedBox(height: 10),
+            if (message.type == MessageType.video)
+              Divider(
+                thickness: 0.5,
+                height: 1,
+                endIndent: 0,
+                color: message.isSentByMe ? Colors.white : UIColor.textBody,
+              )
+          ],
         ),
       );
     }
@@ -90,6 +92,7 @@ class MessageBodyMedia extends StatelessWidget {
     final String subTitle = message.isSentByMe
         ? 'Bạn • $sendVideoText'
         : '${partner?.name ?? ""} • $sendVideoText';
+
     return Container(
       height: 80,
       padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),

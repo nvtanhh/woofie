@@ -8,12 +8,7 @@ class SendMessagesUsecase {
 
   SendMessagesUsecase(this._chatRoomRepository);
 
-  Future<Message> call({
-    required String roomId,
-    required String content,
-    required MessageType type,
-    String? description,
-  }) {
-    return _chatRoomRepository.sendMessages(roomId: roomId, content: content, type: type, description: description);
+  Future<Message> call(Message message) {
+    return _chatRoomRepository.sendMessages(message);
   }
 }
