@@ -19,10 +19,13 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
   final GestureConfig Function(ExtendedImageState)? initGestureConfigHandler;
   final ExtendedImageMode? mode;
 
+  final String? placeHolderImage;
+  final bool isConstraintsSize;
+
   const ImageWithPlaceHolderWidget({
+    required this.imageUrl,
     this.width,
     this.height,
-    required this.imageUrl,
     this.topLeftRadius,
     this.topRightRadius,
     this.bottomLeftRadius,
@@ -31,6 +34,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
     this.fit,
     this.initGestureConfigHandler,
     this.mode,
+    this.placeHolderImage,
+    this.isConstraintsSize = true,
   });
 
   @override
@@ -47,8 +52,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
         ),
         child: ExtendedImage.network(
           imageUrl,
-          height: height ?? 180.0.h,
-          width: width ?? 180.0.w,
+          height: isConstraintsSize ? height ?? 180.0.h : null,
+          width: isConstraintsSize ? width ?? 180.0.w : null,
           fit: fit ?? BoxFit.fill,
           initGestureConfigHandler: initGestureConfigHandler,
           mode: mode ?? ExtendedImageMode.none,
@@ -59,8 +64,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
                   baseColor: UIColor.white,
                   highlightColor: UIColor.silverSand,
                   child: Container(
-                    width: width ?? 180.0.w,
-                    height: height ?? 180.0.h,
+                    width: isConstraintsSize ? width ?? 180.0.w : null,
+                    height: isConstraintsSize ? height ?? 180.0.h : null,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(10.r),
@@ -93,8 +98,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomLeft: Radius.circular(radius ?? bottomLeftRadius ?? 0),
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
-        image: const DecorationImage(
-          image: AssetGenImage("resources/icons/ic_person.png"),
+        image: DecorationImage(
+          image: AssetGenImage(placeHolderImage ?? "resources/images/fallbacks/avatar-fallback.jpg"),
           fit: BoxFit.cover,
         ),
       ),

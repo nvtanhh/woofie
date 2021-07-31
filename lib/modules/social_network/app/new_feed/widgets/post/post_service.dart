@@ -168,14 +168,7 @@ class PostService extends BaseViewModel {
   }
 
   Future<MediaFile> _compressPostMediaItem(MediaFile postMediaItem) async {
-    if (postMediaItem.isImage) {
-      postMediaItem.file = await _mediaService.compressImage(postMediaItem.file);
-    } else if (postMediaItem.isVideo) {
-      postMediaItem.file = await _mediaService.compressVideo(postMediaItem.file);
-    } else {
-      printError(info: 'Unsupported media type for compression');
-    }
-    return postMediaItem;
+    return _mediaService.compressPostMediaItem(postMediaItem);
   }
 
   Future<UploadedMedia?> _storeMediaItem(MediaFile mediaFile, Post oldPost) async {

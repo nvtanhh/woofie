@@ -176,6 +176,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
+  convex_bottom_bar:
+    dependency: "direct main"
+    description:
+      name: convex_bottom_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   crypto:
     dependency: transitive
     description:
@@ -475,7 +482,7 @@ packages:
       name: flutter_widget_from_html_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.1+1"
+    version: "0.6.1+4"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -978,6 +985,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.2"
+  socket_io_client:
+    dependency: "direct main"
+    description:
+      name: socket_io_client
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
+  socket_io_common:
+    dependency: transitive
+    description:
+      name: socket_io_common
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   source_gen:
     dependency: transitive
     description:

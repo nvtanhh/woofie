@@ -28,7 +28,7 @@ class SavePostRepository {
   Future<String?> putObjectByPresignedUrl(String url, File object) async {
     final bool? isSuccessed = await _storageDatasource.putObjectByPresignedUrl(url, object);
     if (isSuccessed != null && isSuccessed) {
-      return url.substring(0, url.indexOf('?') + 1);
+      return url.substring(0, url.indexOf('?'));
     } else {
       return null;
     }

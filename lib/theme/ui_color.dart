@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class UIColor {
   static const Color white = Color(0xFFFFFFFF);
-  static const Color primary = Color(0xFF6772F1);
+  static const Color primary = Color(0xFF5762E0);
   static const Color textSecondary = Color(0xFFC8C8C8);
   static const Color disableBg = Color(0xFFD7D7D7);
   static const Color accent = Color(0xFFF38847);

@@ -59,6 +59,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
                                   isMe: viewModel.isMe,
                                   onUserBlock: viewModel.onUserBlock,
                                   onUserReport: viewModel.onUserReport,
+                                  onWantsToContact: viewModel.onWantsToContact,
                                 );
                               }
                               return PostItem(

@@ -5,13 +5,26 @@ import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 
 class MediaPreviewer extends StatelessWidget {
-  final Media? postMedia;
+  final Media? media;
   final MediaFile? mediaFile;
   final Function()? onRemove;
+  final double? width;
+  final double? height;
 
   final ValueChanged<MediaFile>? onImageEidted;
 
-  const MediaPreviewer({Key? key, this.postMedia, this.mediaFile, this.onRemove, this.onImageEidted}) : super(key: key);
+  final bool allowEditMedia;
+
+  const MediaPreviewer({
+    Key? key,
+    this.media,
+    this.mediaFile,
+    this.onRemove,
+    this.onImageEidted,
+    this.allowEditMedia = true,
+    this.width,
+    this.height,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,21 +33,26 @@ class MediaPreviewer extends StatelessWidget {
         postImageFile: mediaFile!.file,
         onRemove: onRemove,
         onPostImageEdited: onImageEidted,
+        allowEditImage: allowEditMedia,
+        width: width,
+        height: height,
       );
     } else if (mediaFile != null && mediaFile!.isVideo) {
       return PostVideoPreviewer(
         postVideoFile: mediaFile!.file,
         onRemove: onRemove,
+        width: width,
+        height: height,
       );
     }
 
-    if (postMedia != null && postMedia!.isImage) {
+    if (media != null && media!.isImage) {
       return PostImagePreviewer(
-        postMedia: postMedia,
+        postMedia: media,
         onRemove: onRemove,
       );
-    } else if (postMedia != null && mediaFile!.isVideo) {
-      return PostVideoPreviewer(postVideo: postMedia, onRemove: onRemove);
+    } else if (media != null && media!.isVideo) {
+      return PostVideoPreviewer(postVideo: media, onRemove: onRemove);
     }
     return const SizedBox();
   }

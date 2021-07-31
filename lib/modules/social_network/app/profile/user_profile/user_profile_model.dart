@@ -5,7 +5,9 @@ import 'package:event_bus/event_bus.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
@@ -17,6 +19,7 @@ import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_po
 import 'package:meowoof/modules/social_network/domain/usecases/profile/follow_pet_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_posts_of_user_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_user_profile_usecase.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -54,7 +57,7 @@ class UserProfileModel extends BaseViewModel {
   @override
   void initState() {
     postService.initState();
-    if (user == null) {
+    if (user == null || user == injector<LoggedInUser>().user) {
       isMe = true;
       user = _loggedInUser.user;
     }
@@ -173,5 +176,18 @@ class UserProfileModel extends BaseViewModel {
     _cancelableOperationLoadMorePost?.cancel();
     _petDeletedStreamSubscription?.cancel();
     super.disposeState();
+  }
+
+  Future<void> onWantsToContact(User user) async {
+    final isError = await injector<NavigationService>().navigateToChatRoom(user: user);
+    if (isError != null && isError) {
+      Get.snackbar(
+        "Sorry",
+        "Unable to init chat room, please try again later.",
+        duration: const Duration(seconds: 1),
+        backgroundColor: UIColor.danger,
+        colorText: UIColor.white,
+      );
+    }
   }
 }

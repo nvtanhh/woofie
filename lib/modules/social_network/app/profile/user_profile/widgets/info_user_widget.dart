@@ -23,14 +23,16 @@ class InfoUserWidget extends StatelessWidget {
 
   final Function(User)? onUserBlock;
   final Function(User)? onUserReport;
+  final Function(User) onWantsToContact;
 
   const InfoUserWidget({
     Key? key,
     required this.user,
     required this.onFollowPet,
     required this.isMe,
-    this.onUserBlock,
+    required this.onWantsToContact,
     this.onUserReport,
+    this.onUserBlock,
   }) : super(key: key);
 
   @override
@@ -82,7 +84,7 @@ class InfoUserWidget extends StatelessWidget {
           children: [
             Expanded(
               child: ButtonWidget(
-                onPress: () => isMe ? goToEditUserProfile() : null,
+                onPress: () => isMe ? goToEditUserProfile() : onWantsToContact(user),
                 height: 40.h,
                 title: isMe ? LocaleKeys.profile_edit_profile.trans() : LocaleKeys.profile_contact.trans(),
                 borderRadius: 10.r,
