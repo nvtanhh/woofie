@@ -46,29 +46,32 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
                       () => Column(children: viewModel.postService.prependedWidgets.value),
                     ),
                     Expanded(
-                      child: PagedListView<int, Post>(
-                        pagingController: viewModel.postService.pagingController,
-                        builderDelegate: PagedChildBuilderDelegate(
-                          itemBuilder: (context, post, index) {
-                            if (index == 0) {
-                              return InfoUserWidget(
-                                user: viewModel.user!,
-                                onFollowPet: viewModel.onFollowPet,
-                                isMe: viewModel.isMe,
-                                onUserBlock: viewModel.onUserBlock,
-                                onUserReport: viewModel.onUserReport,
-                                onWantsToContact: viewModel.onWantsToContact,
+                      child: RefreshIndicator(
+                        onRefresh: () async => viewModel.onRefresh(),
+                        child: PagedListView<int, Post>(
+                          pagingController: viewModel.postService.pagingController,
+                          builderDelegate: PagedChildBuilderDelegate(
+                            itemBuilder: (context, post, index) {
+                              if (index == 0) {
+                                return InfoUserWidget(
+                                  user: viewModel.user!,
+                                  onFollowPet: viewModel.onFollowPet,
+                                  isMe: viewModel.isMe,
+                                  onUserBlock: viewModel.onUserBlock,
+                                  onUserReport: viewModel.onUserReport,
+                                  onWantsToContact: viewModel.onWantsToContact,
+                                );
+                              }
+                              return PostItem(
+                                post: post,
+                                onLikeClick: viewModel.postService.onLikeClick,
+                                onEditPost: () => viewModel.postService.onWantsToEditPost(post),
+                                onDeletePost: () => viewModel.onPostDeleted(post, index),
+                                onCommentClick: viewModel.postService.onCommentClick,
+                                onPostClick: viewModel.postService.onPostClick,
                               );
-                            }
-                            return PostItem(
-                              post: post,
-                              onLikeClick: viewModel.postService.onLikeClick,
-                              onEditPost: () => viewModel.postService.onWantsToEditPost(post),
-                              onDeletePost: () => viewModel.onPostDeleted(post, index),
-                              onCommentClick: viewModel.postService.onCommentClick,
-                              onPostClick: viewModel.postService.onPostClick,
-                            );
-                          },
+                            },
+                          ),
                         ),
                       ),
                     ),

@@ -6,11 +6,13 @@ import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_de
 import 'package:meowoof/modules/social_network/domain/models/notification/notification.dart';
 import 'package:meowoof/modules/social_network/domain/models/notification/notification_type.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/notification/delete_notification_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/notification/get_notifications_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class NotificationWidgetModel extends BaseViewModel {
+  final DeleteNotificationUsecase _deleteNotificationUsecase;
   final pageSize = 10;
   int nextPageKey = 0;
   late PagingController<int, Notification> pagingController;
@@ -18,7 +20,10 @@ class NotificationWidgetModel extends BaseViewModel {
   CancelableOperation? cancelableOperation;
   final GetNotificationUsecase _getNotificationUsecase;
 
-  NotificationWidgetModel(this._getNotificationUsecase);
+  NotificationWidgetModel(
+    this._getNotificationUsecase,
+    this._deleteNotificationUsecase,
+  );
 
   @override
   void initState() {
@@ -48,7 +53,15 @@ class NotificationWidgetModel extends BaseViewModel {
   }
 
   Future onRefresh() async {
+    nextPageKey = 0;
     pagingController.refresh();
+  }
+
+  void onDeleteNotify(Notification notification) {
+    call(
+      () async => _deleteNotificationUsecase.run(notification.id),
+      showLoading: false,
+    );
   }
 
   void onOptionTap() {}

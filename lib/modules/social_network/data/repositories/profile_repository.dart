@@ -29,7 +29,7 @@ class ProfileRepository {
     return _postDatasource.likePost(postId);
   }
 
-  Future<User> getUserProfile(int userId) async {
+  Future<Map<String, dynamic>> getUserProfile(int userId) async {
     return _userDatasource.getUserProfile(userId);
   }
 
@@ -69,7 +69,7 @@ class ProfileRepository {
     return _postDatasource.getPostsOfPet(petId, offset, limit);
   }
 
-  Future<Pet> getDetailInfoPet(int idPet) async {
+  Future<Map<String, dynamic>> getDetailInfoPet(int idPet) async {
     return _petDatasource.getDetailInfoPet(idPet);
   }
 
@@ -104,5 +104,9 @@ class ProfileRepository {
   Future<Map<String, dynamic>> updatePetInformation(
       int petId, String? name, String? bio, int? breed, String? avatarUrl, String? uuid, DateTime? dob, Gender? gender) {
     return _petDatasource.updatePetInformation(petId, name, bio, breed, avatarUrl, uuid, dob, gender);
+  }
+
+  Future<bool> deletePet(int petId) {
+    return _petDatasource.deletePet(petId);
   }
 }

@@ -172,8 +172,9 @@ dependencies:
 #  #On most operating systems, permissions aren't just granted to apps at install time.
 #  permission_handler: 8.1.2
 
-  socket_io_client: ^1.0.1
-
+  #A Flutter plugin to play multiple simultaneously audio files, works for Android, iOS, macOS and web.
+  audioplayers: ^0.19.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -207,3 +208,4 @@ flutter:
     - resources/images/fallbacks/
     - resources/images/explore/
     - resources/images/profile/
+    - resources/sounds/

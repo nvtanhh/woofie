@@ -13,7 +13,7 @@ class NotificationDatasource {
   Future<List<Notification>> getNotification(int limit, int offset) async {
     final query = """
     query MyQuery {
-      notifications(limit: $limit, offset: $offset) {
+      notifications(order_by: {created_at: desc},limit: $limit, offset: $offset) {
         created_at
         id
         is_read
@@ -59,5 +59,17 @@ class NotificationDatasource {
     final data = await _hasuraConnect.mutation(mutation);
     final affectedRows = GetMapFromHasura.getMap(data as Map)["readAllNotify"] as Map;
     return int.tryParse("${affectedRows["affectRow"]}");
+  }
+
+  Future deleteNotificationUnread(int notifyId) async {
+    final mutation = """
+mutation MyMutation {
+  delete_notifications_by_pk(id: $notifyId) {
+    id
+  }
+}
+    """;
+    await _hasuraConnect.mutation(mutation);
+    return;
   }
 }

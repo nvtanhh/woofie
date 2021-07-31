@@ -5,6 +5,7 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_body.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_header.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class PostItem extends StatefulWidget {
@@ -14,6 +15,7 @@ class PostItem extends StatefulWidget {
   final Function(Post)? onPostClick;
   final VoidCallback onEditPost;
   final VoidCallback onDeletePost;
+  final VoidCallback? onReportPost;
 
   const PostItem({
     Key? key,
@@ -23,6 +25,7 @@ class PostItem extends StatefulWidget {
     required this.onDeletePost,
     this.onCommentClick,
     this.onPostClick,
+    this.onReportPost,
   }) : super(key: key);
 
   @override
@@ -45,6 +48,7 @@ class _PostItemState extends State<PostItem> {
           post: widget.post,
           onDeletePost: widget.onDeletePost,
           onEditPost: widget.onEditPost,
+          onReportPost: widget.onReportPost,
         ),
         InkWell(
           onTap: () => widget.onPostClick?.call(widget.post),
@@ -83,6 +87,7 @@ class _PostItemState extends State<PostItem> {
           width: 60.w,
           child: InkWell(
             onTap: () => likeClick(),
+            highlightColor: UIColor.white,
             child: Row(
               children: [
                 Obx(
@@ -114,6 +119,7 @@ class _PostItemState extends State<PostItem> {
           width: 60.w,
           child: InkWell(
             onTap: () => widget.onCommentClick?.call(widget.post),
+            highlightColor: UIColor.white,
             child: Row(
               children: [
                 MWIcon(

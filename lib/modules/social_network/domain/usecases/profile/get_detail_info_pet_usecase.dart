@@ -7,7 +7,7 @@ class GetDetailInfoPetUsecase {
   final ProfileRepository _profileRepository;
 
   GetDetailInfoPetUsecase(this._profileRepository);
-  Future<Pet> call(int idPet) async {
+  Future<Map<String, dynamic>> call(int idPet) async {
     return _profileRepository.getDetailInfoPet(idPet);
   }
 }

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:async/async.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
@@ -7,8 +10,8 @@ import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
-import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
-import 'package:meowoof/modules/social_network/app/save_post/post_service.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
+import 'package:meowoof/modules/social_network/domain/events/pet/pet_deleted_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -25,6 +28,7 @@ class UserProfileModel extends BaseViewModel {
   int nextPageKey = 0;
   bool isMe = false;
   User? user;
+  StreamSubscription? _petDeletedStreamSubscription;
   final GetUseProfileUseacse _getUseProfileUseacse;
   final GetPostOfUserUsecase _getPostOfUserUsecase;
   final LogoutUsecase _logoutUsecase;
@@ -34,8 +38,9 @@ class UserProfileModel extends BaseViewModel {
   late List<Post> posts;
   final RxBool _isLoaded = RxBool(false);
   final PostService postService;
-  CancelableOperation? _cancelableOperationLoadInit,
-      _cancelableOperationLoadMorePost;
+  final EventBus _eventBus;
+  final LoggedInUser _loggedInUser;
+  CancelableOperation? _cancelableOperationLoadInit, _cancelableOperationLoadMorePost;
 
   UserProfileModel(
     this._getUseProfileUseacse,
@@ -45,6 +50,8 @@ class UserProfileModel extends BaseViewModel {
     this._deletePostUsecase,
     this._toastService,
     this.postService,
+    this._eventBus,
+    this._loggedInUser,
   );
 
   @override
@@ -52,33 +59,48 @@ class UserProfileModel extends BaseViewModel {
     postService.initState();
     if (user == null || user == injector<LoggedInUser>().user) {
       isMe = true;
-      user ??= injector<LoggedInUser>().user;
+      user = _loggedInUser.user;
     }
     _cancelableOperationLoadInit = CancelableOperation.fromFuture(initData());
+    registerListenPetDeleted();
     super.initState();
+  }
+
+  void registerListenPetDeleted() {
+    _petDeletedStreamSubscription = _eventBus.on<PetDeletedEvent>().listen(
+      (event) {
+        user?.currentPets?.removeWhere((element) => element.id == event.pet.id);
+        user?.notifyUpdate();
+        User.factory.addToCache(user!);
+      },
+    );
   }
 
   Future initData() async {
     await Future.wait([_getUserProfile(), _loadMorePost(nextPageKey)]);
     postService.pagingController.addPageRequestListener(
       (pageKey) {
-        _cancelableOperationLoadMorePost =
-            CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        _cancelableOperationLoadMorePost = CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     isLoaded = true;
   }
 
   Future _getUserProfile() async {
-    return call(() async => user = await _getUseProfileUseacse.call(user!.id),
-        showLoading: false, onSuccess: () {});
+    return call(
+      () async => user?.update(await _getUseProfileUseacse.call(user!.id)),
+      showLoading: false,
+      onSuccess: () {
+        User.factory.addToCache(user!);
+        _loggedInUser.saveToLocal();
+      },
+    );
   }
 
   Future _loadMorePost(int pageKey) async {
     try {
-      posts = await _getPostOfUserUsecase.call(
-          userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
-      if (postService.pagingController.itemList == null) {
+      posts = await _getPostOfUserUsecase.call(userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
+      if (postService.pagingController.itemList == null || postService.pagingController.itemList?.isEmpty == true) {
         posts.insert(
           0,
           Post(
@@ -110,17 +132,20 @@ class UserProfileModel extends BaseViewModel {
 
   void onPostDeleted(Post post, int index) {
     bool result = false;
-    call(() async => result = await _deletePostUsecase.call(post.id),
-        onSuccess: () {
-      if (result) {
-        _toastService.success(message: "Post deleted!", context: Get.context!);
-        postService.pagingController.itemList?.removeAt(index);
-        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-        postService.pagingController.notifyListeners();
-      }
-    }, onFailure: (err) {
-      _toastService.error(message: err.toString(), context: Get.context!);
-    });
+    call(
+      () async => result = await _deletePostUsecase.call(post.id),
+      onSuccess: () {
+        if (result) {
+          _toastService.success(message: "Post deleted!", context: Get.context!);
+          postService.pagingController.itemList?.removeAt(index);
+          // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+          postService.pagingController.notifyListeners();
+        }
+      },
+      onFailure: (err) {
+        _toastService.error(message: err.toString(), context: Get.context!);
+      },
+    );
   }
 
   void onUserBlock(User user) {}
@@ -138,17 +163,23 @@ class UserProfileModel extends BaseViewModel {
     await Get.offAll(() => WelcomeWidget());
   }
 
+  void onRefresh() {
+    nextPageKey = 0;
+    postService.onRefresh();
+  }
+
   @override
   void disposeState() {
+    printInfo(info: "disposeState");
     postService.disposeState();
     _cancelableOperationLoadInit?.cancel();
     _cancelableOperationLoadMorePost?.cancel();
+    _petDeletedStreamSubscription?.cancel();
     super.disposeState();
   }
 
   Future<void> onWantsToContact(User user) async {
-    final isError =
-        await injector<NavigationService>().navigateToChatRoom(user: user);
+    final isError = await injector<NavigationService>().navigateToChatRoom(user: user);
     if (isError != null && isError) {
       Get.snackbar(
         "Sorry",

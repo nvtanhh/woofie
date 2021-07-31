@@ -13,6 +13,9 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/add_pet/add_pet_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/add_pet/get_pet_breeds_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/add_pet/get_pet_types_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/get_presigned_avatar_pet_url_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
+import 'package:path/path.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,6 +23,8 @@ import 'package:uuid/uuid.dart';
 class AddPetWidgetModel extends BaseViewModel {
   final GetPetTypesUsecase _getPetTypesUsecase;
   final GetPetBreedUsecase _getPetBreedUsecase;
+  final GetPresignedAvatarPetUrlUsecase _getPresignedAvatarPetUrlUsecase;
+  final UploadMediaUsecase _uploadMediaUsecase;
   final AddPetUsecase _addPetUsecase;
   final RxList<PetType> _petTypes = RxList([]);
   final RxList<PetBreed> _petBreeds = RxList([]);
@@ -31,8 +36,16 @@ class AddPetWidgetModel extends BaseViewModel {
   PetBreed? petBreedSelected;
   late Pet pet;
   bool? isAddMore;
+  File? avatarFile;
 
-  AddPetWidgetModel(this._getPetTypesUsecase, this._getPetBreedUsecase, this._addPetUsecase, this._toastService);
+  AddPetWidgetModel(
+    this._getPetTypesUsecase,
+    this._getPetBreedUsecase,
+    this._addPetUsecase,
+    this._toastService,
+    this._uploadMediaUsecase,
+    this._getPresignedAvatarPetUrlUsecase,
+  );
 
   @override
   void initState() {
@@ -93,11 +106,28 @@ class AddPetWidgetModel extends BaseViewModel {
     return true;
   }
 
+  Future<String?> _uploadMediaItem(File mediaFile) async {
+    final String fileName = basename(mediaFile.path);
+    // get presigned URL
+    final String? preSignedUrl = await _getPresignedAvatarPetUrlUsecase.run(fileName, pet.uuid ??= const Uuid().v4());
+    // upload media to s3
+    if (preSignedUrl != null) {
+      printInfo(info: 'Uploading media to s3');
+      return _uploadMediaUsecase.call(preSignedUrl, mediaFile);
+    }
+    return null;
+  }
+
   void onDone() {
     if (!validate()) return;
     pet.uuid = const Uuid().v4();
     call(
-      () async => pet = await _addPetUsecase.call(pet),
+      () async {
+        if (avatarFile != null) {
+          pet.avatarUrl = await _uploadMediaItem(avatarFile!);
+        }
+        pet = await _addPetUsecase.call(pet);
+      },
       onSuccess: () {
         if (isAddMore == true) {
           Get.back(result: pet);
@@ -121,7 +151,10 @@ class AddPetWidgetModel extends BaseViewModel {
     return;
   }
 
-  void onAvatarChange(File avatar) {}
+  void onAvatarChange(File avatar) {
+    avatarFile = avatar;
+    return;
+  }
 
   void onGenderChange(Gender gender) {
     pet.gender = gender;

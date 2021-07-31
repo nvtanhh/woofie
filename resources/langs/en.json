@@ -112,7 +112,8 @@
     "introduce": "Introduce",
     "birthday": "Birthday",
     "bread": "Bread",
-    "address": "Address"
+    "address": "Address",
+    "delete_pet": "Remove pet"
   },
   "year": "year",
   "month": "month",

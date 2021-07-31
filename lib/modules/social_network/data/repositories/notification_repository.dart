@@ -24,4 +24,8 @@ class NotificationRepository {
   Future<int?> readAllNotification() {
     return _notificationDatasource.readAllNotification();
   }
+
+  Future deleteNotificationUnread(int notifyId) {
+    return _notificationDatasource.deleteNotificationUnread(notifyId);
+  }
 }

@@ -179,16 +179,14 @@ class PostDatasource {
 
   Future<bool> deletePost(int idPost) async {
     final manution = """
-    mutation MyMutation {
-      delete_posts(where: {id: {_eq: $idPost}}) {
-        affected_rows
-      }
-    }
+mutation MyMutation {
+  delete_posts_by_pk(id: $idPost) {
+    id
+  }
+}
     """;
-    final data = await _hasuraConnect.mutation(manution);
-    final deletePosts = GetMapFromHasura.getMap(data as Map)["delete_posts"] as Map;
-    final affectedRows = deletePosts["affected_rows"] as int;
-    return affectedRows >= 1;
+    await _hasuraConnect.mutation(manution);
+    return true;
   }
 
   Future<List<Post>> getPostByType(
@@ -230,7 +228,7 @@ class PostDatasource {
     return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
   }
 
-  Future<Post> getDetailPost(int postId) async {
+  Future<Map<String, dynamic>> getDetailPost(int postId) async {
     final query = """
     query getPostDetail {
       posts_by_pk(id: $postId) {
@@ -276,8 +274,7 @@ class PostDatasource {
     }
     """;
     final data = await _hasuraConnect.query(query);
-    final post = GetMapFromHasura.getMap(data as Map)["posts_by_pk"] as Map<String, dynamic>;
-    return Post.fromJson(post);
+    return GetMapFromHasura.getMap(data as Map)["posts_by_pk"] as Map<String, dynamic>;
   }
 
   Future<Post> createDraftPost(NewPostData newPostData) async {
@@ -378,5 +375,18 @@ class PostDatasource {
 
   String _mediaToJson(UploadedMedia e) {
     return '{url: "${e.uploadedUrl}", type: ${e.type}}';
+  }
+
+  Future reportPost(Post post, String content) async {
+    final manution = """
+    mutation MyMutation {
+    insert_report_post(objects: {content: "$content", post_id: ${post.id}, type: 0}) {
+    affected_rows
+    }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(manution);
+    GetMapFromHasura.getMap(data as Map)["insert_report_post"] as Map;
+    return;
   }
 }

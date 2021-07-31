@@ -50,7 +50,12 @@ class AuthDatasource {
 
   Future logout() async {
     _userStorage.remove();
-    await _firebaseAuth.signOut();
+    try {
+      await _firebaseAuth.signOut();
+      await _googleSignIn.signOut();
+    } catch (e, s) {
+      print(s);
+    }
     return;
   }
 

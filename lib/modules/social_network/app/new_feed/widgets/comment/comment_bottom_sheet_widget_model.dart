@@ -4,6 +4,7 @@ import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/comm
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_comment_in_post_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/new_feed/play_sound_receiver_comment.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -14,6 +15,7 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   late Post post;
   final int pageSize = 10;
   int nextPageKey = 0;
+
   CommentBottomSheetWidgetModel(
     this._getCommentInPostUsecase,
     this.commentServiceModel,
@@ -23,12 +25,18 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   void initState() {
     commentServiceModel.initState();
     commentServiceModel.post = post;
-    commentServiceModel.pagingController.addPageRequestListener(
-      (pageKey) {
-        _loadComments(pageKey);
-      },
-    );
     super.initState();
+  }
+
+  void startLoadingPaging() {
+    if (commentServiceModel.pagingController.itemList == null) {
+      _loadComments(nextPageKey);
+      commentServiceModel.pagingController.addPageRequestListener(
+        (pageKey) {
+          _loadComments(pageKey);
+        },
+      );
+    }
   }
 
   void _loadComments(int pageKey) {

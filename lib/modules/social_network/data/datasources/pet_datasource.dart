@@ -160,10 +160,10 @@ mutation MyMutation {
     return petWeight;
   }
 
-  Future<Pet> getDetailInfoPet(int idPet) async {
+  Future<Map<String, dynamic>> getDetailInfoPet(int idPet) async {
     final query = """
     query MyQuery {
-  pets(limit: 1, where: {id: {_eq: $idPet}}) {
+   pets_by_pk(id: $idPet) {
     avatar_url
     uuid
     bio
@@ -196,8 +196,7 @@ mutation MyMutation {
     }}}
     """;
     final data = await _hasuraConnect.query(query);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["pets"] as List;
-    return Pet.fromJson(affectedRows[0] as Map<String, dynamic>);
+    return GetMapFromHasura.getMap(data as Map)["pets_by_pk"] as Map<String, dynamic>;
   }
 
   Future<List<Pet>> searchPet(String keyWord, int offset, int limit) async {
@@ -274,5 +273,17 @@ mutation MyMutation {
     final data = await _hasuraConnect.query(query);
     final petWormFlushes = GetMapFromHasura.getMap(data as Map)["get_all_user_in_post"] as List;
     return petWormFlushes.map((e) => User.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  Future<bool> deletePet(int petId) async {
+    final manution = """
+mutation MyMutation {
+  delete_pets_by_pk(id: $petId) {
+    id
+  }
+}
+    """;
+    await _hasuraConnect.mutation(manution);
+    return true;
   }
 }

@@ -87,9 +87,8 @@ class PostItemInListView extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () => onCommentClick?.call(post.id),
-                      child: Icon(
-                        Icons.comment_outlined,
-                        size: 24.w,
+                      child: MWIcon(
+                        MWIcons.comment,
                       ),
                     ),
                     SizedBox(

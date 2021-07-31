@@ -23,4 +23,8 @@ class LoggedInUser {
     // ignore: unrelated_type_equality_checks
     return post.creatorUUID == _loggedInUser?.uuid;
   }
+
+  void saveToLocal({User? user}) {
+    _userStorage.set(user ?? _loggedInUser!);
+  }
 }

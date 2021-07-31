@@ -7,6 +7,15 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class OtherInfoMenuWidget extends StatelessWidget {
+  final bool isMyPet;
+  final Function? onDeletePost;
+
+  const OtherInfoMenuWidget({
+    Key? key,
+    this.onDeletePost,
+    required this.isMyPet,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,7 +71,32 @@ class OtherInfoMenuWidget extends StatelessWidget {
                     )
                   ],
                 ),
-              )
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              if (isMyPet)
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                    onDeletePost?.call();
+                  },
+                  child: Row(
+                    children: [
+                      MWIcon(
+                        MWIcons.delete,
+                        customSize: 24.w,
+                      ),
+                      SizedBox(
+                        width: 12.w,
+                      ),
+                      Text(
+                        LocaleKeys.profile_delete_pet.trans(),
+                        style: UITextStyle.text_body_14_w500,
+                      )
+                    ],
+                  ),
+                ),
             ],
           ),
         ),

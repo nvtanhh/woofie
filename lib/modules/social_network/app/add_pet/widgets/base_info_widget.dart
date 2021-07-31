@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/datetime_helper.dart';
 import 'package:meowoof/core/helpers/format_helper.dart';
+import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/core/ui/icon.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -62,7 +65,7 @@ class BaseInfoWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () => getImage(),
+                        onTap: () => onUpdateAvatarClick(),
                         child: Obx(
                           () => Container(
                             decoration: BoxDecoration(
@@ -265,10 +268,17 @@ class BaseInfoWidget extends StatelessWidget {
     }
   }
 
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      _imageFile.value = File(pickedFile.path);
+  Future onUpdateAvatarClick() async {
+    List<File>? files;
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
+    if (result != null) {
+      files = result.paths.map((path) => File(path!)).toList();
+    } else {
+      injector<ToastService>().warning(message: "Cancel", context: Get.context!);
+    }
+    if (files != null) {
+      _imageFile.value = files[0];
+      _imageFile.refresh();
       onAvatarChange(_imageFile.value!);
     }
   }

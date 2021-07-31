@@ -9,27 +9,6 @@ class HasuraDatasource {
 
   HasuraDatasource(this._hasuraConnect);
 
-  Future<bool> checkUseHavePet(String userUUID) async {
-    final queryCountPetFromUser = """
-   query MyQuery {
-  pet_owners_aggregate(where: {owner_uuid: {_eq: "$userUUID"}}) {
-    aggregate {
-      count(columns: owner_uuid)
-    }}}
-    """;
-    final data = await _hasuraConnect.query(queryCountPetFromUser);
-    try {
-      final listUser = GetMapFromHasura.getMap(data as Map)["pet_owners_aggregate"] as Map;
-      if ((listUser["aggregate"]["count"] as int) > 0) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return true;
-    }
-  }
-
   Future<User> getUser(String uuid) async {
     final queryGetUser = """
     query MyQuery {
@@ -37,11 +16,7 @@ class HasuraDatasource {
         id
         uuid
         name
-        avatar {
-          id
-          url
-          type
-        }
+        avatar_url
         bio
         email
         dob
@@ -51,11 +26,7 @@ class HasuraDatasource {
           name
           gender
           bio
-          avatar {
-            id
-            type
-            url
-          }
+          avatar_url
         }
       }
     }

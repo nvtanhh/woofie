@@ -1,3 +1,4 @@
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/datasources/comment_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
@@ -54,8 +55,8 @@ class NewFeedRepository {
     return _postDatasource.deletePost(post);
   }
 
-  Future<Post> refreshPost(int postId) {
-    return _postDatasource.getDetailPost(postId);
+  Future<Post> refreshPost(int postId) async {
+    return Post.fromJson(await _postDatasource.getDetailPost(postId));
   }
 
   Future<List<User>> getAllUserInPost(int postId, int limit, int offset) {
@@ -66,11 +67,19 @@ class NewFeedRepository {
     return _commentDatasource.deleteComment(commentId);
   }
 
-  Future reportComment(int commentId, String content) {
-    return _commentDatasource.reportComment(commentId, content);
+  Future reportComment(Comment comment, String content) {
+    return _commentDatasource.reportComment(comment, content);
   }
 
   Future<Comment> editComment(Comment oldComment, Comment newComment) {
     return _commentDatasource.editComment(oldComment, newComment);
+  }
+
+  Future reportPost(Post post, String content) {
+    return _postDatasource.reportPost(post, content);
+  }
+
+  Future<Snapshot> subscriptionComment(int postId) {
+    return _commentDatasource.subscriptComment(postId);
   }
 }
