@@ -22,7 +22,8 @@ class NewFeedWidget extends StatefulWidget {
 }
 
 class _NewFeedWidgetState
-    extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
+    extends BaseViewState<NewFeedWidget, NewFeedWidgetModel>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,4 +115,7 @@ class _NewFeedWidgetState
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

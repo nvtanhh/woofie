@@ -22,7 +22,8 @@ class UserProfile extends StatefulWidget {
   _UserProfileState createState() => _UserProfileState();
 }
 
-class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
+class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
+    with AutomaticKeepAliveClientMixin {
   @override
   void loadArguments() {
     viewModel.user = widget.user;
@@ -99,4 +100,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
 
   @override
   UserProfileModel createViewModel() => injector<UserProfileModel>();
+
+  @override
+  bool get wantKeepAlive => true;
 }

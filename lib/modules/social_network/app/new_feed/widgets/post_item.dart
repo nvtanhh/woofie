@@ -85,9 +85,8 @@ class _PostItemState extends State<PostItem> {
       children: [
         SizedBox(
           width: 60.w,
-          child: InkWell(
+          child: GestureDetector(
             onTap: () => likeClick(),
-            highlightColor: UIColor.white,
             child: Row(
               children: [
                 Obx(

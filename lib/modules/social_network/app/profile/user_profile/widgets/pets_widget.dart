@@ -81,7 +81,7 @@ class PetsWidget extends StatelessWidget {
                         Container(
                           width: 160.w,
                           height: 180.h,
-                          margin: EdgeInsets.all(5.w),
+                          margin: EdgeInsets.only(right: 12.w),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.r),
                             boxShadow: const [
@@ -126,7 +126,7 @@ class PetsWidget extends StatelessWidget {
                           child: Container(
                             width: 115.w,
                             height: 180.h,
-                            margin: EdgeInsets.all(5.w),
+                            // margin: EdgeInsets.only(right: 12.w),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
                               boxShadow: const [

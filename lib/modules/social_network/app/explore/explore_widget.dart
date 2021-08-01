@@ -18,13 +18,15 @@ class ExploreWidget extends StatefulWidget {
   _ExploreWidgetState createState() => _ExploreWidgetState();
 }
 
-class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetModel> {
+class _ExploreWidgetState
+    extends BaseViewState<ExploreWidget, ExploreWidgetModel>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,4 +270,7 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
 
   @override
   ExploreWidgetModel createViewModel() => injector<ExploreWidgetModel>();
+
+  @override
+  bool get wantKeepAlive => true;
 }

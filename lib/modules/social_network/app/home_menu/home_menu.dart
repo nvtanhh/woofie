@@ -12,7 +12,9 @@ class HomeMenuWidget extends StatefulWidget {
   _HomeMenuWidgetState createState() => _HomeMenuWidgetState();
 }
 
-class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetModel> with TickerProviderStateMixin {
+class _HomeMenuWidgetState
+    extends BaseViewState<HomeMenuWidget, HomeMenuWidgetModel>
+    with TickerProviderStateMixin {
   @override
   void loadArguments() {
     viewModel.tabController = TabController(
@@ -37,47 +39,65 @@ class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetM
         ),
         resizeToAvoidBottomInset: true,
         bottomNavigationBar: Obx(
-          () => BottomNavigationBar(
-            currentIndex: viewModel.currentTab,
-            onTap: viewModel.onTabChange,
-            backgroundColor: UIColor.white,
-            iconSize: 30.w,
-            selectedItemColor: UIColor.primary,
-            unselectedItemColor: UIColor.textSecondary,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.home_filled,
-                    size: 30.w,
-                  ),
-                  label: ""),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.search_sharp,
-                    size: 30.w,
-                  ),
-                  label: ""),
-              BottomNavigationBarItem(
-                  icon: Obx(
-                    () {
-                      if (viewModel.countUnreadNotify > 0) {
-                        return badgeNotification();
-                      } else {
-                        return Icon(
-                          Icons.notifications,
-                          size: 30.w,
-                        );
-                      }
-                    },
-                  ),
-                  label: ""),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.person,
-                    size: 30.w,
-                  ),
-                  label: ""),
-            ],
+          () => DecoratedBox(
+            decoration: BoxDecoration(
+              boxShadow: const <BoxShadow>[
+                BoxShadow(
+                  color: UIColor.textSecondary,
+                  blurRadius: 10,
+                  offset: Offset(-2, 0),
+                ),
+              ],
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.r),
+                topRight: Radius.circular(20.r),
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.r),
+                topRight: Radius.circular(20.r),
+              ),
+              child: BottomNavigationBar(
+                currentIndex: viewModel.currentTab,
+                onTap: viewModel.onTabChange,
+                backgroundColor: UIColor.white,
+                iconSize: 28.w,
+                selectedItemColor: UIColor.primary,
+                unselectedItemColor: UIColor.textSecondary,
+                type: BottomNavigationBarType.fixed,
+                items: [
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.home_filled,
+                      ),
+                      label: ""),
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.search_sharp,
+                      ),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Obx(
+                        () {
+                          if (viewModel.countUnreadNotify > 0) {
+                            return badgeNotification();
+                          } else {
+                            return const Icon(
+                              Icons.notifications,
+                            );
+                          }
+                        },
+                      ),
+                      label: ""),
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.person,
+                      ),
+                      label: ""),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -89,14 +109,16 @@ class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetM
       children: [
         Icon(
           Icons.notifications,
-          size: 30.w,
+          size: 28.w,
         ),
         Positioned(
           top: 0,
           right: 0,
           child: Container(
             width: 20.w,
-            decoration: BoxDecoration(color: UIColor.danger, borderRadius: BorderRadius.circular(10.r)),
+            decoration: BoxDecoration(
+                color: UIColor.danger,
+                borderRadius: BorderRadius.circular(10.r)),
             child: Center(
               child: Text(
                 "${viewModel.countUnreadNotify}",
