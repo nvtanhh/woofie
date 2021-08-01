@@ -39,7 +39,7 @@ class _NewFeedWidgetState
               onRefresh: viewModel.onRefresh,
               child: PagedListView<int, Post>(
                 scrollController: viewModel.scrollController,
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
                 pagingController: viewModel.postService.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) => Obx(
@@ -72,7 +72,7 @@ class _NewFeedWidgetState
     return PreferredSize(
       preferredSize: Size.fromHeight(48.h),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           children: [
             GestureDetector(

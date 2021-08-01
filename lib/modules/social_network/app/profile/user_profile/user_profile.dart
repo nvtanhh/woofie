@@ -33,55 +33,62 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          height: Get.height,
-          width: Get.width,
-          child: Obx(
-            () {
-              if (viewModel.isLoaded) {
-                return Column(
-                  children: [
-                    Obx(
-                      () => Column(children: viewModel.postService.prependedWidgets.value),
+        body: Obx(
+          () {
+            if (viewModel.isLoaded) {
+              return Column(
+                children: [
+                  Obx(
+                    () => Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Column(
+                          children:
+                              viewModel.postService.prependedWidgets.toList()),
                     ),
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () async => viewModel.onRefresh(),
-                        child: PagedListView<int, Post>(
-                          pagingController: viewModel.postService.pagingController,
-                          builderDelegate: PagedChildBuilderDelegate(
-                            itemBuilder: (context, post, index) {
-                              if (index == 0) {
-                                return InfoUserWidget(
-                                  user: viewModel.user!,
-                                  onFollowPet: viewModel.onFollowPet,
-                                  isMe: viewModel.isMe,
-                                  onUserBlock: viewModel.onUserBlock,
-                                  onUserReport: viewModel.onUserReport,
-                                  onWantsToContact: viewModel.onWantsToContact,
-                                );
-                              }
-                              return PostItem(
+                  ),
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async => viewModel.onRefresh(),
+                      child: PagedListView<int, Post>(
+                        pagingController:
+                            viewModel.postService.pagingController,
+                        builderDelegate: PagedChildBuilderDelegate(
+                          itemBuilder: (context, post, index) {
+                            if (index == 0) {
+                              return InfoUserWidget(
+                                user: viewModel.user!,
+                                onFollowPet: viewModel.onFollowPet,
+                                isMe: viewModel.isMe,
+                                onUserBlock: viewModel.onUserBlock,
+                                onUserReport: viewModel.onUserReport,
+                                onWantsToContact: viewModel.onWantsToContact,
+                              );
+                            }
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: PostItem(
                                 post: post,
                                 onLikeClick: viewModel.postService.onLikeClick,
-                                onEditPost: () => viewModel.postService.onWantsToEditPost(post),
-                                onDeletePost: () => viewModel.onPostDeleted(post, index),
-                                onCommentClick: viewModel.postService.onCommentClick,
+                                onEditPost: () => viewModel.postService
+                                    .onWantsToEditPost(post),
+                                onDeletePost: () =>
+                                    viewModel.onPostDeleted(post, index),
+                                onCommentClick:
+                                    viewModel.postService.onCommentClick,
                                 onPostClick: viewModel.postService.onPostClick,
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                  ],
-                );
-              } else {
-                return const ShimmerPage();
-              }
-            },
-          ),
+                  ),
+                ],
+              );
+            } else {
+              return const ShimmerPage();
+            }
+          },
         ),
         endDrawer: Drawer(
           child: Setting(),
