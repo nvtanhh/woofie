@@ -1,3 +1,4 @@
 class BackendConfig {
   static const String BASE_HASURA_URL = "https://203.113.148.132:22030/v1/graphql";
+  static const String BASE_CHAT_URL = "http://203.113.148.132:22031";
 }

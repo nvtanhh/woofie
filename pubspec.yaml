@@ -163,9 +163,6 @@ dependencies:
   # OneSignal is a free push notification service for mobile apps.
   onesignal_flutter: ^3.0.0
 
-  #The official BottomAppBar can only display a notch FAB with app bar, sometimes we need a convex FAB.
-  convex_bottom_bar: ^3.0.0
-
   #Making Facebook-like type-to-tag dynamic TextField
   type_ahead_text_field: ^0.0.2
 
@@ -175,6 +172,7 @@ dependencies:
   #A Flutter plugin to play multiple simultaneously audio files, works for Android, iOS, macOS and web.
   audioplayers: ^0.19.1
 
+  #A Flutter plugin connect socket_io server
   socket_io_client: ^1.0.1
 
 dev_dependencies:
