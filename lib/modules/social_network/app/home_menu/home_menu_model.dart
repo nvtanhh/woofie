@@ -42,19 +42,15 @@ class HomeMenuWidgetModel extends BaseViewModel {
   @override
   void initState() {
     getNumberNotificationUnread();
-    _timer = Timer.periodic(
-        const Duration(seconds: 10), (_) => getNumberNotificationUnread());
+    _timer = Timer.periodic(const Duration(seconds: 10), (_) => getNumberNotificationUnread());
     super.initState();
   }
 
   Future<bool> onWillPop() {
     now = DateTime.now();
-    if (currentBackPressTime == null ||
-        now!.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+    if (currentBackPressTime == null || now!.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
-      toastService.error(
-          message: LocaleKeys.system_press_to_exit.trans(),
-          context: Get.context!);
+      toastService.error(message: LocaleKeys.system_press_to_exit.trans(), context: Get.context!);
       return Future.value(false);
     }
     return Future.value(true);

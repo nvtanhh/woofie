@@ -25,8 +25,7 @@ class ChatManagerModel extends BaseViewModel {
   @override
   void initState() {
     pagingController = PagingController(firstPageKey: 0);
-    pagingController
-        .addPageRequestListener((pageKey) => _loadMoreChatRoom(pageKey));
+    pagingController.addPageRequestListener((pageKey) => _loadMoreChatRoom(pageKey));
     _lastRefeshTime = DateTime.now();
     super.initState();
   }
@@ -75,9 +74,7 @@ class ChatManagerModel extends BaseViewModel {
   }
 
   Future<void> _getMembersSync(ChatRoom room) async {
-    room.members = await Future.wait(room.memberUuids
-        .map((userUuid) async => _getUserWithUuid(userUuid))
-        .toList());
+    room.members = await Future.wait(room.memberUuids.map((userUuid) async => _getUserWithUuid(userUuid)).toList());
   }
 
   void onWantsToCreateNewChat() {}
@@ -89,15 +86,12 @@ class ChatManagerModel extends BaseViewModel {
   }
 
   bool _isCanRefesh() {
-    return DateTime.now().difference(_lastRefeshTime).inSeconds >
-        BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
+    return DateTime.now().difference(_lastRefeshTime).inSeconds > BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
   }
 
   void onChatRoomPressed(ChatRoom room) {
-    injector<NavigationService>().navigateToChatRoom(
-        room: room,
-        onAddNewMessages: (List<Message> messages) =>
-            _onChatRoomAddNewMessage(room, messages));
+    injector<NavigationService>()
+        .navigateToChatRoom(room: room, onAddNewMessages: (List<Message> messages) => _onChatRoomAddNewMessage(room, messages));
   }
 
   void _onChatRoomAddNewMessage(ChatRoom room, List<Message> messages) {

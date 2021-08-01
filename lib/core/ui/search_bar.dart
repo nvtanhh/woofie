@@ -70,7 +70,6 @@ class MWSearchBarState extends State<MWSearchBar> {
                       focusNode: _textFocusNode,
                       controller: _textController,
                       keyboardType: TextInputType.text,
-                      style: TextStyle(fontSize: 14.sp),
                       decoration: InputDecoration(
                         prefixIcon: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8.w),

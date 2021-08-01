@@ -53,8 +53,7 @@ class NewFeedWidgetModel extends BaseViewModel {
     super.initState();
     postService.pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation =
-            CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     _lastRefeshTime = DateTime.now();
@@ -62,8 +61,7 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      final newItems = await _getPostsUsecase.call(
-          offset: nextPageKey, lastValue: dateTimeValueLast);
+      final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         postService.pagingController.appendLastPage(newItems);
@@ -93,8 +91,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   bool _isCanRefesh() {
-    return DateTime.now().difference(_lastRefeshTime).inSeconds >
-        BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
+    return DateTime.now().difference(_lastRefeshTime).inSeconds > BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
   }
 
   void _scrollToTop() {

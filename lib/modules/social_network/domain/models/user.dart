@@ -54,6 +54,8 @@ class User extends UpdatableModel<User> {
     return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
   }
 
+  bool get isHavePet => (currentPets ?? []).isNotEmpty;
+
   @override
   void updateFromJson(Map json) {
     if (json['name'] != null) {

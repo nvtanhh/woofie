@@ -32,71 +32,69 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: UIColor.white,
-          elevation: 0,
-          title: Text(
-            defineTitleAppBar(widget.postType),
-            style: UITextStyle.text_header_18_w600,
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_outlined,
-              color: UIColor.textHeader,
-              size: 20.w,
-            ),
-            onPressed: () => Get.back(),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: UIColor.white,
+        elevation: 0,
+        title: Text(
+          defineTitleAppBar(widget.postType),
+          style: UITextStyle.text_header_18_w600,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () => viewModel.onRefresh(),
-                child: PagedGridView<int, Post>(
-                  pagingController: viewModel.pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<Post>(
-                    itemBuilder: (context, item, index) {
-                      item.distanceUserToPost = Geolocator.distanceBetween(
-                        viewModel.location!.lat!,
-                        viewModel.location!.long!,
-                        item.location!.lat!,
-                        item.location!.long!,
-                      ).toPrecision(1);
-                      return PetItemWidget(
-                        post: item,
-                        pet: item.taggegPets![0],
-                        onClick: () => viewModel.onItemClick(item),
-                        postType: item.type,
-                      );
-                    },
-                    firstPageProgressIndicatorBuilder: (_) => Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        PetItemShimmerWidget(),
-                        PetItemShimmerWidget(),
-                      ],
-                    ),
-                    newPageProgressIndicatorBuilder: (_) => PetItemShimmerWidget(),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_outlined,
+            color: UIColor.textHeader,
+            size: 20.w,
+          ),
+          onPressed: () => Get.back(),
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () => viewModel.onRefresh(),
+              child: PagedGridView<int, Post>(
+                pagingController: viewModel.pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Post>(
+                  itemBuilder: (context, item, index) {
+                    item.distanceUserToPost = Geolocator.distanceBetween(
+                      viewModel.location!.lat!,
+                      viewModel.location!.long!,
+                      item.location!.lat!,
+                      item.location!.long!,
+                    ).toPrecision(1);
+                    return PetItemWidget(
+                      post: item,
+                      pet: item.taggegPets![0],
+                      onClick: () => viewModel.onItemClick(item),
+                      postType: item.type,
+                    );
+                  },
+                  firstPageProgressIndicatorBuilder: (_) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PetItemShimmerWidget(),
+                      PetItemShimmerWidget(),
+                    ],
                   ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 165.w / 213.h,
-                  ),
-                  padding: EdgeInsets.only(
-                    top: 10.h,
-                    left: 10.w,
-                    right: 10.w,
-                  ),
+                  newPageProgressIndicatorBuilder: (_) => PetItemShimmerWidget(),
+                ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 165.w / 213.h,
+                ),
+                padding: EdgeInsets.only(
+                  top: 10.h,
+                  left: 10.w,
+                  right: 10.w,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

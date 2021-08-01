@@ -163,7 +163,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
     final LocationService locationService = injector<LocationService>();
     addressEditingController.text = "Loading your location...";
     if (await locationService.isPermissionDenied()) {
-      await injector<DialogService>().showPermisstionDialog();
+      await injector<DialogService>().showPermissionDialog();
       return;
     }
     try {

@@ -92,9 +92,7 @@ class _PostItemState extends State<PostItem> {
                 Obx(
                   () {
                     return MWIcon(
-                      widget.post.updateSubjectValue.isLiked ?? false
-                          ? MWIcons.react
-                          : MWIcons.unReact,
+                      widget.post.updateSubjectValue.isLiked ?? false ? MWIcons.react : MWIcons.unReact,
                       size: MWIconSize.small,
                     );
                   },

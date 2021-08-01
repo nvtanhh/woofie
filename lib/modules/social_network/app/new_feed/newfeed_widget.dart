@@ -21,9 +21,7 @@ class NewFeedWidget extends StatefulWidget {
   _NewFeedWidgetState createState() => _NewFeedWidgetState();
 }
 
-class _NewFeedWidgetState
-    extends BaseViewState<NewFeedWidget, NewFeedWidgetModel>
-    with AutomaticKeepAliveClientMixin {
+class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,8 +30,7 @@ class _NewFeedWidgetState
         children: [
           const SizedBox(height: 10),
           Obx(
-            () =>
-                Column(children: viewModel.postService.prependedWidgets.value),
+            () => Column(children: viewModel.postService.prependedWidgets.value),
           ),
           Expanded(
             child: RefreshIndicator(
@@ -49,12 +46,9 @@ class _NewFeedWidgetState
                       onCommentClick: viewModel.postService.onCommentClick,
                       onLikeClick: viewModel.postService.onLikeClick,
                       onPostClick: viewModel.postService.onPostClick,
-                      onDeletePost: () =>
-                          viewModel.postService.onPostDeleted(index),
-                      onEditPost: () =>
-                          viewModel.postService.onWantsToEditPost(item),
-                      onReportPost: () =>
-                          viewModel.postService.onReportPost(item),
+                      onDeletePost: () => viewModel.postService.onPostDeleted(index),
+                      onEditPost: () => viewModel.postService.onWantsToEditPost(item),
+                      onReportPost: () => viewModel.postService.onReportPost(item),
                     ),
                   ),
                 ),
@@ -86,8 +80,7 @@ class _NewFeedWidgetState
                   ),
                   Text(
                     LocaleKeys.app_name.trans(),
-                    style: GoogleFonts.montserrat(
-                        textStyle: UITextStyle.text_header_24_w700),
+                    style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w700),
                   ),
                 ],
               ),

@@ -60,7 +60,7 @@ class AdoptionWidgetModel extends BaseViewModel {
         lat: currentPosition.latitude,
       );
     } catch (e) {
-      await injector<DialogService>().showPermisstionDialog();
+      await injector<DialogService>().showPermissionDialog();
       return;
     }
     if (location != null) {

@@ -87,12 +87,9 @@ class InfoUserWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ButtonWidget(
-                      onPress: () =>
-                          isMe ? goToEditUserProfile() : onWantsToContact(user),
+                      onPress: () => isMe ? goToEditUserProfile() : onWantsToContact(user),
                       height: 40.h,
-                      title: isMe
-                          ? LocaleKeys.profile_edit_profile.trans()
-                          : LocaleKeys.profile_contact.trans(),
+                      title: isMe ? LocaleKeys.profile_edit_profile.trans() : LocaleKeys.profile_contact.trans(),
                       borderRadius: 10.r,
                     ),
                   ),
