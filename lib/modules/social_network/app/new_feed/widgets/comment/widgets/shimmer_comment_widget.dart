@@ -33,7 +33,7 @@ class ShimmerCommentWidget extends StatelessWidget {
                   height: 5.h,
                 ),
                 Container(
-                  width: (Get.width * 0.7).w,
+                  width: (Get.width * 0.6).w,
                   height: 60.h,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), color: UIColor.white),
                 ),
