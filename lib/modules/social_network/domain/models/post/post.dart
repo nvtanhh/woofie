@@ -18,7 +18,7 @@ class Post extends UpdatableModel<Post> {
   @JsonKey(name: "id")
   final int id;
   @JsonKey(name: "uuid")
-  final String uuid;
+  String uuid;
   @JsonKey(name: "content")
   String? content;
   @JsonKey(name: "is_closed")
@@ -175,6 +175,9 @@ class Post extends UpdatableModel<Post> {
     }
     if (json['medias_aggregate'] != null) {
       postMediasCount = aggregateCountFromJson(json["medias_aggregate"] as Map<String, dynamic>);
+    }
+    if (json['uuid'] != null) {
+      uuid = json['uuid'] as String;
     }
   }
 }

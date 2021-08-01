@@ -25,6 +25,7 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
         post.update(await _getDetailPostUsecase.call(post.id));
       },
       onSuccess: () {
+        pet = post.taggegPets?[0];
         isLoaded = true;
       },
       onFailure: (err) {},
