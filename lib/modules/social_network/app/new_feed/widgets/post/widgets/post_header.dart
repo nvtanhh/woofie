@@ -36,16 +36,20 @@ class PostHeader extends StatelessWidget {
 
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: MWAvatar(
-        avatarUrl: user.avatarUrl,
-        borderRadius: 10.r,
+      leading: GestureDetector(
+        onTap: () => openProfileUser(user),
+        child: MWAvatar(
+          avatarUrl: user.avatarUrl,
+          borderRadius: 10.r,
+        ),
       ),
       title: Text.rich(
         TextSpan(
             text: user.name,
             children: createTagPet(),
             style: UITextStyle.heading_16_semiBold,
-            recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(user)),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => openProfileUser(user)),
         maxLines: 2,
       ),
       subtitle: Row(
@@ -79,14 +83,17 @@ class PostHeader extends StatelessWidget {
     if (pets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
+      TextSpan(
+          text: " ${LocaleKeys.new_feed_with.trans()} ",
+          style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < pets.length; i++) {
       inLineSpan.add(
         TextSpan(
           text: "${pets[i].name}${i != pets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
-          recognizer: TapGestureRecognizer()..onTap = () => openProfilePet(pets[i]),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => openProfilePet(pets[i]),
         ),
       );
     }

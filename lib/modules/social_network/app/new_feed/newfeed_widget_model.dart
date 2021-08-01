@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:async/async.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/configs/backend_config.dart';
@@ -25,6 +26,8 @@ class NewFeedWidgetModel extends BaseViewModel {
   CancelableOperation? cancelableOperation;
 
   late DateTime _lastRefeshTime;
+
+  ScrollController scrollController = ScrollController();
 
   NewFeedWidgetModel(
     this._getPostsUsecase,
@@ -85,10 +88,22 @@ class NewFeedWidgetModel extends BaseViewModel {
       // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
       postService.pagingController.notifyListeners();
     }
+    _scrollToTop();
+    return;
   }
 
   bool _isCanRefesh() {
     return DateTime.now().difference(_lastRefeshTime).inSeconds >
         BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
+  }
+
+  void _scrollToTop() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOut,
+      );
+    }
   }
 }

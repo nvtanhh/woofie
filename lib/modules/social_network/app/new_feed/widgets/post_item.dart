@@ -50,7 +50,7 @@ class _PostItemState extends State<PostItem> {
           onEditPost: widget.onEditPost,
           onReportPost: widget.onReportPost,
         ),
-        InkWell(
+        GestureDetector(
           onTap: () => widget.onPostClick?.call(widget.post),
           child: PostBody(post: widget.post),
         ),
@@ -93,7 +93,9 @@ class _PostItemState extends State<PostItem> {
                 Obx(
                   () {
                     return MWIcon(
-                      widget.post.updateSubjectValue.isLiked ?? false ? MWIcons.react : MWIcons.unReact,
+                      widget.post.updateSubjectValue.isLiked ?? false
+                          ? MWIcons.react
+                          : MWIcons.unReact,
                       size: MWIconSize.small,
                     );
                   },
