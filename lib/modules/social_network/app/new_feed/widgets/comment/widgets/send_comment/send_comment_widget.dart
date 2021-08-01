@@ -48,7 +48,7 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
   Widget build(BuildContext context) {
     return Container(
       height: 85.h,
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(

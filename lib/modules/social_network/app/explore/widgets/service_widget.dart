@@ -27,7 +27,7 @@ class ServiceWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(color: UIColor.textSecondary),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         children: [
           widget,

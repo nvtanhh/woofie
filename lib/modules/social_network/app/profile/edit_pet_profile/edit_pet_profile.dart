@@ -52,7 +52,7 @@ class _EditPetProfileWidgetState
           ),
           actions: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
               child: MWButton(
                 onPressed: () => viewModel.onSaveClick(),
                 minWidth: 40.w,
@@ -66,7 +66,7 @@ class _EditPetProfileWidgetState
           ],
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
             children: [
               Row(

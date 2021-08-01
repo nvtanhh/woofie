@@ -39,7 +39,7 @@ class PetItemWidget extends StatelessWidget {
         child: Stack(
           children: [
             ImageWithPlaceHolderWidget(
-                imageUrl: post.medias?.isEmpty == true
+                imageUrl: post.medias?.isEmpty ?? true
                     ? (pet.avatarUrl ?? "")
                     : post.medias!.first.url!,
                 width: 165.w,
@@ -64,7 +64,7 @@ class PetItemWidget extends StatelessWidget {
                   ),
                 ),
                 padding: EdgeInsets.symmetric(
-                  horizontal: 10.w,
+                  horizontal: 16.w,
                   vertical: 5.h,
                 ),
                 child: Stack(

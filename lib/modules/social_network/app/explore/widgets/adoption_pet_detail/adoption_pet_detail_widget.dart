@@ -185,7 +185,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
                         margin: EdgeInsets.only(top: 10.h),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
+                            horizontal: 16.w,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

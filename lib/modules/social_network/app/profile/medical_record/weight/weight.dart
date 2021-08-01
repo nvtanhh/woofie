@@ -64,7 +64,7 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
           ),
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

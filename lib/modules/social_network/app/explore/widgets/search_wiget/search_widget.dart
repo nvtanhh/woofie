@@ -35,7 +35,7 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> 
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal:16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
