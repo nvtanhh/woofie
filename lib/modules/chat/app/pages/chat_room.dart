@@ -16,13 +16,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ChatRoomPage extends StatefulWidget {
   final ChatRoom? room;
   final User? partner;
-  const ChatRoomPage({Key? key, this.room, this.partner}) : super(key: key);
+  final Function(List<Message>)? onAddNewMessages;
+
+  const ChatRoomPage({Key? key, this.room, this.partner, this.onAddNewMessages})
+      : super(key: key);
 
   @override
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
-class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
+class _ChatRoomPageState
+    extends BaseViewState<ChatRoomPage, ChatRoomPageModel> {
   @override
   ChatRoomPageModel createViewModel() => injector<ChatRoomPageModel>();
 
@@ -30,6 +34,7 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
   void loadArguments() {
     viewModel.inputRoom = widget.room;
     viewModel.partner = widget.partner;
+    viewModel.onAddNewMessages = widget.onAddNewMessages;
     super.loadArguments();
   }
 
@@ -72,7 +77,8 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
             reverse: true,
             builderDelegate: PagedChildBuilderDelegate<Message>(
               itemBuilder: (context, message, index) {
-                final bool isDisplayAvatar = viewModel.checkIsDisplayAvatar(index);
+                final bool isDisplayAvatar =
+                    viewModel.checkIsDisplayAvatar(index);
                 return MessageWidget(
                   message,
                   key: Key(message.id ?? message.createdAt.toString()),
@@ -85,7 +91,9 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
           ),
         ),
         Obx(
-          () => TypingWidget(isTyping: viewModel.partnerTypingStatus.value, chatPartner: viewModel.room.privateChatPartner),
+          () => TypingWidget(
+              isTyping: viewModel.partnerTypingStatus.value,
+              chatPartner: viewModel.room.privateChatPartner),
         ),
         _buildMessageSender(),
       ],

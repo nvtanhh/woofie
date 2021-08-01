@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:async/async.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
@@ -24,8 +25,6 @@ class NewFeedWidgetModel extends BaseViewModel {
   CancelableOperation? cancelableOperation;
 
   late DateTime _lastRefeshTime;
-
-  static const int _refreshIntervalLimitSecond = 3;
 
   NewFeedWidgetModel(
     this._getPostsUsecase,
@@ -51,7 +50,8 @@ class NewFeedWidgetModel extends BaseViewModel {
     super.initState();
     postService.pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        cancelableOperation =
+            CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     _lastRefeshTime = DateTime.now();
@@ -59,7 +59,8 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      final newItems = await _getPostsUsecase.call(offset: nextPageKey, lastValue: dateTimeValueLast);
+      final newItems = await _getPostsUsecase.call(
+          offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         postService.pagingController.appendLastPage(newItems);
@@ -83,12 +84,11 @@ class NewFeedWidgetModel extends BaseViewModel {
       postService.pagingController.itemList = newItems;
       // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
       postService.pagingController.notifyListeners();
-    } else {
-      printInfo(info: 'Please wait $_refreshIntervalLimitSecond seconds');
     }
   }
 
   bool _isCanRefesh() {
-    return DateTime.now().difference(_lastRefeshTime).inSeconds > _refreshIntervalLimitSecond;
+    return DateTime.now().difference(_lastRefeshTime).inSeconds >
+        BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
   }
 }
