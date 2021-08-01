@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meowoof/modules/chat/presentation/widgets/active_status_avatar.dart';
+import 'package:meowoof/modules/chat/app/widgets/active_status_avatar.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
@@ -15,7 +15,7 @@ class PrivateChatIdentifier extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: ActiveStatusAvatar(
         avatarUrl: chatUser?.avatarUrl ?? '',
-        isActive: true,
+        isActive: false,
       ),
       title: Text(
         chatUser?.name ?? '',
@@ -23,7 +23,7 @@ class PrivateChatIdentifier extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
       ),
-      subtitle: const Text('Active'),
+      subtitle: Text(chatUser?.bio ?? ''),
     );
   }
 }

@@ -5,8 +5,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
-import 'package:meowoof/modules/chat/presentation/pages/chat_dashboard_model.dart';
-import 'package:meowoof/modules/chat/presentation/widgets/chat_room_nav/chat_room_item.dart';
+import 'package:meowoof/modules/chat/app/pages/chat_dashboard_model.dart';
+import 'package:meowoof/modules/chat/app/widgets/chat_room_item.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
@@ -45,12 +45,12 @@ class _ChatDashboardState extends BaseViewState<ChatDashboard, ChatManagerModel>
         maxLines: 1,
         style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w600),
       ),
-      actions: <Widget>[
-        IconButton(
-          icon: MWIcon(MWIcons.createChat),
-          onPressed: viewModel.onWantsToCreateNewChat,
-        )
-      ],
+      // actions: <Widget>[
+      //   IconButton(
+      //     icon: MWIcon(MWIcons.createChat),
+      //     onPressed: viewModel.onWantsToCreateNewChat,
+      //   )
+      // ],
     );
   }
 
@@ -66,6 +66,7 @@ class _ChatDashboardState extends BaseViewState<ChatDashboard, ChatManagerModel>
         builderDelegate: PagedChildBuilderDelegate<ChatRoom>(
           itemBuilder: (context, room, index) => Obx(
             () => ChatRoomItem(
+              key: Key(room.id),
               room: room.updateSubjectValue as ChatRoom,
               onChatRoomPressed: () => viewModel.onChatRoomPressed(room),
             ),

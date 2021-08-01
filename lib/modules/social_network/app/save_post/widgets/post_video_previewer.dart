@@ -14,8 +14,25 @@ class PostVideoPreviewer extends StatelessWidget {
   final Media? postVideo;
   final VoidCallback? onRemove;
   final double? playIconSize;
+  final double? playIconMargin;
+  final double? width;
+  final double? height;
 
-  const PostVideoPreviewer({Key? key, this.postVideoFile, this.postVideo, this.onRemove, this.playIconSize = 30}) : super(key: key);
+  final double? thumbnailMaxWidth;
+  final bool isConstraintsSize;
+
+  const PostVideoPreviewer({
+    Key? key,
+    this.postVideoFile,
+    this.postVideo,
+    this.onRemove,
+    this.playIconSize,
+    this.width,
+    this.height,
+    this.thumbnailMaxWidth,
+    this.isConstraintsSize = true,
+    this.playIconMargin,
+  }) : super(key: key);
 
   static double avatarBorderRadius = 10.0;
   static const double buttonSize = 20;
@@ -24,41 +41,61 @@ class PostVideoPreviewer extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isFileVideo = postVideoFile != null;
 
-    final Widget videoPreview = isFileVideo
-        ? FutureBuilder<Uint8List?>(
-            future: injector<MediaService>().getVideoThumbnailFromFile(postVideoFile!),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return const SizedBox();
-              return _wrapImageWidgetForThumbnail(
-                Image.memory(
-                  snapshot.data!,
-                  fit: BoxFit.cover,
-                ),
-              );
-            })
-        : FutureBuilder<String?>(
-            future: injector<MediaService>().getVideoThumbnailFromUrl(postVideo?.url ?? ""),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return const SizedBox();
-              return _wrapImageWidgetForThumbnail(
-                Image.file(
-                  File(snapshot.data!),
-                ),
-              );
-            });
+    final Widget videoPreview = SizedBox(
+      width: width,
+      height: height,
+      child: isFileVideo
+          ? FutureBuilder<Uint8List?>(
+              future: injector<MediaService>().getVideoThumbnailFromFile(
+                postVideoFile!,
+                maxWidth: thumbnailMaxWidth,
+                isConstraintsSize: isConstraintsSize,
+              ),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return const SizedBox();
+                return _wrapImageWidgetForThumbnail(
+                  Image.memory(
+                    snapshot.data!,
+                    fit: BoxFit.cover,
+                  ),
+                  width: width,
+                  height: height,
+                  isConstraintsSize: isConstraintsSize,
+                );
+              })
+          : FutureBuilder<String?>(
+              future: injector<MediaService>().getVideoThumbnailFromUrl(
+                postVideo?.url ?? "",
+                isConstraintsSize: isConstraintsSize,
+                maxWidth: thumbnailMaxWidth,
+              ),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return const SizedBox();
+                return _wrapImageWidgetForThumbnail(
+                  Image.file(
+                    File(snapshot.data!),
+                    fit: BoxFit.cover,
+                  ),
+                  width: width,
+                  height: height,
+                  isConstraintsSize: isConstraintsSize,
+                );
+              },
+            ),
+    );
 
     return Stack(
       children: <Widget>[
         videoPreview,
         if (onRemove != null)
           Positioned(
-            top: 5.h,
-            right: 5.w,
+            top: 5,
+            right: 5,
             child: _buildRemoveButton(),
           ),
         Positioned(
-          left: 5,
-          bottom: 5,
+          left: playIconMargin ?? 5,
+          bottom: playIconMargin ?? 5,
           child: Center(
             child: _buildPlayButton(context),
           ),
@@ -86,16 +123,16 @@ class PostVideoPreviewer extends StatelessWidget {
 
   Widget _buildPlayButton(BuildContext context) {
     return SizedBox(
-      width: buttonSize,
-      height: buttonSize,
+      width: playIconSize ?? buttonSize,
+      height: playIconSize ?? buttonSize,
       child: FloatingActionButton(
         heroTag: Key('postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}'),
         backgroundColor: Colors.black54,
         onPressed: () => _onWantsToPlay(context),
-        child: const Icon(
+        child: Icon(
           Icons.play_arrow,
           color: Colors.white,
-          size: 16,
+          size: playIconSize == null ? 16 : (playIconSize! - playIconSize! / 6.toInt()),
         ),
       ),
     );
@@ -109,11 +146,14 @@ class PostVideoPreviewer extends StatelessWidget {
     );
   }
 
-  Widget _wrapImageWidgetForThumbnail(Widget image) {
+  Widget _wrapImageWidgetForThumbnail(Widget image, {double? width, double? height, bool isConstraintsSize = true}) {
     return SizedBox(
-      height: 80.h,
-      width: 80.w,
-      child: ClipRRect(borderRadius: BorderRadius.circular(avatarBorderRadius), child: image),
+      height: isConstraintsSize ? height ?? 80.h : null,
+      width: isConstraintsSize ? width ?? 80.w : null,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(avatarBorderRadius),
+        child: image,
+      ),
     );
   }
 }

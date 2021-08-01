@@ -115,7 +115,7 @@ class MWIcons {
   static const person = MWIconData(nativeIcon: Icons.person_outline);
   static const back = MWIconData(nativeIcon: Icons.arrow_back_ios_rounded);
   static const close = MWIconData(nativeIcon: Icons.close_rounded);
-  static const send = MWIconData(nativeIcon: Icons.send);
+  static const send = MWIconData(nativeIcon: Icons.send_rounded);
   static const bookmark = MWIconData(nativeIcon: Icons.bookmark);
   static const addImage = MWIconData(nativeIcon: Icons.add_photo_alternate);
   static const location = MWIconData(nativeIcon: Icons.location_on_rounded);
@@ -142,6 +142,8 @@ class MWIcons {
   static const retry = MWIconData(nativeIcon: Icons.refresh);
   static const camera = MWIconData(nativeIcon: Icons.camera_alt_outlined);
   static const info = MWIconData(nativeIcon: Icons.info_rounded);
+  static const play = MWIconData(nativeIcon: Icons.play_arrow_rounded);
+
   static const addOutlined = MWIconData(nativeIcon: Icons.my_library_add_outlined);
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);

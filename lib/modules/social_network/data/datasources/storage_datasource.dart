@@ -12,6 +12,8 @@ import 'package:meowoof/modules/social_network/domain/models/post/media_file.dar
 class StorageDatasource {
   // ignore: constant_identifier_names
   static const String POST_MEDIA_SUBFOLDER = '{user_uuid}/{post_uuid}';
+  // ignore: constant_identifier_names
+  static const String CHAT_MEDIA_SUBFOLDER = '{room_id}';
 
   // ignore: constant_identifier_names
   static const String AVATAR_USER_SUBFOLDER = '{user_uuid}';
@@ -19,6 +21,8 @@ class StorageDatasource {
   static const String AVATAR_PET_SUBFOLDER = '{user_uuid}/{pet_uuid}';
   // ignore: constant_identifier_names
   static const String POST_MEDIA_DEFAULT_BUCKET_NAME = 'medias';
+  // ignore: constant_identifier_names
+  static const String CHAT_MEDIA_DEFAULT_BUCKET_NAME = 'chat-medias';
 
 // ignore: constant_identifier_names
   static const String AVATAR_DEFAULT_BUCKET_NAME = 'avatars';
@@ -43,6 +47,13 @@ class StorageDatasource {
     final String subFolder = _urlParser.parse(AVATAR_USER_SUBFOLDER, {'user_uuid': userUuid});
 
     return _getPresignedUrl('$subFolder/$objectName', AVATAR_DEFAULT_BUCKET_NAME);
+  }
+
+  Future<String> getPresignedChatMediaUrl(String objectName, String chatRoomId) async {
+    final String subFolder = _urlParser.parse(CHAT_MEDIA_SUBFOLDER, {'room_id': chatRoomId});
+
+    final url = await _getPresignedUrl('$subFolder/$objectName', CHAT_MEDIA_DEFAULT_BUCKET_NAME);
+    return url!;
   }
 
   Future<String?> getPresignedUrlForPostMedia(String objectName, String postUuid) async {

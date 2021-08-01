@@ -17,8 +17,25 @@ class PostImagePreviewer extends StatelessWidget {
 
   static const double buttonSize = 20;
 
-  const PostImagePreviewer({Key? key, this.postMedia, this.postImageFile, this.onRemove, this.onWillEditImage, this.onPostImageEdited})
-      : super(key: key);
+  final bool allowEditImage;
+  final double? width;
+  final double? height;
+  final bool isConstraintsSize;
+  final bool noBorder;
+
+  const PostImagePreviewer({
+    Key? key,
+    this.postMedia,
+    this.postImageFile,
+    this.onRemove,
+    this.onWillEditImage,
+    this.onPostImageEdited,
+    this.allowEditImage = true,
+    this.width,
+    this.height,
+    this.isConstraintsSize = true,
+    this.noBorder = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +43,10 @@ class PostImagePreviewer extends StatelessWidget {
     final bool isFileImage = postImageFile != null;
 
     final imagePreview = SizedBox(
-      height: 200.0,
-      width: 200,
+      width: isConstraintsSize ? width ?? 200 : null,
+      height: isConstraintsSize ? height ?? 200 : null,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(avatarBorderRadius),
+        borderRadius: !noBorder ? BorderRadius.circular(avatarBorderRadius) : BorderRadius.zero,
         child: isFileImage
             ? Image.file(
                 postImageFile!,
@@ -53,7 +70,7 @@ class PostImagePreviewer extends StatelessWidget {
           right: 5,
           child: _buildRemoveButton(),
         ),
-        if (isFileImage)
+        if (isFileImage && allowEditImage)
           Positioned(
             bottom: 5,
             left: 5,

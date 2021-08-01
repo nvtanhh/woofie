@@ -3,7 +3,7 @@ description: Social network for pet
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -163,14 +163,20 @@ dependencies:
   # OneSignal is a free push notification service for mobile apps.
   onesignal_flutter: ^3.0.0
 
+  #The official BottomAppBar can only display a notch FAB with app bar, sometimes we need a convex FAB.
+  convex_bottom_bar: ^3.0.0
+
   #Making Facebook-like type-to-tag dynamic TextField
   type_ahead_text_field: ^0.0.2
 
-#  #On most operating systems, permissions aren't just granted to apps at install time.
-#  permission_handler: 8.1.2
+  #  #On most operating systems, permissions aren't just granted to apps at install time.
+  #  permission_handler: 8.1.2
 
   #A Flutter plugin to play multiple simultaneously audio files, works for Android, iOS, macOS and web.
   audioplayers: ^0.19.1
+
+  socket_io_client: ^1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

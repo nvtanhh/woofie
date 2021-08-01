@@ -1,15 +1,114 @@
 import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/helpers/url_parser.dart';
+import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/core/services/httpie.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
+import 'package:meowoof/modules/chat/domain/models/message.dart';
+import 'package:meowoof/configs/backend_config.dart';
+import 'package:get/get.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class ChatDatasource {
-  Future<List<ChatRoom>> getChatRooms() async {
-    const String rawJson =
-        '{"rooms":[{"members":["MOxLhXDRguSO5KviPlawgQNy3Js1","XOkLTmnJZues17rA1tqNfOZmYHJ2"],"isGroup":false,"name":"XOkLTmnJZues17rA1tqNfOZmYHJ2_MOxLhXDRguSO5KviPlawgQNy3Js1","creator":"XOkLTmnJZues17rA1tqNfOZmYHJ2","createdAt":"2021-07-21T09:58:48.263Z","updatedAt":"2021-07-21T09:58:48.263Z","id":"60f7efd891b2721decc36521","messages":[{"type":"I","content":"https://scontent-sin6-2.xx.fbcdn.net/v/t1.6435-1/p160x160/162354720_1147808662336518_1297648803267744126_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=7206a8&_nc_ohc=MGYp5PyMl7oAX9ph63m&_nc_ht=scontent-sin6-2.xx&oh=8b30eec8ed672651371d467254b37f1a&oe=60FC47BB","sender":"XOkLTmnJZues17rA1tqNfOZmYHJ2","createdAt":"2021-07-21T12:10:00.030Z","id":"60f80e989a2e9921c8333fdb"},{"type":"T","content":"New message 3","sender":"XOkLTmnJZues17rA1tqNfOZmYHJ2","createdAt":"2021-07-21T11:32:37.778Z","id":"60f805d5b113352f541cdbc7"},{"type":"T","content":"New message 2","sender":"XOkLTmnJZues17rA1tqNfOZmYHJ2","createdAt":"2021-07-21T11:32:34.424Z","id":"60f805d2b113352f541cdbc3"},{"type":"T","content":"New message 1","sender":"XOkLTmnJZues17rA1tqNfOZmYHJ2","createdAt":"2021-07-21T11:32:31.273Z","id":"60f805cfb113352f541cdbbf"}]}]}';
+  final HttpieService _httpieService;
+  final UrlParser _urlParser;
 
-    final list = json.decode(rawJson)['rooms'] as List;
-    return list.map((room) => ChatRoom.fromJson(room as Map<String, dynamic>)).toList();
+  late String baseUrl;
+
+  // ignore: constant_identifier_names
+  static const GET_CHAT_ROOM_ENDPOINT = 'api/room/';
+  // ignore: constant_identifier_names
+  static const INIT_CHAT_ROOM_ENDPOINT = 'api/room/';
+  // ignore: constant_identifier_names
+  static const GET_MESSAGES_ENDPOINT = 'api/message/{room_id}';
+  // ignore: constant_identifier_names
+  static const SEND_MESSAGE_ENDPOINT = 'api/message/{room_id}';
+
+  ChatDatasource(this._httpieService, this._urlParser) {
+    baseUrl = BackendConfig.BASE_CHAT_URL;
+  }
+
+  Future<List<ChatRoom>> getChatRooms(int limit, int skip) async {
+    final Map<String, dynamic> queryParameters = {};
+    queryParameters['limit'] = limit;
+    queryParameters['skip'] = skip;
+
+    final response = await _httpieService.get('$baseUrl/$GET_CHAT_ROOM_ENDPOINT', queryParameters: queryParameters, appendAuthorizationToken: true);
+    if (response.statusCode == 200) {
+      final list = json.decode(response.body)['rooms'] as List;
+      return list.map((room) => ChatRoom.fromJson(room as Map<String, dynamic>)).toList();
+    } else {
+      printError(info: 'Failed to get chat rooms: $response');
+      throw Error;
+    }
+  }
+
+  Future<List<Message>> getMessagesWithRoomId(int limit, int skip, String roomId) async {
+    final Map<String, dynamic> queryParameters = {
+      'limit': limit,
+      'skip': skip,
+    };
+    final endpoint = _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
+    final response = await _httpieService.get('$baseUrl/$endpoint', queryParameters: queryParameters, appendAuthorizationToken: true);
+    if (response.statusCode == 200) {
+      final list = json.decode(response.body)['messages'] as List;
+      return list.map((room) => Message.fromJson(room as Map<String, dynamic>)).toList();
+    } else {
+      printError(info: 'Failed to get more messages: $response');
+      throw Error;
+    }
+  }
+
+  Future<Message> sendMessages(Message sendingMessage) async {
+    final endpoint = _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': sendingMessage.roomId});
+
+    final body = {
+      'content': sendingMessage.content,
+      'type': _pareMessageType(sendingMessage.type),
+      'createdAt': sendingMessage.createdAt.toString(),
+    };
+    if (sendingMessage.description != null && sendingMessage.description!.isNotEmpty) {
+      body['description'] = sendingMessage.description!;
+    }
+
+    final response = await _httpieService.post('$baseUrl/$endpoint', body: body, appendAuthorizationToken: true);
+    if (response.statusCode == 201) {
+      final Message newMessage = Message.fromJson(json.decode(response.body)['new_message'] as Map<String, dynamic>);
+      newMessage.localUuid = sendingMessage.localUuid;
+      return newMessage;
+    } else {
+      printError(info: 'Failed to send message: $response');
+      throw Error;
+    }
+  }
+
+  Future<ChatRoom> initPrivateChatRoom(User user) async {
+    final body = {
+      'members': [user.uuid],
+      'isGroup': false,
+    };
+    final response = await _httpieService.postJSON('$baseUrl/$INIT_CHAT_ROOM_ENDPOINT', body: body, appendAuthorizationToken: true);
+    if (response.statusCode == 200) {
+      return ChatRoom.fromJson(json.decode(response.body)['chatRoom'] as Map<String, dynamic>);
+    } else {
+      printError(info: 'Failed to init chat room: $response');
+      throw Exception();
+    }
+  }
+
+  String _pareMessageType(MessageType type) {
+    switch (type) {
+      case MessageType.text:
+        return 'T';
+      case MessageType.image:
+        return 'I';
+      case MessageType.video:
+        return 'V';
+      default:
+        return 'T';
+    }
   }
 }

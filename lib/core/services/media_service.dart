@@ -23,22 +23,22 @@ class MediaService {
   Map _thumbnail_cache = {};
   static const Uuid _uuid = Uuid();
 
-  Future<Uint8List?> getVideoThumbnailFromFile(File videoFile) async {
+  Future<Uint8List?> getVideoThumbnailFromFile(File videoFile, {double? maxWidth, bool isConstraintsSize = true, int? quality}) async {
     return VideoThumbnail.thumbnailData(
       video: videoFile.path,
       imageFormat: ImageFormat.JPEG,
-      maxWidth: 80.w.toInt(),
-      quality: 100,
+      maxWidth: isConstraintsSize ? maxWidth?.toInt() ?? 80.w.toInt() : 0,
+      quality: quality ?? 100,
     );
   }
 
-  Future<String?> getVideoThumbnailFromUrl(String url) async {
+  Future<String?> getVideoThumbnailFromUrl(String url, {double? maxWidth, bool isConstraintsSize = true, int? quality}) async {
     final filePath = await VideoThumbnail.thumbnailFile(
       video: url,
-      thumbnailPath: (await getTemporaryDirectory()).path + defaultThumbnailCacheUrl,
+      thumbnailPath: await _getThumbnailCachePath(defaultThumbnailCacheUrl),
       imageFormat: ImageFormat.JPEG,
-      maxHeight: 80.h.toInt(),
-      quality: 100,
+      maxWidth: isConstraintsSize ? maxWidth?.toInt() ?? 80.w.toInt() : 0,
+      quality: quality ?? 100,
     );
     return filePath;
   }
@@ -147,5 +147,43 @@ class MediaService {
     } else {
       return null;
     }
+  }
+
+  Future<List<MediaFile>> pickMedias({bool allowMultiple = true, FileType type = FileType.media}) async {
+    final List<MediaFile> medias = [];
+    List<File>? files;
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: allowMultiple, type: type);
+    if (result != null) {
+      files = result.paths.map((path) => File(path!)).toList();
+    } else {
+      // User canceled the picker
+    }
+    if (files != null) {
+      await Future.wait(files.map((file) async {
+        final MediaFile media = await convertToMediaFile(file);
+        medias.add(media);
+      }));
+    }
+    return medias;
+  }
+
+  Future<MediaFile> compressPostMediaItem(MediaFile postMediaItem) async {
+    if (postMediaItem.isImage) {
+      postMediaItem.file = await compressImage(postMediaItem.file);
+    } else if (postMediaItem.isVideo) {
+      postMediaItem.file = await compressVideo(postMediaItem.file);
+    } else {
+      printError(info: 'Unsupported media type for compression');
+    }
+    return postMediaItem;
+  }
+
+  Future<String> _getThumbnailCachePath(String dir) async {
+    final String path = (await getTemporaryDirectory()).path + defaultThumbnailCacheUrl;
+    final dir = Directory(path);
+    if (!(await dir.exists())) {
+      await dir.create();
+    }
+    return path;
   }
 }
