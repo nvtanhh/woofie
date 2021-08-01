@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
-import 'package:meowoof/core/ui/avatar/avatar.dart';
+import 'package:meowoof/core/ui/avatar/pet_avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
@@ -41,7 +41,7 @@ class PetInfoWidget extends StatelessWidget {
           height: 5.h,
         ),
         Obx(
-          () => MWAvatar(
+          () => PetAvatar(
             avatarUrl: pet.updateSubjectValue.avatarUrl,
             customSize: 80.w,
             borderRadius: 15.r,
@@ -84,9 +84,13 @@ class PetInfoWidget extends StatelessWidget {
                   height: 40.h,
                   title: isMyPet
                       ? LocaleKeys.profile_edit_profile.trans()
-                      : (isFollowing.value ? LocaleKeys.profile_un_follow.trans() : LocaleKeys.profile_follow.trans()),
+                      : (isFollowing.value
+                          ? LocaleKeys.profile_un_follow.trans()
+                          : LocaleKeys.profile_follow.trans()),
                   borderRadius: 10.r,
-                  backgroundColor: isFollowing.value ? UIColor.textSecondary : UIColor.primary,
+                  backgroundColor: isFollowing.value
+                      ? UIColor.textSecondary
+                      : UIColor.primary,
                 ),
               ),
             ),
@@ -102,7 +106,9 @@ class PetInfoWidget extends StatelessWidget {
                 height: 40.h,
                 margin: EdgeInsets.only(left: 20.w),
                 padding: EdgeInsets.only(top: 5.h),
-                decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
+                decoration: BoxDecoration(
+                    color: UIColor.holder,
+                    borderRadius: BorderRadius.circular(10.r)),
                 child: const Center(
                   child: MWIcon(
                     MWIcons.moreHoriz,

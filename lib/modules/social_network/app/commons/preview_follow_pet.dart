@@ -44,7 +44,11 @@ class PreviewFollowPet extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: const [
-            BoxShadow(color: UIColor.dimGray, blurRadius: 5, offset: Offset(2, 0), spreadRadius: 2),
+            BoxShadow(
+                color: UIColor.dimGray,
+                blurRadius: 5,
+                offset: Offset(2, 0),
+                spreadRadius: 2),
           ],
           color: UIColor.white,
         ),
@@ -58,6 +62,8 @@ class PreviewFollowPet extends StatelessWidget {
                 height: 60.w,
                 radius: 10.r,
                 fit: BoxFit.cover,
+                placeHolderImage:
+                    "resources/images/fallbacks/pet-avatar-fallback.jpg",
               ),
             ),
             SizedBox(
@@ -98,11 +104,15 @@ class PreviewFollowPet extends StatelessWidget {
                         isFollowing.value = !isFollowing.value;
                         onFollow?.call(pet);
                       },
-                      title: isFollowing.value ? LocaleKeys.profile_un_follow.trans() : LocaleKeys.profile_follow.trans(),
+                      title: isFollowing.value
+                          ? LocaleKeys.profile_un_follow.trans()
+                          : LocaleKeys.profile_follow.trans(),
                       titleStyle: UITextStyle.white_10_w600,
                       width: 60.w,
                       height: 22.h,
-                      backgroundColor: isFollowing.value ? UIColor.textSecondary : UIColor.primary,
+                      backgroundColor: isFollowing.value
+                          ? UIColor.textSecondary
+                          : UIColor.primary,
                     ),
                   ),
                 ],

@@ -19,6 +19,7 @@ class MWAvatar extends StatelessWidget {
   final double? borderRadius;
   final double? customSize;
   final Image? placeHolderImage;
+  final BoxFit? fit;
 
   static const double AVATAR_SIZE_EXTRA_SMALL = 20.0;
   static const double AVATAR_SIZE_SMALL = 30.0;
@@ -61,6 +62,7 @@ class MWAvatar extends StatelessWidget {
     this.borderRadius,
     this.customSize,
     this.placeHolderImage,
+    this.fit,
   });
 
   @override
@@ -72,7 +74,7 @@ class MWAvatar extends StatelessWidget {
 
     if (avatarFile != null) {
       finalAvatarImage = FadeInImage(
-        fit: BoxFit.cover,
+        fit: fit ?? BoxFit.cover,
         height: avatarSize.w,
         width: avatarSize.w,
         placeholder: Assets.resources.images.fallbacks.avatarFallback,
@@ -83,7 +85,7 @@ class MWAvatar extends StatelessWidget {
         avatarUrl!,
         height: avatarSize.w,
         width: avatarSize.w,
-        fit: BoxFit.cover,
+        fit: fit ?? BoxFit.cover,
         retries: 0,
         loadStateChanged: (e) {
           switch (e.extendedImageLoadState) {

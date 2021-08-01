@@ -34,12 +34,13 @@ class PetsWidget extends StatelessWidget {
               child: Row(
                 children: [
                   ImageWithPlaceHolderWidget(
-                    imageUrl: pet.avatarUrl ?? "",
-                    width: 117.w,
-                    height: 152.h,
-                    radius: 10.r,
-                    fit: BoxFit.cover,
-                  ),
+                      imageUrl: pet.avatarUrl ?? "",
+                      width: 117.w,
+                      height: 152.h,
+                      radius: 10.r,
+                      fit: BoxFit.cover,
+                      placeHolderImage:
+                          "resources/images/fallbacks/pet-avatar-fallback.jpg"),
                   SizedBox(
                     width: 25.w,
                   ),
@@ -79,7 +80,10 @@ class PetsWidget extends StatelessWidget {
                                 : LocaleKeys.profile_follow.trans(),
                             titleStyle: UITextStyle.white_12_w600,
                             borderRadius: 10.r,
-                            backgroundColor: (pet.updateSubjectValue.isFollowing ?? false) ? UIColor.textSecondary : UIColor.primary,
+                            backgroundColor:
+                                (pet.updateSubjectValue.isFollowing ?? false)
+                                    ? UIColor.textSecondary
+                                    : UIColor.primary,
                           ),
                         ),
                       ],
@@ -90,8 +94,10 @@ class PetsWidget extends StatelessWidget {
             ),
           );
         },
-        newPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
-        firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
+        newPageProgressIndicatorBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
+        firstPageProgressIndicatorBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
       ),
       pagingController: pagingController,
     );
