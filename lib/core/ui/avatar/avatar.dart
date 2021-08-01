@@ -4,6 +4,8 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/assets.gen.dart';
+import 'package:meowoof/theme/ui_color.dart';
+import 'package:shimmer/shimmer.dart';
 
 enum MWAvatarSize { extraSmall, small, medium, large, extraLarge }
 
@@ -81,6 +83,31 @@ class MWAvatar extends StatelessWidget {
         width: avatarSize.w,
         fit: BoxFit.cover,
         retries: 0,
+        loadStateChanged: (e) {
+          switch (e.extendedImageLoadState) {
+            case LoadState.loading:
+              return Shimmer.fromColors(
+                baseColor: UIColor.white,
+                highlightColor: UIColor.silverSand,
+                child: Container(
+                  width: avatarSize.w,
+                  height: avatarSize.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10.r),
+                      topLeft: Radius.circular(10.r),
+                    ),
+                    color: UIColor.white,
+                  ),
+                  margin: EdgeInsets.only(right: 10.w),
+                ),
+              );
+            case LoadState.completed:
+              return null;
+            case LoadState.failed:
+              return _getAvatarPlaceholder(avatarSize);
+          }
+        },
       );
 
       if (isZoomable) {
