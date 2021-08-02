@@ -34,8 +34,7 @@ class SendCommentWidget extends StatefulWidget {
   _SendCommentWidgetState createState() => _SendCommentWidgetState();
 }
 
-class _SendCommentWidgetState
-    extends BaseViewState<SendCommentWidget, SendCommentWidgetModel> {
+class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendCommentWidgetModel> {
   @override
   void loadArguments() {
     viewModel.post = widget.post;
@@ -43,8 +42,7 @@ class _SendCommentWidgetState
     viewModel.onSendComment = widget.onSendComment;
     viewModel.showSuggestionDialog = showSuggestionDialog;
     viewModel.customSpan = customSpan;
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((timeStamp) => viewModel.loadUserFromLocal());
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) => viewModel.loadUserFromLocal());
     super.loadArguments();
   }
 
@@ -82,15 +80,9 @@ class _SendCommentWidgetState
               key: viewModel.tfKey,
               decoration: InputDecoration(
                 hintText: LocaleKeys.new_feed_write_a_comment.trans(),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide.none),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide.none),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide.none),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
+                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
                 fillColor: UIColor.holder,
                 focusColor: UIColor.black,
                 filled: true,
@@ -183,20 +175,15 @@ class _SendCommentWidgetState
                             Text('Filter: ${viewModel.filterState?.text}'),
                             Flexible(
                               child: ConstrainedBox(
-                                constraints:
-                                    const BoxConstraints(minHeight: 200),
+                                constraints: const BoxConstraints(minHeight: 200),
                                 child: Obx(
                                   () => ListView.builder(
                                     itemBuilder: (context, index) {
                                       final item = viewModel.dataFilter[index];
                                       return GestureDetector(
                                         onTap: () {
-                                          if (!viewModel
-                                              .isTagedUser(item.item!)) {
-                                            viewModel.controller
-                                                ?.approveSelection(
-                                                    viewModel.filterState!,
-                                                    item);
+                                          if (!viewModel.isTagedUser(item.item!)) {
+                                            viewModel.controller?.approveSelection(viewModel.filterState!, item);
                                             viewModel.addTagUser(item.item!);
                                           }
                                           viewModel.removeOverlay();
@@ -226,6 +213,5 @@ class _SendCommentWidgetState
   }
 
   @override
-  SendCommentWidgetModel createViewModel() =>
-      injector<SendCommentWidgetModel>();
+  SendCommentWidgetModel createViewModel() => injector<SendCommentWidgetModel>();
 }

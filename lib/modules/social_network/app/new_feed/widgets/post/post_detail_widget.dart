@@ -28,8 +28,7 @@ class PostDetail extends StatefulWidget {
   _PostDetailState createState() => _PostDetailState();
 }
 
-class _PostDetailState
-    extends BaseViewState<PostDetail, PostDetailWidgetModel> {
+class _PostDetailState extends BaseViewState<PostDetail, PostDetailWidgetModel> {
   @override
   void loadArguments() {
     viewModel.post = widget.post;
@@ -63,8 +62,7 @@ class _PostDetailState
               child: RefreshIndicator(
                 onRefresh: () => viewModel.onRefresh(),
                 child: PagedListView<int, Comment>(
-                  pagingController:
-                      viewModel.commentServiceModel.pagingController,
+                  pagingController: viewModel.commentServiceModel.pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Comment>(
                     itemBuilder: (context, item, index) {
                       if (index == 0) {
@@ -75,17 +73,13 @@ class _PostDetailState
                       }
                       return CommentWidget(
                         comment: item,
-                        onLikeCommentClick: (_) =>
-                            viewModel.commentServiceModel.onLikeComment(
+                        onLikeCommentClick: (_) => viewModel.commentServiceModel.onLikeComment(
                           item,
                           viewModel.post.id,
                         ),
-                        onReport: () => viewModel.commentServiceModel
-                            .onReportComment(item, "content"),
-                        onDelete: () => viewModel.commentServiceModel
-                            .onDeleteComment(item, index),
-                        onEdit: () => viewModel.commentServiceModel
-                            .setOldComment(item, index),
+                        onReport: () => viewModel.commentServiceModel.onReportComment(item, "content"),
+                        onDelete: () => viewModel.commentServiceModel.onDeleteComment(item, index),
+                        onEdit: () => viewModel.commentServiceModel.setOldComment(item, index),
                       );
                     },
                     firstPageProgressIndicatorBuilder: (_) => Column(
@@ -94,8 +88,7 @@ class _PostDetailState
                         ShimmerCommentWidget(),
                       ],
                     ),
-                    newPageProgressIndicatorBuilder: (_) =>
-                        ShimmerCommentWidget(),
+                    newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
                   ),
                   padding: EdgeInsets.only(
                     top: 10.h,
