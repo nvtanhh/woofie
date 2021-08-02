@@ -72,7 +72,7 @@ class PetsWidget extends StatelessWidget {
           height: 5.h,
         ),
         SizedBox(
-          height: 185.h,
+          height: 190.h,
           child: user.currentPets?.isEmpty ?? true
               ? isMyPets
                   ? Row(

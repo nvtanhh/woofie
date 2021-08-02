@@ -51,6 +51,7 @@ class UserDatasource {
           gender
           bio
           avatar_url
+          is_following
         }
       }
     }
