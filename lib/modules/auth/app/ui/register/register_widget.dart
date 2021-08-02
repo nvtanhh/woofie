@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/app_logo.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
@@ -16,7 +17,8 @@ class RegisterWidget extends StatefulWidget {
   _RegisterWidgetState createState() => _RegisterWidgetState();
 }
 
-class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetModel> {
+class _RegisterWidgetState
+    extends BaseViewState<RegisterWidget, RegisterWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,13 +34,9 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                     SizedBox(
                       height: 94.h,
                     ),
-                    Container(
-                      width: 65.w,
-                      height: 65.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.r),
-                        color: UIColor.primary,
-                      ),
+                    MWLogo(
+                      size: 80.w,
+                      borderRadius: 20.r,
                     ),
                     SizedBox(
                       height: 15.h,
@@ -73,7 +71,8 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                             controller: viewModel.nameEditingController,
                             validator: (name) => viewModel.nameValidate(name),
                             decoration: InputDecoration(
-                                hintText: LocaleKeys.register_name_account.trans(),
+                                hintText:
+                                    LocaleKeys.register_name_account.trans(),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
                                   borderSide: const BorderSide(
@@ -115,7 +114,8 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                           ),
                           TextFormField(
                             controller: viewModel.emailEditingController,
-                            validator: (email) => viewModel.emailValidate(email),
+                            validator: (email) =>
+                                viewModel.emailValidate(email),
                             decoration: InputDecoration(
                                 hintText: LocaleKeys.login_email.trans(),
                                 border: OutlineInputBorder(
@@ -160,7 +160,8 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                           Obx(
                             () => TextFormField(
                               controller: viewModel.passwordEditingController,
-                              validator: (password) => viewModel.passwordValidate(password),
+                              validator: (password) =>
+                                  viewModel.passwordValidate(password),
                               decoration: InputDecoration(
                                   hintText: LocaleKeys.login_password.trans(),
                                   border: OutlineInputBorder(
@@ -202,7 +203,9 @@ class _RegisterWidgetState extends BaseViewState<RegisterWidget, RegisterWidgetM
                                     onTap: viewModel.onEyeClick,
                                     child: Obx(
                                       () => Icon(
-                                        !viewModel.showPassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                                        !viewModel.showPassword
+                                            ? Icons.visibility_off_rounded
+                                            : Icons.visibility_rounded,
                                       ),
                                     ),
                                   )),

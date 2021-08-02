@@ -103,7 +103,9 @@ class MWAvatar extends StatelessWidget {
                     ),
                     color: UIColor.white,
                   ),
-                  margin: EdgeInsets.only(right: 10.w),
+                  margin: EdgeInsets.only(
+                    right: 10.w,
+                  ),
                 ),
               );
             case LoadState.completed:
@@ -141,7 +143,8 @@ class MWAvatar extends StatelessWidget {
     return SizedBox(
       height: avatarSize.h,
       width: avatarSize.w,
-      child: placeHolderImage ?? Assets.resources.images.fallbacks.avatarFallback.image(),
+      child: placeHolderImage ??
+          Assets.resources.images.fallbacks.avatarFallback.image(),
     );
   }
 }
