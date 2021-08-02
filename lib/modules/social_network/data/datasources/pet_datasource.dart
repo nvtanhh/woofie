@@ -1,7 +1,7 @@
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
-import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
@@ -14,11 +14,11 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 @lazySingleton
 class PetDatasource {
   final HasuraConnect _hasuraConnect;
-  final UserStorage _userStorage;
+  final LoggedInUser _loggedInUser;
 
   PetDatasource(
     this._hasuraConnect,
-    this._userStorage,
+    this._loggedInUser,
   );
 
   Future<List<PetType>> getPetTypes() async {
@@ -52,10 +52,7 @@ class PetDatasource {
   }
 
   Future<Pet> addPet(Pet pet) async {
-    final userUUID = _userStorage.get()?.uuid;
-    if (userUUID == null) {
-      throw "Error";
-    }
+    final userUUID = _loggedInUser.user!.uuid;
     final mutationInsertPet = """
     mutation MyMutation {
     insert_pets_one(object: {bio: "${pet.bio ?? ""}",uuid:"${pet.uuid}" ,dob: "${(pet.dob ?? "").toString()}", gender: "${pet.gender?.index ?? 0}", name: "${pet.name ?? ""}", pet_breed_id: ${pet.petBreedId ?? 0}, pet_type_id: ${pet.petTypeId ?? 0}, pet_owners: {data: {owner_uuid: "$userUUID"}}, avatar: {data: {url: "${pet.avatarUrl ?? ""}"}},current_owner_uuid:"$userUUID",avatar_url:"${pet.avatarUrl ?? ""}"}) {

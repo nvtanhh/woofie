@@ -3,11 +3,11 @@ import 'package:meowoof/modules/chat/data/repositories/chat_repository.dart';
 import 'package:meowoof/modules/chat/domain/models/request_contact.dart';
 
 @lazySingleton
-class AcceptRequestMessagesUsecase{
+class DenyRequestMessagesUsecase {
   final ChatRepository _chatRepository;
 
-  AcceptRequestMessagesUsecase(this._chatRepository);
-  Future<RequestContact> run(RequestContact requestContact){
-    return _chatRepository.acceptRequestMessages(requestContact);
+  DenyRequestMessagesUsecase(this._chatRepository);
+  Future<RequestContact> run(RequestContact requestContact) {
+    return _chatRepository.denyRequestMessages(requestContact);
   }
 }

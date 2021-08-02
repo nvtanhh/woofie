@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 part 'request_contact.g.dart';
 
@@ -10,10 +11,14 @@ class RequestContact {
   int id;
   @JsonKey(name: "from_user_uuid")
   String? fromUserUUID;
+  @JsonKey(name: "from_user")
+  User? fromUser;
   @JsonKey(name: "to_user_uuid")
   String? toUserUUID;
-  @JsonKey(name: "accept")
-  bool? accept;
+  @JsonKey(name: "to_user")
+  User? toUser;
+  @JsonKey(name: "status")
+  RequestContactStatus? status;
   @JsonKey(name: "created_at")
   DateTime? createdAt;
   @JsonKey(name: "updated_at")
@@ -22,8 +27,10 @@ class RequestContact {
   RequestContact({
     required this.id,
     this.fromUserUUID,
+    this.fromUser,
     this.toUserUUID,
-    this.accept,
+    this.toUser,
+    this.status,
     this.createdAt,
     this.updatedAt,
   });
@@ -35,4 +42,13 @@ class RequestContact {
   Map<String, dynamic> toJson() => _$RequestContactToJson(this);
 
   String toJsonString() => json.encode(toJson());
+}
+
+enum RequestContactStatus {
+  @JsonValue(0)
+  waiting,
+  @JsonValue(1)
+  accept,
+  @JsonValue(2)
+  deny
 }

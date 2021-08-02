@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/injector.dart';
-import 'package:meowoof/modules/chat/app/widgets/message/typing_widget.dart';
-import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/app/pages/chat_room_model.dart';
 import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/chat_room_nav.dart';
 import 'package:meowoof/modules/chat/app/widgets/message/message_item.dart';
+import 'package:meowoof/modules/chat/app/widgets/message/typing_widget.dart';
 import 'package:meowoof/modules/chat/app/widgets/message_sender.dart';
+import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatRoomPage extends StatefulWidget {
   final ChatRoom? room;

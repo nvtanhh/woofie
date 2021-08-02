@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/group_chat_identifier.dart';
 import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/private_chat_identifier.dart';
+import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 
 class ChatIndentifierWidget extends StatelessWidget {
   final ChatRoom chatRoom;

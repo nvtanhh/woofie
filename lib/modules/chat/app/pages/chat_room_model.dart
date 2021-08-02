@@ -20,9 +20,9 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:path/path.dart';
-import 'package:suga_core/suga_core.dart';
 // ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:suga_core/suga_core.dart';
 import 'package:uuid/uuid.dart';
 
 @injectable

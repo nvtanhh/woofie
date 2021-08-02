@@ -7,7 +7,6 @@ import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/main.dart';
 import 'package:meowoof/modules/social_network/app/profile/edit_user_profile/edit_user_profile.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/pets_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/user_menu_action_widget.dart';

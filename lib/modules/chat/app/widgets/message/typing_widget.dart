@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/modules/chat/app/widgets/active_status_avatar.dart';
 import 'package:meowoof/modules/chat/app/widgets/message/jumping_dots.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 class TypingWidget extends StatelessWidget {

@@ -4,7 +4,6 @@ import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/comm
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_comment_in_post_usecase.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/new_feed/play_sound_receiver_comment.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable

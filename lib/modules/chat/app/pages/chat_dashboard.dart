@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
-import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/app/pages/chat_dashboard_model.dart';
 import 'package:meowoof/modules/chat/app/widgets/chat_room_item.dart';
+import 'package:meowoof/modules/chat/app/widgets/icon_with_bage_widget.dart';
+import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatDashboard extends StatefulWidget {
   const ChatDashboard({Key? key}) : super(key: key);
@@ -45,12 +46,14 @@ class _ChatDashboardState extends BaseViewState<ChatDashboard, ChatManagerModel>
         maxLines: 1,
         style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w600),
       ),
-      // actions: <Widget>[
-      //   IconButton(
-      //     icon: MWIcon(MWIcons.createChat),
-      //     onPressed: viewModel.onWantsToCreateNewChat,
-      //   )
-      // ],
+      actions: <Widget>[
+        Obx(
+          () => IconWithBagedWidget(
+            goToRequestMessagePage: viewModel.goToRequestMessagePage,
+            count: viewModel.countUserRequestMessage,
+          ),
+        )
+      ],
     );
   }
 

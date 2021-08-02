@@ -45,7 +45,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                       onCommentClick: viewModel.postService.onCommentClick,
                       onLikeClick: viewModel.postService.onLikeClick,
                       onPostClick: viewModel.postService.onPostClick,
-                      onDeletePost: () => viewModel.postService.onPostDeleted(index),
+                      onDeletePost: () => viewModel.postService.onDeletePost(item, index),
                       onEditPost: () => viewModel.postService.onWantsToEditPost(item),
                       onReportPost: () => viewModel.postService.onReportPost(item),
                     ),
@@ -87,14 +87,14 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
             SizedBox(
               width: 16.w,
             ),
-            GestureDetector(
+            InkWell(
               onTap: viewModel.onWantsToGoToChat,
               child: MWIcon(
                 MWIcons.message,
-                customSize: 28,
+                customSize: 25.w,
                 color: UIColor.textHeader,
               ),
-            )
+            ),
           ],
         ),
       ),

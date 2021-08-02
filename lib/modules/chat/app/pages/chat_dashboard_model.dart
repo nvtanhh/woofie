@@ -1,31 +1,38 @@
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
+import 'package:meowoof/modules/chat/app/request_message/request_message.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
-import 'package:meowoof/modules/chat/domain/models/message.dart';
+import 'package:meowoof/modules/chat/domain/usecases/request_message/count_user_request_message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_chat_rooms_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:get/get.dart';
 
 @injectable
 class ChatManagerModel extends BaseViewModel {
   final GetChatRoomsUseCase _getChatRoomsUseCase;
   final GetUserWithUuidUsecase _getUserWithUuidUsecase;
-
+  final CountUserRequestMessagesUsecase _countUserRequestMessagesUsecase;
   late PagingController<int, ChatRoom> pagingController;
   late DateTime _lastRefeshTime;
   static const int _pageSize = 10;
+  final RxInt _countUserRequestMessage = RxInt(0);
 
-  ChatManagerModel(this._getChatRoomsUseCase, this._getUserWithUuidUsecase);
+  ChatManagerModel(
+    this._getChatRoomsUseCase,
+    this._getUserWithUuidUsecase,
+    this._countUserRequestMessagesUsecase,
+  );
 
   @override
   void initState() {
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) => _loadMoreChatRoom(pageKey));
     _lastRefeshTime = DateTime.now();
+    _getCountUserRequestMessage();
     super.initState();
   }
 
@@ -76,7 +83,9 @@ class ChatManagerModel extends BaseViewModel {
     room.members = await Future.wait(room.memberUuids.map((userUuid) async => _getUserWithUuid(userUuid)).toList());
   }
 
-  void onWantsToCreateNewChat() {}
+  void goToRequestMessagePage() {
+    Get.to(() => RequestMessagePage());
+  }
 
   Future<void> onRefresh() async {
     pagingController.refresh();
@@ -84,5 +93,18 @@ class ChatManagerModel extends BaseViewModel {
 
   void onChatRoomPressed(ChatRoom room) {
     injector<NavigationService>().navigateToChatRoom(room: room);
+  }
+
+  void _getCountUserRequestMessage() {
+    call(
+      () async => countUserRequestMessage = await _countUserRequestMessagesUsecase.run(),
+      showLoading: false,
+    );
+  }
+
+  int get countUserRequestMessage => _countUserRequestMessage.value;
+
+  set countUserRequestMessage(int value) {
+    _countUserRequestMessage.value = value;
   }
 }
