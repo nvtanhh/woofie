@@ -4,12 +4,18 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
+import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 
 class PostTypeChoseWidget extends StatelessWidget {
   final Function(PostType) onPostTypeChosen;
   final PostType chosenPostType;
 
-  const PostTypeChoseWidget({Key? key, required this.onPostTypeChosen, this.chosenPostType = PostType.activity}) : super(key: key);
+  const PostTypeChoseWidget(
+      {Key? key,
+      required this.onPostTypeChosen,
+      this.chosenPostType = PostType.activity})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,9 @@ class PostTypeChoseWidget extends StatelessWidget {
             onChanged: (value) {
               onPostTypeChosen(value!);
             },
-            items: PostType.values.map((type) => _buildDropdownItem(type)).toList(),
+            items: PostType.values
+                .map((type) => _buildDropdownItem(type))
+                .toList(),
           ),
         ),
       ],
@@ -55,7 +63,8 @@ class PostTypeChoseWidget extends StatelessWidget {
       value: type,
       child: Text(
         getPostTypeTile(type),
-        style: UITextStyle.body_12_medium.apply(color: getTextColorByType(type)),
+        style:
+            UITextStyle.body_12_medium.apply(color: getTextColorByType(type)),
       ),
     );
   }
@@ -63,15 +72,15 @@ class PostTypeChoseWidget extends StatelessWidget {
   static String getPostTypeTile(PostType? type) {
     switch (type) {
       case PostType.activity:
-        return 'Activity';
+        return LocaleKeys.save_post_choose_type_activity_type.trans();
       case PostType.adop:
-        return 'Adoption';
+        return LocaleKeys.save_post_choose_type_adoption_type.trans();
       case PostType.mating:
-        return 'Matting';
+        return LocaleKeys.save_post_choose_type_mating_type.trans();
       case PostType.lose:
-        return 'Lose';
+        return LocaleKeys.save_post_choose_type_loss_type.trans();
       default:
-        return 'Activity';
+        return LocaleKeys.save_post_choose_type_activity_type.trans();
     }
   }
 

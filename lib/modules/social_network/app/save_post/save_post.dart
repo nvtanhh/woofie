@@ -67,7 +67,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                       enabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      hintText: "What's on your mind...",
+                      hintText:
+                          LocaleKeys.save_post_content_placeholder.trans(),
                       hintStyle: const TextStyle(color: Colors.grey),
                     ),
                     style: UITextStyle.body_14_reg,
@@ -80,7 +81,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(
+              bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
           child: _mediaWrapper(),
         ),
       ],
@@ -107,7 +109,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                               key: ObjectKey(file),
                               mediaFile: file,
                               onRemove: () => viewModel.onRemoveMedia(file),
-                              onImageEdited: (editedFile) => viewModel.onImageEdited(file, editedFile),
+                              onImageEdited: (editedFile) =>
+                                  viewModel.onImageEdited(file, editedFile),
                             ),
                           )
                           .toList(),
@@ -122,7 +125,8 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                             (media) => MediaButton(
                               key: ObjectKey(media),
                               postMedia: media,
-                              onRemove: () => viewModel.onRemovePostMedia(media),
+                              onRemove: () =>
+                                  viewModel.onRemovePostMedia(media),
                             ),
                           )
                           .toList(),
@@ -144,7 +148,9 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         ),
       ),
       title: Text(
-        widget.post == null ? "Create Post" : 'Edit Post',
+        widget.post == null
+            ? LocaleKeys.save_post_create_post.trans()
+            : LocaleKeys.save_post_edit_post.trans(),
         style: UITextStyle.heading_18_semiBold,
       ),
       centerTitle: true,
@@ -159,9 +165,13 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 onPressed: viewModel.onWantsToContinue,
                 isDisabled: viewModel.isDisable,
                 borderRadius: BorderRadius.circular(5.r),
-                textStyle: UITextStyle.heading_16_medium.apply(color: viewModel.isDisable ? UIColor.textBody : UIColor.white),
+                textStyle: UITextStyle.heading_16_medium.apply(
+                    color:
+                        viewModel.isDisable ? UIColor.textBody : UIColor.white),
                 child: Text(
-                  widget.post == null ? 'Post' : 'Update',
+                  widget.post == null
+                      ? LocaleKeys.save_post_post_action.trans()
+                      : LocaleKeys.save_post_update_action.trans(),
                 ),
               ),
             ),
@@ -208,7 +218,10 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                             children: [
                               MWIcon(MWIcons.petTag, customSize: 20),
                               SizedBox(width: 5.w),
-                              Text('Tag your pet', style: UITextStyle.second_14_medium),
+                              Text(
+                                  LocaleKeys.save_post_tag_your_pet_text
+                                      .trans(),
+                                  style: UITextStyle.second_14_medium),
                             ],
                           ),
                         ),
@@ -247,12 +260,15 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
     if (viewModel.taggedPets.isEmpty) return [];
     final List<InlineSpan> inLineSpan = [];
     inLineSpan.add(
-      TextSpan(text: " ${LocaleKeys.new_feed_with.trans()} ", style: UITextStyle.heading_16_reg),
+      TextSpan(
+          text: " ${LocaleKeys.new_feed_with.trans()} ",
+          style: UITextStyle.heading_16_reg),
     );
     for (var i = 0; i < viewModel.taggedPets.length; i++) {
       inLineSpan.add(
         TextSpan(
-          text: "${viewModel.taggedPets[i].name}${i != viewModel.taggedPets.length - 1 ? ", " : " "}",
+          text:
+              "${viewModel.taggedPets[i].name}${i != viewModel.taggedPets.length - 1 ? ", " : " "}",
           style: UITextStyle.heading_16_semiBold,
           recognizer: TapGestureRecognizer()..onTap = viewModel.onTagPet,
         ),
@@ -287,7 +303,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
       const SizedBox(width: 5),
       Expanded(
         child: Text(
-          'Loading your address...',
+          LocaleKeys.save_post_location_loading.trans(),
           style: UITextStyle.body_10_medium,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,

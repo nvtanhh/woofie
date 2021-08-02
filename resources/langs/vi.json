@@ -145,5 +145,36 @@
   "system": {
     "comming_soon": "Tính năng này sẽ sớm ra mắt",
     "press_to_exit": "Nhấn lần nữa để thoát"
+  },
+  "save_post": {
+    "create_post": "Tạo bài viết",
+    "edit_post": "Chỉnh sửa bài viết",
+    "post_action": "Đăng bài",
+    "update_action": "Cập nhật",
+    "tag_your_pet_text": "Gắn thẻ thú cưng",
+    "tag_your_pet_error_title": "Xin lỗi!...🐶",
+    "tag_your_pet_error_description": "Hiện tại bạn chưa có thú cưng nào, hãy sở hữu 1 bé trước nhé!",
+    "tag_your_pet_bottom_sheet_title": "Gắn thẻ thú cưng:",
+    "choose_type_activity_type": "Hoạt động",
+    "choose_type_adoption_type": "Tìm chủ mới",
+    "choose_type_mating_type": "Tìm bạn tình",
+    "choose_type_loss_type": "Thật lạc",
+    "choose_type_error_title": "Oops!... 🤭",
+    "choose_type_error_suf_description": "Hiện tại bạn chưa có thú cưng nào, hãy sở hữu 1 bé trước nhé!",
+    "choose_type_error_description": "Bạn phải gắn thẻ thú cưng",
+    "location_loading": "Đang tải địa chỉ...",
+    "content_placeholder": "Bạn đang nghĩ gì...",
+    "status_creating_post": "Đang tạo bài viết...",
+    "status_compressing_media": "Đang đóng gói media...",
+    "status_uploading_media": "Đang đăng media...",
+    "status_publishing_post": "Đang công khai bài viết...",
+    "status_processing_post": "Đan xử lý bài viết...",
+    "status_upload_failed": "Không thành công",
+    "status_cancelling": "Đang hủy",
+    "status_retrying": "Đang thử lại",
+    "success_tile": "Chúc mừng 🎉",
+    "success_description": "Tạo bài viết thành công",
+    "update_failed_toast": "Chỉnh sửa bài viết thất bại vui long thử lại sau",
+    "update_success_toast": "Đẵ chỉnh sửa bài viết"
   }
 }

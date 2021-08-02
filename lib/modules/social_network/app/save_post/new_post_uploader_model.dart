@@ -21,6 +21,8 @@ import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 import 'package:suga_core/suga_core.dart';
+import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 
 @injectable
 class NewPostUploaderModel extends BaseViewModel {
@@ -85,37 +87,38 @@ class NewPostUploaderModel extends BaseViewModel {
     try {
       if (data.createdDraftPost == null) {
         _setStatus(PostUploaderStatus.creatingPost);
-        _setStatusMessage('Creating post...');
+        _setStatusMessage(LocaleKeys.save_post_status_creating_post.trans());
         data.createdDraftPost = await _createDraftPost();
       }
 
       if (data.remainingMediaToCompress.isNotEmpty) {
-        _setStatusMessage('Compressing media...');
+        _setStatusMessage(
+            LocaleKeys.save_post_status_compressing_media.trans());
         _setStatus(PostUploaderStatus.compressingPostMedia);
         await _compressPostMedia();
       }
 
       if (data.compressedMedia.isNotEmpty) {
-        _setStatusMessage('Uploading media...');
+        _setStatusMessage(LocaleKeys.save_post_status_uploading_media.trans());
         _setStatus(PostUploaderStatus.addingPostMedia);
         await _addPostMedia();
       }
 
       late Post? publishedPost;
       if (!data.postPublishRequested) {
-        _setStatusMessage('Publishing post...');
+        _setStatusMessage(LocaleKeys.save_post_status_publishing_post.trans());
         _setStatus(PostUploaderStatus.publishing);
         publishedPost = await _publishPost();
         data.postPublishRequested = true;
       }
 
-      _setStatusMessage('Processing post...');
+      _setStatusMessage(LocaleKeys.save_post_status_processing_post.trans());
       _setStatus(PostUploaderStatus.processing);
 
       if (publishedPost != null) _onPostPublished(publishedPost);
     } catch (error) {
       _setStatus(PostUploaderStatus.failed);
-      _setStatusMessage('Upload failded.');
+      _setStatusMessage(LocaleKeys.save_post_status_upload_failed.trans());
     }
   }
 
@@ -128,15 +131,18 @@ class NewPostUploaderModel extends BaseViewModel {
   }
 
   Future _compressPostMedia() async {
-    return Future.wait(data.remainingMediaToCompress.map(_compressPostMediaItem));
+    return Future.wait(
+        data.remainingMediaToCompress.map(_compressPostMediaItem));
   }
 
   Future _compressPostMediaItem(MediaFile postMediaItem) async {
     if (postMediaItem.isImage) {
-      postMediaItem.file = await _mediaService.compressImage(postMediaItem.file);
+      postMediaItem.file =
+          await _mediaService.compressImage(postMediaItem.file);
       data.compressedMedia.add(postMediaItem);
     } else if (postMediaItem.isVideo) {
-      postMediaItem.file = await _mediaService.compressVideo(postMediaItem.file);
+      postMediaItem.file =
+          await _mediaService.compressVideo(postMediaItem.file);
       data.compressedMedia.add(postMediaItem);
     } else {
       printError(info: 'Unsupported media type for compression');
@@ -155,22 +161,26 @@ class NewPostUploaderModel extends BaseViewModel {
     final String postUuid = data.createdDraftPost!.uuid;
     // get presigned URL
     printInfo(info: 'Getting presigned URL');
-    final String? preSignedUrl = await _getPresignedUrlUsecase.call(fileName, postUuid);
+    final String? preSignedUrl =
+        await _getPresignedUrlUsecase.call(fileName, postUuid);
     // upload media to s3
     String? uploadedMediaUrl;
     if (preSignedUrl != null) {
       printInfo(info: 'Uploading media to s3');
-      uploadedMediaUrl = await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
+      uploadedMediaUrl =
+          await _uploadMediaUsecase.call(preSignedUrl, mediaFile.file);
     }
     if (uploadedMediaUrl != null) {
-      final UploadedMedia mediaFileUploader = UploadedMedia(uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
+      final UploadedMedia mediaFileUploader = UploadedMedia(
+          uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
       data.uploadedMediasToAddToPost.add(mediaFileUploader);
       data.compressedMedia.remove(mediaFile);
     }
   }
 
   Future _addMediaToPost() async {
-    return _addPostMediaUsecase.call(data.uploadedMediasToAddToPost, data.createdDraftPost!.id);
+    return _addPostMediaUsecase.call(
+        data.uploadedMediasToAddToPost, data.createdDraftPost!.id);
   }
 
   Future<Post?> _publishPost() async {
@@ -216,7 +226,7 @@ class NewPostUploaderModel extends BaseViewModel {
   Future onWantsToCancel() async {
     if (status.value == PostUploaderStatus.cancelling) return;
     _setStatus(PostUploaderStatus.cancelling);
-    _setStatusMessage('Cancelling');
+    _setStatusMessage(LocaleKeys.save_post_status_cancelling.trans());
 
     await _deletePostDraftPost();
 
@@ -240,7 +250,8 @@ class NewPostUploaderModel extends BaseViewModel {
           return true;
         },
         onFailure: (error) {
-          printError(info: 'Failed to delete post wit error: ${error.toString()}');
+          printError(
+              info: 'Failed to delete post wit error: ${error.toString()}');
           return false;
         },
       );
@@ -249,9 +260,10 @@ class NewPostUploaderModel extends BaseViewModel {
   }
 
   void onWantsToRetry() {
-    if (status.value == PostUploaderStatus.creatingPost || status.value == PostUploaderStatus.addingPostMedia) return;
+    if (status.value == PostUploaderStatus.creatingPost ||
+        status.value == PostUploaderStatus.addingPostMedia) return;
 
-    printInfo(info: 'Retrying');
+    printInfo(info: LocaleKeys.save_post_status_retrying.trans());
     _startUpload();
   }
 

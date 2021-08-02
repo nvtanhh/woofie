@@ -28,6 +28,8 @@ import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:path/path.dart';
 import 'package:suga_core/suga_core.dart';
+import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 
 @injectable
 class PostService extends BaseViewModel {
@@ -213,8 +215,8 @@ class PostService extends BaseViewModel {
 
   void _showSnackbarCreatePostSuccessful() {
     Get.snackbar(
-      "Congrats 🎉",
-      "Create new post successful",
+      LocaleKeys.save_post_success_tile.trans(),
+      LocaleKeys.save_post_success_description.trans(),
       duration: const Duration(seconds: 2),
       backgroundColor: UIColor.accent2,
       colorText: UIColor.white,
@@ -261,7 +263,7 @@ class PostService extends BaseViewModel {
 
   void _onPostEditFailed() {
     injector<ToastService>().error(
-        message: 'Post update failed! Please try again latter.',
+        message: LocaleKeys.save_post_update_failed_toast.trans(),
         duration: const Duration(seconds: 2),
         context: Get.context!);
   }
@@ -271,7 +273,7 @@ class PostService extends BaseViewModel {
       () => _refreshPostsUsecase.call(postId),
       onSuccess: () {
         injector<ToastService>()
-            .success(message: 'Post updated!', context: Get.context!);
+            .success(message: LocaleKeys.save_post_update_success_toast.trans(), context: Get.context!);
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         pagingController.notifyListeners();
       },
@@ -284,7 +286,7 @@ class PostService extends BaseViewModel {
   }
 
   Future onReportPost(Post post) async {
-    String? content =
+    final String? content =
         await injector<DialogService>().showInputReport() as String?;
     if (content == null) return;
     await call(

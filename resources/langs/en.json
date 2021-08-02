@@ -145,5 +145,36 @@
   "system": {
     "comming_soon": "This feature will be coming soon",
     "press_to_exit": "Press again to exit"
+  },
+  "save_post": {
+    "create_post": "Create Post",
+    "edit_post": "Edit Post",
+    "post_action": "Post",
+    "update_action": "Update",
+    "tag_your_pet_text": "Tag your pet",
+    "tag_your_pet_error_title": "Sorry!...🐶",
+    "tag_your_pet_error_description": "You currently don't have any pet. Please own a pet first!",
+    "tag_your_pet_bottom_sheet_title": "Tag pets:",
+    "choose_type_activity_type": "Activity",
+    "choose_type_adoption_type": "Adoption",
+    "choose_type_mating_type": "Mating",
+    "choose_type_loss_type": "Loss",
+    "choose_type_error_title": "Oops!... 🤭",
+    "choose_type_error_suf_description": "You currently don't have any pet. Please own a pet first!",
+    "choose_type_error_description": "You need to tag your pet first!",
+    "location_loading": "Loading your location...",
+    "content_placeholder": "What's on your mind...",
+    "status_creating_post": "Creating post...",
+    "status_compressing_media": "Compressing media...",
+    "status_uploading_media": "Uploading media...",
+    "status_publishing_post": "Publishing post...",
+    "status_processing_post": "Processing post...",
+    "status_upload_failed": "Upload failed.",
+    "status_cancelling": "Cancelling",
+    "status_retrying": "Retrying",
+    "success_tile": "Congrats 🎉",
+    "success_description": "Create new post successful",
+    "update_failed_toast": "Post update failed! Please try again latter",
+    "update_success_toast": "Post updated!"
   }
 }
