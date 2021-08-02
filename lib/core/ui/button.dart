@@ -4,7 +4,6 @@ import 'package:meowoof/theme/ui_color.dart';
 
 class MWButton extends StatelessWidget {
   final Widget child;
-  final Widget? icon;
   final VoidCallback? onPressed;
   final VoidCallback? onLongPressed;
   final bool isDisabled;
@@ -28,7 +27,6 @@ class MWButton extends StatelessWidget {
       required this.onPressed,
       this.minHeight,
       this.minWidth,
-      this.icon,
       this.size = MWButtonSize.medium,
       this.shape,
       this.boxShadow,
@@ -52,13 +50,7 @@ class MWButton extends StatelessWidget {
     final finalOnPressed = isLoading || isDisabled ? () {} : onPressed;
     final finalOnLongPressed = isLoading || isDisabled ? () {} : onLongPressed;
 
-    var buttonChild = isLoading ? _getLoadingIndicator(textColor) : child;
-
-    if (icon != null && !isLoading) {
-      buttonChild = Row(
-        children: <Widget>[buttonChild],
-      );
-    }
+    final buttonChild = isLoading ? _getLoadingIndicator(textColor) : child;
 
     TextStyle defaultTextStyle = _getButtonTextStyleForSize(size: size, color: textColor);
 

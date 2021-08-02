@@ -52,7 +52,7 @@ class _RequestMessagePageState extends BaseViewState<RequestMessagePage, Request
                       ),
                     ),
                     InkWell(
-                      onTap: () => viewModel.denyRequest(requestMessage,index),
+                      onTap: () => viewModel.denyRequest(requestMessage, index),
                       child: const Icon(
                         Icons.dangerous,
                         color: UIColor.danger,

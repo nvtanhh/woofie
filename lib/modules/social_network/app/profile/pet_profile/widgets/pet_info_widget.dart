@@ -19,9 +19,8 @@ class PetInfoWidget extends StatelessWidget {
   final Function(Pet)? onPetBlock;
   final Function(Pet)? followPet;
   final Function(Pet)? onDeletePost;
-  final RxBool isFollowing = RxBool(false);
 
-  PetInfoWidget({
+  const PetInfoWidget({
     Key? key,
     required this.pet,
     required this.isMyPet,
@@ -29,9 +28,7 @@ class PetInfoWidget extends StatelessWidget {
     this.onPetBlock,
     this.followPet,
     this.onDeletePost,
-  }) : super(key: key) {
-    isFollowing.value = pet.isFollowing ?? false;
-  }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,16 +74,19 @@ class PetInfoWidget extends StatelessWidget {
                     if (isMyPet) {
                       Get.to(() => EditPetProfileWidget(pet: pet));
                     } else {
-                      isFollowing.value = !isFollowing.value;
                       followPet?.call(pet);
                     }
                   },
                   height: 40.h,
                   title: isMyPet
                       ? LocaleKeys.profile_edit_profile.trans()
-                      : (isFollowing.value ? LocaleKeys.profile_un_follow.trans() : LocaleKeys.profile_follow.trans()),
+                      : (pet.updateSubjectValue.isFollowing ?? false
+                          ? LocaleKeys.profile_un_follow.trans()
+                          : LocaleKeys.profile_follow.trans()),
                   borderRadius: 10.r,
-                  backgroundColor: isFollowing.value ? UIColor.textSecondary : UIColor.primary,
+                  backgroundColor: pet.updateSubjectValue.isFollowing ?? false
+                      ? UIColor.textSecondary
+                      : UIColor.primary,
                 ),
               ),
             ),
@@ -102,7 +102,9 @@ class PetInfoWidget extends StatelessWidget {
                 height: 40.h,
                 margin: EdgeInsets.only(left: 20.w),
                 padding: EdgeInsets.only(top: 5.h),
-                decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
+                decoration: BoxDecoration(
+                    color: UIColor.holder,
+                    borderRadius: BorderRadius.circular(10.r)),
                 child: const Center(
                   child: MWIcon(
                     MWIcons.moreHoriz,

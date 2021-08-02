@@ -23,15 +23,13 @@ import 'package:suga_core/suga_core.dart';
 class AdoptionPetDetailWidget extends StatefulWidget {
   final Post post;
 
-  const AdoptionPetDetailWidget({Key? key, required this.post})
-      : super(key: key);
+  const AdoptionPetDetailWidget({Key? key, required this.post}) : super(key: key);
 
   @override
   _AdoptionPetDetailState createState() => _AdoptionPetDetailState();
 }
 
-class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
-    AdoptionPetDetailWidgetModel> {
+class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, AdoptionPetDetailWidgetModel> {
   @override
   void loadArguments() {
     viewModel.post = widget.post;
@@ -52,12 +50,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                 children: [
                   ImagesViewWidget(
                     medias: viewModel.post.medias?.isEmpty == true
-                        ? [
-                            Media(
-                                id: 0,
-                                url: viewModel.pet?.avatarUrl ?? "",
-                                type: MediaType.image)
-                          ]
+                        ? [Media(id: 0, url: viewModel.pet?.avatarUrl ?? "", type: MediaType.image)]
                         : viewModel.post.medias!,
                     height: Get.height / 2,
                     fit: BoxFit.cover,
@@ -127,13 +120,11 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                                   children: [
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             viewModel.pet?.name ?? "",
-                                            style:
-                                                UITextStyle.text_header_24_w700,
+                                            style: UITextStyle.text_header_24_w700,
                                           ),
                                           SizedBox(
                                             height: 5.w,
@@ -150,11 +141,9 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                                               Flexible(
                                                 child: Text(
                                                   "${viewModel.post.location?.name ?? ""} (${viewModel.post.distanceUserToPost?.toPrecision(1)} Km)",
-                                                  style: UITextStyle
-                                                      .text_body_14_w500,
+                                                  style: UITextStyle.text_body_14_w500,
                                                   maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
                                             ],
@@ -172,23 +161,19 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                                   height: 20.h,
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     CardDetailWidget(
                                       title: LocaleKeys.explore_gender.trans(),
-                                      value: FormatHelper.genderPet(
-                                          viewModel.pet?.gender),
+                                      value: FormatHelper.genderPet(viewModel.pet?.gender),
                                     ),
                                     CardDetailWidget(
                                       title: LocaleKeys.explore_age.trans(),
-                                      value: DateTimeHelper.calcAge(
-                                          viewModel.pet?.dob),
+                                      value: DateTimeHelper.calcAge(viewModel.pet?.dob),
                                     ),
                                     CardDetailWidget(
                                       title: LocaleKeys.explore_breed.trans(),
-                                      value:
-                                          viewModel.pet?.petBreed?.name ?? "",
+                                      value: viewModel.pet?.petBreed?.name ?? "",
                                     ),
                                   ],
                                 ),
@@ -225,8 +210,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             ),
                             subtitle: Text(
                               LocaleKeys.explore_owner_pet.trans(),
-                              style: GoogleFonts.montserrat(
-                                  textStyle: UITextStyle.text_body_14_w500),
+                              style: GoogleFonts.montserrat(textStyle: UITextStyle.text_body_14_w500),
                             ),
                             trailing: ButtonWidget(
                               width: 96.w,
@@ -265,6 +249,5 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
   }
 
   @override
-  AdoptionPetDetailWidgetModel createViewModel() =>
-      injector<AdoptionPetDetailWidgetModel>();
+  AdoptionPetDetailWidgetModel createViewModel() => injector<AdoptionPetDetailWidgetModel>();
 }

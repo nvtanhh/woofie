@@ -37,8 +37,7 @@ class ImagesViewWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.r),
               child: PageView.builder(
                 itemBuilder: (context, index) {
-                  if (medias[index].type == MediaType.image ||
-                      medias[index].type == MediaType.gif) {
+                  if (medias[index].type == MediaType.image || medias[index].type == MediaType.gif) {
                     return ImageWithPlaceHolderWidget(
                       imageUrl: medias[index].url ?? "",
                       radius: 20.r,
@@ -71,7 +70,7 @@ class ImagesViewWidget extends StatelessWidget {
             ),
             Positioned(
               top: counterPositionTop ? 20 : null,
-              bottom: counterPositionTop ? 0 : 50,
+              bottom: counterPositionTop ? null : 50,
               right: 10,
               child: Container(
                 width: 41.w,

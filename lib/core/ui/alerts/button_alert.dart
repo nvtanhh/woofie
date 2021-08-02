@@ -50,12 +50,6 @@ class MWButtonAlert extends StatelessWidget {
                   height: 20,
                 ),
                 MWButton(
-                  icon: buttonIcon != null
-                      ? MWIcon(
-                          buttonIcon!,
-                          size: MWIconSize.small,
-                        )
-                      : null,
                   isLoading: isLoading,
                   onPressed: onPressed,
                   child: Text(buttonText),

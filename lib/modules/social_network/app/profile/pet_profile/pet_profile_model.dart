@@ -58,7 +58,11 @@ class PetProfileModel extends BaseViewModel {
   void followPet(Pet pet) {
     call(
       () => _followPetUsecase.call(pet.id),
-      onSuccess: () {},
+      onSuccess: () {
+        pet.isFollowing = !(pet.isFollowing ?? false);
+        pet.notifyUpdate();
+      },
+      showLoading: false,
       onFailure: (err) {
         printError(info: err.toString());
       },
