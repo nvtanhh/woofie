@@ -17,6 +17,8 @@ class RequestContact {
   String? toUserUUID;
   @JsonKey(name: "to_user")
   User? toUser;
+  @JsonKey(name: "content")
+  String? content;
   @JsonKey(name: "status")
   RequestContactStatus? status;
   @JsonKey(name: "created_at")

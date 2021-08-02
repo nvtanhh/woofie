@@ -7,7 +7,10 @@ import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class ReportDialogWidget extends StatelessWidget {
+  final String? title;
   TextEditingController textEditingController = TextEditingController();
+
+  ReportDialogWidget({Key? key, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class ReportDialogWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Report",
+                  title ?? "Report",
                   style: UITextStyle.text_header_18_w700,
                 ),
                 InkWell(
@@ -44,7 +47,7 @@ class ReportDialogWidget extends StatelessWidget {
             TextField(
               controller: textEditingController,
               decoration: InputDecoration(
-                labelText: "Content",
+                labelText: "Nội dung",
                 labelStyle: UITextStyle.text_body_16_w700,
                 border: const OutlineInputBorder(),
                 focusedBorder: const OutlineInputBorder(),
@@ -61,7 +64,7 @@ class ReportDialogWidget extends StatelessWidget {
                   Get.back(result: textEditingController.text);
                 },
                 child: Text(
-                  "Report",
+                  "Gửi",
                   style: UITextStyle.white_18_w500,
                 ),
               ),

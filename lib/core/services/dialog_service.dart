@@ -96,7 +96,11 @@ class DialogService {
     );
   }
 
-  Future showInputReport() async {
-    return Get.dialog(ReportDialogWidget(), barrierDismissible: true);
+  Future showInputReport({String? title}) async {
+    return Get.dialog(
+        ReportDialogWidget(
+          title: title,
+        ),
+        barrierDismissible: true);
   }
 }
