@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/button.dart';
-import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
@@ -15,18 +14,15 @@ class PreviewFollowPet extends StatelessWidget {
   final Pet pet;
   final Function(Pet)? onFollow;
   final EdgeInsets? margin;
-  final RxBool isFollowing = RxBool(false);
   final bool isMyPet;
 
-  PreviewFollowPet({
+  const PreviewFollowPet({
     Key? key,
     required this.pet,
     this.onFollow,
     this.margin,
     required this.isMyPet,
-  }) : super(key: key) {
-    isFollowing.value = pet.isFollowing ?? false;
-  }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,19 +98,18 @@ class PreviewFollowPet extends StatelessWidget {
                     Obx(
                       () => MWButton(
                         onPressed: () {
-                          isFollowing.value = !isFollowing.value;
                           onFollow?.call(pet);
                         },
                         textStyle: UITextStyle.white_10_w600,
                         borderRadius: BorderRadius.circular(5.r),
                         padding: EdgeInsets.symmetric(
                             vertical: 5.h, horizontal: 8.w),
-                        color: isFollowing.value
+                        color: pet.updateSubjectValue.isFollowing ?? false
                             ? UIColor.textSecondary
                             : UIColor.primary,
                         minWidth: 70.w,
                         child: Text(
-                          isFollowing.value
+                          pet.updateSubjectValue.isFollowing ?? false
                               ? LocaleKeys.profile_un_follow.trans()
                               : LocaleKeys.profile_follow.trans(),
                         ),
