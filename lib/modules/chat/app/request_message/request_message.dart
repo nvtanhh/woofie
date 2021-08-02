@@ -39,7 +39,7 @@ class _RequestMessagePageState extends BaseViewState<RequestMessagePage, Request
                   style: UITextStyle.text_body_16_w700,
                 ),
                 subtitle: Text(
-                  FormatHelper.formatDateTime(requestMessage.createdAt, pattern: "dd/MM/yyyy"),
+                  "${requestMessage.content??""} (${FormatHelper.formatDateTime(requestMessage.createdAt, pattern: "dd/MM/yyyy")})",
                   style: UITextStyle.text_body_16_w700,
                 ),
                 trailing: Column(
