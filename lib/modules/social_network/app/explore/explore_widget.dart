@@ -18,29 +18,37 @@ class ExploreWidget extends StatefulWidget {
   _ExploreWidgetState createState() => _ExploreWidgetState();
 }
 
-class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetModel> {
+class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetModel> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MWSearchBar(
-                  onSearch: viewModel.onSearchBar,
-                  onSubmitted: viewModel.onSubmitted,
-                  action: IconButton(
-                    padding: EdgeInsets.only(left: 10.w),
-                    constraints: const BoxConstraints(),
-                    icon: Icon(
-                      Icons.location_on_rounded,
-                      color: UIColor.primary,
-                      size: 30.w,
-                    ),
-                    onPressed: () => viewModel.onLocationClick(),
+                SizedBox(
+                  height: 80.h,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: MWSearchBar(
+                          onSearch: viewModel.onSearchBar,
+                          onSubmitted: viewModel.onSubmitted,
+                        ),
+                      ),
+                      IconButton(
+                        constraints: const BoxConstraints(),
+                        icon: Icon(
+                          Icons.location_on_rounded,
+                          color: UIColor.primary,
+                          size: 24.w,
+                        ),
+                        onPressed: () => viewModel.onLocationClick(),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(
@@ -268,4 +276,7 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
 
   @override
   ExploreWidgetModel createViewModel() => injector<ExploreWidgetModel>();
+
+  @override
+  bool get wantKeepAlive => true;
 }

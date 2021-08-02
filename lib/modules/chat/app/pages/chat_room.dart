@@ -16,7 +16,9 @@ import 'package:suga_core/suga_core.dart';
 class ChatRoomPage extends StatefulWidget {
   final ChatRoom? room;
   final User? partner;
-  const ChatRoomPage({Key? key, this.room, this.partner}) : super(key: key);
+  final Function(List<Message>)? onAddNewMessages;
+
+  const ChatRoomPage({Key? key, this.room, this.partner, this.onAddNewMessages}) : super(key: key);
 
   @override
   _ChatRoomPageState createState() => _ChatRoomPageState();
@@ -30,6 +32,7 @@ class _ChatRoomPageState extends BaseViewState<ChatRoomPage, ChatRoomPageModel> 
   void loadArguments() {
     viewModel.inputRoom = widget.room;
     viewModel.partner = widget.partner;
+    viewModel.onAddNewMessages = widget.onAddNewMessages;
     super.loadArguments();
   }
 

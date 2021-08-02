@@ -23,14 +23,14 @@ class NotificationWidget extends StatefulWidget {
   _NotificationWidgetState createState() => _NotificationWidgetState();
 }
 
-class _NotificationWidgetState extends BaseViewState<NotificationWidget, NotificationWidgetModel> {
+class _NotificationWidgetState extends BaseViewState<NotificationWidget, NotificationWidgetModel> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
       body: Container(
         height: Get.height,
-        padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
         child: Column(
           children: [
             Row(
@@ -81,7 +81,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                           time_ago.format(item.createdAt!, locale: 'vi'),
                           style: UITextStyle.second_12_medium,
                         ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+                        contentPadding: EdgeInsets.only(bottom: 10.h),
                       ),
                     );
                   }, noItemsFoundIndicatorBuilder: (_) {
@@ -160,7 +160,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
     inlineSpans.add(
       TextSpan(
         text: text,
-        style: UITextStyle.text_header_16_w400,
+        style: UITextStyle.text_body_16_w500,
       ),
     );
     if (pet != null) {
@@ -210,4 +210,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
 
   @override
   NotificationWidgetModel createViewModel() => injector<NotificationWidgetModel>();
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:async/async.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
@@ -25,7 +27,7 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   late DateTime _lastRefeshTime;
 
-  static const int _refreshIntervalLimitSecond = 3;
+  ScrollController scrollController = ScrollController();
 
   NewFeedWidgetModel(
     this._getPostsUsecase,
@@ -83,12 +85,22 @@ class NewFeedWidgetModel extends BaseViewModel {
       postService.pagingController.itemList = newItems;
       // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
       postService.pagingController.notifyListeners();
-    } else {
-      printInfo(info: 'Please wait $_refreshIntervalLimitSecond seconds');
     }
+    _scrollToTop();
+    return;
   }
 
   bool _isCanRefesh() {
-    return DateTime.now().difference(_lastRefeshTime).inSeconds > _refreshIntervalLimitSecond;
+    return DateTime.now().difference(_lastRefeshTime).inSeconds > BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
+  }
+
+  void _scrollToTop() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOut,
+      );
+    }
   }
 }

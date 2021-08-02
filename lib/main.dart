@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
                 color: UIColor.textHeader,
               ),
             ),
+            primaryColor: UIColor.primary,
             scaffoldBackgroundColor: UIColor.white,
             sliderTheme: SliderThemeData(
               valueIndicatorColor: UIColor.primary,

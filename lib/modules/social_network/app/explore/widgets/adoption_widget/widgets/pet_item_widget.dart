@@ -39,15 +39,15 @@ class PetItemWidget extends StatelessWidget {
         child: Stack(
           children: [
             ImageWithPlaceHolderWidget(
-              imageUrl: post.medias?.isEmpty == true ? (pet.avatarUrl ?? "") : post.medias!.first.url!,
-              width: 165.w,
-              height: 157.h,
-              fit: BoxFit.cover,
-              topLeftRadius: 15.r,
-              topRightRadius: 15.r,
-              bottomLeftRadius: 0,
-              bottomRightRadius: 0,
-            ),
+                imageUrl: post.medias?.isEmpty ?? true ? (pet.avatarUrl ?? "") : post.medias!.first.url!,
+                width: 165.w,
+                height: 157.h,
+                fit: BoxFit.cover,
+                topLeftRadius: 15.r,
+                topRightRadius: 15.r,
+                bottomLeftRadius: 0,
+                bottomRightRadius: 0,
+                placeHolderImage: "resources/images/fallbacks/pet-avatar-fallback.jpg"),
             Positioned(
               bottom: 0,
               child: Container(
@@ -61,7 +61,7 @@ class PetItemWidget extends StatelessWidget {
                   ),
                 ),
                 padding: EdgeInsets.symmetric(
-                  horizontal: 10.w,
+                  horizontal: 16.w,
                   vertical: 5.h,
                 ),
                 child: Stack(

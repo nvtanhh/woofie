@@ -38,67 +38,74 @@ class InfoUserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ButtonWidget(
-              onPress: () => Scaffold.of(context).openEndDrawer(),
-              backgroundColor: UIColor.white,
-              width: 40.w,
-              height: 40.h,
-              borderRadius: 10.r,
-              contentWidget: const MWIcon(MWIcons.moreHoriz),
-            ),
-          ],
-        ),
-        Obx(
-          () => MWAvatar(
-            avatarUrl: user.updateSubjectValue.avatarUrl,
-            customSize: 80.w,
-            borderRadius: 15.r,
-          ),
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-        Obx(
-          () => Text(
-            user.updateSubjectValue.name ?? "Unknown",
-            style: UITextStyle.text_header_24_w600,
-          ),
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-        Obx(
-          () => Text(
-            user.updateSubjectValue.bio ?? "Unknown",
-            style: UITextStyle.text_body_14_w500,
-          ),
-        ),
-        SizedBox(
-          height: 20.h,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: ButtonWidget(
-                onPress: () => isMe ? goToEditUserProfile() : onWantsToContact(user),
-                height: 40.h,
-                title: isMe ? LocaleKeys.profile_edit_profile.trans() : LocaleKeys.profile_contact.trans(),
-                borderRadius: 10.r,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ButtonWidget(
+                    onPress: () => Scaffold.of(context).openEndDrawer(),
+                    backgroundColor: UIColor.white,
+                    width: 40.w,
+                    height: 40.h,
+                    borderRadius: 10.r,
+                    contentWidget: const MWIcon(MWIcons.moreHoriz),
+                  ),
+                ],
               ),
-            ),
-            if (!isMe)
-              UserMenuActionWidget(
-                user: user,
-                onUserReport: onUserReport!,
-                onUserBlock: onUserBlock!,
-              )
-          ],
-        ),
-        SizedBox(
-          height: 10.h,
+              Obx(
+                () => MWAvatar(
+                  avatarUrl: user.updateSubjectValue.avatarUrl,
+                  customSize: 80.w,
+                  borderRadius: 15.r,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Obx(
+                () => Text(
+                  user.updateSubjectValue.name ?? "Unknown",
+                  style: UITextStyle.text_header_24_w600,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Obx(
+                () => Text(
+                  user.updateSubjectValue.bio ?? "Unknown",
+                  style: UITextStyle.text_body_14_w500,
+                ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ButtonWidget(
+                      onPress: () => isMe ? goToEditUserProfile() : onWantsToContact(user),
+                      height: 40.h,
+                      title: isMe ? LocaleKeys.profile_edit_profile.trans() : LocaleKeys.profile_contact.trans(),
+                      borderRadius: 10.r,
+                    ),
+                  ),
+                  if (!isMe)
+                    UserMenuActionWidget(
+                      user: user,
+                      onUserReport: onUserReport!,
+                      onUserBlock: onUserBlock!,
+                    )
+                ],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+            ],
+          ),
         ),
         PetsWidget(
           user: user,
@@ -108,14 +115,17 @@ class InfoUserWidget extends StatelessWidget {
         SizedBox(
           height: 15.h,
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              LocaleKeys.profile_post.trans(),
-              style: UITextStyle.text_header_18_w600,
-            ),
-          ],
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                LocaleKeys.profile_post.trans(),
+                style: UITextStyle.text_header_18_w600,
+              ),
+            ],
+          ),
         ),
       ],
     );

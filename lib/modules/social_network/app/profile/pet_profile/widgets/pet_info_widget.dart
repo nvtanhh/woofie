@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
-import 'package:meowoof/core/ui/avatar/avatar.dart';
+import 'package:meowoof/core/ui/avatar/pet_avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
@@ -41,7 +41,7 @@ class PetInfoWidget extends StatelessWidget {
           height: 5.h,
         ),
         Obx(
-          () => MWAvatar(
+          () => PetAvatar(
             avatarUrl: pet.updateSubjectValue.avatarUrl,
             customSize: 80.w,
             borderRadius: 15.r,

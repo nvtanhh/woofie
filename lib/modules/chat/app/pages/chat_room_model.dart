@@ -38,6 +38,7 @@ class ChatRoomPageModel extends BaseViewModel {
 
   ChatRoom? inputRoom;
   User? partner;
+  Function(List<Message>)? onAddNewMessages;
 
   late ChatRoom room;
   final RxBool isLoaded = false.obs;
@@ -76,6 +77,7 @@ class ChatRoomPageModel extends BaseViewModel {
   @override
   void disposeState() {
     _disposeSocket();
+    _updateChatDashboard();
     messageSenderTextController.dispose();
     pagingController.dispose();
     super.disposeState();
@@ -194,7 +196,7 @@ class ChatRoomPageModel extends BaseViewModel {
     }
     // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
     pagingController.notifyListeners();
-    if (notifyChatRoom) room.updateMessage(message);
+    // if (notifyChatRoom) _nofityChatDashboard(message);
   }
 
   void _startSendTypingEventTimeout() {
@@ -298,7 +300,7 @@ class ChatRoomPageModel extends BaseViewModel {
             messages.insert(index, newMessage);
             // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
             pagingController.notifyListeners();
-            room.updateMessage(newMessage);
+            // _nofityChatDashboard(newMessage);
           }
         },
         onFailure: (error) {
@@ -389,5 +391,14 @@ class ChatRoomPageModel extends BaseViewModel {
       };
       _sendEventToSocket('typing', data);
     }
+  }
+
+  void _updateChatDashboard() {
+    Future.delayed(Duration.zero, () {
+      final newMessages = pagingController.itemList!.toSet().difference(room.messages.toSet()).toList();
+      if (newMessages.isNotEmpty && onAddNewMessages != null) {
+        onAddNewMessages!(newMessages);
+      }
+    });
   }
 }

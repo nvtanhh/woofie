@@ -46,7 +46,7 @@ class _PetProfileState extends BaseViewState<PetProfile, PetProfileModel> with T
           ),
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: SingleChildScrollView(
             child: Obx(
               () {

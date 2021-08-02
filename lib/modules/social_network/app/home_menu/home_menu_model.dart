@@ -16,7 +16,12 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class HomeMenuWidgetModel extends BaseViewModel {
-  List<Widget> listScreen = [NewFeedWidget(), ExploreWidget(), NotificationWidget(), UserProfile()];
+  List<Widget> listScreen = [
+    NewFeedWidget(),
+    ExploreWidget(),
+    NotificationWidget(),
+    UserProfile(),
+  ];
   late TabController tabController;
   final RxInt _currentTab = RxInt(0);
   final RxInt _countUnreadNotify = RxInt(0);

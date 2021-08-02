@@ -50,7 +50,7 @@ class _PostItemState extends State<PostItem> {
           onEditPost: widget.onEditPost,
           onReportPost: widget.onReportPost,
         ),
-        InkWell(
+        GestureDetector(
           onTap: () => widget.onPostClick?.call(widget.post),
           child: PostBody(post: widget.post),
         ),
@@ -85,9 +85,8 @@ class _PostItemState extends State<PostItem> {
       children: [
         SizedBox(
           width: 60.w,
-          child: InkWell(
+          child: GestureDetector(
             onTap: () => likeClick(),
-            highlightColor: UIColor.white,
             child: Row(
               children: [
                 Obx(

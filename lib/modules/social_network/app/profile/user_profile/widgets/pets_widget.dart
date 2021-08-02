@@ -61,9 +61,12 @@ class PetsWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          LocaleKeys.profile_pet.trans(),
-          style: UITextStyle.text_header_18_w600,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Text(
+            LocaleKeys.profile_pet.trans(),
+            style: UITextStyle.text_header_18_w600,
+          ),
         ),
         SizedBox(
           height: 5.h,
@@ -78,7 +81,7 @@ class PetsWidget extends StatelessWidget {
                         Container(
                           width: 160.w,
                           height: 180.h,
-                          margin: EdgeInsets.all(5.w),
+                          margin: EdgeInsets.only(right: 12.w),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.r),
                             boxShadow: const [
@@ -114,6 +117,7 @@ class PetsWidget extends StatelessWidget {
                   : Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
               : Obx(
                   () => ListView.builder(
+                    padding: EdgeInsets.only(left: 16.w),
                     itemBuilder: (context, index) {
                       if (isMyPets && index == _list.length) {
                         return InkWell(
@@ -121,7 +125,7 @@ class PetsWidget extends StatelessWidget {
                           child: Container(
                             width: 115.w,
                             height: 180.h,
-                            margin: EdgeInsets.all(5.w),
+                            // margin: EdgeInsets.only(right: 12.w),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
                               boxShadow: const [
@@ -153,7 +157,7 @@ class PetsWidget extends StatelessWidget {
                       return PreviewFollowPet(
                         pet: _list[index],
                         onFollow: onFollow,
-                        margin: EdgeInsets.all(5.w),
+                        margin: EdgeInsets.only(right: 12.w),
                         isMyPet: isMyPets,
                       );
                     },

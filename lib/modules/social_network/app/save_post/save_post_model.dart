@@ -20,13 +20,14 @@ import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_pets_of_user_usecase.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class SavePostModel extends BaseViewModel {
   final GetPetsOfUserUsecase _getPetsOfUserUsecase;
   late TextEditingController contentController;
-  User? _user;
+  late User _user;
   late final Rx<PostType> _postType = PostType.activity.obs;
   final RxList<MediaFile> _newAddedFiles = <MediaFile>[].obs;
   final RxList<Media> _postMedia = <Media>[].obs;
@@ -50,7 +51,7 @@ class SavePostModel extends BaseViewModel {
   @override
   void initState() {
     super.initState();
-    _user = injector<LoggedInUser>().user;
+    _user = injector<LoggedInUser>().user!;
     _postType.value = post?.type ?? PostType.activity;
     _taggedPets.addAll(post?.taggegPets ?? []);
     _postMedia.addAll(post?.medias ?? []);
@@ -82,10 +83,13 @@ class SavePostModel extends BaseViewModel {
 
   Future onPostTypeChosen(PostType chosenType) async {
     if (isPostEditing) return;
-
+    if (taggedPets.isEmpty && chosenType != PostType.activity) {
+      _showDialogRequireTagPets();
+      return;
+    }
     _postType.value = chosenType;
     // ignore: unrelated_type_equality_checks
-    if (_postType != PostType.activity && currentPlacemark == null) {
+    if (_postType.value != PostType.activity && currentPlacemark == null) {
       bool isResetDisable = false;
       if (!_isDisable.value) {
         _isDisable.value = true;
@@ -93,10 +97,9 @@ class SavePostModel extends BaseViewModel {
       }
       await _getCurrentAddress();
       if (isResetDisable) _isDisable.value = false;
-      return;
+    } else {
+      _currentLocation.value = null;
     }
-    _currentLocation.value = null;
-    return;
   }
 
   Future onMediasPicked(List<MediaFile> pickedFiles) async {
@@ -162,13 +165,19 @@ class SavePostModel extends BaseViewModel {
 
   User? get user => _user;
 
-  set user(User? value) {
-    _user = value;
-  }
-
   void onTagPet() {
+    if (!_user.isHavePet) {
+      Get.snackbar(
+        'Sorry!...🐶',
+        "You currently don't have any pet. Please own a pet first!",
+        duration: const Duration(seconds: 2),
+        backgroundColor: UIColor.accent,
+        colorText: UIColor.white,
+      );
+      return;
+    }
     injector<BottomSheetService>().showTagPetBottomSheet(
-      userPets: _user?.currentPets ?? [],
+      userPets: _user.currentPets ?? [],
       taggedPets: _taggedPets,
       onPetChosen: _onTaggedPetChosen,
     );
@@ -211,7 +220,7 @@ class SavePostModel extends BaseViewModel {
   }
 
   Future _showDialogAlert() async {
-    await injector<DialogService>().showPermisstionDialog();
+    await injector<DialogService>().showPermissionDialog();
   }
 
   void onWantsToContinue() {
@@ -287,7 +296,7 @@ class SavePostModel extends BaseViewModel {
     final Function eq = const ListEquality().equals;
     final bool isContentChanged = contentController.text != (post?.content ?? '');
     final bool isTaggedPetsChanged = !(eq(taggedPets, post?.taggegPets ?? []) as bool);
-    final bool isLocationChanged = _currentLocation != post?.location;
+    final bool isLocationChanged = _currentLocation.value != post?.location;
     final isMediaChanged = _newAddedFiles.isNotEmpty || (postMedias.length != (post?.medias?.length ?? 0));
 
     _isDisable.value = !(isContentChanged || isTaggedPetsChanged || isLocationChanged || isMediaChanged);
@@ -297,5 +306,21 @@ class SavePostModel extends BaseViewModel {
     if (isPostEditing) {
       _checkIsPostEdited();
     }
+  }
+
+  void _showDialogRequireTagPets() {
+    String sufDescription = '';
+    if (_user.isHavePet) {
+      onTagPet();
+    } else {
+      sufDescription = "\nYou currently don't have any pet. Please own a pet first!";
+    }
+    Get.snackbar(
+      'Oops!... 🤭',
+      'You need to tag your pet first!$sufDescription',
+      duration: const Duration(seconds: 3),
+      backgroundColor: UIColor.accent,
+      colorText: UIColor.white,
+    );
   }
 }

@@ -36,9 +36,12 @@ class PostHeader extends StatelessWidget {
 
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: MWAvatar(
-        avatarUrl: user.avatarUrl,
-        borderRadius: 10.r,
+      leading: GestureDetector(
+        onTap: () => openProfileUser(user),
+        child: MWAvatar(
+          avatarUrl: user.avatarUrl,
+          borderRadius: 10.r,
+        ),
       ),
       title: Text.rich(
         TextSpan(
@@ -58,7 +61,7 @@ class PostHeader extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: 10),
               child: PostLocator(
-                location: post.location,
+                location: post.location?.name,
                 iconSize: 16,
               ),
             ),

@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/format_helper.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
+import 'package:meowoof/core/ui/avatar/pet_avatar.dart';
 import 'package:meowoof/core/ui/button.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
@@ -49,7 +51,7 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
           ),
           actions: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
               child: MWButton(
                 onPressed: () => viewModel.onSaveClick(),
                 minWidth: 40.w,
@@ -63,7 +65,7 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
           ],
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
             children: [
               Row(
@@ -78,7 +80,7 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
                         children: [
                           Obx(() {
                             if (viewModel.avatarFile == null) {
-                              return MWAvatar(
+                              return PetAvatar(
                                 avatarUrl: viewModel.pet.avatarUrl ?? "",
                                 customSize: 92.h,
                                 borderRadius: 15.r,

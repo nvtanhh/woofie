@@ -23,13 +23,15 @@ import 'package:suga_core/suga_core.dart';
 class AdoptionPetDetailWidget extends StatefulWidget {
   final Post post;
 
-  const AdoptionPetDetailWidget({Key? key, required this.post}) : super(key: key);
+  const AdoptionPetDetailWidget({Key? key, required this.post})
+      : super(key: key);
 
   @override
   _AdoptionPetDetailState createState() => _AdoptionPetDetailState();
 }
 
-class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, AdoptionPetDetailWidgetModel> {
+class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
+    AdoptionPetDetailWidgetModel> {
   @override
   void loadArguments() {
     viewModel.post = widget.post;
@@ -38,193 +40,213 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Obx(
-          () {
-            if (viewModel.isLoaded) {
-              return SizedBox(
-                width: Get.width,
-                height: Get.height,
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    ImagesViewWidget(
-                      medias: viewModel.post.medias?.isEmpty == true
-                          ? [Media(id: 0, url: viewModel.pet?.avatarUrl ?? "", type: MediaType.image)]
-                          : viewModel.post.medias!,
-                      height: Get.height / 2,
-                      fit: BoxFit.cover,
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      child: Container(
-                        height: Get.height / 2 + 50.h,
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                            color: UIColor.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(25.r),
-                              topRight: Radius.circular(25.r),
-                            ),
-                            border: Border.all(color: UIColor.whiteSmoke)),
-                        padding: EdgeInsets.only(
-                          left: 10.w,
-                          right: 10.w,
-                          top: 10.h,
+    return Scaffold(
+      body: Obx(
+        () {
+          if (viewModel.isLoaded) {
+            return SizedBox(
+              width: Get.width,
+              height: Get.height,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  ImagesViewWidget(
+                    medias: viewModel.post.medias?.isEmpty == true
+                        ? [
+                            Media(
+                                id: 0,
+                                url: viewModel.pet?.avatarUrl ?? "",
+                                type: MediaType.image)
+                          ]
+                        : viewModel.post.medias!,
+                    height: Get.height / 2,
+                    fit: BoxFit.cover,
+                    counterPositionTop: false,
+                  ),
+                  Positioned(
+                    top: 24.h,
+                    child: Container(
+                      width: Get.width,
+                      height: 50.h,
+                      margin: EdgeInsets.only(top: 10.h),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        viewModel.pet?.name ?? "",
-                                        style: UITextStyle.text_header_24_w700,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.location_on_rounded,
-                                            color: UIColor.primary,
-                                          ),
-                                          SizedBox(
-                                            width: 5.w,
-                                          ),
-                                          Flexible(
-                                            child: Text(
-                                              "${viewModel.post.location?.name ?? ""} (${viewModel.post.distanceUserToPost?.toPrecision(1)} Km)",
-                                              style: UITextStyle.text_body_14_w600,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                MWIcon(
-                                  defineIcon(widget.post.type),
-                                  customSize: 48.w,
-                                )
-                              ],
+                            ButtonWidget(
+                              onPress: () => Get.back(),
+                              width: 40.w,
+                              height: 40.w,
+                              borderRadius: 20.w,
+                              backgroundColor: UIColor.white,
+                              contentWidget: const MWIcon(MWIcons.back),
                             ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CardDetailWidget(
-                                  title: LocaleKeys.explore_gender.trans(),
-                                  value: FormatHelper.genderPet(viewModel.pet?.gender),
-                                ),
-                                CardDetailWidget(
-                                  title: LocaleKeys.explore_age.trans(),
-                                  value: DateTimeHelper.calcAge(viewModel.pet?.dob),
-                                ),
-                                CardDetailWidget(
-                                  title: LocaleKeys.explore_breed.trans(),
-                                  value: viewModel.pet?.petBreed?.name ?? "",
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Text(
-                              LocaleKeys.explore_detail.trans(),
-                              style: UITextStyle.text_header_18_w700,
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Expanded(
-                              child: Text(
-                                viewModel.post.content ?? "",
-                                style: UITextStyle.text_body_14_w500,
-                              ),
-                            ),
-                            ListTile(
-                              contentPadding: const EdgeInsets.symmetric(),
-                              leading: MWAvatar(
-                                avatarUrl: viewModel.post.creator?.avatarUrl,
-                                borderRadius: 10.r,
-                              ),
-                              title: Text(
-                                viewModel.post.creator?.name ?? "",
-                                style: UITextStyle.text_header_16_w6002,
-                              ),
-                              subtitle: Text(
-                                LocaleKeys.explore_owner_pet.trans(),
-                                style: GoogleFonts.montserrat(textStyle: UITextStyle.text_body_14_w500),
-                              ),
-                              trailing: ButtonWidget(
-                                width: 96.w,
-                                height: 47.h,
-                                title: LocaleKeys.explore_contact.trans(),
-                                onPress: () => null,
-                                borderRadius: 15.r,
-                              ),
+                            ButtonWidget(
+                              onPress: () => null,
+                              width: 40.w,
+                              height: 40.w,
+                              borderRadius: 20.w,
+                              backgroundColor: UIColor.white,
+                              contentWidget: const MWIcon(MWIcons.moreHoriz),
                             )
                           ],
                         ),
                       ),
                     ),
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Container(
-                        width: Get.width,
-                        height: 50.h,
-                        margin: EdgeInsets.only(top: 10.h),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ButtonWidget(
-                                onPress: () => Get.back(),
-                                width: 40.w,
-                                height: 40.w,
-                                borderRadius: 20.w,
-                                backgroundColor: UIColor.white,
-                                contentWidget: const Icon(
-                                  Icons.arrow_back_ios_outlined,
-                                  color: UIColor.textHeader,
-                                ),
-                              ),
-                              ButtonWidget(
-                                onPress: () => null,
-                                width: 40.w,
-                                height: 40.w,
-                                borderRadius: 20.w,
-                                backgroundColor: UIColor.white,
-                                contentWidget: const Icon(
-                                  Icons.more_horiz_outlined,
-                                  color: UIColor.textHeader,
-                                ),
-                              )
-                            ],
-                          ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      height: Get.height / 2 + 30.h,
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                        color: UIColor.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.r),
+                          topRight: Radius.circular(30.r),
                         ),
+                        border: Border.all(color: UIColor.whiteSmoke),
+                      ),
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                        top: 30.h,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            viewModel.pet?.name ?? "",
+                                            style:
+                                                UITextStyle.text_header_24_w700,
+                                          ),
+                                          SizedBox(
+                                            height: 5.w,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const MWIcon(
+                                                MWIcons.location,
+                                                color: UIColor.primary,
+                                              ),
+                                              SizedBox(
+                                                width: 5.w,
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  "${viewModel.post.location?.name ?? ""} (${viewModel.post.distanceUserToPost?.toPrecision(1)} Km)",
+                                                  style: UITextStyle
+                                                      .text_body_14_w500,
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    MWIcon(
+                                      defineIcon(widget.post.type),
+                                      customSize: 48.w,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CardDetailWidget(
+                                      title: LocaleKeys.explore_gender.trans(),
+                                      value: FormatHelper.genderPet(
+                                          viewModel.pet?.gender),
+                                    ),
+                                    CardDetailWidget(
+                                      title: LocaleKeys.explore_age.trans(),
+                                      value: DateTimeHelper.calcAge(
+                                          viewModel.pet?.dob),
+                                    ),
+                                    CardDetailWidget(
+                                      title: LocaleKeys.explore_breed.trans(),
+                                      value:
+                                          viewModel.pet?.petBreed?.name ?? "",
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Text(
+                                  LocaleKeys.explore_detail.trans(),
+                                  style: UITextStyle.text_header_18_w700,
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      viewModel.post.content ?? "",
+                                      style: UITextStyle.text_body_14_w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          ListTile(
+                            contentPadding: const EdgeInsets.symmetric(),
+                            leading: MWAvatar(
+                              avatarUrl: viewModel.post.creator?.avatarUrl,
+                              borderRadius: 10.r,
+                            ),
+                            title: Text(
+                              viewModel.post.creator?.name ?? "",
+                              style: UITextStyle.text_header_16_w6002,
+                            ),
+                            subtitle: Text(
+                              LocaleKeys.explore_owner_pet.trans(),
+                              style: GoogleFonts.montserrat(
+                                  textStyle: UITextStyle.text_body_14_w500),
+                            ),
+                            trailing: ButtonWidget(
+                              width: 96.w,
+                              height: 47.h,
+                              title: LocaleKeys.explore_contact.trans(),
+                              onPress: () => null,
+                              borderRadius: 15.r,
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              );
-            } else {
-              return const ShimmerPage();
-            }
-          },
-        ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const ShimmerPage();
+          }
+        },
       ),
     );
   }
@@ -243,5 +265,6 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget, Ado
   }
 
   @override
-  AdoptionPetDetailWidgetModel createViewModel() => injector<AdoptionPetDetailWidgetModel>();
+  AdoptionPetDetailWidgetModel createViewModel() =>
+      injector<AdoptionPetDetailWidgetModel>();
 }

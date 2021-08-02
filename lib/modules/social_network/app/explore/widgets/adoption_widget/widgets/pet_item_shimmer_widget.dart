@@ -34,7 +34,7 @@ class PetItemShimmerWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15.r),
                 ),
                 padding: EdgeInsets.symmetric(
-                  horizontal: 10.w,
+                  horizontal: 16.w,
                   vertical: 5.h,
                 ),
                 child: Column(

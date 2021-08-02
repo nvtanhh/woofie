@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
 import 'package:meowoof/modules/chat/app/request_message/request_message.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
+import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/request_message/count_user_request_message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_chat_rooms_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -38,14 +40,14 @@ class ChatManagerModel extends BaseViewModel {
 
   Future<void> _loadMoreChatRoom(int pageKey) async {
     try {
-      final newItems = await _getChatRoomsUseCase.call();
-      newItems.forEach(_getMoreChatRoomInformation);
-      final isLastPage = newItems.length < _pageSize;
+      final chatRooms = await _getChatRoomsUseCase.call();
+      chatRooms.forEach(_getMoreChatRoomInformation);
+      final isLastPage = chatRooms.length < _pageSize;
       if (isLastPage) {
-        pagingController.appendLastPage(newItems);
+        pagingController.appendLastPage(chatRooms);
       } else {
-        final nextPageKey = pageKey + newItems.length;
-        pagingController.appendPage(newItems, nextPageKey);
+        final nextPageKey = pageKey + chatRooms.length;
+        pagingController.appendPage(chatRooms, nextPageKey);
       }
     } catch (error) {
       pagingController.error = error;
@@ -88,11 +90,26 @@ class ChatManagerModel extends BaseViewModel {
   }
 
   Future<void> onRefresh() async {
-    pagingController.refresh();
+    if (_isCanRefesh()) {
+      pagingController.refresh();
+    }
+  }
+
+  bool _isCanRefesh() {
+    return DateTime.now().difference(_lastRefeshTime).inSeconds > BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
   }
 
   void onChatRoomPressed(ChatRoom room) {
-    injector<NavigationService>().navigateToChatRoom(room: room);
+    injector<NavigationService>()
+        .navigateToChatRoom(room: room, onAddNewMessages: (List<Message> messages) => _onChatRoomAddNewMessage(room, messages));
+  }
+
+  void _onChatRoomAddNewMessage(ChatRoom room, List<Message> messages) {
+    room.updateMessages(messages);
+    final rooms = pagingController.itemList!;
+    rooms.insert(0, rooms.removeAt(rooms.indexOf(room)));
+    // ignore: invalid_use_of_protected_member,  invalid_use_of_visible_for_testing_member
+    pagingController.notifyListeners();
   }
 
   void _getCountUserRequestMessage() {

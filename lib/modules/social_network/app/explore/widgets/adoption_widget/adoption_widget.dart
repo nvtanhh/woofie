@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_widget/adoption_widget_model.dart';
@@ -23,7 +24,8 @@ class AdoptionWidget extends StatefulWidget {
   _AdoptionWidgetState createState() => _AdoptionWidgetState();
 }
 
-class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetModel> {
+class _AdoptionWidgetState
+    extends BaseViewState<AdoptionWidget, AdoptionWidgetModel> {
   @override
   void loadArguments() {
     viewModel.postType = widget.postType;
@@ -32,31 +34,32 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: UIColor.white,
-          elevation: 0,
-          title: Text(
-            defineTitleAppBar(widget.postType),
-            style: UITextStyle.text_header_18_w600,
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_outlined,
-              color: UIColor.textHeader,
-              size: 20.w,
-            ),
-            onPressed: () => Get.back(),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: UIColor.white,
+        elevation: 0,
+        title: Text(
+          defineTitleAppBar(widget.postType),
+          style: UITextStyle.text_header_18_w600,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () => viewModel.onRefresh(),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const MWIcon(MWIcons.back),
+          onPressed: () => Get.back(),
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () => viewModel.onRefresh(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: PagedGridView<int, Post>(
+                  padding: EdgeInsets.only(
+                    top: 10.h,
+                    right: 10.w,
+                  ),
                   pagingController: viewModel.pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Post>(
                     itemBuilder: (context, item, index) {
@@ -81,22 +84,18 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
                         PetItemShimmerWidget(),
                       ],
                     ),
-                    newPageProgressIndicatorBuilder: (_) => PetItemShimmerWidget(),
+                    newPageProgressIndicatorBuilder: (_) =>
+                        PetItemShimmerWidget(),
                   ),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 165.w / 213.h,
                   ),
-                  padding: EdgeInsets.only(
-                    top: 10.h,
-                    left: 10.w,
-                    right: 10.w,
-                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

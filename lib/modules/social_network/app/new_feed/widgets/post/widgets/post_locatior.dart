@@ -8,7 +8,7 @@ class PostLocator extends StatelessWidget {
 
   final int? iconSize;
 
-  final Location? location;
+  final String? location;
 
   const PostLocator({Key? key, required this.location, this.maxLines = 1, this.iconSize = 20}) : super(key: key);
 
@@ -25,7 +25,7 @@ class PostLocator extends StatelessWidget {
               const SizedBox(width: 5),
               Expanded(
                 child: Text(
-                  location!.toPresent(),
+                  location ?? '',
                   style: UITextStyle.body_12_medium,
                   maxLines: maxLines,
                   overflow: TextOverflow.ellipsis,

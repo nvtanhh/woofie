@@ -267,18 +267,21 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
     return viewModel.isLoadingAddress.value
         ? _buildLoadingAddressWidget()
         : PostLocator(
-            location: viewModel.currentLocation,
+            location: viewModel.currentAddress.value,
             maxLines: 2,
           );
   }
 
   Widget _buildLoadingAddressWidget() {
     return Row(children: [
-      const JumpingWidget(
-        child: MWIcon(
-          MWIcons.location,
-          themeColor: MWIconThemeColor.primary,
-          customSize: 20,
+      Transform.translate(
+        offset: const Offset(0, 5),
+        child: const JumpingWidget(
+          child: MWIcon(
+            MWIcons.location,
+            themeColor: MWIconThemeColor.primary,
+            customSize: 20,
+          ),
         ),
       ),
       const SizedBox(width: 5),
@@ -306,7 +309,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         color: PostTypeChoseWidget.getBackgroundColorByType(viewModel.postType),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
         child: Text(
           PostTypeChoseWidget.getPostTypeTile(viewModel.postType),
           style: UITextStyle.body_12_medium.apply(

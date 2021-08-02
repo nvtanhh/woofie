@@ -21,7 +21,7 @@ class NewFeedWidget extends StatefulWidget {
   _NewFeedWidgetState createState() => _NewFeedWidgetState();
 }
 
-class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> {
+class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +36,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
             child: RefreshIndicator(
               onRefresh: viewModel.onRefresh,
               child: PagedListView<int, Post>(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                scrollController: viewModel.scrollController,
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
                 pagingController: viewModel.postService.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
                   itemBuilder: (context, item, index) => Obx(
@@ -66,16 +67,23 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
     return PreferredSize(
       preferredSize: Size.fromHeight(48.h),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           children: [
-            SizedBox(width: 45.w, height: 46.h, child: const MWLogo()),
-            SizedBox(
-              width: 10.w,
-            ),
-            Text(
-              LocaleKeys.app_name.trans(),
-              style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w700),
+            GestureDetector(
+              onTap: viewModel.onRefresh,
+              child: Row(
+                children: [
+                  SizedBox(width: 45.w, height: 46.h, child: const MWLogo()),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Text(
+                    LocaleKeys.app_name.trans(),
+                    style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w700),
+                  ),
+                ],
+              ),
             ),
             const Expanded(
               child: SizedBox(),
@@ -100,4 +108,7 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -34,12 +34,12 @@ class PetsWidget extends StatelessWidget {
               child: Row(
                 children: [
                   ImageWithPlaceHolderWidget(
-                    imageUrl: pet.avatarUrl ?? "",
-                    width: 117.w,
-                    height: 152.h,
-                    radius: 10.r,
-                    fit: BoxFit.cover,
-                  ),
+                      imageUrl: pet.avatarUrl ?? "",
+                      width: 117.w,
+                      height: 152.h,
+                      radius: 10.r,
+                      fit: BoxFit.cover,
+                      placeHolderImage: "resources/images/fallbacks/pet-avatar-fallback.jpg"),
                   SizedBox(
                     width: 25.w,
                   ),

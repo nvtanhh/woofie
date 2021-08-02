@@ -69,7 +69,7 @@ class DialogService {
     );
   }
 
-  Future showPermisstionDialog() async {
+  Future showPermissionDialog() async {
     await Get.defaultDialog(
       title: '',
       content: Padding(

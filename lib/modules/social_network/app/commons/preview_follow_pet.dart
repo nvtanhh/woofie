@@ -40,7 +40,7 @@ class PreviewFollowPet extends StatelessWidget {
         width: 115.w,
         height: 180.h,
         margin: margin,
-        padding: EdgeInsets.all(5.w),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: const [
@@ -49,7 +49,7 @@ class PreviewFollowPet extends StatelessWidget {
           color: UIColor.white,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Obx(
               () => ImageWithPlaceHolderWidget(
@@ -57,6 +57,8 @@ class PreviewFollowPet extends StatelessWidget {
                 width: 60.w,
                 height: 60.w,
                 radius: 10.r,
+                fit: BoxFit.cover,
+                placeHolderImage: "resources/images/fallbacks/pet-avatar-fallback.jpg",
               ),
             ),
             SizedBox(
@@ -66,21 +68,26 @@ class PreviewFollowPet extends StatelessWidget {
               () => Text(
                 pet.updateSubjectValue.name ?? "",
                 style: UITextStyle.text_header_18_w600,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                textAlign: TextAlign.center,
               ),
             ),
             SizedBox(
-              height: 5.h,
+              height: 2.h,
             ),
             Obx(
               () => Text(
                 pet.updateSubjectValue.bio ?? "",
-                style: UITextStyle.text_body_12_w600,
+                style: UITextStyle.text_body_12_w500,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
               ),
             ),
             SizedBox(
-              height: 5.h,
+              height: 10.h,
             ),
             if (onFollow != null)
               Column(

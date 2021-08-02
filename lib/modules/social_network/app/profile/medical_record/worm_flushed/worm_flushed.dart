@@ -83,7 +83,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
               ),
             ),
             padding: EdgeInsets.symmetric(
-              horizontal: 10.w,
+              horizontal: 16.w,
             ),
             builder: TimelineTileBuilder.connected(
               indicatorBuilder: (context, index) {
