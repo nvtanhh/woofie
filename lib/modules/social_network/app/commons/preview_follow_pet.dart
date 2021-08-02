@@ -40,11 +40,7 @@ class PreviewFollowPet extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: const [
-            BoxShadow(
-                color: UIColor.dimGray,
-                blurRadius: 5,
-                offset: Offset(2, 0),
-                spreadRadius: 2),
+            BoxShadow(color: UIColor.dimGray, blurRadius: 5, offset: Offset(2, 0), spreadRadius: 2),
           ],
           color: UIColor.white,
         ),
@@ -58,8 +54,7 @@ class PreviewFollowPet extends StatelessWidget {
                 height: 60.w,
                 radius: 10.r,
                 fit: BoxFit.cover,
-                placeHolderImage:
-                    "resources/images/fallbacks/pet-avatar-fallback.jpg",
+                placeHolderImage: "resources/images/fallbacks/pet-avatar-fallback.jpg",
               ),
             ),
             SizedBox(
@@ -102,16 +97,11 @@ class PreviewFollowPet extends StatelessWidget {
                         },
                         textStyle: UITextStyle.white_10_w600,
                         borderRadius: BorderRadius.circular(5.r),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 5.h, horizontal: 8.w),
-                        color: pet.updateSubjectValue.isFollowing ?? false
-                            ? UIColor.textSecondary
-                            : UIColor.primary,
+                        padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 8.w),
+                        color: pet.updateSubjectValue.isFollowing ?? false ? UIColor.textSecondary : UIColor.primary,
                         minWidth: 70.w,
                         child: Text(
-                          pet.updateSubjectValue.isFollowing ?? false
-                              ? LocaleKeys.profile_un_follow.trans()
-                              : LocaleKeys.profile_follow.trans(),
+                          pet.updateSubjectValue.isFollowing ?? false ? LocaleKeys.profile_un_follow.trans() : LocaleKeys.profile_follow.trans(),
                         ),
                       ),
                     ),

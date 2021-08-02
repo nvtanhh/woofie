@@ -27,6 +27,7 @@ class RequestContactDatasource {
     status
     from_user_uuid
     to_user_uuid
+    content
     created_at
     updated_at
   }
@@ -49,6 +50,7 @@ class RequestContactDatasource {
     from_user_uuid
     status
     created_at
+    content
     from_user {
       id
       name
@@ -69,6 +71,7 @@ class RequestContactDatasource {
   update_request_contact_by_pk(pk_columns: {id: ${requestContact.id}}, _set: {status: ${RequestContactStatus.accept.index}}) {
     id
     status
+    content
     from_user_uuid
     to_user_uuid
     updated_at
@@ -86,6 +89,7 @@ class RequestContactDatasource {
   update_request_contact_by_pk(pk_columns: {id: ${requestContact.id}}, _set: {status: ${RequestContactStatus.deny.index}}) {
     id
     status
+    content
     from_user_uuid
     to_user_uuid
     updated_at
@@ -112,14 +116,32 @@ class RequestContactDatasource {
     return ObjectAggregate.fromJson(requestContacts).aggregate.count ?? -1;
   }
 
+  Future updateContentRequestMessage(RequestContact requestContact, String content) async {
+    final String mutation = """
+  mutation MyMutation {
+  update_request_contact_by_pk(pk_columns: {id: ${requestContact.id}}, _set: {content: "$content"}) {
+    id
+    status
+    content
+    from_user_uuid
+    to_user_uuid
+    updated_at
+  }
+  }
+    """;
+    await _hasuraConnect.mutation(mutation);
+    return;
+  }
+
   Future<RequestContact?> checkUserRequestedMessage(String toUserUUID) async {
     final String query = """
 query MyQuery {
-  request_contact(where: {status: {_eq: ${RequestContactStatus.accept.index}}, _and: {from_user_uuid: {_in: ["$toUserUUID","${_loggedInUser.user!.uuid}"]}, to_user_uuid: {_in: ["$toUserUUID","${_loggedInUser.user!.uuid}"]}}}) {
+  request_contact(where: {_and: {from_user_uuid: {_in: ["$toUserUUID","${_loggedInUser.user!.uuid}"]}, to_user_uuid: {_in: ["$toUserUUID","${_loggedInUser.user!.uuid}"]}}}) {
     id
     updated_at
     to_user_uuid
     status
+    content
     created_at
     from_user_uuid
     to_user {
@@ -136,8 +158,15 @@ query MyQuery {
     """;
     final data = await _hasuraConnect.query(query);
     final requestContacts = GetMapFromHasura.getMap(data as Map)["request_contact"] as List;
-    if (requestContacts.isNotEmpty == true) {
-      return RequestContact.fromJson(requestContacts[0] as Map<String, dynamic>);
+    final listRequest = requestContacts.map((e) => RequestContact.fromJson(e as Map<String, dynamic>)).toList();
+    if (listRequest.isNotEmpty == true) {
+      try {
+        return listRequest.singleWhere(
+          (element) => element.status == RequestContactStatus.accept,
+        );
+      } catch (e) {
+        return RequestContact.fromJson(requestContacts[0] as Map<String, dynamic>);
+      }
     }
     return null;
   }

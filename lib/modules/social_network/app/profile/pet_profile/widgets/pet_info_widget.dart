@@ -80,13 +80,9 @@ class PetInfoWidget extends StatelessWidget {
                   height: 40.h,
                   title: isMyPet
                       ? LocaleKeys.profile_edit_profile.trans()
-                      : (pet.updateSubjectValue.isFollowing ?? false
-                          ? LocaleKeys.profile_un_follow.trans()
-                          : LocaleKeys.profile_follow.trans()),
+                      : (pet.updateSubjectValue.isFollowing ?? false ? LocaleKeys.profile_un_follow.trans() : LocaleKeys.profile_follow.trans()),
                   borderRadius: 10.r,
-                  backgroundColor: pet.updateSubjectValue.isFollowing ?? false
-                      ? UIColor.textSecondary
-                      : UIColor.primary,
+                  backgroundColor: pet.updateSubjectValue.isFollowing ?? false ? UIColor.textSecondary : UIColor.primary,
                 ),
               ),
             ),
@@ -102,9 +98,7 @@ class PetInfoWidget extends StatelessWidget {
                 height: 40.h,
                 margin: EdgeInsets.only(left: 20.w),
                 padding: EdgeInsets.only(top: 5.h),
-                decoration: BoxDecoration(
-                    color: UIColor.holder,
-                    borderRadius: BorderRadius.circular(10.r)),
+                decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
                 child: const Center(
                   child: MWIcon(
                     MWIcons.moreHoriz,

@@ -58,4 +58,8 @@ class ChatRepository {
   Future<int> countUserRequestMessages() {
     return _requestContactDatasource.countUserRequestMessage();
   }
+
+  Future updateContentRequestMessages(RequestContact requestContact, String content) {
+    return _requestContactDatasource.updateContentRequestMessage(requestContact, content);
+  }
 }
