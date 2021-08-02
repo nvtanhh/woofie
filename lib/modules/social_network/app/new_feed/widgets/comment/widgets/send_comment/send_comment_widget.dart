@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/avatar/avatar.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
@@ -32,7 +34,8 @@ class SendCommentWidget extends StatefulWidget {
   _SendCommentWidgetState createState() => _SendCommentWidgetState();
 }
 
-class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendCommentWidgetModel> {
+class _SendCommentWidgetState
+    extends BaseViewState<SendCommentWidget, SendCommentWidgetModel> {
   @override
   void loadArguments() {
     viewModel.post = widget.post;
@@ -40,7 +43,8 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
     viewModel.onSendComment = widget.onSendComment;
     viewModel.showSuggestionDialog = showSuggestionDialog;
     viewModel.customSpan = customSpan;
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) => viewModel.loadUserFromLocal());
+    WidgetsBinding.instance
+        ?.addPostFrameCallback((timeStamp) => viewModel.loadUserFromLocal());
     super.loadArguments();
   }
 
@@ -65,42 +69,28 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
       ),
       child: Row(
         children: [
-          Obx(
-            () {
-              if (viewModel.user?.updateSubjectValue == null) {
-                return Container(
-                  width: 45.w,
-                  height: 45.w,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetGenImage("resources/icons/ic_person.png"),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                );
-              } else {
-                return ImageWithPlaceHolderWidget(
-                  width: 45.w,
-                  height: 45.w,
-                  fit: BoxFit.fill,
-                  imageUrl: viewModel.user?.avatarUrl ?? "",
-                  radius: 10.r,
-                );
-              }
-            },
+          MWAvatar(
+            avatarUrl: viewModel.user?.avatarUrl ?? "",
+            customSize: 45.w,
+            borderRadius: 15.r,
           ),
           SizedBox(
             width: 10.w,
           ),
-          SizedBox(
-            width: 250.w,
+          Expanded(
             child: TextField(
               key: viewModel.tfKey,
               decoration: InputDecoration(
                 hintText: LocaleKeys.new_feed_write_a_comment.trans(),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
-                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide: BorderSide.none),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide: BorderSide.none),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide: BorderSide.none),
                 fillColor: UIColor.holder,
                 focusColor: UIColor.black,
                 filled: true,
@@ -109,10 +99,10 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
                   horizontal: 5.w,
                 ),
               ),
-              minLines: 1,
               onEditingComplete: () {
                 viewModel.removeOverlay();
               },
+              minLines: 1,
               maxLines: 3,
               onSubmitted: (_) => viewModel.onSubmitted(),
               controller: viewModel.controller,
@@ -124,12 +114,12 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
             width: 10.w,
           ),
           IconButton(
-            icon: Icon(
-              Icons.send,
+            icon: MWIcon(
+              MWIcons.send,
+              customSize: 24.w,
               color: UIColor.primary,
-              size: 30.w,
             ),
-            onPressed: () => viewModel.onSendCommentClick(),
+            onPressed: viewModel.onSendCommentClick,
             constraints: const BoxConstraints(),
           )
         ],
@@ -193,15 +183,20 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
                             Text('Filter: ${viewModel.filterState?.text}'),
                             Flexible(
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(minHeight: 200),
+                                constraints:
+                                    const BoxConstraints(minHeight: 200),
                                 child: Obx(
                                   () => ListView.builder(
                                     itemBuilder: (context, index) {
                                       final item = viewModel.dataFilter[index];
                                       return GestureDetector(
                                         onTap: () {
-                                          if (!viewModel.isTagedUser(item.item!)) {
-                                            viewModel.controller?.approveSelection(viewModel.filterState!, item);
+                                          if (!viewModel
+                                              .isTagedUser(item.item!)) {
+                                            viewModel.controller
+                                                ?.approveSelection(
+                                                    viewModel.filterState!,
+                                                    item);
                                             viewModel.addTagUser(item.item!);
                                           }
                                           viewModel.removeOverlay();
@@ -231,5 +226,6 @@ class _SendCommentWidgetState extends BaseViewState<SendCommentWidget, SendComme
   }
 
   @override
-  SendCommentWidgetModel createViewModel() => injector<SendCommentWidgetModel>();
+  SendCommentWidgetModel createViewModel() =>
+      injector<SendCommentWidgetModel>();
 }
