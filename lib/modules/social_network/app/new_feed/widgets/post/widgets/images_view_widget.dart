@@ -13,12 +13,14 @@ class ImagesViewWidget extends StatelessWidget {
   final List<Media> medias;
   final double? height;
   final BoxFit? fit;
+  final bool counterPositionTop;
 
   ImagesViewWidget({
     Key? key,
     required this.medias,
     this.height,
     this.fit,
+    this.counterPositionTop = true,
   }) : super(key: key);
   final PageController _pageController = PageController();
   final RxInt indexPage = RxInt(0);
@@ -35,7 +37,8 @@ class ImagesViewWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.r),
               child: PageView.builder(
                 itemBuilder: (context, index) {
-                  if (medias[index].type == MediaType.image || medias[index].type == MediaType.gif) {
+                  if (medias[index].type == MediaType.image ||
+                      medias[index].type == MediaType.gif) {
                     return ImageWithPlaceHolderWidget(
                       imageUrl: medias[index].url ?? "",
                       radius: 20.r,
@@ -67,7 +70,8 @@ class ImagesViewWidget extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 20,
+              top: counterPositionTop ? 20 : null,
+              bottom: counterPositionTop ? 0 : 50,
               right: 10,
               child: Container(
                 width: 41.w,

@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_widget/adoption_widget_model.dart';
@@ -23,7 +24,8 @@ class AdoptionWidget extends StatefulWidget {
   _AdoptionWidgetState createState() => _AdoptionWidgetState();
 }
 
-class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetModel> {
+class _AdoptionWidgetState
+    extends BaseViewState<AdoptionWidget, AdoptionWidgetModel> {
   @override
   void loadArguments() {
     viewModel.postType = widget.postType;
@@ -42,11 +44,7 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_outlined,
-            color: UIColor.textHeader,
-            size: 20.w,
-          ),
+          icon: const MWIcon(MWIcons.back),
           onPressed: () => Get.back(),
         ),
       ),
@@ -55,41 +53,44 @@ class _AdoptionWidgetState extends BaseViewState<AdoptionWidget, AdoptionWidgetM
           Expanded(
             child: RefreshIndicator(
               onRefresh: () => viewModel.onRefresh(),
-              child: PagedGridView<int, Post>(
-                pagingController: viewModel.pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Post>(
-                  itemBuilder: (context, item, index) {
-                    item.distanceUserToPost = Geolocator.distanceBetween(
-                      viewModel.location!.lat!,
-                      viewModel.location!.long!,
-                      item.location!.lat!,
-                      item.location!.long!,
-                    ).toPrecision(1);
-                    return PetItemWidget(
-                      post: item,
-                      pet: item.taggegPets![0],
-                      onClick: () => viewModel.onItemClick(item),
-                      postType: item.type,
-                    );
-                  },
-                  firstPageProgressIndicatorBuilder: (_) => Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PetItemShimmerWidget(),
-                      PetItemShimmerWidget(),
-                    ],
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: PagedGridView<int, Post>(
+                  padding: EdgeInsets.only(
+                    top: 10.h,
+                    right: 10.w,
                   ),
-                  newPageProgressIndicatorBuilder: (_) => PetItemShimmerWidget(),
-                ),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 165.w / 213.h,
-                ),
-                padding: EdgeInsets.only(
-                  top: 10.h,
-                  left: 10.w,
-                  right: 10.w,
+                  pagingController: viewModel.pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<Post>(
+                    itemBuilder: (context, item, index) {
+                      item.distanceUserToPost = Geolocator.distanceBetween(
+                        viewModel.location!.lat!,
+                        viewModel.location!.long!,
+                        item.location!.lat!,
+                        item.location!.long!,
+                      ).toPrecision(1);
+                      return PetItemWidget(
+                        post: item,
+                        pet: item.taggegPets![0],
+                        onClick: () => viewModel.onItemClick(item),
+                        postType: item.type,
+                      );
+                    },
+                    firstPageProgressIndicatorBuilder: (_) => Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PetItemShimmerWidget(),
+                        PetItemShimmerWidget(),
+                      ],
+                    ),
+                    newPageProgressIndicatorBuilder: (_) =>
+                        PetItemShimmerWidget(),
+                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 165.w / 213.h,
+                  ),
                 ),
               ),
             ),
