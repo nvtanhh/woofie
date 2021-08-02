@@ -80,8 +80,7 @@ abstract class UpdatableModelFactory<T extends UpdatableModel> {
   }
 }
 
-class UpdatableModelSimpleStorage<K, V extends UpdatableModel>
-    implements Storage<K, V> {
+class UpdatableModelSimpleStorage<K, V extends UpdatableModel> implements Storage<K, V> {
   static int maxInt = pow(2, 30) - 1 as int; // (for 32 bit OS)
 
   late Map<K, CacheEntry<K, V>> _internalMap;
@@ -139,8 +138,7 @@ class UpdatableModelSimpleStorage<K, V extends UpdatableModel>
   List<K> get keys => this._internalMap.keys.toList(growable: true);
 
   @override
-  List<CacheEntry<K, V>> get values =>
-      this._internalMap.values.toList(growable: true);
+  List<CacheEntry<K, V>> get values => this._internalMap.values.toList(growable: true);
 
   @override
   int get capacity => this._size;
