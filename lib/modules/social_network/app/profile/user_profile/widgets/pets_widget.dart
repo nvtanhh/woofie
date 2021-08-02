@@ -113,8 +113,7 @@ class PetsWidget extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Center(
-                      child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
+                  : Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
               : Obx(
                   () => ListView.builder(
                     padding: EdgeInsets.only(left: 15.w, top: 2.h, bottom: 2.h),

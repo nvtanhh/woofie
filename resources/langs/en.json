@@ -132,14 +132,15 @@
   },
   "notification": {
     "notifications": "Notifications",
-    "liked": "liked your post",
+    "liked": " liked your post",
     "following": " followed ",
     "commented": " commented on your post",
     "adopt": " wants to contact you to adopt ",
     "matting": " wants to contact you to breed ",
     "lose": " got lost near your area",
     "tag": " mentioned you in a post",
-    "like_comment": " liked your comment"
+    "like_comment": " liked your comment",
+    "request_message": "You have 1 new message waiting"
   },
   "system": {
     "comming_soon": "This feature will be coming soon",

@@ -69,11 +69,16 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                         }
                       },
                       child: ListTile(
-                        leading: MWAvatar(
-                          avatarUrl: item.actor?.avatarUrl,
-                          customSize: 45.w,
-                          borderRadius: 10.r,
-                        ),
+                        leading: item.actor != null
+                            ? MWAvatar(
+                                avatarUrl: item.actor?.avatarUrl,
+                                customSize: 45.w,
+                                borderRadius: 10.r,
+                              )
+                            : MWIcon(
+                                MWIcons.requestMessage,
+                                customSize: 45.w,
+                              ),
                         onTap: () => viewModel.onItemTab(item),
                         title: generateContentTitle(item),
                         trailing: defineIcon(item),
@@ -151,6 +156,11 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
         return createTitle(
           notification.actor!,
           LocaleKeys.notification_like_comment.trans(),
+        );
+      case NotificationType.requestMessage:
+        return Text(
+          LocaleKeys.notification_request_message.trans(),
+          style: UITextStyle.text_body_16_w500,
         );
     }
   }

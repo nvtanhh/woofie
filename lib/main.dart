@@ -10,6 +10,7 @@ import 'package:meowoof/configs/app_config.dart';
 import 'package:meowoof/core/ui/toast.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/app/pages/chat_dashboard.dart';
+import 'package:meowoof/modules/chat/app/request_message/request_message.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_detail_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -107,6 +108,8 @@ void setupOneSignal() {
         } else {
           Get.to(() => PostDetail(post: Post(id: postId, type: PostType.activity, uuid: "")));
         }
+      } else {
+        Get.to(() => RequestMessagePage());
       }
     } catch (e) {
       // ignore: avoid_print

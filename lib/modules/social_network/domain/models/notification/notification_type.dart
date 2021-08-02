@@ -16,5 +16,7 @@ enum NotificationType {
   @JsonValue(6)
   commentTagUser,
   @JsonValue(7)
-  reactComment
+  reactComment,
+  @JsonValue(8)
+  requestMessage
 }

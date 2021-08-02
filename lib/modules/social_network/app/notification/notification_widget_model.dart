@@ -2,6 +2,7 @@ import 'package:async/async.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/chat/app/request_message/request_message.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_detail_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/notification/notification.dart';
 import 'package:meowoof/modules/social_network/domain/models/notification/notification_type.dart';
@@ -48,6 +49,7 @@ class NotificationWidgetModel extends BaseViewModel {
         pagingController.appendPage(notifications, nextPageKey);
       }
     } catch (error) {
+      printInfo(info: error.toString());
       pagingController.error = error;
     }
   }
@@ -76,6 +78,7 @@ class NotificationWidgetModel extends BaseViewModel {
         goToPost(item.postId!);
         return;
       case NotificationType.adoption:
+        return;
       case NotificationType.matting:
         goToPost(item.postId!);
         return;
@@ -87,6 +90,9 @@ class NotificationWidgetModel extends BaseViewModel {
         return;
       case NotificationType.reactComment:
         goToPost(item.postId!);
+        return;
+      case NotificationType.requestMessage:
+        Get.to(() => RequestMessagePage());
         return;
     }
   }
