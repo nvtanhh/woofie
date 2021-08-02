@@ -4,7 +4,6 @@ import 'package:meowoof/theme/ui_color.dart';
 
 class MWButton extends StatelessWidget {
   final Widget child;
-  final Widget? icon;
   final VoidCallback? onPressed;
   final VoidCallback? onLongPressed;
   final bool isDisabled;
@@ -28,7 +27,6 @@ class MWButton extends StatelessWidget {
       required this.onPressed,
       this.minHeight,
       this.minWidth,
-      this.icon,
       this.size = MWButtonSize.medium,
       this.shape,
       this.boxShadow,
@@ -52,15 +50,10 @@ class MWButton extends StatelessWidget {
     final finalOnPressed = isLoading || isDisabled ? () {} : onPressed;
     final finalOnLongPressed = isLoading || isDisabled ? () {} : onLongPressed;
 
-    var buttonChild = isLoading ? _getLoadingIndicator(textColor) : child;
+    final buttonChild = isLoading ? _getLoadingIndicator(textColor) : child;
 
-    if (icon != null && !isLoading) {
-      buttonChild = Row(
-        children: <Widget>[buttonChild],
-      );
-    }
-
-    TextStyle defaultTextStyle = _getButtonTextStyleForSize(size: size, color: textColor);
+    TextStyle defaultTextStyle =
+        _getButtonTextStyleForSize(size: size, color: textColor);
 
     if (textStyle != null) {
       defaultTextStyle = defaultTextStyle.merge(textStyle);
@@ -82,7 +75,10 @@ class MWButton extends StatelessWidget {
           minHeight: buttonMinHeight,
         ),
         decoration: BoxDecoration(
-            border: outline ? Border.all(width: borderWidth ?? 1, color: borderColor ?? textColor) : const Border(),
+            border: outline
+                ? Border.all(
+                    width: borderWidth ?? 1, color: borderColor ?? textColor)
+                : const Border(),
             boxShadow: boxShadow ?? [],
             color: finalBackgroundColor,
             borderRadius: borderRadius ?? BorderRadius.circular(50.0)),
@@ -102,7 +98,8 @@ class MWButton extends StatelessWidget {
     );
   }
 
-  TextStyle _getButtonTextStyleForSize({MWButtonSize? size, required Color color}) {
+  TextStyle _getButtonTextStyleForSize(
+      {MWButtonSize? size, required Color color}) {
     TextStyle textStyle = TextStyle(color: color);
 
     switch (size) {
@@ -121,7 +118,8 @@ class MWButton extends StatelessWidget {
     return SizedBox(
       height: 16.h,
       width: 16.w,
-      child: CircularProgressIndicator(strokeWidth: 2.0, valueColor: AlwaysStoppedAnimation<Color>(color)),
+      child: CircularProgressIndicator(
+          strokeWidth: 2.0, valueColor: AlwaysStoppedAnimation<Color>(color)),
     );
   }
 

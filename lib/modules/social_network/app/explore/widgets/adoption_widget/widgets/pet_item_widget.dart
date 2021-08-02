@@ -39,9 +39,7 @@ class PetItemWidget extends StatelessWidget {
         child: Stack(
           children: [
             ImageWithPlaceHolderWidget(
-                imageUrl: post.medias?.isEmpty ?? true
-                    ? (pet.avatarUrl ?? "")
-                    : post.medias!.first.url!,
+                imageUrl: post.medias?.isEmpty ?? true ? (pet.avatarUrl ?? "") : post.medias!.first.url!,
                 width: 165.w,
                 height: 157.h,
                 fit: BoxFit.cover,
@@ -49,8 +47,7 @@ class PetItemWidget extends StatelessWidget {
                 topRightRadius: 15.r,
                 bottomLeftRadius: 0,
                 bottomRightRadius: 0,
-                placeHolderImage:
-                    "resources/images/fallbacks/pet-avatar-fallback.jpg"),
+                placeHolderImage: "resources/images/fallbacks/pet-avatar-fallback.jpg"),
             Positioned(
               bottom: 0,
               child: Container(
@@ -111,9 +108,7 @@ class PetItemWidget extends StatelessWidget {
                               ),
                               padding: EdgeInsets.all(5.w),
                               child: Text(
-                                pet.gender?.index == 0
-                                    ? LocaleKeys.add_pet_pet_male.trans()
-                                    : LocaleKeys.add_pet_pet_female.trans(),
+                                pet.gender?.index == 0 ? LocaleKeys.add_pet_pet_male.trans() : LocaleKeys.add_pet_pet_female.trans(),
                                 style: UITextStyle.dodger_blue_10_w500,
                               ),
                             ),

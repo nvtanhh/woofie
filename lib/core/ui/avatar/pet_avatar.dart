@@ -41,8 +41,7 @@ class PetAvatar extends StatelessWidget {
       customSize: customSize,
       onPressed: onPressed,
       fit: fit,
-      placeHolderImage:
-          Assets.resources.images.fallbacks.petAvatarFallback.image(),
+      placeHolderImage: Assets.resources.images.fallbacks.petAvatarFallback.image(),
     );
   }
 }

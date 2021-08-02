@@ -29,7 +29,10 @@ class MWButtonAlert extends StatelessWidget {
       child: MWAlert(
         child: Row(children: [
           if (assetImage != null)
-            Padding(padding: const EdgeInsets.only(right: 30, left: 10, top: 10, bottom: 10), child: assetImage!.image())
+            Padding(
+                padding: const EdgeInsets.only(
+                    right: 30, left: 10, top: 10, bottom: 10),
+                child: assetImage!.image())
           else
             const SizedBox(),
           Flexible(
@@ -50,12 +53,6 @@ class MWButtonAlert extends StatelessWidget {
                   height: 20,
                 ),
                 MWButton(
-                  icon: buttonIcon != null
-                      ? MWIcon(
-                          buttonIcon!,
-                          size: MWIconSize.small,
-                        )
-                      : null,
                   isLoading: isLoading,
                   onPressed: onPressed,
                   child: Text(buttonText),

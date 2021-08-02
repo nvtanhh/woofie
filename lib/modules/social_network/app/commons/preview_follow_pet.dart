@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/button.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
@@ -37,8 +38,7 @@ class PreviewFollowPet extends StatelessWidget {
         ),
       ),
       child: Container(
-        width: 115.w,
-        height: 180.h,
+        width: 120.w,
         margin: margin,
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
         decoration: BoxDecoration(
@@ -53,7 +53,7 @@ class PreviewFollowPet extends StatelessWidget {
           color: UIColor.white,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Obx(
               () => ImageWithPlaceHolderWidget(
@@ -85,7 +85,7 @@ class PreviewFollowPet extends StatelessWidget {
             Obx(
               () => Text(
                 pet.updateSubjectValue.bio ?? "",
-                style: UITextStyle.text_body_12_w500,
+                style: UITextStyle.text_body_12_w400,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -95,27 +95,33 @@ class PreviewFollowPet extends StatelessWidget {
               height: 10.h,
             ),
             if (onFollow != null)
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Obx(
-                    () => ButtonWidget(
-                      onPress: () {
-                        isFollowing.value = !isFollowing.value;
-                        onFollow?.call(pet);
-                      },
-                      title: isFollowing.value
-                          ? LocaleKeys.profile_un_follow.trans()
-                          : LocaleKeys.profile_follow.trans(),
-                      titleStyle: UITextStyle.white_10_w600,
-                      width: 60.w,
-                      height: 22.h,
-                      backgroundColor: isFollowing.value
-                          ? UIColor.textSecondary
-                          : UIColor.primary,
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Obx(
+                      () => MWButton(
+                        onPressed: () {
+                          isFollowing.value = !isFollowing.value;
+                          onFollow?.call(pet);
+                        },
+                        textStyle: UITextStyle.white_10_w600,
+                        borderRadius: BorderRadius.circular(5.r),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5.h, horizontal: 8.w),
+                        color: isFollowing.value
+                            ? UIColor.textSecondary
+                            : UIColor.primary,
+                        minWidth: 70.w,
+                        child: Text(
+                          isFollowing.value
+                              ? LocaleKeys.profile_un_follow.trans()
+                              : LocaleKeys.profile_follow.trans(),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
           ],
         ),

@@ -73,15 +73,14 @@ class PetsWidget extends StatelessWidget {
         ),
         SizedBox(
           height: 180.h,
-          child: user.currentPets?.isEmpty == true
+          child: user.currentPets?.isEmpty ?? true
               ? isMyPets
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           width: 160.w,
-                          height: 180.h,
-                          margin: EdgeInsets.only(right: 12.w),
+                          // margin: EdgeInsets.only(right: 12.w),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.r),
                             boxShadow: const [
@@ -114,18 +113,17 @@ class PetsWidget extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
+                  : Center(
+                      child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
               : Obx(
                   () => ListView.builder(
-                    padding: EdgeInsets.only(left: 16.w),
+                    padding: EdgeInsets.only(left: 15.w, top: 3.h, bottom: 3.h),
                     itemBuilder: (context, index) {
                       if (isMyPets && index == _list.length) {
                         return InkWell(
                           onTap: () => onPressAddPet(),
                           child: Container(
-                            width: 115.w,
-                            height: 180.h,
-                            // margin: EdgeInsets.only(right: 12.w),
+                            width: 120.w,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
                               boxShadow: const [
