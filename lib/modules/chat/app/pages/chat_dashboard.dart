@@ -12,6 +12,8 @@ import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
+import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 
 class ChatDashboard extends StatefulWidget {
   const ChatDashboard({Key? key}) : super(key: key);
@@ -20,7 +22,8 @@ class ChatDashboard extends StatefulWidget {
   _ChatDashboardState createState() => _ChatDashboardState();
 }
 
-class _ChatDashboardState extends BaseViewState<ChatDashboard, ChatManagerModel> {
+class _ChatDashboardState
+    extends BaseViewState<ChatDashboard, ChatManagerModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +45,10 @@ class _ChatDashboardState extends BaseViewState<ChatDashboard, ChatManagerModel>
       ),
       centerTitle: true,
       title: Text(
-        'Nhắn tin',
+          LocaleKeys.chat_dashboard_tile.trans(),
         maxLines: 1,
-        style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w600),
+        style:
+            GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w600),
       ),
       actions: <Widget>[
         Obx(

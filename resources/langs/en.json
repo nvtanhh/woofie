@@ -176,5 +176,13 @@
     "success_description": "Create new post successful",
     "update_failed_toast": "Post update failed! Please try again latter",
     "update_success_toast": "Post updated!"
+  },
+  "chat": {
+    "dashboard_tile": "Chat",
+    "send_message_error_tile": "Error",
+    "send_message_error_description": "Can't send message. Please try again.",
+    "sender_placeholder": "Enter message...",
+    "sender_pick_media_error_tile": "Sorry",
+    "sender_pick_media_error_description": "Currently, You can only send at most 1 media each time"
   }
 }

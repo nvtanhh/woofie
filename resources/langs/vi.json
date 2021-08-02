@@ -176,5 +176,13 @@
     "success_description": "Tạo bài viết thành công",
     "update_failed_toast": "Chỉnh sửa bài viết thất bại vui long thử lại sau",
     "update_success_toast": "Đẵ chỉnh sửa bài viết"
+  },
+  "chat": {
+    "dashboard_tile": "Nhắn tin",
+    "send_message_error_tile": "Lỗi rồi",
+    "send_message_error_description": "Không thể gửi tin nhắn. Bạn vui lòng thử lại sau nhé.",
+    "sender_placeholder": "Soạn tin nhắn...",
+    "sender_pick_media_error_tile": "Xin lỗi",
+    "sender_pick_media_error_description": "Hiện tại bạn chỉ có thể chọn 1 media mỗi lần gửi"
   }
 }

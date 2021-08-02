@@ -7,6 +7,8 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/app/widgets/message/media_sender.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/theme/ui_color.dart';
+import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 
 class MessageSender extends StatelessWidget {
   final TextEditingController textController;
@@ -48,7 +50,9 @@ class MessageSender extends StatelessWidget {
             if (previewMediaMessage.isNotEmpty)
               SizedBox(
                 height: 100.h,
-                child: MediasSenderWidget(medias: previewMediaMessage, onRemoveMedia: onRemoveSeedingMedia),
+                child: MediasSenderWidget(
+                    medias: previewMediaMessage,
+                    onRemoveMedia: onRemoveSeedingMedia),
               ),
             DecoratedBox(
               decoration: BoxDecoration(
@@ -63,8 +67,8 @@ class MessageSender extends StatelessWidget {
                 ),
                 title: TextField(
                   controller: textController,
-                  decoration: const InputDecoration(
-                    hintText: 'Soạn tin nhắn...',
+                  decoration: InputDecoration(
+                    hintText: LocaleKeys.chat_sender_placeholder.trans(),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -80,7 +84,8 @@ class MessageSender extends StatelessWidget {
                 trailing: IconButton(
                   icon: MWIcon(
                     MWIcons.send,
-                    color: isCanSendMessage ? UIColor.primary : UIColor.textBody,
+                    color:
+                        isCanSendMessage ? UIColor.primary : UIColor.textBody,
                   ),
                   onPressed: isCanSendMessage ? onSendMessage : null,
                 ),
@@ -94,11 +99,15 @@ class MessageSender extends StatelessWidget {
 
   Future _pickImage() async {
     if (previewMediaMessage.isNotEmpty) {
-      Get.snackbar('Sorry', 'Currently, You can only send at most 1 image each time.',
-          backgroundColor: UIColor.accent2.withOpacity(.8), colorText: UIColor.white, duration: const Duration(seconds: 2));
+      Get.snackbar(LocaleKeys.chat_sender_pick_media_error_tile.trans(),
+          LocaleKeys.chat_sender_pick_media_error_description.trans(),
+          backgroundColor: UIColor.accent2.withOpacity(.8),
+          colorText: UIColor.white,
+          duration: const Duration(seconds: 2));
       return;
     }
-    final List<MediaFile> medias = await injector<MediaService>().pickMedias(allowMultiple: false);
+    final List<MediaFile> medias =
+        await injector<MediaService>().pickMedias(allowMultiple: false);
     if (medias.isNotEmpty) {
       onMediaPicked(medias);
     }
