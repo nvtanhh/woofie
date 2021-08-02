@@ -23,7 +23,9 @@ class NotificationWidget extends StatefulWidget {
   _NotificationWidgetState createState() => _NotificationWidgetState();
 }
 
-class _NotificationWidgetState extends BaseViewState<NotificationWidget, NotificationWidgetModel> with AutomaticKeepAliveClientMixin {
+class _NotificationWidgetState
+    extends BaseViewState<NotificationWidget, NotificationWidgetModel>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -55,7 +57,8 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                 onRefresh: () => viewModel.onRefresh(),
                 child: PagedListView<int, Notification>(
                   pagingController: viewModel.pagingController,
-                  builderDelegate: PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
+                  builderDelegate: PagedChildBuilderDelegate(
+                      itemBuilder: (context, item, index) {
                     return Dismissible(
                       key: ObjectKey(item.id),
                       background: Row(
@@ -69,6 +72,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                         }
                       },
                       child: ListTile(
+                        dense: true,
                         leading: item.actor != null
                             ? MWAvatar(
                                 avatarUrl: item.actor?.avatarUrl,
@@ -219,7 +223,8 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
   }
 
   @override
-  NotificationWidgetModel createViewModel() => injector<NotificationWidgetModel>();
+  NotificationWidgetModel createViewModel() =>
+      injector<NotificationWidgetModel>();
 
   @override
   bool get wantKeepAlive => true;

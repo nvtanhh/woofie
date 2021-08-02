@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/ui/icon.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/functional_post_item.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_body.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_header.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -12,7 +13,7 @@ class PostItem extends StatefulWidget {
   final Post post;
   final Function(Post)? onCommentClick;
   final Function(int) onLikeClick;
-  final Function(Post)? onPostClick;
+  final Function(Post) onPostClick;
   final VoidCallback onEditPost;
   final VoidCallback onDeletePost;
   final VoidCallback? onReportPost;
@@ -23,8 +24,8 @@ class PostItem extends StatefulWidget {
     required this.onLikeClick,
     required this.onEditPost,
     required this.onDeletePost,
+    required this.onPostClick,
     this.onCommentClick,
-    this.onPostClick,
     this.onReportPost,
   }) : super(key: key);
 
@@ -41,6 +42,17 @@ class _PostItemState extends State<PostItem> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.post.type != PostType.activity) {
+      return FunctionalPostItem(
+        post: widget.post,
+        onDeletePost: widget.onDeletePost,
+        onEditPost: widget.onEditPost,
+        onLikeClick: widget.onLikeClick,
+        onCommentClick: widget.onCommentClick,
+        onReportPost: widget.onReportPost,
+        onPostClick: widget.onPostClick,
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -51,7 +63,7 @@ class _PostItemState extends State<PostItem> {
           onReportPost: widget.onReportPost,
         ),
         GestureDetector(
-          onTap: () => widget.onPostClick?.call(widget.post),
+          onTap: () => widget.onPostClick.call(widget.post),
           child: PostBody(post: widget.post),
         ),
         SizedBox(
@@ -92,7 +104,9 @@ class _PostItemState extends State<PostItem> {
                 Obx(
                   () {
                     return MWIcon(
-                      widget.post.updateSubjectValue.isLiked ?? false ? MWIcons.react : MWIcons.unReact,
+                      widget.post.updateSubjectValue.isLiked ?? false
+                          ? MWIcons.react
+                          : MWIcons.unReact,
                       size: MWIconSize.small,
                     );
                   },

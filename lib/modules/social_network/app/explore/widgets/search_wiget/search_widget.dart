@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/search_bar.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
@@ -19,7 +21,8 @@ class SearchWidget extends StatefulWidget {
   _SearchWidgetState createState() => _SearchWidgetState();
 }
 
-class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> with TickerProviderStateMixin {
+class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
+    with TickerProviderStateMixin {
   @override
   void loadArguments() {
     viewModel.tabController = TabController(
@@ -39,9 +42,20 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MWSearchBar(
-                textInit: widget.textSearch,
-                onSearch: viewModel.onSearch,
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Get.back(),
+                    child: const MWIcon(MWIcons.back),
+                  ),
+                  SizedBox(width: 10.h),
+                  Expanded(
+                    child: MWSearchBar(
+                      textInit: widget.textSearch,
+                      onSearch: viewModel.onSearch,
+                    ),
+                  ),
+                ],
               ),
               TabBar(
                 tabs: [
@@ -69,7 +83,8 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> 
                       pagingController: viewModel.petPagingController,
                       follow: viewModel.followPet,
                     ),
-                    ServicesWidget(pagingController: viewModel.servicePagingController),
+                    ServicesWidget(
+                        pagingController: viewModel.servicePagingController),
                   ],
                 ),
               )

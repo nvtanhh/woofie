@@ -24,6 +24,7 @@ class NewFeedWidget extends StatefulWidget {
 class _NewFeedWidgetState
     extends BaseViewState<NewFeedWidget, NewFeedWidgetModel>
     with AutomaticKeepAliveClientMixin {
+      
   @override
   Widget build(BuildContext context) {
     return Scaffold(

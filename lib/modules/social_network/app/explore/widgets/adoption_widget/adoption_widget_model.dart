@@ -44,7 +44,8 @@ class AdoptionWidgetModel extends BaseViewModel {
     if (location != null) {
       startLoadPage();
     } else {
-      injector<ToastService>().warning(message: "message", context: Get.context!);
+      injector<ToastService>()
+          .warning(message: "message", context: Get.context!);
     }
   }
 
@@ -96,12 +97,9 @@ class AdoptionWidgetModel extends BaseViewModel {
         },
         showLoading: false,
         onFailure: (err) {
-          printInfo(info: "E================================");
           pagingController.error = err;
         },
-        onSuccess: () {
-          printInfo(info: "S================================");
-        });
+        onSuccess: () {});
   }
 
   void onItemClick(Post post) {
