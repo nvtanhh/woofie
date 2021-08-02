@@ -113,8 +113,7 @@ class PetsWidget extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Center(
-                      child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
+                  : Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
               : Obx(
                   () => ListView.builder(
                     padding: EdgeInsets.only(left: 15.w, top: 3.h, bottom: 3.h),
@@ -153,7 +152,7 @@ class PetsWidget extends StatelessWidget {
                         );
                       }
                       return PreviewFollowPet(
-                        pet: _list[index],
+                        pet: _list[index].updateSubjectValue,
                         onFollow: onFollow,
                         margin: EdgeInsets.only(right: 12.w),
                         isMyPet: isMyPets,

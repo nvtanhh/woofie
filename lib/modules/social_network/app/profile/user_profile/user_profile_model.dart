@@ -43,7 +43,8 @@ class UserProfileModel extends BaseViewModel {
   final PostService postService;
   final EventBus _eventBus;
   final LoggedInUser _loggedInUser;
-  CancelableOperation? _cancelableOperationLoadInit, _cancelableOperationLoadMorePost;
+  CancelableOperation? _cancelableOperationLoadInit,
+      _cancelableOperationLoadMorePost;
 
   UserProfileModel(
     this._getUseProfileUseacse,
@@ -84,7 +85,8 @@ class UserProfileModel extends BaseViewModel {
     await Future.wait([_getUserProfile(), _loadMorePost(nextPageKey)]);
     postService.pagingController.addPageRequestListener(
       (pageKey) {
-        _cancelableOperationLoadMorePost = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        _cancelableOperationLoadMorePost =
+            CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     isLoaded = true;
@@ -103,8 +105,10 @@ class UserProfileModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      posts = await _getPostOfUserUsecase.call(userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
-      if (postService.pagingController.itemList == null || postService.pagingController.itemList?.isEmpty == true) {
+      posts = await _getPostOfUserUsecase.call(
+          userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
+      if (postService.pagingController.itemList == null ||
+          postService.pagingController.itemList?.isEmpty == true) {
         posts.insert(
           0,
           Post(
@@ -130,7 +134,11 @@ class UserProfileModel extends BaseViewModel {
   void onFollowPet(Pet pet) {
     call(
       () => _followPetUsecase.call(pet.id),
-      onSuccess: () {},
+      onSuccess: () {
+        pet.isFollowing = !(pet.isFollowing ?? false);
+        pet.notifyUpdate();
+      },
+      showLoading: false,
     );
   }
 
@@ -140,7 +148,8 @@ class UserProfileModel extends BaseViewModel {
       () async => result = await _deletePostUsecase.call(post.id),
       onSuccess: () {
         if (result) {
-          _toastService.success(message: "Post deleted!", context: Get.context!);
+          _toastService.success(
+              message: "Post deleted!", context: Get.context!);
           postService.pagingController.itemList?.removeAt(index);
           // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
           postService.pagingController.notifyListeners();
@@ -185,11 +194,15 @@ class UserProfileModel extends BaseViewModel {
   Future<void> onWantsToContact(User targetUser) async {
     RequestContact? requestContact;
     await call(
-      () async => requestContact = await _requestContactUsecase.run(toUserUUID: targetUser.uuid!),
+      () async => requestContact =
+          await _requestContactUsecase.run(toUserUUID: targetUser.uuid!),
       onSuccess: () {
-        if (requestContact != null && requestContact?.status == RequestContactStatus.accept) {
-          injector<NavigationService>()
-              .navigateToChatRoom(user: targetUser.uuid == requestContact?.toUser?.uuid ? requestContact!.toUser : requestContact!.fromUser);
+        if (requestContact != null &&
+            requestContact?.status == RequestContactStatus.accept) {
+          injector<NavigationService>().navigateToChatRoom(
+              user: targetUser.uuid == requestContact?.toUser?.uuid
+                  ? requestContact!.toUser
+                  : requestContact!.fromUser);
           return;
         }
         injector<NavigationService>().navigateToChatDashboard();
