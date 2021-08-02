@@ -145,6 +145,7 @@ class MWIcons {
   static const play = MWIconData(nativeIcon: Icons.play_arrow_rounded);
 
   static const addOutlined = MWIconData(nativeIcon: Icons.my_library_add_outlined);
+  static const personAddOutlined = MWIconData(nativeIcon: Icons.person_add_outlined);
   // Icon with asset image
   static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);
@@ -159,6 +160,7 @@ class MWIcons {
   static final icLose = MWIconData(assetImageFile: Assets.resources.images.explore.icLose);
   static final icReact = MWIconData(assetImageFile: Assets.resources.images.explore.icReact);
   static final createChat = MWIconData(assetImageFile: Assets.resources.icons.icCreateChat);
+  static final requestMessage = MWIconData(assetImageFile: Assets.resources.icons.icRequestMessage);
 }
 
 enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }

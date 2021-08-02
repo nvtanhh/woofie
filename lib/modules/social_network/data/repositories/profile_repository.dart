@@ -1,16 +1,16 @@
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/chat/data/datasources/request_contact_datasource.dart';
+import 'package:meowoof/modules/chat/domain/models/request_contact.dart';
 import 'package:meowoof/modules/social_network/data/datasources/location_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/user_datasource.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class ProfileRepository {
@@ -18,11 +18,14 @@ class ProfileRepository {
   final PetDatasource _petDatasource;
   final PostDatasource _postDatasource;
   final LocationDatasource _locationDatasource;
+  final RequestContactDatasource _requestContactDatasource;
+
   ProfileRepository(
     this._userDatasource,
     this._petDatasource,
     this._postDatasource,
     this._locationDatasource,
+    this._requestContactDatasource,
   );
 
   Future likePost(int postId) async {
@@ -108,5 +111,9 @@ class ProfileRepository {
 
   Future<bool> deletePet(int petId) {
     return _petDatasource.deletePet(petId);
+  }
+
+  Future<RequestContact> requestContact(String toUserUUID) {
+    return _requestContactDatasource.requestContact(toUserUUID);
   }
 }

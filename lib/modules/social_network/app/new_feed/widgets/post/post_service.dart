@@ -67,12 +67,6 @@ class PostService extends BaseViewModel {
     super.initState();
   }
 
-  void onPostDeleted(int index) {
-    pagingController.itemList?.removeAt(index);
-    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-    pagingController.notifyListeners();
-  }
-
   Future onPostEdited(EditedPostData editedPostData) async {
     if (editedPostData.newAddedFiles != null && editedPostData.newAddedFiles!.isNotEmpty) {
       editedPostData.newAddedMedias = await _startUploadNewMediaFiles(editedPostData.newAddedFiles!, editedPostData.originPost);

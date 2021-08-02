@@ -10,6 +10,7 @@ import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
+import 'package:meowoof/modules/chat/domain/models/request_contact.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/events/pet/pet_deleted_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -19,6 +20,7 @@ import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_po
 import 'package:meowoof/modules/social_network/domain/usecases/profile/follow_pet_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_posts_of_user_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_user_profile_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/request_contact_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -35,6 +37,7 @@ class UserProfileModel extends BaseViewModel {
   final FollowPetUsecase _followPetUsecase;
   final DeletePostUsecase _deletePostUsecase;
   final ToastService _toastService;
+  final RequestContactUsecase _requestContactUsecase;
   late List<Post> posts;
   final RxBool _isLoaded = RxBool(false);
   final PostService postService;
@@ -52,6 +55,7 @@ class UserProfileModel extends BaseViewModel {
     this.postService,
     this._eventBus,
     this._loggedInUser,
+    this._requestContactUsecase,
   );
 
   @override
@@ -178,16 +182,34 @@ class UserProfileModel extends BaseViewModel {
     super.disposeState();
   }
 
-  Future<void> onWantsToContact(User user) async {
-    final isError = await injector<NavigationService>().navigateToChatRoom(user: user);
-    if (isError != null && isError) {
-      Get.snackbar(
-        "Sorry",
-        "Unable to init chat room, please try again later.",
-        duration: const Duration(seconds: 1),
-        backgroundColor: UIColor.danger,
-        colorText: UIColor.white,
-      );
-    }
+  Future<void> onWantsToContact(User targetUser) async {
+    RequestContact? requestContact;
+    await call(
+      () async => requestContact = await _requestContactUsecase.run(toUserUUID: targetUser.uuid!),
+      onSuccess: () {
+        if (requestContact != null && requestContact?.status == RequestContactStatus.accept) {
+          injector<NavigationService>()
+              .navigateToChatRoom(user: targetUser.uuid == requestContact?.toUser?.uuid ? requestContact!.toUser : requestContact!.fromUser);
+          return;
+        }
+        injector<NavigationService>().navigateToChatDashboard();
+        Get.snackbar(
+          "Thành công",
+          "Đã yêu cầu, chờ xác nhận.",
+          duration: const Duration(seconds: 1),
+          backgroundColor: UIColor.accent2,
+          colorText: UIColor.white,
+        );
+      },
+      onFailure: (err) {
+        Get.snackbar(
+          "Sorry",
+          "Unable to init chat room, please try again later.",
+          duration: const Duration(seconds: 1),
+          backgroundColor: UIColor.danger,
+          colorText: UIColor.white,
+        );
+      },
+    );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 

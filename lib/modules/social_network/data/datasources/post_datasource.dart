@@ -1,7 +1,7 @@
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
-import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
@@ -12,10 +12,10 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 @lazySingleton
 class PostDatasource {
   final HasuraConnect _hasuraConnect;
-  final UserStorage _userStorage;
+  final LoggedInUser _loggedInUser;
   User? user;
 
-  PostDatasource(this._hasuraConnect, this._userStorage);
+  PostDatasource(this._hasuraConnect, this._loggedInUser);
 
   Future<List<Post>> getPosts({int limit = 10, int offset = 0, DateTime? lastValue}) async {
     await Future.delayed(const Duration(seconds: 1));
@@ -23,7 +23,7 @@ class PostDatasource {
   }
 
   Future<List<Comment>> getCommentsInPost(int postId, int limit, int offset) async {
-    user = _userStorage.get();
+    user = _loggedInUser.user;
     final query = """
     query MyQuery {
       comments(where: {post_id: {_eq: $postId}}, order_by: {created_at: desc}, offset: $offset, limit: $limit) {

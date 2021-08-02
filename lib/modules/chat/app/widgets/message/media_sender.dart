@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/post_media_previewer.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MediasSenderWidget extends StatelessWidget {
   final List<MediaFile> medias;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:meowoof/modules/chat/app/widgets/message/message_body_media.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
-import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class MessageBody extends StatelessWidget {

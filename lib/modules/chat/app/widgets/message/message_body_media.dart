@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:meowoof/assets.gen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
@@ -10,7 +10,6 @@ import 'package:meowoof/modules/social_network/app/save_post/widgets/post_image_
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path/path.dart';
 
 class MessageBodyMedia extends StatelessWidget {
