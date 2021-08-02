@@ -7,6 +7,7 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
 import 'package:meowoof/modules/chat/app/request_message/request_message.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
+import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/request_message/count_user_request_message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_chat_rooms_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
