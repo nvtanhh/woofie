@@ -75,8 +75,8 @@ class LoginWidgetModel extends BaseViewModel {
           await login();
           if (firebaseUser != null && !firebaseUser!.emailVerified) {
             Get.snackbar(
-              "Verify your email",
-              "Your email address has not been verified. Please verify your email address to continue.",
+              LocaleKeys.login_verify_email_error_title.trans(),
+              LocaleKeys.login_verify_email_error_description.trans(),
               duration: const Duration(seconds: 4),
               backgroundColor: UIColor.danger,
               colorText: UIColor.white,
@@ -99,8 +99,8 @@ class LoginWidgetModel extends BaseViewModel {
             }
           } else {
             Get.snackbar(
-              "Error",
-              "User not found!",
+              LocaleKeys.login_error_title.trans(),
+              LocaleKeys.login_no_user_found_error_description.trans(),
               backgroundColor: UIColor.primary,
               colorText: UIColor.white,
             );
@@ -110,12 +110,13 @@ class LoginWidgetModel extends BaseViewModel {
           if (error is firebase.FirebaseAuthException) {
             String? mess;
             if (error.code == 'user-not-found') {
-              mess = 'No user found for that email.';
+              mess = LocaleKeys.login_no_user_found_error_firebase_description
+                  .trans();
             } else if (error.code == 'wrong-password') {
-              mess = 'Wrong password provided for that user.';
+              mess = LocaleKeys.login_wrong_password_error_description.trans();
             }
             Get.snackbar(
-              "Error",
+              LocaleKeys.login_error_title.trans(),
               mess ?? error.message ?? error.code,
               backgroundColor: UIColor.danger,
               colorText: UIColor.white,

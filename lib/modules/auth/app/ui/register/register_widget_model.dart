@@ -57,21 +57,27 @@ class RegisterWidgetModel extends BaseViewModel {
         onSuccess: () {
           Get.back();
           Get.snackbar(
-            "Almost there 🎉",
-            'You have been registered successfully!\nPlease check your email to verify your account.',
+            LocaleKeys.register_success_message_title.trans(),
+            LocaleKeys.register_success_message_description.trans(),
             duration: const Duration(seconds: 3),
             backgroundColor: UIColor.accent2,
             colorText: UIColor.white,
           );
         },
-        onFailure: (err) {
-          Get.snackbar(
-            "Error",
-            (err as FirebaseAuthException).code,
-            duration: const Duration(seconds: 4),
-            backgroundColor: UIColor.primary,
-            colorText: UIColor.white,
-          );
+        onFailure: (error) {
+          if (error is FirebaseAuthException) {
+            String? mess;
+            if (error.code == 'email-already-in-use') {
+              mess = LocaleKeys.register_email_already_in_use_error_description
+                  .trans();
+            }
+            Get.snackbar(
+              LocaleKeys.register_error_title.trans(),
+              mess ?? error.code,
+              backgroundColor: UIColor.danger,
+              colorText: UIColor.white,
+            );
+          }
         },
       );
     }

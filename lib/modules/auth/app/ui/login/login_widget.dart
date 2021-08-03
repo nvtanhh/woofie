@@ -132,7 +132,11 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                               MWIcons.reVerifyEmail,
                                             ),
                                             Text(
-                                              'Resend',
+                                              viewModel.isResendedVerify.value
+                                                  ? LocaleKeys.login_resend
+                                                      .trans()
+                                                  : LocaleKeys.login_resent
+                                                      .trans(),
                                               style: TextStyle(
                                                 fontSize: 10,
                                                 color: viewModel
