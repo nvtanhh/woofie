@@ -80,8 +80,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                         children: [
                           TextFormField(
                             controller: viewModel.emailEditingController,
-                            validator: (email) =>
-                                viewModel.emailValidate(email),
+                            validator: (email) => viewModel.emailValidate(email),
                             decoration: InputDecoration(
                               hintText: LocaleKeys.login_email.trans(),
                               border: OutlineInputBorder(
@@ -122,27 +121,18 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                               suffixIcon: Obx(
                                 () => viewModel.isShowingResendEmailIcon.value
                                     ? GestureDetector(
-                                        onTap: viewModel
-                                            .onWantsToResendVerifyEmail,
+                                        onTap: viewModel.onWantsToResendVerifyEmail,
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             MWIcon(
                                               MWIcons.reVerifyEmail,
                                             ),
                                             Text(
-                                              viewModel.isResendedVerify.value
-                                                  ? LocaleKeys.login_resend
-                                                      .trans()
-                                                  : LocaleKeys.login_resent
-                                                      .trans(),
+                                              viewModel.isResendedVerify.value ? LocaleKeys.login_resend.trans() : LocaleKeys.login_resent.trans(),
                                               style: TextStyle(
                                                 fontSize: 10,
-                                                color: viewModel
-                                                        .isResendedVerify.value
-                                                    ? UIColor.accent2
-                                                    : UIColor.textBody,
+                                                color: viewModel.isResendedVerify.value ? UIColor.accent2 : UIColor.textBody,
                                               ),
                                             )
                                           ],
@@ -161,8 +151,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                           Obx(
                             () => TextFormField(
                               controller: viewModel.passwordEditingController,
-                              validator: (password) =>
-                                  viewModel.passwordValidate(password),
+                              validator: (password) => viewModel.passwordValidate(password),
                               decoration: InputDecoration(
                                 hintText: LocaleKeys.login_password.trans(),
                                 border: OutlineInputBorder(
@@ -204,9 +193,7 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                   onTap: viewModel.onEyeClick,
                                   child: Obx(
                                     () => Icon(
-                                      !viewModel.showPassword
-                                          ? Icons.visibility_off_rounded
-                                          : Icons.visibility_rounded,
+                                      !viewModel.showPassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                                     ),
                                   ),
                                 ),

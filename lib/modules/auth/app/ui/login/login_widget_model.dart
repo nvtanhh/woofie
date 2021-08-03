@@ -110,8 +110,7 @@ class LoginWidgetModel extends BaseViewModel {
           if (error is firebase.FirebaseAuthException) {
             String? mess;
             if (error.code == 'user-not-found') {
-              mess = LocaleKeys.login_no_user_found_error_firebase_description
-                  .trans();
+              mess = LocaleKeys.login_no_user_found_error_firebase_description.trans();
             } else if (error.code == 'wrong-password') {
               mess = LocaleKeys.login_wrong_password_error_description.trans();
             }
