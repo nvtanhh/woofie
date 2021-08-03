@@ -31,6 +31,8 @@ class LoginWidgetModel extends BaseViewModel {
   final UpdateTokenNotifyUsecase _updateTokenNotifyUsecase;
   final LoggedInUser _loggedInUser;
 
+  final RxBool isShowingResendEmailIcon = RxBool(false);
+  final RxBool isResendedVerify = RxBool(false);
   User? _user;
 
   LoginWidgetModel(
@@ -71,6 +73,17 @@ class LoginWidgetModel extends BaseViewModel {
       call(
         () async {
           await login();
+          if (firebaseUser != null && !firebaseUser!.emailVerified) {
+            Get.snackbar(
+              "Verify your email",
+              "Your email address has not been verified. Please verify your email address to continue.",
+              duration: const Duration(seconds: 4),
+              backgroundColor: UIColor.danger,
+              colorText: UIColor.white,
+            );
+            isShowingResendEmailIcon.value = true;
+            throw Error();
+          }
           if (firebaseUser != null) {
             _user = await _getUserWithUuidUsecase.call(firebaseUser!.uid);
           }
@@ -88,23 +101,34 @@ class LoginWidgetModel extends BaseViewModel {
             Get.snackbar(
               "Error",
               "User not found!",
-              duration: const Duration(seconds: 4),
               backgroundColor: UIColor.primary,
               colorText: UIColor.white,
             );
           }
         },
         onFailure: (error) {
-          Get.snackbar(
-            "Error",
-            (error as firebase.FirebaseAuthException).message ?? error.code,
-            duration: const Duration(seconds: 4),
-            backgroundColor: UIColor.danger,
-            colorText: UIColor.white,
-          );
+          if (error is firebase.FirebaseAuthException) {
+            String? mess;
+            if (error.code == 'user-not-found') {
+              mess = 'No user found for that email.';
+            } else if (error.code == 'wrong-password') {
+              mess = 'Wrong password provided for that user.';
+            }
+            Get.snackbar(
+              "Error",
+              mess ?? error.message ?? error.code,
+              backgroundColor: UIColor.danger,
+              colorText: UIColor.white,
+            );
+          }
         },
       );
     }
+  }
+
+  void onWantsToResendVerifyEmail() {
+    unawaited(firebaseUser!.sendEmailVerification());
+    isResendedVerify.value = true;
   }
 
   Future updateTokenNotify(String userUUID) async {

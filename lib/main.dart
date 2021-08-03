@@ -27,8 +27,7 @@ Future main() async {
   setupOneSignal();
   // set up google_fonts
   LicenseRegistry.addLicense(() async* {
-    final license =
-        await rootBundle.loadString('resources/google_fonts/OFL.txt');
+    final license = await rootBundle.loadString('resources/google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
   // setting status bar color
@@ -98,21 +97,17 @@ void setupOneSignal() {
   );
   OneSignal.shared.setNotificationOpenedHandler((openedResult) {
     try {
-      int? postId =
-          openedResult.notification.additionalData?["post_id"] as int?;
-      int? postType =
-          openedResult.notification.additionalData?["post_type"] as int?;
+      int? postId = openedResult.notification.additionalData?["post_id"] as int?;
+      int? postType = openedResult.notification.additionalData?["post_type"] as int?;
       if (postId != null) {
         if (postType != null) {
           if (postType == 3) {
-            Get.to(() => AdoptionPetDetailWidget(
-                post: Post(id: postId, type: PostType.lose, uuid: "")));
+            Get.to(() => AdoptionPetDetailWidget(post: Post(id: postId, type: PostType.lose, uuid: "")));
           } else {
             Get.to(() => const ChatDashboard());
           }
         } else {
-          Get.to(() => PostDetail(
-              post: Post(id: postId, type: PostType.activity, uuid: "")));
+          Get.to(() => PostDetail(post: Post(id: postId, type: PostType.activity, uuid: "")));
         }
       } else {
         Get.to(() => RequestMessagePage());

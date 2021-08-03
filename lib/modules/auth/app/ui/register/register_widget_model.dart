@@ -51,10 +51,18 @@ class RegisterWidgetModel extends BaseViewModel {
     if (formKey.currentState?.validate() == true) {
       call(
         () async {
-          user = await _registerUsecase.call(emailEditingController.text, passwordEditingController.text, nameEditingController.text);
+          user = await _registerUsecase.call(emailEditingController.text,
+              passwordEditingController.text, nameEditingController.text);
         },
         onSuccess: () {
-          Fluttertoast.showToast(msg: "Đăng ký thành công");
+          Get.back();
+          Get.snackbar(
+            "Almost there 🎉",
+            'You have been registered successfully!\nPlease check your email to verify your account.',
+            duration: const Duration(seconds: 3),
+            backgroundColor: UIColor.accent2,
+            colorText: UIColor.white,
+          );
         },
         onFailure: (err) {
           Get.snackbar(

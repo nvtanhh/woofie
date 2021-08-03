@@ -97,7 +97,8 @@ class MWIcon extends StatelessWidget {
         color: iconColor,
       );
     } else {
-      return iconData.assetImageFile!.image(height: iconSize, width: iconSize, fit: BoxFit.cover);
+      return iconData.assetImageFile!
+          .image(height: iconSize, width: iconSize, fit: BoxFit.cover);
     }
   }
 }
@@ -119,7 +120,8 @@ class MWIcons {
   static const bookmark = MWIconData(nativeIcon: Icons.bookmark);
   static const addImage = MWIconData(nativeIcon: Icons.add_photo_alternate);
   static const location = MWIconData(nativeIcon: Icons.location_on_rounded);
-  static const notificaitonImportant = MWIconData(nativeIcon: Icons.notification_important_rounded);
+  static const notificaitonImportant =
+      MWIconData(nativeIcon: Icons.notification_important_rounded);
   static const save = MWIconData(nativeIcon: Icons.security_rounded);
   static const moreVerical = MWIconData(nativeIcon: Icons.more_vert_rounded);
   static const moreHoriz = MWIconData(nativeIcon: Icons.more_horiz_rounded);
@@ -129,14 +131,18 @@ class MWIcons {
   static const sad = MWIconData(nativeIcon: Icons.sentiment_dissatisfied);
   static const refresh = MWIconData(nativeIcon: Icons.refresh);
   static const checkCircleSelected = MWIconData(nativeIcon: Icons.check_circle);
-  static const checkCircle = MWIconData(nativeIcon: Icons.radio_button_unchecked);
+  static const checkCircle =
+      MWIconData(nativeIcon: Icons.radio_button_unchecked);
   static const delete = MWIconData(nativeIcon: Icons.delete_rounded);
   static const edit = MWIconData(nativeIcon: Icons.edit);
   static const report = MWIconData(nativeIcon: Icons.report);
-  static const arrowDown = MWIconData(nativeIcon: Icons.keyboard_arrow_down_rounded);
+  static const arrowDown =
+      MWIconData(nativeIcon: Icons.keyboard_arrow_down_rounded);
   static const warning = MWIconData(nativeIcon: Icons.warning_amber_outlined);
-  static const block = MWIconData(nativeIcon: Icons.person_remove_alt_1_outlined);
-  static const doubleArrow = MWIconData(nativeIcon: Icons.double_arrow_outlined);
+  static const block =
+      MWIconData(nativeIcon: Icons.person_remove_alt_1_outlined);
+  static const doubleArrow =
+      MWIconData(nativeIcon: Icons.double_arrow_outlined);
   static const calendar = MWIconData(nativeIcon: Icons.calendar_today_outlined);
   static const cancel = MWIconData(nativeIcon: Icons.close);
   static const retry = MWIconData(nativeIcon: Icons.refresh);
@@ -144,23 +150,48 @@ class MWIcons {
   static const info = MWIconData(nativeIcon: Icons.info_rounded);
   static const play = MWIconData(nativeIcon: Icons.play_arrow_rounded);
 
-  static const addOutlined = MWIconData(nativeIcon: Icons.my_library_add_outlined);
-  static const personAddOutlined = MWIconData(nativeIcon: Icons.person_add_outlined);
+  static const addOutlined =
+      MWIconData(nativeIcon: Icons.my_library_add_outlined);
+  static const personAddOutlined =
+      MWIconData(nativeIcon: Icons.person_add_outlined);
   // Icon with asset image
-  static final add = MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
-  static final message = MWIconData(assetImageFile: Assets.resources.icons.icMessage);
-  static final react = MWIconData(assetImageFile: Assets.resources.icons.icReact);
-  static final unReact = MWIconData(assetImageFile: Assets.resources.icons.icUnreact);
-  static final comment = MWIconData(assetImageFile: Assets.resources.icons.icComment);
-  static final petTag = MWIconData(assetImageFile: Assets.resources.icons.icTagPet);
-  static final otherInformation = MWIconData(assetImageFile: Assets.resources.icons.icOtherInfomation);
-  static final petOwners = MWIconData(assetImageFile: Assets.resources.icons.icPetOwners);
-  static final icAdoption = MWIconData(assetImageFile: Assets.resources.images.explore.icAdoption);
-  static final icMatting = MWIconData(assetImageFile: Assets.resources.images.explore.icMatting);
-  static final icLose = MWIconData(assetImageFile: Assets.resources.images.explore.icLose);
-  static final icReact = MWIconData(assetImageFile: Assets.resources.images.explore.icReact);
-  static final createChat = MWIconData(assetImageFile: Assets.resources.icons.icCreateChat);
-  static final requestMessage = MWIconData(assetImageFile: Assets.resources.icons.icRequestMessage);
+  static final add =
+      MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
+  static final message =
+      MWIconData(assetImageFile: Assets.resources.icons.icMessage);
+  static final react =
+      MWIconData(assetImageFile: Assets.resources.icons.icReact);
+  static final unReact =
+      MWIconData(assetImageFile: Assets.resources.icons.icUnreact);
+  static final comment =
+      MWIconData(assetImageFile: Assets.resources.icons.icComment);
+  static final petTag =
+      MWIconData(assetImageFile: Assets.resources.icons.icTagPet);
+  static final otherInformation =
+      MWIconData(assetImageFile: Assets.resources.icons.icOtherInfomation);
+  static final petOwners =
+      MWIconData(assetImageFile: Assets.resources.icons.icPetOwners);
+  static final icAdoption =
+      MWIconData(assetImageFile: Assets.resources.images.explore.icAdoption);
+  static final icMatting =
+      MWIconData(assetImageFile: Assets.resources.images.explore.icMatting);
+  static final icLose =
+      MWIconData(assetImageFile: Assets.resources.images.explore.icLose);
+  static final icReact =
+      MWIconData(assetImageFile: Assets.resources.images.explore.icReact);
+  static final createChat =
+      MWIconData(assetImageFile: Assets.resources.icons.icCreateChat);
+  static final requestMessage =
+      MWIconData(assetImageFile: Assets.resources.icons.icRequestMessage);
+  static final reVerifyEmail =
+      MWIconData(assetImageFile: Assets.resources.icons.icReVerify);
 }
 
-enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }
+enum MWIconThemeColor {
+  primary,
+  primaryText,
+  primaryAccent,
+  danger,
+  success,
+  secondaryText
+}

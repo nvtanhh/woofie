@@ -44,8 +44,7 @@ class AdoptionWidgetModel extends BaseViewModel {
     if (location != null) {
       startLoadPage();
     } else {
-      injector<ToastService>()
-          .warning(message: "message", context: Get.context!);
+      injector<ToastService>().warning(message: "message", context: Get.context!);
     }
   }
 

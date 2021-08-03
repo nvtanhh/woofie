@@ -143,8 +143,7 @@ class MWAvatar extends StatelessWidget {
     return SizedBox(
       height: avatarSize.h,
       width: avatarSize.w,
-      child: placeHolderImage ??
-          Assets.resources.images.fallbacks.avatarFallback.image(),
+      child: placeHolderImage ?? Assets.resources.images.fallbacks.avatarFallback.image(),
     );
   }
 }

@@ -21,8 +21,7 @@ class SearchWidget extends StatefulWidget {
   _SearchWidgetState createState() => _SearchWidgetState();
 }
 
-class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
-    with TickerProviderStateMixin {
+class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> with TickerProviderStateMixin {
   @override
   void loadArguments() {
     viewModel.tabController = TabController(
@@ -83,8 +82,7 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
                       pagingController: viewModel.petPagingController,
                       follow: viewModel.followPet,
                     ),
-                    ServicesWidget(
-                        pagingController: viewModel.servicePagingController),
+                    ServicesWidget(pagingController: viewModel.servicePagingController),
                   ],
                 ),
               )

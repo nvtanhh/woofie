@@ -15,8 +15,7 @@ class SplashWidget extends StatefulWidget {
   _SplashWidgetState createState() => _SplashWidgetState();
 }
 
-class _SplashWidgetState
-    extends BaseViewState<SplashWidget, SplashWidgetModel> {
+class _SplashWidgetState extends BaseViewState<SplashWidget, SplashWidgetModel> {
   @override
   void loadArguments() {
     viewModel.checkLogged();
