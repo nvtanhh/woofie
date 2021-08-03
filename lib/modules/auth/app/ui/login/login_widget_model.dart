@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/register/register_widget.dart';
@@ -76,9 +77,8 @@ class LoginWidgetModel extends BaseViewModel {
         },
         onSuccess: () async {
           if (_user != null) {
-            await _saveUserToLocalUsecase.call(_user!);
-            await _loggedInUser.setLoggedUser(_user!);
-            await updateTokenNotify(_user!.uuid!);
+            unawaited(_loggedInUser.setLoggedUser(_user!));
+            unawaited(updateTokenNotify(_user!.uuid!));
             if (!_user!.isHavePets) {
               await Get.offAll(() => const AddPetWidget());
             } else {
@@ -99,7 +99,7 @@ class LoginWidgetModel extends BaseViewModel {
             "Error",
             (error as firebase.FirebaseAuthException).message ?? error.code,
             duration: const Duration(seconds: 4),
-            backgroundColor: UIColor.primary,
+            backgroundColor: UIColor.danger,
             colorText: UIColor.white,
           );
         },
