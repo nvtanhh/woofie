@@ -15,6 +15,7 @@ class LoggedInUser {
 
   Future<void> setLoggedUser(User user) async {
     _loggedInUser = user;
+    _userStorage.set(user);
   }
 
   User? get user => _loggedInUser;
