@@ -50,9 +50,7 @@ class MessageSender extends StatelessWidget {
             if (previewMediaMessage.isNotEmpty)
               SizedBox(
                 height: 100.h,
-                child: MediasSenderWidget(
-                    medias: previewMediaMessage,
-                    onRemoveMedia: onRemoveSeedingMedia),
+                child: MediasSenderWidget(medias: previewMediaMessage, onRemoveMedia: onRemoveSeedingMedia),
               ),
             DecoratedBox(
               decoration: BoxDecoration(
@@ -84,8 +82,7 @@ class MessageSender extends StatelessWidget {
                 trailing: IconButton(
                   icon: MWIcon(
                     MWIcons.send,
-                    color:
-                        isCanSendMessage ? UIColor.primary : UIColor.textBody,
+                    color: isCanSendMessage ? UIColor.primary : UIColor.textBody,
                   ),
                   onPressed: isCanSendMessage ? onSendMessage : null,
                 ),
@@ -99,15 +96,11 @@ class MessageSender extends StatelessWidget {
 
   Future _pickImage() async {
     if (previewMediaMessage.isNotEmpty) {
-      Get.snackbar(LocaleKeys.chat_sender_pick_media_error_tile.trans(),
-          LocaleKeys.chat_sender_pick_media_error_description.trans(),
-          backgroundColor: UIColor.accent2.withOpacity(.8),
-          colorText: UIColor.white,
-          duration: const Duration(seconds: 2));
+      Get.snackbar(LocaleKeys.chat_sender_pick_media_error_tile.trans(), LocaleKeys.chat_sender_pick_media_error_description.trans(),
+          backgroundColor: UIColor.accent2.withOpacity(.8), colorText: UIColor.white, duration: const Duration(seconds: 2));
       return;
     }
-    final List<MediaFile> medias =
-        await injector<MediaService>().pickMedias(allowMultiple: false);
+    final List<MediaFile> medias = await injector<MediaService>().pickMedias(allowMultiple: false);
     if (medias.isNotEmpty) {
       onMediaPicked(medias);
     }

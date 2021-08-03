@@ -11,11 +11,7 @@ class PostTypeChoseWidget extends StatelessWidget {
   final Function(PostType) onPostTypeChosen;
   final PostType chosenPostType;
 
-  const PostTypeChoseWidget(
-      {Key? key,
-      required this.onPostTypeChosen,
-      this.chosenPostType = PostType.activity})
-      : super(key: key);
+  const PostTypeChoseWidget({Key? key, required this.onPostTypeChosen, this.chosenPostType = PostType.activity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +45,7 @@ class PostTypeChoseWidget extends StatelessWidget {
             onChanged: (value) {
               onPostTypeChosen(value!);
             },
-            items: PostType.values
-                .map((type) => _buildDropdownItem(type))
-                .toList(),
+            items: PostType.values.map((type) => _buildDropdownItem(type)).toList(),
           ),
         ),
       ],
@@ -63,8 +57,7 @@ class PostTypeChoseWidget extends StatelessWidget {
       value: type,
       child: Text(
         getPostTypeTile(type),
-        style:
-            UITextStyle.body_12_medium.apply(color: getTextColorByType(type)),
+        style: UITextStyle.body_12_medium.apply(color: getTextColorByType(type)),
       ),
     );
   }

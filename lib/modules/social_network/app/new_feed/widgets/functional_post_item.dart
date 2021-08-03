@@ -43,9 +43,7 @@ class FunctionalPostItem extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: 50.h),
             child: ImageWithPlaceHolderWidget(
-              imageUrl: post.medias?.isEmpty ?? true
-                  ? (post.taggegPets?.first.avatarUrl ?? '')
-                  : post.medias!.first.url!,
+              imageUrl: post.medias?.isEmpty ?? true ? (post.taggegPets?.first.avatarUrl ?? '') : post.medias!.first.url!,
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
@@ -53,8 +51,7 @@ class FunctionalPostItem extends StatelessWidget {
               topRightRadius: 20.r,
               bottomLeftRadius: 0,
               bottomRightRadius: 0,
-              placeHolderImage:
-                  "resources/images/fallbacks/pet-avatar-fallback.jpg",
+              placeHolderImage: "resources/images/fallbacks/pet-avatar-fallback.jpg",
             ),
           ),
           Positioned(
@@ -122,8 +119,7 @@ class FunctionalPostItem extends StatelessWidget {
                                     color: UIColor.pattensBlue2,
                                     borderRadius: BorderRadius.circular(5.r),
                                   ),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8.w, vertical: 6.h),
+                                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
                                   child: Text(
                                     post.taggegPets?.first.gender?.index == 0
                                         ? LocaleKeys.add_pet_pet_male.trans()
@@ -139,11 +135,9 @@ class FunctionalPostItem extends StatelessWidget {
                                     color: UIColor.whisper,
                                     borderRadius: BorderRadius.circular(5.r),
                                   ),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8.w, vertical: 6.h),
+                                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
                                   child: Text(
-                                    DateTimeHelper.calcAge(
-                                        post.taggegPets?.first.dob),
+                                    DateTimeHelper.calcAge(post.taggegPets?.first.dob),
                                     style: UITextStyle.text_body_12_w500,
                                   ),
                                 )
