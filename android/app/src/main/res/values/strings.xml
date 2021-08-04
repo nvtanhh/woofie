@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MeoWoof</string>
+    <string name="app_name">Woofie</string>
 
     <!-- Replace "000000000000" with your Facebook App ID here. -->
-    <string name="facebook_app_id">901000614022097</string>
+    <string name="facebook_app_id">4010319089091375</string>
 
     <!--
       Replace "000000000000" with your Facebook App ID here.
       **NOTE**: The scheme needs to start with `fb` and then your ID.
     -->
-    <string name="fb_login_protocol_scheme">901000614022097</string>
+    <string name="fb_login_protocol_scheme">4010319089091375</string>
 </resources>

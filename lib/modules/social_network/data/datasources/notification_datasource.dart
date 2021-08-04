@@ -23,7 +23,13 @@ class NotificationDatasource {
         actor {
           id
           name
+          uuid
           avatar_url
+        }
+        pet {
+          id
+          name
+          uuid
         }
       }
     }
