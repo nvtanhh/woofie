@@ -14,7 +14,15 @@
     "no_account": "Không có tài khoản?",
     "register_now": "Đăng ký ngay!",
     "email_invalid": "Email không hợp lệ!",
-    "password_invalid": "Mật khẩu không hợp lệ! Phải dài hơn 8 ký tự."
+    "password_invalid": "Mật khẩu không hợp lệ! Phải dài hơn 8 ký tự.",
+    "resend": "Gửi lại",
+    "resent": "Đã gửi",
+    "error_title": "Lỗi rồi",
+    "verify_email_error_title": "Xác minh tài khoản",
+    "verify_email_error_description": "Tài khoản của bạn chưa được xác minh. Vui lòng xác minh địa chỉ email để tiếp tục sử dụng.",
+    "no_user_found_error_firebase_description": "Không tim thấy người dùng",
+    "wrong_password_error_description": "Sai mật khẩu.",
+    "no_user_found_error_description": "Không tim thấy người dùng"
   },
   "register": {
     "register": "Đăng ký",
@@ -22,7 +30,11 @@
     "have_account": "Đã có tài khoản?",
     "login": "Đăng nhập",
     "name_account": "Tên tài khoản",
-    "empty": "Không được để trống"
+    "empty": "Không được để trống",
+    "success_message_title": "Chúc mừng 🎉",
+    "success_message_description": "Bạn đã đăng ký tài khoản thành công!\nVui lòng kiểm tra email để xác mình tài khoản.",
+    "error_title": "Lỗi rồi",
+    "email_already_in_use_error_description": "Email này đã được sử dụng. Vui lòng dùng email khác."
   },
   "add_pet": {
     "add_pet": "Thêm thú cưng",

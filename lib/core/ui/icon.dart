@@ -161,6 +161,7 @@ class MWIcons {
   static final icReact = MWIconData(assetImageFile: Assets.resources.images.explore.icReact);
   static final createChat = MWIconData(assetImageFile: Assets.resources.icons.icCreateChat);
   static final requestMessage = MWIconData(assetImageFile: Assets.resources.icons.icRequestMessage);
+  static final reVerifyEmail = MWIconData(assetImageFile: Assets.resources.icons.icReVerify);
 }
 
 enum MWIconThemeColor { primary, primaryText, primaryAccent, danger, success, secondaryText }

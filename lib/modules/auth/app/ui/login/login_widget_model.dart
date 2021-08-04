@@ -31,6 +31,8 @@ class LoginWidgetModel extends BaseViewModel {
   final UpdateTokenNotifyUsecase _updateTokenNotifyUsecase;
   final LoggedInUser _loggedInUser;
 
+  final RxBool isShowingResendEmailIcon = RxBool(false);
+  final RxBool isResendedVerify = RxBool(false);
   User? _user;
 
   LoginWidgetModel(
@@ -71,6 +73,17 @@ class LoginWidgetModel extends BaseViewModel {
       call(
         () async {
           await login();
+          if (firebaseUser != null && !firebaseUser!.emailVerified) {
+            Get.snackbar(
+              LocaleKeys.login_verify_email_error_title.trans(),
+              LocaleKeys.login_verify_email_error_description.trans(),
+              duration: const Duration(seconds: 4),
+              backgroundColor: UIColor.danger,
+              colorText: UIColor.white,
+            );
+            isShowingResendEmailIcon.value = true;
+            throw Error();
+          }
           if (firebaseUser != null) {
             _user = await _getUserWithUuidUsecase.call(firebaseUser!.uid);
           }
@@ -86,25 +99,36 @@ class LoginWidgetModel extends BaseViewModel {
             }
           } else {
             Get.snackbar(
-              "Error",
-              "User not found!",
-              duration: const Duration(seconds: 4),
+              LocaleKeys.login_error_title.trans(),
+              LocaleKeys.login_no_user_found_error_description.trans(),
               backgroundColor: UIColor.primary,
               colorText: UIColor.white,
             );
           }
         },
         onFailure: (error) {
-          Get.snackbar(
-            "Error",
-            (error as firebase.FirebaseAuthException).message ?? error.code,
-            duration: const Duration(seconds: 4),
-            backgroundColor: UIColor.danger,
-            colorText: UIColor.white,
-          );
+          if (error is firebase.FirebaseAuthException) {
+            String? mess;
+            if (error.code == 'user-not-found') {
+              mess = LocaleKeys.login_no_user_found_error_firebase_description.trans();
+            } else if (error.code == 'wrong-password') {
+              mess = LocaleKeys.login_wrong_password_error_description.trans();
+            }
+            Get.snackbar(
+              LocaleKeys.login_error_title.trans(),
+              mess ?? error.message ?? error.code,
+              backgroundColor: UIColor.danger,
+              colorText: UIColor.white,
+            );
+          }
         },
       );
     }
+  }
+
+  void onWantsToResendVerifyEmail() {
+    unawaited(firebaseUser!.sendEmailVerification());
+    isResendedVerify.value = true;
   }
 
   Future updateTokenNotify(String userUUID) async {

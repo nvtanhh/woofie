@@ -14,7 +14,15 @@
     "no_account": "No account?",
     "register_now": "Register now!",
     "email_invalid": "Email invalid",
-    "password_invalid": "Password invalid! Must be longer 8 characters."
+    "password_invalid": "Password invalid! Must be longer 8 characters.",
+    "resend": "Resend",
+    "resent": "Resent",
+    "error_title": "Error",
+    "verify_email_error_title": "Verify your account",
+    "verify_email_error_description": "Your account address has not been verified. Please verify your email address to continue.",
+    "no_user_found_error_firebase_description": "No user found for that email.",
+    "wrong_password_error_description": "Wrong password provided for that user.",
+    "no_user_found_error_description": "No user found."
   },
   "register": {
     "register": "Register",
@@ -22,7 +30,11 @@
     "have_account": "Have account?",
     "login": "Login",
     "name_account": "Name",
-    "empty": "Not empty!"
+    "empty": "Not empty!",
+    "success_message_title": "Almost there 🎉",
+    "success_message_description": "You have been registered successfully!\nPlease check your email to verify your account.",
+    "error_title": "Error",
+    "email_already_in_use_error_description": "This email is already in use. Please use another one."
   },
   "add_pet": {
     "add_pet": "Add pet",

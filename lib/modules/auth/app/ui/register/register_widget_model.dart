@@ -54,16 +54,28 @@ class RegisterWidgetModel extends BaseViewModel {
           user = await _registerUsecase.call(emailEditingController.text, passwordEditingController.text, nameEditingController.text);
         },
         onSuccess: () {
-          Fluttertoast.showToast(msg: "Đăng ký thành công");
-        },
-        onFailure: (err) {
+          Get.back();
           Get.snackbar(
-            "Error",
-            (err as FirebaseAuthException).code,
-            duration: const Duration(seconds: 4),
-            backgroundColor: UIColor.primary,
+            LocaleKeys.register_success_message_title.trans(),
+            LocaleKeys.register_success_message_description.trans(),
+            duration: const Duration(seconds: 3),
+            backgroundColor: UIColor.accent2,
             colorText: UIColor.white,
           );
+        },
+        onFailure: (error) {
+          if (error is FirebaseAuthException) {
+            String? mess;
+            if (error.code == 'email-already-in-use') {
+              mess = LocaleKeys.register_email_already_in_use_error_description.trans();
+            }
+            Get.snackbar(
+              LocaleKeys.register_error_title.trans(),
+              mess ?? error.code,
+              backgroundColor: UIColor.danger,
+              colorText: UIColor.white,
+            );
+          }
         },
       );
     }
