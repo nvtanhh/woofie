@@ -74,7 +74,7 @@ dependencies:
   google_sign_in: ^5.0.3
 
   # A Flutter plugin for using the native Facebook Login SDKs on Android and iOS.
-  flutter_facebook_auth: ^3.3.3+1
+  flutter_facebook_auth: ^3.5.0
 
   # Toast Library for Flutter
   fluttertoast: ^8.0.6
