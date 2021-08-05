@@ -175,7 +175,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
     } catch (error) {
       addressEditingController.text = error.toString();
     }
-    final currentPosition = await locationService.determinePosition();
+    final currentPosition = await locationService.determineCurrentPosition();
     location = UserLocation(
       name: addressEditingController.text,
       long: currentPosition.longitude,

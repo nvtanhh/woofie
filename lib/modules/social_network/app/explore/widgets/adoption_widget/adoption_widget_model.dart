@@ -54,7 +54,7 @@ class AdoptionWidgetModel extends BaseViewModel {
       return;
     }
     try {
-      final currentPosition = await _locationService.determinePosition();
+      final currentPosition = await _locationService.determineCurrentPosition();
       location = UserLocation(
         long: currentPosition.longitude,
         lat: currentPosition.latitude,

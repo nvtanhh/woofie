@@ -211,7 +211,7 @@ class SavePostModel extends BaseViewModel {
     } finally {
       isLoadingAddress.value = false;
     }
-    final currentPosition = await locationService.determinePosition();
+    final currentPosition = await locationService.determineCurrentPosition();
     _currentLocation.value = UserLocation(
       long: currentPosition.longitude,
       lat: currentPosition.latitude,

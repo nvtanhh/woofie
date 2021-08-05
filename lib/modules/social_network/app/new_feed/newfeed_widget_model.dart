@@ -12,6 +12,7 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,6 @@ class NewFeedWidgetModel extends BaseViewModel {
   final BottomSheetService bottomSheetService = injector<BottomSheetService>();
   final GetPostsUsecase _getPostsUsecase;
   final PostService postService;
-  final LocationService _locationService;
 
   List<Post> posts = [];
   final int pageSize = 10;
@@ -36,7 +36,6 @@ class NewFeedWidgetModel extends BaseViewModel {
   NewFeedWidgetModel(
     this._getPostsUsecase,
     this.postService,
-    this._locationService,
   );
 
   @override
@@ -112,25 +111,7 @@ class NewFeedWidgetModel extends BaseViewModel {
     }
   }
 
-  Future<void> calculateDistance(Post post) async {
-
-    
-
-    // try {
-    //   Location? userLocation = post.creator!.location;
-    //   if (userLocation == null) {
-    //     return;
-    //   }
-    //   final Position currentPosition =
-    //       await injector<LocationService>().determinePosition();
-    //   post.distanceUserToPost = Geolocator.distanceBetween(
-    //     post.creator!.location!.lat!,
-    //     post.creator!.location!.long!,
-    //     post.location!.lat!,
-    //     post.location!.long!,
-    //   ).toPrecision(1);
-    // } catch (error) {
-    //   printError(info: error.toString());
-    // }
+  void calculateDistance(Post post) {
+    postService.calculateDistance(post);
   }
 }

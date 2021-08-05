@@ -14,6 +14,8 @@ class UserLocation {
   double? long;
   @JsonKey(name: "lat")
   double? lat;
+  @JsonKey(name: "updated_at")
+  DateTime? updatedAt;
 
   UserLocation({
     this.id,
