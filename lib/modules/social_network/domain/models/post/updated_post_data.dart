@@ -11,7 +11,7 @@ class EditedPostData {
   List<Pet>? deletedTaggedPets;
   List<MediaFile>? newAddedFiles;
   List<Media>? deletedMedias;
-  Location? location;
+  UserLocation? location;
 
   List<UploadedMedia>? newAddedMedias = [];
 

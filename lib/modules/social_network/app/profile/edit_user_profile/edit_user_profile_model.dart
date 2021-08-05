@@ -33,7 +33,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
   final CreateLocationUsecase _createLocationUsecase;
   final UpdateUserInformationUsecase _updateUserInformationUsecase;
   final LoggedInUser _loggedInUser;
-  Location? location;
+  UserLocation? location;
   String? newAvatarUrl;
   Placemark? currentPlacemark;
   final focusNode = FocusNode();
@@ -176,7 +176,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
       addressEditingController.text = error.toString();
     }
     final currentPosition = await locationService.determinePosition();
-    location = Location(
+    location = UserLocation(
       name: addressEditingController.text,
       long: currentPosition.longitude,
       lat: currentPosition.latitude,

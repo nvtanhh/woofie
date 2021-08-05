@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'location.g.dart';
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class Location {
+class UserLocation {
   @JsonKey(name: "id")
   int? id;
   @JsonKey(name: "name")
@@ -15,18 +15,18 @@ class Location {
   @JsonKey(name: "lat")
   double? lat;
 
-  Location({
+  UserLocation({
     this.id,
     this.name,
     this.long,
     this.lat,
   });
 
-  factory Location.fromJson(Map<String, dynamic> json) => _$LocationFromJson(json);
+  factory UserLocation.fromJson(Map<String, dynamic> json) => _$UserLocationFromJson(json);
 
-  factory Location.fromJsonString(String jsonString) => Location.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory UserLocation.fromJsonString(String jsonString) => UserLocation.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
-  Map<String, dynamic> toJson() => _$LocationToJson(this);
+  Map<String, dynamic> toJson() => _$UserLocationToJson(this);
 
   String toJsonString() => json.encode(toJson());
 

@@ -7,7 +7,7 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class AdoptionPetDetailWidgetModel extends BaseViewModel {
-  late Post post;
+  final Rxn<Post> _post = Rxn<Post>();
   Pet? pet;
   final GetDetailPostUsecase _getDetailPostUsecase;
   final RxBool _isLoaded = RxBool(false);
@@ -26,16 +26,17 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
       },
       onSuccess: () {
         pet = post.taggegPets?[0];
-        isLoaded = true;
+        // isLoaded = true;
       },
+      showLoading: false,
       onFailure: (err) {},
     );
   }
 
-  bool get isLoaded => _isLoaded.value;
+  Post get post => _post.value!;
 
-  set isLoaded(bool value) {
-    _isLoaded.value = value;
+  set post(Post post) {
+    _post.value = post;
   }
 
   @override

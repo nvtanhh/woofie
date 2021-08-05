@@ -21,7 +21,9 @@ class NewFeedWidget extends StatefulWidget {
   _NewFeedWidgetState createState() => _NewFeedWidgetState();
 }
 
-class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetModel> with AutomaticKeepAliveClientMixin {
+class _NewFeedWidgetState
+    extends BaseViewState<NewFeedWidget, NewFeedWidgetModel>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +32,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
         children: [
           const SizedBox(height: 10),
           Obx(
-            () => Column(children: viewModel.postService.prependedWidgets.value),
+            () =>
+                Column(children: viewModel.postService.prependedWidgets.value),
           ),
           Expanded(
             child: RefreshIndicator(
@@ -40,17 +43,23 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
                 pagingController: viewModel.postService.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Post>(
-                  itemBuilder: (context, item, index) => Obx(
-                    () => PostItem(
-                      post: item.updateSubjectValue,
-                      onCommentClick: viewModel.postService.onCommentClick,
-                      onLikeClick: viewModel.postService.onLikeClick,
-                      onPostClick: viewModel.postService.onPostClick,
-                      onDeletePost: () => viewModel.postService.onDeletePost(item, index),
-                      onEditPost: () => viewModel.postService.onWantsToEditPost(item),
-                      onReportPost: () => viewModel.postService.onReportPost(item),
-                    ),
-                  ),
+                  itemBuilder: (context, post, index) {
+                    viewModel.calculateDistance(post);
+                    return Obx(
+                      () => PostItem(
+                        post: post.updateSubjectValue,
+                        onCommentClick: viewModel.postService.onCommentClick,
+                        onLikeClick: viewModel.postService.onLikeClick,
+                        onPostClick: viewModel.postService.onPostClick,
+                        onDeletePost: () =>
+                            viewModel.postService.onDeletePost(post, index),
+                        onEditPost: () =>
+                            viewModel.postService.onWantsToEditPost(post),
+                        onReportPost: () =>
+                            viewModel.postService.onReportPost(post),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -86,7 +95,8 @@ class _NewFeedWidgetState extends BaseViewState<NewFeedWidget, NewFeedWidgetMode
                   ),
                   Text(
                     LocaleKeys.app_name.trans(),
-                    style: GoogleFonts.montserrat(textStyle: UITextStyle.text_header_24_w700),
+                    style: GoogleFonts.montserrat(
+                        textStyle: UITextStyle.text_header_24_w700),
                   ),
                 ],
               ),
