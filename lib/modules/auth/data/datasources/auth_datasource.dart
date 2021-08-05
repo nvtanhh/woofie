@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/modules/auth/data/storages/user_storage.dart';
 
 @lazySingleton
@@ -20,14 +21,17 @@ class AuthDatasource {
 
   Future<User?> loginWithGoogle() async {
     User? user;
-    final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+    final GoogleSignInAccount? googleSignInAccount =
+        await _googleSignIn.signIn();
     if (googleSignInAccount != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
       user = userCredential.user;
     } else {
       throw Exception("Login fail");
@@ -39,8 +43,10 @@ class AuthDatasource {
     User? user;
     final LoginResult facebookLoginResult = await _facebookAuth.login();
     if (facebookLoginResult.status == LoginStatus.success) {
-      final AuthCredential credential = FacebookAuthProvider.credential(facebookLoginResult.accessToken?.token ?? "");
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final AuthCredential credential = FacebookAuthProvider.credential(
+          facebookLoginResult.accessToken?.token ?? "");
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
       user = userCredential.user;
     } else {
       throw Exception("Login fail");
@@ -60,12 +66,18 @@ class AuthDatasource {
   }
 
   Future<User?> loginWithEmailPassword(String email, String password) async {
-    final UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+    final UserCredential userCredential = await _firebaseAuth
+        .signInWithEmailAndPassword(email: email, password: password);
     return userCredential.user;
   }
 
-  Future<User?> registerWithEmailPassword(String email, String password, String name) async {
-    final UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<User?> registerWithEmailPassword(
+      String email, String password, String name) async {
+    final UserCredential userCredential = await _firebaseAuth
+        .createUserWithEmailAndPassword(email: email, password: password);
+    if (userCredential.user != null) {
+      unawaited(userCredential.user!.sendEmailVerification());
+    }
     return userCredential.user;
   }
 }

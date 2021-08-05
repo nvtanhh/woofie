@@ -1,7 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
@@ -51,7 +50,8 @@ class RegisterWidgetModel extends BaseViewModel {
     if (formKey.currentState?.validate() == true) {
       call(
         () async {
-          user = await _registerUsecase.call(emailEditingController.text, passwordEditingController.text, nameEditingController.text);
+          user = await _registerUsecase.call(emailEditingController.text,
+              passwordEditingController.text, nameEditingController.text);
         },
         onSuccess: () {
           Get.back();
@@ -67,7 +67,8 @@ class RegisterWidgetModel extends BaseViewModel {
           if (error is FirebaseAuthException) {
             String? mess;
             if (error.code == 'email-already-in-use') {
-              mess = LocaleKeys.register_email_already_in_use_error_description.trans();
+              mess = LocaleKeys.register_email_already_in_use_error_description
+                  .trans();
             }
             Get.snackbar(
               LocaleKeys.register_error_title.trans(),
