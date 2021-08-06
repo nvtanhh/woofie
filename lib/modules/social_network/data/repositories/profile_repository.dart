@@ -92,11 +92,11 @@ class ProfileRepository {
     return _postDatasource.deletePost(idPost);
   }
 
-  Future<Location> updateLocation(int id, double long, double lat, String name) {
+  Future<UserLocation> updateLocation(int id, double long, double lat, String name) {
     return _locationDatasource.updateLocation(id, long, long, name);
   }
 
-  Future<Location> createLocation(double long, double lat, String name) {
+  Future<UserLocation> createLocation(double long, double lat, String name) {
     return _locationDatasource.createLocation(long, lat, name);
   }
 

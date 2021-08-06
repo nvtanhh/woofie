@@ -23,7 +23,7 @@ class AdoptionWidgetModel extends BaseViewModel {
 
   List<Post> posts = [];
   late PostType postType;
-  Location? location;
+  UserLocation? location;
 
   AdoptionWidgetModel(
     this._getPostByTypeUsecase,
@@ -54,8 +54,8 @@ class AdoptionWidgetModel extends BaseViewModel {
       return;
     }
     try {
-      final currentPosition = await _locationService.determinePosition();
-      location = Location(
+      final currentPosition = await _locationService.determineCurrentPosition();
+      location = UserLocation(
         long: currentPosition.longitude,
         lat: currentPosition.latitude,
       );

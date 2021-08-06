@@ -44,7 +44,7 @@ class Post extends UpdatableModel<Post> {
   @JsonKey(name: "medias")
   List<Media>? medias;
   @JsonKey(name: "location")
-  Location? location;
+  UserLocation? location;
   @JsonKey(name: "status")
   PostStatus? status;
   @JsonKey(name: "distance_user_to_post")
@@ -159,7 +159,7 @@ class Post extends UpdatableModel<Post> {
       status = _$enumDecodeNullable(_$PostStatusEnumMap, json['status']);
     }
     if (json['location'] != null) {
-      location = Location.fromJson(json['location'] as Map<String, dynamic>);
+      location = UserLocation.fromJson(json['location'] as Map<String, dynamic>);
     }
     if (json['medias'] != null) {
       medias = (json['medias'] as List<dynamic>?)?.map((e) => Media.fromJson(e as Map<String, dynamic>)).toList();

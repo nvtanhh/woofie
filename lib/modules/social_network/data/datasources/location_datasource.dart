@@ -9,7 +9,7 @@ class LocationDatasource {
 
   LocationDatasource(this._hasuraConnect);
 
-  Future<Location> updateLocation(int id, double long, double lat, String name) async {
+  Future<UserLocation> updateLocation(int id, double long, double lat, String name) async {
     final manution = """
 mutation MyMutation {
   update_locations_by_pk(pk_columns: {id: $id}, _set: {lat: "$lat", long: "$long", name: "$name"}) {
@@ -22,10 +22,10 @@ mutation MyMutation {
 """;
     final data = await _hasuraConnect.mutation(manution);
     final location = GetMapFromHasura.getMap(data as Map)["update_locations_by_pk"] as Map<String, dynamic>;
-    return Location.fromJson(location);
+    return UserLocation.fromJson(location);
   }
 
-  Future<Location> createLocation(double long, double lat, String name) async {
+  Future<UserLocation> createLocation(double long, double lat, String name) async {
     final manution = """
 mutation MyMutation {
   insert_locations_one(object: {lat: "$long", long: "$lat", name: "$name"}) {
@@ -38,6 +38,6 @@ mutation MyMutation {
 """;
     final data = await _hasuraConnect.mutation(manution);
     final location = GetMapFromHasura.getMap(data as Map)["insert_locations_one"] as Map<String, dynamic>;
-    return Location.fromJson(location);
+    return UserLocation.fromJson(location);
   }
 }

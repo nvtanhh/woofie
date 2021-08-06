@@ -8,7 +8,7 @@ class CreateLocationUsecase {
 
   CreateLocationUsecase(this._profileRepository);
 
-  Future<Location> run({
+  Future<UserLocation> run({
     required double long,
     required double lat,
     required String name,

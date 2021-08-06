@@ -42,7 +42,7 @@ class SavePostModel extends BaseViewModel {
 
   final List<Media> _deletedMedia = [];
 
-  final Rxn<Location> _currentLocation = Rxn<Location>();
+  final Rxn<UserLocation> _currentLocation = Rxn<UserLocation>();
 
   SavePostModel(
     this._getPetsOfUserUsecase,
@@ -65,7 +65,7 @@ class SavePostModel extends BaseViewModel {
     getPetsOfUser();
   }
 
-  Location? get currentLocation => _currentLocation.value;
+  UserLocation? get currentLocation => _currentLocation.value;
 
   @override
   void disposeState() {
@@ -211,8 +211,8 @@ class SavePostModel extends BaseViewModel {
     } finally {
       isLoadingAddress.value = false;
     }
-    final currentPosition = await locationService.determinePosition();
-    _currentLocation.value = Location(
+    final currentPosition = await locationService.determineCurrentPosition();
+    _currentLocation.value = UserLocation(
       long: currentPosition.longitude,
       lat: currentPosition.latitude,
       name: currentAddress.value,
@@ -231,7 +231,7 @@ class SavePostModel extends BaseViewModel {
     }
   }
 
-  Location? getCurrentLocationForUpdate() {
+  UserLocation? getCurrentLocationForUpdate() {
     if (post?.location == currentLocation) return null;
     return currentLocation;
   }

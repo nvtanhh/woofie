@@ -10,7 +10,7 @@ class NewPostData {
   String content;
   List<MediaFile>? mediaFiles;
   PostType type;
-  Location? location;
+  UserLocation? location;
   List<Pet>? taggegPets;
   // State persistence variables
   Post? createdDraftPost;
