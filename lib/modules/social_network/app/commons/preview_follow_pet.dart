@@ -36,7 +36,7 @@ class PreviewFollowPet extends StatelessWidget {
       child: Container(
         width: 120.w,
         margin: margin,
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: const [

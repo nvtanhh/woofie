@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
+import 'package:meowoof/modules/social_network/domain/models/setting.dart';
 import 'package:meowoof/modules/social_network/domain/models/updatable_model.dart';
 
 part 'user.g.dart';
@@ -36,7 +37,8 @@ class User extends UpdatableModel<User> {
   int? locationId;
   @JsonKey(name: "location")
   Location? location;
-
+  @JsonKey(name: "settings")
+  Setting? setting;
   User({required this.id, this.uuid, this.name, this.phoneNumber, this.email, this.currentPets, this.avatar, this.bio, this.dob, this.avatarUrl})
       : super(uuid);
 

@@ -28,6 +28,12 @@ class HasuraDatasource {
           bio
           avatar_url
         }
+        settings {
+          id
+          setting
+          updated_at
+          created_at
+        }
       }
     }
     """;

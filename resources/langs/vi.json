@@ -140,7 +140,10 @@
     "language": "Ngôn ngữ ({})",
     "vietnamese": "Tiếng việt",
     "english": "Tiếng Anh",
-    "rate_feedback": "Đánh giá và phản hồi"
+    "rate_feedback": "Đánh giá và phản hồi",
+    "message": "Tin nhắn",
+    "message_public": "Ai cũng có thể liên lạc với tôi",
+    "message_private": "Phải được tôi chấp nhận"
   },
   "notification": {
     "notifications": "Thông báo",

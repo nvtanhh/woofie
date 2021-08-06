@@ -65,7 +65,7 @@ class UserProfileModel extends BaseViewModel {
   @override
   void initState() {
     postService.initState();
-    if (user == null || user == injector<LoggedInUser>().user) {
+    if (user == null || user == _loggedInUser.user) {
       isMe = true;
       user = _loggedInUser.user;
     }
@@ -179,20 +179,10 @@ class UserProfileModel extends BaseViewModel {
     nextPageKey = 0;
     postService.onRefresh();
   }
-
-  @override
-  void disposeState() {
-    postService.disposeState();
-    _cancelableOperationLoadInit?.cancel();
-    _cancelableOperationLoadMorePost?.cancel();
-    _petDeletedStreamSubscription?.cancel();
-    super.disposeState();
-  }
-
   Future sendContentRequestMessage(RequestContact requestContact) async {
     String? content = await injector<DialogService>().showInputReport(title: "Nội dung") as String?;
     await call(
-      () async => _updateContentRequestMessagesUsecase.run(
+          () async => _updateContentRequestMessagesUsecase.run(
         requestContact: requestContact,
         content: content ?? "",
       ),
@@ -211,32 +201,46 @@ class UserProfileModel extends BaseViewModel {
   }
 
   Future<void> onWantsToContact(User targetUser) async {
-    RequestContact? requestContact;
-    await call(
-      () async => requestContact = await _requestContactUsecase.run(toUserUUID: targetUser.uuid!),
-      onSuccess: () {
-        if (requestContact != null) {
-          switch (requestContact!.status!) {
-            case RequestContactStatus.accept:
-              injector<NavigationService>()
-                  .navigateToChatRoom(user: targetUser.uuid == requestContact?.toUser?.uuid ? requestContact!.toUser : requestContact!.fromUser);
-              return;
-            case RequestContactStatus.waiting:
-              sendContentRequestMessage(requestContact!);
-              return;
-            case RequestContactStatus.deny:
-              Get.snackbar(
-                "Xin lỗi",
-                "Bạn đã bị từ chối.",
-                duration: const Duration(seconds: 1),
-                backgroundColor: UIColor.danger,
-                colorText: UIColor.white,
-              );
-              return;
+    if (user?.setting != null && user?.setting?.statusMessage == 0) {
+      RequestContact? requestContact;
+      await call(
+            () async => requestContact = await _requestContactUsecase.run(toUserUUID: targetUser.uuid!),
+        onSuccess: () {
+          if (requestContact != null) {
+            switch (requestContact!.status!) {
+              case RequestContactStatus.accept:
+                injector<NavigationService>()
+                    .navigateToChatRoom(user: targetUser.uuid == requestContact?.toUser?.uuid ? requestContact!.toUser : requestContact!.fromUser);
+                return;
+              case RequestContactStatus.waiting:
+                sendContentRequestMessage(requestContact!);
+                return;
+              case RequestContactStatus.deny:
+                Get.snackbar(
+                  "Xin lỗi",
+                  "Bạn đã bị từ chối.",
+                  duration: const Duration(seconds: 1),
+                  backgroundColor: UIColor.danger,
+                  colorText: UIColor.white,
+                );
+                return;
+            }
           }
-        }
-      },
-      onFailure: (err) {
+        },
+        onFailure: (err) {
+          Get.snackbar(
+            "Sorry",
+            "Unable to init chat room, please try again later.",
+            duration: const Duration(seconds: 1),
+            backgroundColor: UIColor.danger,
+            colorText: UIColor.white,
+          );
+        },
+      );
+    }else{
+      final isError =
+      await injector<NavigationService>().navigateToChatRoom(user: user);
+      if (isError != null && isError) {
         Get.snackbar(
           "Sorry",
           "Unable to init chat room, please try again later.",
@@ -244,7 +248,17 @@ class UserProfileModel extends BaseViewModel {
           backgroundColor: UIColor.danger,
           colorText: UIColor.white,
         );
-      },
-    );
+      }
+    }
   }
+  @override
+  void disposeState() {
+    postService.disposeState();
+    _cancelableOperationLoadInit?.cancel();
+    _cancelableOperationLoadMorePost?.cancel();
+    _petDeletedStreamSubscription?.cancel();
+    super.disposeState();
+  }
+
+
 }

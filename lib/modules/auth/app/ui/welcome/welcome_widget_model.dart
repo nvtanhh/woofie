@@ -10,6 +10,7 @@ import 'package:meowoof/modules/auth/domain/usecases/login_with_google_usecase.d
 import 'package:meowoof/modules/auth/domain/usecases/save_user_to_local_usecase.dart';
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
 import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
+import 'package:meowoof/modules/social_network/data/storages/setting_storage.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
 import 'package:meowoof/modules/social_network/domain/usecases/notification/update_token_notify_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -25,6 +26,7 @@ class WelcomeWidgetModel extends BaseViewModel {
   final UpdateTokenNotifyUsecase _updateTokenNotifyUsecase;
   final ToastService _toastService;
   final LoggedInUser _loggedInUser;
+  final SettingStorage _settingStorage;
 
   WelcomeWidgetModel(
     this._loginWithGoogleUsecase,
@@ -35,6 +37,7 @@ class WelcomeWidgetModel extends BaseViewModel {
     this._updateTokenNotifyUsecase,
     this._toastService,
     this._loggedInUser,
+    this._settingStorage,
   );
 
   void onLoginClick() {
@@ -96,6 +99,9 @@ class WelcomeWidgetModel extends BaseViewModel {
           await _saveUserToLocalUsecase.call(haUser);
           await _loggedInUser.setLoggedUser(haUser);
           status = haUser.currentPets?.isNotEmpty == true;
+          if (haUser.setting != null) {
+            _settingStorage.set(haUser.setting!);
+          }
         } else {
           return;
         }
