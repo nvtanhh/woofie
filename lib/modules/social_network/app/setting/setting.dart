@@ -63,6 +63,14 @@ class _SettingState extends BaseViewState<Setting, SettingModel> {
                   style: UITextStyle.text_body_14_w500,
                 ),
               ),
+              ListTile(
+                onTap: () => viewModel.message(),
+                leading: MWIcon(MWIcons.message,),
+                title: Text(
+                  LocaleKeys.setting_message.trans(),
+                  style: UITextStyle.text_body_14_w500,
+                ),
+              ),
               SizedBox(height: 10.h),
               Padding(
                 padding: const EdgeInsets.only(left: 16, bottom: 10),

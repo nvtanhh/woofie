@@ -53,6 +53,10 @@ class UserDatasource {
           avatar_url
           is_following
         }
+        settings {
+          id
+          setting
+        }
       }
     }
     """;

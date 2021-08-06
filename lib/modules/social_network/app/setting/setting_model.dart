@@ -6,6 +6,7 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/welcome/welcome_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/logout_usecase.dart';
 import 'package:meowoof/modules/social_network/app/setting/widgets/laguague/laguage.dart';
+import 'package:meowoof/modules/social_network/app/setting/widgets/message/message_page.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -58,5 +59,9 @@ class SettingModel extends BaseViewModel {
       default:
         return LocaleKeys.setting_vietnamese.trans();
     }
+  }
+
+  void message() {
+    Get.to(() => MessagePage());
   }
 }

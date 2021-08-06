@@ -140,7 +140,10 @@
     "language": "Language ({})",
     "vietnamese": "Vietnamese",
     "english": "English",
-    "rate_feedback": "Rate and feedback"
+    "rate_feedback": "Rate and feedback",
+    "message": "Message",
+    "message_public": "Anyone can contact me",
+    "message_private": "Must be accepted by me"
   },
   "notification": {
     "notifications": "Notifications",

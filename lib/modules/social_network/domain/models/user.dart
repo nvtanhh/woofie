@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
+import 'package:meowoof/modules/social_network/domain/models/setting.dart';
 import 'package:meowoof/modules/social_network/domain/models/updatable_model.dart';
 
 part 'user.g.dart';
@@ -36,7 +37,8 @@ class User extends UpdatableModel<User> {
   int? locationId;
   @JsonKey(name: "location")
   UserLocation? location;
-
+  @JsonKey(name: "settings")
+  Setting? setting;
   User(
       {required this.id,
       this.uuid,
@@ -47,8 +49,7 @@ class User extends UpdatableModel<User> {
       this.avatar,
       this.bio,
       this.dob,
-      this.avatarUrl})
-      : super(uuid);
+      this.avatarUrl}) : super(uuid);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
@@ -81,9 +82,7 @@ class User extends UpdatableModel<User> {
       email = json['email'] as String;
     }
     if (json['current_pets'] != null) {
-      currentPets = (json['current_pets'] as List<dynamic>?)
-          ?.map((e) => Pet.fromJson(e as Map<String, dynamic>))
-          .toList();
+      currentPets = (json['current_pets'] as List<dynamic>?)?.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
     }
     if (json['all_pet'] != null) {
       currentPets = allPetsFromJson(json['current_pets'] as List?);
