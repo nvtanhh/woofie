@@ -53,7 +53,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                       ? [
                           Media(
                               id: 0,
-                              url: viewModel.pet?.avatarUrl ?? "",
+                              url: viewModel.taggedPet.avatarUrl ?? "",
                               type: MediaType.image)
                         ]
                       : viewModel.post.medias!,
@@ -129,7 +129,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          viewModel.pet?.name ?? "",
+                                          viewModel.taggedPet.name ?? "",
                                           style:
                                               UITextStyle.text_header_24_w700,
                                         ),
@@ -175,16 +175,17 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                                   CardDetailWidget(
                                     title: LocaleKeys.explore_gender.trans(),
                                     value: FormatHelper.genderPet(
-                                        viewModel.pet?.gender),
+                                        viewModel.taggedPet.gender),
                                   ),
                                   CardDetailWidget(
                                     title: LocaleKeys.explore_age.trans(),
                                     value: DateTimeHelper.calcAge(
-                                        viewModel.pet?.dob),
+                                        viewModel.taggedPet.dob),
                                   ),
                                   CardDetailWidget(
                                     title: LocaleKeys.explore_breed.trans(),
-                                    value: viewModel.pet?.petBreed?.name ?? "",
+                                    value: viewModel.taggedPet.petBreed?.name ??
+                                        "",
                                   ),
                                 ],
                               ),
@@ -209,29 +210,43 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             ],
                           ),
                         ),
-                        ListTile(
-                          contentPadding: const EdgeInsets.symmetric(),
-                          leading: MWAvatar(
-                            avatarUrl: viewModel.post.creator?.avatarUrl,
-                            borderRadius: 10.r,
+                        if (!viewModel.post.isMyPost)
+                          ListTile(
+                            contentPadding: const EdgeInsets.symmetric(),
+                            leading: MWAvatar(
+                              avatarUrl: viewModel.post.creator?.avatarUrl,
+                              borderRadius: 10.r,
+                            ),
+                            title: Text(
+                              viewModel.post.creator?.name ?? "",
+                              style: UITextStyle.text_header_16_w6002,
+                            ),
+                            subtitle: Text(
+                              LocaleKeys.explore_owner_pet.trans(),
+                              style: GoogleFonts.montserrat(
+                                  textStyle: UITextStyle.text_body_14_w500),
+                            ),
+                            trailing: ButtonWidget(
+                              width: 96.w,
+                              height: 47.h,
+                              title: LocaleKeys.explore_contact.trans(),
+                              onPress: () => null,
+                              borderRadius: 15.r,
+                            ),
+                          )
+                        else
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 10.h),
+                            child: ButtonWidget(
+                              width: double.infinity,
+                              height: 47.h,
+                              title: _getActionButtonTitle(viewModel.post),
+                              onPress: () => null,
+                              borderRadius: 15.r,
+                              backgroundColor:
+                                  _getActionButtonColor(viewModel.post),
+                            ),
                           ),
-                          title: Text(
-                            viewModel.post.creator?.name ?? "",
-                            style: UITextStyle.text_header_16_w6002,
-                          ),
-                          subtitle: Text(
-                            LocaleKeys.explore_owner_pet.trans(),
-                            style: GoogleFonts.montserrat(
-                                textStyle: UITextStyle.text_body_14_w500),
-                          ),
-                          trailing: ButtonWidget(
-                            width: 96.w,
-                            height: 47.h,
-                            title: LocaleKeys.explore_contact.trans(),
-                            onPress: () => null,
-                            borderRadius: 15.r,
-                          ),
-                        )
                       ],
                     ),
                   ),
@@ -260,4 +275,30 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
   @override
   AdoptionPetDetailWidgetModel createViewModel() =>
       injector<AdoptionPetDetailWidgetModel>();
+
+  String _getActionButtonTitle(Post post) {
+    switch (post.type) {
+      case PostType.adop:
+        return 'Xác nhận cho';
+      case PostType.mating:
+        return 'Xác nhận bạn tình';
+      case PostType.lose:
+        return 'Đã tìm thấy';
+      case PostType.activity:
+        throw Exception("Unsupport post type");
+    }
+  }
+
+  Color _getActionButtonColor(Post post) {
+    switch (post.type) {
+      case PostType.adop:
+        return UIColor.adoptionColor;
+      case PostType.mating:
+        return UIColor.matingColor;
+      case PostType.lose:
+        return UIColor.accent2;
+      case PostType.activity:
+        throw Exception("Unsupport post type");
+    }
+  }
 }
