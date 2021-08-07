@@ -3,9 +3,9 @@ import 'package:meowoof/modules/social_network/data/repositories/setting_reposit
 import 'package:meowoof/modules/social_network/domain/models/setting.dart';
 
 @lazySingleton
-class GetSettingUseacse {
+class GetSettingUsecase {
   final SettingRepository _settingRepository;
-  GetSettingUseacse(this._settingRepository);
+  GetSettingUsecase(this._settingRepository);
 
   Future<Setting> call() async {
     return _settingRepository.getSetting();

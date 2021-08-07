@@ -47,7 +47,9 @@ class _ButtonWidgetState extends State<ButtonWidget> {
             decoration: BoxDecoration(
               color: widget.backgroundColor ?? UIColor.primary,
               borderRadius: BorderRadius.circular(widget.borderRadius ?? 5.0.w),
-              border: widget.borderColor != null ? Border.all(color: widget.borderColor!) : null,
+              border: widget.borderColor != null
+                  ? Border.all(color: widget.borderColor!)
+                  : null,
             ),
             child: TextButton(
               style: TextButton.styleFrom(
@@ -72,7 +74,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
                   Center(
                     child: Text(
                       widget.title ?? "",
-                      style: widget.titleStyle ?? UITextStyle.white_18_w700,
+                      style: widget.titleStyle ?? UITextStyle.white_18_w600,
                     ),
                   ),
             ),

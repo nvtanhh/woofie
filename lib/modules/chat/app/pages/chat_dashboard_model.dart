@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/configs/backend_config.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
@@ -10,7 +11,9 @@ import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/request_message/count_user_request_message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_chat_rooms_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/models/setting.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/setting/get_setting_remote_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -18,29 +21,40 @@ class ChatManagerModel extends BaseViewModel {
   final GetChatRoomsUseCase _getChatRoomsUseCase;
   final GetUserWithUuidUsecase _getUserWithUuidUsecase;
   final CountUserRequestMessagesUsecase _countUserRequestMessagesUsecase;
+  final GetSettingUsecase _getSettingUsecase;
+
   late PagingController<int, ChatRoom> pagingController;
   late DateTime _lastRefeshTime;
   static const int _pageSize = 10;
   final RxInt _countUserRequestMessage = RxInt(0);
 
+  bool? _isEveryoneCanChatWithMe;
+
   ChatManagerModel(
     this._getChatRoomsUseCase,
     this._getUserWithUuidUsecase,
     this._countUserRequestMessagesUsecase,
+    this._getSettingUsecase,
   );
 
   @override
   void initState() {
     pagingController = PagingController(firstPageKey: 0);
-    pagingController.addPageRequestListener((pageKey) => _loadMoreChatRoom(pageKey));
+    pagingController
+        .addPageRequestListener((pageKey) => _loadMoreChatRoom(pageKey));
     _lastRefeshTime = DateTime.now();
     _getCountUserRequestMessage();
+    _getMessageSetting();
     super.initState();
   }
 
   Future<void> _loadMoreChatRoom(int pageKey) async {
     try {
-      final chatRooms = await _getChatRoomsUseCase.call();
+      if (_isEveryoneCanChatWithMe == null) {
+        await _getMessageSetting();
+      }
+      final chatRooms = await _getChatRoomsUseCase.call(
+          skip: pageKey, isEveryoneCanChatWithMe: _isEveryoneCanChatWithMe);
       chatRooms.forEach(_getMoreChatRoomInformation);
       final isLastPage = chatRooms.length < _pageSize;
       if (isLastPage) {
@@ -82,7 +96,9 @@ class ChatManagerModel extends BaseViewModel {
   }
 
   Future<void> _getMembersSync(ChatRoom room) async {
-    room.members = await Future.wait(room.memberUuids.map((userUuid) async => _getUserWithUuid(userUuid)).toList());
+    room.members = await Future.wait(room.memberUuids
+        .map((userUuid) async => _getUserWithUuid(userUuid))
+        .toList());
   }
 
   void goToRequestMessagePage() {
@@ -96,12 +112,15 @@ class ChatManagerModel extends BaseViewModel {
   }
 
   bool _isCanRefesh() {
-    return DateTime.now().difference(_lastRefeshTime).inSeconds > BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
+    return DateTime.now().difference(_lastRefeshTime).inSeconds >
+        BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
   }
 
   void onChatRoomPressed(ChatRoom room) {
-    injector<NavigationService>()
-        .navigateToChatRoom(room: room, onAddNewMessages: (List<Message> messages) => _onChatRoomAddNewMessage(room, messages));
+    injector<NavigationService>().navigateToChatRoom(
+        room: room,
+        onAddNewMessages: (List<Message> messages) =>
+            _onChatRoomAddNewMessage(room, messages));
   }
 
   void _onChatRoomAddNewMessage(ChatRoom room, List<Message> messages) {
@@ -114,7 +133,8 @@ class ChatManagerModel extends BaseViewModel {
 
   void _getCountUserRequestMessage() {
     call(
-      () async => countUserRequestMessage = await _countUserRequestMessagesUsecase.run(),
+      () async => countUserRequestMessage =
+          await _countUserRequestMessagesUsecase.run(),
       showLoading: false,
     );
   }
@@ -123,5 +143,16 @@ class ChatManagerModel extends BaseViewModel {
 
   set countUserRequestMessage(int value) {
     _countUserRequestMessage.value = value;
+  }
+
+  Future _getMessageSetting() async {
+    final loggedInUser = injector<LoggedInUser>().user;
+    if (loggedInUser!.setting != null) {
+      _isEveryoneCanChatWithMe =
+          loggedInUser.setting!.isEveryoneCanChatWithMe();
+    } else {
+      final Setting setting = await _getSettingUsecase.call();
+      _isEveryoneCanChatWithMe = setting.isEveryoneCanChatWithMe();
+    }
   }
 }
