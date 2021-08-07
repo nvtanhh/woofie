@@ -12,8 +12,9 @@ class MediaPreviewer extends StatelessWidget {
   final double? height;
 
   final ValueChanged<MediaFile>? onImageEidted;
-
   final bool allowEditMedia;
+  final BoxFit? fit;
+  final bool isConstraintsSize;
 
   const MediaPreviewer({
     Key? key,
@@ -24,6 +25,8 @@ class MediaPreviewer extends StatelessWidget {
     this.allowEditMedia = true,
     this.width,
     this.height,
+    this.fit,
+    this.isConstraintsSize = true,
   }) : super(key: key);
 
   @override
@@ -36,6 +39,8 @@ class MediaPreviewer extends StatelessWidget {
         allowEditImage: allowEditMedia,
         width: width,
         height: height,
+        fit: fit,
+        isConstraintsSize: isConstraintsSize,
       );
     } else if (mediaFile != null && mediaFile!.isVideo) {
       return PostVideoPreviewer(
@@ -43,6 +48,7 @@ class MediaPreviewer extends StatelessWidget {
         onRemove: onRemove,
         width: width,
         height: height,
+        isConstraintsSize: isConstraintsSize,
       );
     }
 
@@ -50,9 +56,15 @@ class MediaPreviewer extends StatelessWidget {
       return PostImagePreviewer(
         postMedia: media,
         onRemove: onRemove,
+        fit: fit,
+        isConstraintsSize: isConstraintsSize,
       );
     } else if (media != null && media!.isVideo) {
-      return PostVideoPreviewer(postVideo: media, onRemove: onRemove);
+      return PostVideoPreviewer(
+        postVideo: media,
+        onRemove: onRemove,
+        isConstraintsSize: isConstraintsSize,
+      );
     }
     return const SizedBox();
   }

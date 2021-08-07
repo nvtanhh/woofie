@@ -40,13 +40,15 @@ class UserProfileModel extends BaseViewModel {
   final DeletePostUsecase _deletePostUsecase;
   final ToastService _toastService;
   final RequestContactUsecase _requestContactUsecase;
-  final UpdateContentRequestMessagesUsecase _updateContentRequestMessagesUsecase;
+  final UpdateContentRequestMessagesUsecase
+      _updateContentRequestMessagesUsecase;
   late List<Post> posts;
   final RxBool _isLoaded = RxBool(false);
   final PostService postService;
   final EventBus _eventBus;
   final LoggedInUser _loggedInUser;
-  CancelableOperation? _cancelableOperationLoadInit, _cancelableOperationLoadMorePost;
+  CancelableOperation? _cancelableOperationLoadInit,
+      _cancelableOperationLoadMorePost;
 
   UserProfileModel(
     this._getUseProfileUseacse,
@@ -88,7 +90,8 @@ class UserProfileModel extends BaseViewModel {
     await Future.wait([_getUserProfile(), _loadMorePost(nextPageKey)]);
     postService.pagingController.addPageRequestListener(
       (pageKey) {
-        _cancelableOperationLoadMorePost = CancelableOperation.fromFuture(_loadMorePost(pageKey));
+        _cancelableOperationLoadMorePost =
+            CancelableOperation.fromFuture(_loadMorePost(pageKey));
       },
     );
     isLoaded = true;
@@ -107,14 +110,16 @@ class UserProfileModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      posts = await _getPostOfUserUsecase.call(userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
-      if (postService.pagingController.itemList == null || postService.pagingController.itemList?.isEmpty == true) {
+      posts = await _getPostOfUserUsecase.call(
+          userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
+      if (postService.pagingController.itemList == null ||
+          postService.pagingController.itemList?.isEmpty == true) {
         posts.insert(
           0,
           Post(
             id: 0,
             uuid: '',
-            creator: User(id: 0),
+            creator: User(id: 0, uuid: ''),
             type: PostType.activity,
           ),
         );
@@ -148,7 +153,8 @@ class UserProfileModel extends BaseViewModel {
       () async => result = await _deletePostUsecase.call(post.id),
       onSuccess: () {
         if (result) {
-          _toastService.success(message: "Post deleted!", context: Get.context!);
+          _toastService.success(
+              message: "Post deleted!", context: Get.context!);
           postService.pagingController.itemList?.removeAt(index);
           // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
           postService.pagingController.notifyListeners();
@@ -179,10 +185,12 @@ class UserProfileModel extends BaseViewModel {
     nextPageKey = 0;
     postService.onRefresh();
   }
+
   Future sendContentRequestMessage(RequestContact requestContact) async {
-    String? content = await injector<DialogService>().showInputReport(title: "Nội dung") as String?;
+    String? content = await injector<DialogService>()
+        .showInputReport(title: "Nội dung") as String?;
     await call(
-          () async => _updateContentRequestMessagesUsecase.run(
+      () async => _updateContentRequestMessagesUsecase.run(
         requestContact: requestContact,
         content: content ?? "",
       ),
@@ -204,13 +212,16 @@ class UserProfileModel extends BaseViewModel {
     if (user?.setting != null && user?.setting?.statusMessage == 0) {
       RequestContact? requestContact;
       await call(
-            () async => requestContact = await _requestContactUsecase.run(toUserUUID: targetUser.uuid!),
+        () async => requestContact =
+            await _requestContactUsecase.run(toUserUUID: targetUser.uuid),
         onSuccess: () {
           if (requestContact != null) {
             switch (requestContact!.status!) {
               case RequestContactStatus.accept:
-                injector<NavigationService>()
-                    .navigateToChatRoom(user: targetUser.uuid == requestContact?.toUser?.uuid ? requestContact!.toUser : requestContact!.fromUser);
+                injector<NavigationService>().navigateToChatRoom(
+                    user: targetUser.uuid == requestContact?.toUser?.uuid
+                        ? requestContact!.toUser
+                        : requestContact!.fromUser);
                 return;
               case RequestContactStatus.waiting:
                 sendContentRequestMessage(requestContact!);
@@ -237,9 +248,9 @@ class UserProfileModel extends BaseViewModel {
           );
         },
       );
-    }else{
+    } else {
       final isError =
-      await injector<NavigationService>().navigateToChatRoom(user: user);
+          await injector<NavigationService>().navigateToChatRoom(user: user);
       if (isError != null && isError) {
         Get.snackbar(
           "Sorry",
@@ -251,6 +262,7 @@ class UserProfileModel extends BaseViewModel {
       }
     }
   }
+
   @override
   void disposeState() {
     postService.disposeState();
@@ -259,6 +271,4 @@ class UserProfileModel extends BaseViewModel {
     _petDeletedStreamSubscription?.cancel();
     super.disposeState();
   }
-
-
 }

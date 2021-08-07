@@ -14,45 +14,56 @@ import 'package:meowoof/theme/ui_text_style.dart';
 class PetItemWidget extends StatelessWidget {
   final Pet pet;
   final Post post;
-  final Function onClick;
+  final VoidCallback? onClick;
   final PostType postType;
+  final double? height;
+  final double? width;
+  final bool showDistance;
 
   const PetItemWidget({
     Key? key,
     required this.pet,
-    required this.onClick,
     required this.postType,
     required this.post,
+    this.onClick,
+    this.height,
+    this.width,
+    this.showDistance = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final String age = DateTimeHelper.calcAge(pet.dob);
     return InkWell(
-      onTap: () => onClick(),
+      onTap: onClick,
       child: Container(
-        width: 165.w,
-        height: 213.h,
+        width: width ?? 165.w,
+        height: height ?? 213.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.r),
           color: UIColor.white,
         ),
         child: Stack(
           children: [
-            ImageWithPlaceHolderWidget(
-                imageUrl: post.medias?.isEmpty ?? true ? (pet.avatarUrl ?? '') : post.medias!.first.url!,
-                width: 165.w,
-                height: 157.h,
-                fit: BoxFit.cover,
-                topLeftRadius: 15.r,
-                topRightRadius: 15.r,
-                bottomLeftRadius: 0,
-                bottomRightRadius: 0,
-                placeHolderImage: "resources/images/fallbacks/pet-avatar-fallback.jpg"),
+            Padding(
+              padding: EdgeInsets.only(bottom: 50.h),
+              child: ImageWithPlaceHolderWidget(
+                  imageUrl: post.medias?.isEmpty ?? true
+                      ? (pet.avatarUrl ?? '')
+                      : post.medias!.first.url!,
+                  fit: BoxFit.cover,
+                  topLeftRadius: 15.r,
+                  topRightRadius: 15.r,
+                  bottomLeftRadius: 0,
+                  bottomRightRadius: 0,
+                  placeHolderImage:
+                      "resources/images/fallbacks/pet-avatar-fallback.jpg"),
+            ),
             Positioned(
               bottom: 0,
+              left: 0,
+              right: 0,
               child: Container(
-                height: 84.h,
-                width: 165.w,
                 decoration: BoxDecoration(
                   color: UIColor.white,
                   borderRadius: BorderRadius.circular(15.r),
@@ -61,12 +72,13 @@ class PetItemWidget extends StatelessWidget {
                   ),
                 ),
                 padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 5.h,
+                  horizontal: showDistance ? 16.w : 12.w,
+                  vertical: 10.h,
                 ),
                 child: Stack(
                   children: [
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,22 +92,23 @@ class PetItemWidget extends StatelessWidget {
                         SizedBox(
                           height: 5.h,
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_rounded,
-                              color: UIColor.primary,
-                              size: 15.w,
-                            ),
-                            SizedBox(
-                              width: 5.w,
-                            ),
-                            Text(
-                              "${post.distanceUserToPost ?? ""} Km",
-                              style: UITextStyle.text_body_10_w500,
-                            ),
-                          ],
-                        ),
+                        if (showDistance)
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_on_rounded,
+                                color: UIColor.primary,
+                                size: 15.w,
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                "${post.distanceUserToPost ?? ""} Km",
+                                style: UITextStyle.text_body_10_w500,
+                              ),
+                            ],
+                          ),
                         SizedBox(
                           height: 5.h,
                         ),
@@ -108,24 +121,27 @@ class PetItemWidget extends StatelessWidget {
                               ),
                               padding: EdgeInsets.all(5.w),
                               child: Text(
-                                pet.gender?.index == 0 ? LocaleKeys.add_pet_pet_male.trans() : LocaleKeys.add_pet_pet_female.trans(),
+                                pet.gender?.index == 0
+                                    ? LocaleKeys.add_pet_pet_male.trans()
+                                    : LocaleKeys.add_pet_pet_female.trans(),
                                 style: UITextStyle.dodger_blue_10_w500,
                               ),
                             ),
                             SizedBox(
-                              width: 20.w,
+                              width: 10.w,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: UIColor.whisper,
-                                borderRadius: BorderRadius.circular(5.r),
-                              ),
-                              padding: EdgeInsets.all(5.w),
-                              child: Text(
-                                DateTimeHelper.calcAge(pet.dob),
-                                style: UITextStyle.dodger_blue_10_w500,
-                              ),
-                            )
+                            if (age != 'Unknown')
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: UIColor.whisper,
+                                  borderRadius: BorderRadius.circular(5.r),
+                                ),
+                                padding: EdgeInsets.all(5.w),
+                                child: Text(
+                                  age,
+                                  style: UITextStyle.text_body_10_w500,
+                                ),
+                              )
                           ],
                         )
                       ],

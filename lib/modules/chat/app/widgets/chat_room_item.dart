@@ -9,7 +9,9 @@ class ChatRoomItem extends StatelessWidget {
   final ChatRoom room;
   final VoidCallback onChatRoomPressed;
 
-  const ChatRoomItem({Key? key, required this.room, required this.onChatRoomPressed}) : super(key: key);
+  const ChatRoomItem(
+      {Key? key, required this.room, required this.onChatRoomPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,9 @@ class ChatRoomItem extends StatelessWidget {
         break;
       case MessageType.video:
         subTitle = 'Đã gửi 1 video';
+        break;
+      case MessageType.post:
+        subTitle = 'Đã gửi 1 nội dung đính kèm';
         break;
       default:
         subTitle = lastMessage.content;

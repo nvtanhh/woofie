@@ -49,7 +49,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
               alignment: Alignment.topCenter,
               children: [
                 ImagesViewWidget(
-                  medias: viewModel.post.medias?.isEmpty == true
+                  medias: viewModel.post.medias?.isEmpty ?? true
                       ? [
                           Media(
                               id: 0,
@@ -226,12 +226,14 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                               style: GoogleFonts.montserrat(
                                   textStyle: UITextStyle.text_body_14_w500),
                             ),
-                            trailing: ButtonWidget(
+                            trailing: SizedBox(
                               width: 96.w,
                               height: 47.h,
-                              title: LocaleKeys.explore_contact.trans(),
-                              onPress: () => null,
-                              borderRadius: 15.r,
+                              child: ButtonWidget(
+                                title: LocaleKeys.explore_contact.trans(),
+                                borderRadius: 15.r,
+                                onPress: viewModel.onWantsToContact,
+                              ),
                             ),
                           )
                         else
@@ -240,7 +242,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             child: ButtonWidget(
                               width: double.infinity,
                               height: 47.h,
-                              title: _getActionButtonTitle(viewModel.post),
+                              title: _getActionButtonTitleSelf(viewModel.post),
                               onPress: () => null,
                               borderRadius: 15.r,
                               backgroundColor:
@@ -276,12 +278,12 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
   AdoptionPetDetailWidgetModel createViewModel() =>
       injector<AdoptionPetDetailWidgetModel>();
 
-  String _getActionButtonTitle(Post post) {
+  String _getActionButtonTitleSelf(Post post) {
     switch (post.type) {
       case PostType.adop:
         return 'Xác nhận cho';
       case PostType.mating:
-        return 'Xác nhận bạn tình';
+        return 'Xác nhận ghép đôi';
       case PostType.lose:
         return 'Đã tìm thấy';
       case PostType.activity:

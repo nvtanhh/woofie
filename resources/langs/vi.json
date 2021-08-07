@@ -198,6 +198,6 @@
     "send_message_error_description": "Không thể gửi tin nhắn. Bạn vui lòng thử lại sau nhé.",
     "sender_placeholder": "Soạn tin nhắn...",
     "sender_pick_media_error_tile": "Xin lỗi",
-    "sender_pick_media_error_description": "Hiện tại bạn chỉ có thể chọn 1 media mỗi lần gửi"
+    "sender_pick_media_error_description": "Hiện tại bạn chỉ có thể chọn 1 nội dung đính kèm mỗi lần gửi"
   }
 }

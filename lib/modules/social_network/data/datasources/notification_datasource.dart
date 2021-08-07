@@ -30,6 +30,7 @@ class NotificationDatasource {
           id
           name
           uuid
+          dob
         }
       }
     }

@@ -17,12 +17,14 @@ class PostDatasource {
 
   PostDatasource(this._hasuraConnect, this._loggedInUser);
 
-  Future<List<Post>> getPosts({int limit = 10, int offset = 0, DateTime? lastValue}) async {
+  Future<List<Post>> getPosts(
+      {int limit = 10, int offset = 0, DateTime? lastValue}) async {
     await Future.delayed(const Duration(seconds: 1));
     return <Post>[];
   }
 
-  Future<List<Comment>> getCommentsInPost(int postId, int limit, int offset) async {
+  Future<List<Comment>> getCommentsInPost(
+      int postId, int limit, int offset) async {
     user = _loggedInUser.user;
     final query = """
     query MyQuery {
@@ -72,12 +74,15 @@ class PostDatasource {
     }
     """;
     final data = await _hasuraConnect.mutation(mutation);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["likePost"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["likePost"] as Map;
     return int.tryParse("${affectedRows["id"]}") != null;
   }
 
-  Future<List<Post>> getPostsTimeline(int offset, int limit, {String? userUUID}) async {
-    final String userFilter = (userUUID != null) ? 'where: {creator_uuid: {_eq: "$userUUID"}}, ' : '';
+  Future<List<Post>> getPostsTimeline(int offset, int limit,
+      {String? userUUID}) async {
+    final String userFilter =
+        (userUUID != null) ? 'where: {creator_uuid: {_eq: "$userUUID"}}, ' : '';
 
     final query = """
     query MyQuery {
@@ -110,6 +115,7 @@ class PostDatasource {
             id
             name
             bio
+            dob
           }
         }
         user {
@@ -130,7 +136,9 @@ class PostDatasource {
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["posts"] as List;
-    return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
+    return listPost
+        .map((e) => Post.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<Post>> getPostsOfPet(int petId, int offset, int limit) async {
@@ -140,18 +148,21 @@ class PostDatasource {
   content created_at creator_uuid id is_closed is_liked is_my_post reactions_counts uuid
   medias { id type url }
   post_reacts_aggregate { aggregate { count } } 
-  type post_pets { pet { name id } }
+  type post_pets { pet { name id dob } }
   comments_aggregate { aggregate { count } }
   user { uuid name id }
    } }
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["posts"] as List;
-    return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
+    return listPost
+        .map((e) => Post.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<Post> createPost(Post post) async {
-    final listPetTag = post.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
+    final listPetTag =
+        post.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
     final location = post.location == null
         ? ""
         : 'location: {data: {long: "${post.location?.long}", lat: "${post.location?.lat}", name: "${post.location?.name ?? ""}"}},';
@@ -173,7 +184,8 @@ class PostDatasource {
     }
     """;
     final data = await _hasuraConnect.mutation(manution);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
     return Post.fromJson(affectedRows as Map<String, dynamic>);
   }
 
@@ -224,8 +236,11 @@ mutation MyMutation {
     }
     """;
     final data = await _hasuraConnect.query(query);
-    final listPost = GetMapFromHasura.getMap(data as Map)["get_posts_by_type"] as List;
-    return listPost.map((e) => Post.fromJson(e as Map<String, dynamic>)).toList();
+    final listPost =
+        GetMapFromHasura.getMap(data as Map)["get_posts_by_type"] as List;
+    return listPost
+        .map((e) => Post.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<Map<String, dynamic>> getDetailPost(int postId) async {
@@ -243,6 +258,7 @@ mutation MyMutation {
         }
         user {
           id
+          uuid
           name
           avatar_url
         }
@@ -251,6 +267,7 @@ mutation MyMutation {
             id
             name
             avatar_url
+            dob
           }
         }
         location {
@@ -274,13 +291,15 @@ mutation MyMutation {
     }
     """;
     final data = await _hasuraConnect.query(query);
-    return GetMapFromHasura.getMap(data as Map)["posts_by_pk"] as Map<String, dynamic>;
+    return GetMapFromHasura.getMap(data as Map)["posts_by_pk"]
+        as Map<String, dynamic>;
   }
 
   Future<Post> createDraftPost(NewPostData newPostData) async {
     const draftPostStatus = 0;
 
-    final taggedPets = newPostData.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
+    final taggedPets =
+        newPostData.taggegPets?.map((e) => {"pet_id": e.id}).toList() ?? [];
 
     final location = newPostData.location == null
         ? ""
@@ -306,7 +325,8 @@ mutation MyMutation {
     """;
 
     final data = await _hasuraConnect.mutation(manution);
-    final jsonBody = GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
+    final jsonBody =
+        GetMapFromHasura.getMap(data as Map)["insert_posts_one"] as Map;
     return Post.fromJson(jsonBody as Map<String, dynamic>);
   }
 
@@ -325,6 +345,7 @@ mutation MyMutation {
         }
         user {
           id
+          uuid
           name
           avatar_url
         }
@@ -332,6 +353,7 @@ mutation MyMutation {
           pet {
             id
             name
+            dob
             avatar_url
           }
         }
@@ -346,7 +368,8 @@ mutation MyMutation {
     }
     """;
     final data = await _hasuraConnect.mutation(query);
-    final postJson = GetMapFromHasura.getMap(data as Map)["update_posts_by_pk"] as Map;
+    final postJson =
+        GetMapFromHasura.getMap(data as Map)["update_posts_by_pk"] as Map;
     return Post.fromJson(postJson as Map<String, dynamic>);
   }
 
@@ -355,7 +378,11 @@ mutation MyMutation {
   Future<Post?> getPostWithId(int postId) async {}
 
   Future<bool> editPost(EditedPostData editedPostData) async {
-    final mediasData = editedPostData.newAddedMedias?.map((e) => _mediaToJson(e)).toList().toString() ?? "[]";
+    final mediasData = editedPostData.newAddedMedias
+            ?.map((e) => _mediaToJson(e))
+            .toList()
+            .toString() ??
+        "[]";
 
     final location = editedPostData.location == null
         ? ""

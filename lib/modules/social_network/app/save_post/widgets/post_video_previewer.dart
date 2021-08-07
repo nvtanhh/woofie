@@ -20,6 +20,7 @@ class PostVideoPreviewer extends StatelessWidget {
 
   final double? thumbnailMaxWidth;
   final bool isConstraintsSize;
+  final BoxFit? fit;
 
   const PostVideoPreviewer({
     Key? key,
@@ -32,6 +33,7 @@ class PostVideoPreviewer extends StatelessWidget {
     this.thumbnailMaxWidth,
     this.isConstraintsSize = true,
     this.playIconMargin,
+    this.fit,
   }) : super(key: key);
 
   static double avatarBorderRadius = 10.0;
@@ -56,7 +58,7 @@ class PostVideoPreviewer extends StatelessWidget {
                 return _wrapImageWidgetForThumbnail(
                   Image.memory(
                     snapshot.data!,
-                    fit: BoxFit.cover,
+                    fit: fit ?? BoxFit.cover,
                   ),
                   width: width,
                   height: height,
@@ -109,7 +111,8 @@ class PostVideoPreviewer extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       child: FloatingActionButton(
-        heroTag: Key('postVideoPreviewerRemoveButton${postVideoFile?.path}${postVideo?.url}'),
+        heroTag: Key(
+            'postVideoPreviewerRemoveButton${postVideoFile?.path}${postVideo?.url}'),
         onPressed: onRemove,
         backgroundColor: Colors.black54,
         child: const MWIcon(
@@ -126,13 +129,16 @@ class PostVideoPreviewer extends StatelessWidget {
       width: playIconSize ?? buttonSize,
       height: playIconSize ?? buttonSize,
       child: FloatingActionButton(
-        heroTag: Key('postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}'),
+        heroTag: Key(
+            'postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}'),
         backgroundColor: Colors.black54,
         onPressed: () => _onWantsToPlay(context),
         child: Icon(
           Icons.play_arrow,
           color: Colors.white,
-          size: playIconSize == null ? 16 : (playIconSize! - playIconSize! / 6.toInt()),
+          size: playIconSize == null
+              ? 16
+              : (playIconSize! - playIconSize! / 6.toInt()),
         ),
       ),
     );
@@ -146,7 +152,8 @@ class PostVideoPreviewer extends StatelessWidget {
     );
   }
 
-  Widget _wrapImageWidgetForThumbnail(Widget image, {double? width, double? height, bool isConstraintsSize = true}) {
+  Widget _wrapImageWidgetForThumbnail(Widget image,
+      {double? width, double? height, bool isConstraintsSize = true}) {
     return SizedBox(
       height: isConstraintsSize ? height ?? 80.h : null,
       width: isConstraintsSize ? width ?? 80.w : null,

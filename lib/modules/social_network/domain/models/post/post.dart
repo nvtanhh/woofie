@@ -74,12 +74,16 @@ class Post extends UpdatableModel<Post> {
   bool get isIncludeLocation => location != null;
 
   static List<Pet>? allPetsFromJson(List<dynamic>? list) {
-    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
+    return list
+        ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
+        .toList();
   }
 
   static int? aggregateCountFromJson(Map? json) {
     if (json == null) return null;
-    return ObjectAggregate.fromJson(json as Map<String, dynamic>).aggregate.count;
+    return ObjectAggregate.fromJson(json as Map<String, dynamic>)
+        .aggregate
+        .count;
   }
 
   void increasePostReactsCount({int value = 1}) {
@@ -112,7 +116,8 @@ class Post extends UpdatableModel<Post> {
     notifyUpdate();
   }
 
-  factory Post.fromJsonString(String jsonString) => Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Post.fromJsonString(String jsonString) =>
+      Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
 
@@ -122,6 +127,21 @@ class Post extends UpdatableModel<Post> {
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
+  }
+
+  factory Post.fromJsonFromChat(Map<String, dynamic> json) {
+    return Post(
+      id: json['id'] as int,
+      uuid: json['uuid'] as String,
+      creatorUUID: json['creator_uuid'] as String?,
+      creator: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
+      type: _$enumDecode(_$PostTypeEnumMap, json['type']),
+      taggegPets: [Pet.fromJson(json['post_pets'][0] as Map<String, dynamic>)],
+    )..medias = (json['medias'] as List<dynamic>?)
+        ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   bool get isMyPost => _isMyPost ?? injector<LoggedInUser>().isMyPost(this);
@@ -150,7 +170,9 @@ class Post extends UpdatableModel<Post> {
       isLiked = json['is_liked'] as bool;
     }
     if (json['comments'] != null) {
-      comments = (json['comments'] as List<dynamic>?)?.map((e) => Comment.fromJson(e as Map<String, dynamic>)).toList();
+      comments = (json['comments'] as List<dynamic>?)
+          ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
+          .toList();
     }
     if (json['post_pets'] != null) {
       taggegPets = allPetsFromJson(json['post_pets'] as List?);
@@ -159,22 +181,28 @@ class Post extends UpdatableModel<Post> {
       status = _$enumDecodeNullable(_$PostStatusEnumMap, json['status']);
     }
     if (json['location'] != null) {
-      location = UserLocation.fromJson(json['location'] as Map<String, dynamic>);
+      location =
+          UserLocation.fromJson(json['location'] as Map<String, dynamic>);
     }
     if (json['medias'] != null) {
-      medias = (json['medias'] as List<dynamic>?)?.map((e) => Media.fromJson(e as Map<String, dynamic>)).toList();
+      medias = (json['medias'] as List<dynamic>?)
+          ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
+          .toList();
     }
     if (json['distance_user_to_post'] != null) {
       distanceUserToPost = json['distance_user_to_post'] as double;
     }
     if (json['post_reacts_aggregate'] != null) {
-      postReactsCount = aggregateCountFromJson(json["post_reacts_aggregate"] as Map<String, dynamic>);
+      postReactsCount = aggregateCountFromJson(
+          json["post_reacts_aggregate"] as Map<String, dynamic>);
     }
     if (json['comments_aggregate'] != null) {
-      postCommentsCount = aggregateCountFromJson(json["comments_aggregate"] as Map<String, dynamic>);
+      postCommentsCount = aggregateCountFromJson(
+          json["comments_aggregate"] as Map<String, dynamic>);
     }
     if (json['medias_aggregate'] != null) {
-      postMediasCount = aggregateCountFromJson(json["medias_aggregate"] as Map<String, dynamic>);
+      postMediasCount = aggregateCountFromJson(
+          json["medias_aggregate"] as Map<String, dynamic>);
     }
     if (json['uuid'] != null) {
       uuid = json['uuid'] as String;

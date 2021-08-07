@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/app/widgets/active_status_avatar.dart';
 import 'package:meowoof/modules/chat/app/widgets/message/message_body.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
@@ -16,7 +21,12 @@ class MessageWidget extends StatelessWidget {
 
   final Function(Message)? onMessageTap;
 
-  const MessageWidget(this.message, {this.chatPartner, Key? key, this.isDisplayAvatar = true, this.onMessageTap}) : super(key: key);
+  const MessageWidget(this.message,
+      {this.chatPartner,
+      Key? key,
+      this.isDisplayAvatar = true,
+      this.onMessageTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +34,8 @@ class MessageWidget extends StatelessWidget {
 
     const double _messageBorderRadius = 15;
     final _borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular((isMyMessage || !isDisplayAvatar) ? _messageBorderRadius : 0),
+      bottomLeft: Radius.circular(
+          (isMyMessage || !isDisplayAvatar) ? _messageBorderRadius : 0),
       bottomRight: Radius.circular(isMyMessage
           ? !isDisplayAvatar
               ? _messageBorderRadius
@@ -58,7 +69,11 @@ class MessageWidget extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: isMyMessage ? UIColor.primary : UIColor.holder,
                         ),
-                        child: MessageBody(message, isMyMessage: isMyMessage, partner: chatPartner),
+                        child: MessageBody(
+                          message,
+                          isMyMessage: isMyMessage,
+                          partner: chatPartner,
+                        ),
                       ),
                     ),
                   ),
@@ -105,6 +120,11 @@ class MessageWidget extends StatelessWidget {
             videoUrl: message.content,
             context: context,
           );
+          break;
+        case MessageType.post:
+          final Post post = Post.fromJsonFromChat(
+              json.decode(message.content) as Map<String, dynamic>);
+          Get.to(() => AdoptionPetDetailWidget(post: post));
           break;
         default:
       }

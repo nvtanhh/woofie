@@ -91,7 +91,7 @@ class LoginWidgetModel extends BaseViewModel {
         onSuccess: () async {
           if (_user != null) {
             unawaited(_loggedInUser.setLoggedUser(_user!));
-            unawaited(updateTokenNotify(_user!.uuid!));
+            unawaited(updateTokenNotify(_user!.uuid));
             if (!_user!.isHavePets) {
               await Get.offAll(() => const AddPetWidget());
             } else {

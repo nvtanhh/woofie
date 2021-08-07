@@ -25,7 +25,9 @@ class DateTimeHelper {
 
   /// The last day of a given month
   static DateTime lastDayOfMonth(DateTime month) {
-    final beginningNextMonth = (month.month < 12) ? DateTime(month.year, month.month + 1) : DateTime(month.year + 1);
+    final beginningNextMonth = (month.month < 12)
+        ? DateTime(month.year, month.month + 1)
+        : DateTime(month.year + 1);
     return beginningNextMonth.subtract(const Duration(days: 1));
   }
 
