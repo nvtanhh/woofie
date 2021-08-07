@@ -4,6 +4,7 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/chat_identifier.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/theme/ui_color.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatRoomNav extends StatelessWidget {
   final ChatRoom room;
@@ -23,7 +24,7 @@ class ChatRoomNav extends StatelessWidget {
         },
       ),
       title: Transform.translate(
-        offset: const Offset(-12, 0),
+        offset: Offset(-16.w, 0),
         child: ChatIndentifierWidget(chatRoom: room),
       ),
       actions: <Widget>[

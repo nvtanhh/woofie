@@ -56,6 +56,8 @@ class User extends UpdatableModel<User> {
     return factory.fromJson(json);
   }
 
+  factory User.fromJsonPure(Map<String, dynamic> json) => _$UserFromJson(json);
+
   factory User.fromJsonString(String jsonString) =>
       User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 

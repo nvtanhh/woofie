@@ -69,7 +69,10 @@ class _ChatRoomPageState
   PreferredSizeWidget _buildAppBar() {
     return PreferredSize(
       preferredSize: const Size.fromHeight(56),
-      child: ChatRoomNav(viewModel.room),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 5.h),
+        child: ChatRoomNav(viewModel.room),
+      ),
     );
   }
 

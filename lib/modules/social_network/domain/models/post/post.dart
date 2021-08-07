@@ -128,6 +128,7 @@ class Post extends UpdatableModel<Post> {
   factory Post.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
   }
+  factory Post.fromJsonPure(Map<String, dynamic> json) => _$PostFromJson(json);
 
   factory Post.fromJsonFromChat(Map<String, dynamic> json) {
     return Post(
@@ -136,9 +137,11 @@ class Post extends UpdatableModel<Post> {
       creatorUUID: json['creator_uuid'] as String?,
       creator: json['user'] == null
           ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
+          : User.fromJsonPure(json['user'] as Map<String, dynamic>),
       type: _$enumDecode(_$PostTypeEnumMap, json['type']),
-      taggegPets: [Pet.fromJson(json['post_pets'][0] as Map<String, dynamic>)],
+      taggegPets: [
+        Pet.fromJsonPure(json['post_pets'][0] as Map<String, dynamic>)
+      ],
     )..medias = (json['medias'] as List<dynamic>?)
         ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
         .toList();
