@@ -17,18 +17,24 @@ class MessageBodyMedia extends StatelessWidget {
 
   final User? partner;
 
-  const MessageBodyMedia(this.message, {Key? key, required this.partner}) : super(key: key);
+  const MessageBodyMedia(this.message, {Key? key, required this.partner})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: message.isSentByMe
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       children: [
-        _mediaDescriptionWidget(message),
         ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 300.h),
-          child: _mediaWidget(message, partner),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: _mediaWidget(message, partner),
+          ),
         ),
+        _mediaDescriptionWidget(message),
       ],
     );
   }
@@ -41,17 +47,6 @@ class MessageBodyMedia extends StatelessWidget {
           placeHolderImage: 'resources/images/fallbacks/media-fallback.png',
           isConstraintsSize: false,
         );
-        // return ExtendedImage.network(
-        //   message.content,
-        //   fit: BoxFit.cover,
-        //   retries: 0,
-        //   loadStateChanged: (ExtendedImageState state) {
-        //     if (state.extendedImageLoadState == LoadState.loading ||
-        //         state.extendedImageLoadState == LoadState.failed) {
-        //       return _getImagePlaceHolder();
-        //     }
-        //   },
-        // );
       } else {
         return PostImagePreviewer(
           postImageFile: File(message.content),
@@ -69,27 +64,46 @@ class MessageBodyMedia extends StatelessWidget {
   Widget _mediaDescriptionWidget(Message message) {
     if (message.description != null && message.description!.isNotEmpty) {
       return Padding(
-        padding: const EdgeInsets.only(
-          left: 18,
-          right: 18,
-          top: 10,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              message.description!,
-              style: message.isSentByMe ? UITextStyle.body_14_medium.apply(color: Colors.white) : UITextStyle.body_14_medium,
+        padding: EdgeInsets.only(top: 1.h),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: (message.isSentByMe ? UIColor.primary : UIColor.holder)
+                .withOpacity(.9),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.r),
+              topRight: Radius.circular(15.r),
+              bottomLeft:
+                  message.isSentByMe ? Radius.circular(15.r) : Radius.zero,
+              bottomRight:
+                  !message.isSentByMe ? Radius.circular(15.r) : Radius.zero,
             ),
-            const SizedBox(height: 10),
-            if (message.type == MessageType.video)
-              Divider(
-                thickness: 0.5,
-                height: 1,
-                endIndent: 0,
-                color: message.isSentByMe ? Colors.white : UIColor.textBody,
-              )
-          ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 12.w,
+              right: 12.w,
+              top: 10.h,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  message.description!,
+                  style: message.isSentByMe
+                      ? UITextStyle.body_14_medium.apply(color: Colors.white)
+                      : UITextStyle.body_14_medium,
+                ),
+                SizedBox(height: 10.h),
+                if (message.type == MessageType.video)
+                  Divider(
+                    thickness: 0.5.w,
+                    height: 1.h,
+                    endIndent: 0,
+                    color: message.isSentByMe ? Colors.white : UIColor.textBody,
+                  )
+              ],
+            ),
+          ),
         ),
       );
     }
@@ -98,7 +112,9 @@ class MessageBodyMedia extends StatelessWidget {
 
   Widget _videoMessage(Message message, User? partner) {
     const String sendVideoText = 'Đã gửi 1 video';
-    final String subTitle = message.isSentByMe ? 'Bạn • $sendVideoText' : '${partner?.name ?? ""} • $sendVideoText';
+    final String subTitle = message.isSentByMe
+        ? 'Bạn • $sendVideoText'
+        : '${partner?.name ?? ""} • $sendVideoText';
 
     return Container(
       height: 80,
@@ -108,7 +124,9 @@ class MessageBodyMedia extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: message.isSentByMe ? UIColor.white.withOpacity(.3) : UIColor.textBody.withOpacity(.3),
+              color: message.isSentByMe
+                  ? UIColor.white.withOpacity(.3)
+                  : UIColor.textBody.withOpacity(.3),
               borderRadius: BorderRadius.circular(21),
             ),
             height: 42,
@@ -132,7 +150,9 @@ class MessageBodyMedia extends StatelessWidget {
                     maxLines: 1,
                     textWidthBasis: TextWidthBasis.longestLine,
                     overflow: TextOverflow.ellipsis,
-                    style: message.isSentByMe ? UITextStyle.body_14_medium.apply(color: Colors.white) : UITextStyle.body_14_medium,
+                    style: message.isSentByMe
+                        ? UITextStyle.body_14_medium.apply(color: Colors.white)
+                        : UITextStyle.body_14_medium,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -140,7 +160,9 @@ class MessageBodyMedia extends StatelessWidget {
                     ),
                     child: Text(
                       subTitle,
-                      style: message.isSentByMe ? UITextStyle.body_12_reg.apply(color: Colors.white70) : UITextStyle.body_12_reg,
+                      style: message.isSentByMe
+                          ? UITextStyle.body_12_reg.apply(color: Colors.white70)
+                          : UITextStyle.body_12_reg,
                     ),
                   ),
                 ],

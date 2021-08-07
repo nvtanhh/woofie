@@ -151,8 +151,12 @@ class ChatManagerModel extends BaseViewModel {
       _isEveryoneCanChatWithMe =
           loggedInUser.setting!.isEveryoneCanChatWithMe();
     } else {
-      final Setting setting = await _getSettingUsecase.call();
-      _isEveryoneCanChatWithMe = setting.isEveryoneCanChatWithMe();
+      try {
+        final Setting setting = await _getSettingUsecase.call();
+        _isEveryoneCanChatWithMe = setting.isEveryoneCanChatWithMe();
+      } catch (e) {
+        _isEveryoneCanChatWithMe = true;
+      }
     }
   }
 }

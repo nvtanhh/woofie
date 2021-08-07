@@ -19,6 +19,7 @@ class PetItemWidget extends StatelessWidget {
   final double? height;
   final double? width;
   final bool showDistance;
+  final bool isConstraintsSize;
 
   const PetItemWidget({
     Key? key,
@@ -29,6 +30,7 @@ class PetItemWidget extends StatelessWidget {
     this.height,
     this.width,
     this.showDistance = true,
+    this.isConstraintsSize = true,
   }) : super(key: key);
 
   @override
@@ -37,8 +39,8 @@ class PetItemWidget extends StatelessWidget {
     return InkWell(
       onTap: onClick,
       child: Container(
-        width: width ?? 165.w,
-        height: height ?? 213.h,
+        width: isConstraintsSize ? width ?? 165.w : null,
+        height: isConstraintsSize ? height ?? 213.h : null,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.r),
           color: UIColor.white,

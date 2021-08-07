@@ -40,7 +40,7 @@ class MessageSender extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: 220.h),
+      constraints: BoxConstraints(maxHeight: 270.h),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: UIColor.holder.withOpacity(.5),
