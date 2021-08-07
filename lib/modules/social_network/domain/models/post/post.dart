@@ -55,12 +55,14 @@ class Post extends UpdatableModel<Post> {
   int? postCommentsCount;
   @JsonKey(name: "medias_aggregate", fromJson: aggregateCountFromJson)
   int? postMediasCount;
+  @JsonKey(name: "post_reacts", fromJson: reactorsFromJson)
+  List<User>? creators;
 
   Post({
     required this.id,
     required this.uuid,
-    this.creator,
     required this.type,
+    this.creator,
     this.creatorUUID,
     this.content,
     this.isClosed,
@@ -76,6 +78,12 @@ class Post extends UpdatableModel<Post> {
   static List<Pet>? allPetsFromJson(List<dynamic>? list) {
     return list
         ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
+        .toList();
+  }
+
+  static List<User>? reactorsFromJson(List<dynamic>? list) {
+    return list
+        ?.map((e) => User.fromJson(e["reactor"] as Map<String, dynamic>))
         .toList();
   }
 

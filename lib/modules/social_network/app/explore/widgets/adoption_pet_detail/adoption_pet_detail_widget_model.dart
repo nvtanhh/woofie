@@ -13,6 +13,7 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
   final Rxn<Post> _post = Rxn<Post>();
   final GetDetailPostUsecase _getDetailPostUsecase;
   final RxBool _isLoaded = RxBool(false);
+
   AdoptionPetDetailWidgetModel(this._getDetailPostUsecase);
 
   @override

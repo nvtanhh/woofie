@@ -58,6 +58,7 @@ class SavePostModel extends BaseViewModel {
     contentController = TextEditingController();
     contentController.text = post?.content ?? "";
     _currentLocation.value = post?.location;
+    currentAddress.value = post?.location?.name ?? '';
 
     _newAddedFiles.stream.listen(onNewAddedFilesChanged);
     _postMedia.stream.listen(onPostMediaChanged);

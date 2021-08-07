@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/configs/backend_config.dart';
+import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/injector.dart';
@@ -19,6 +21,7 @@ import 'package:meowoof/modules/chat/domain/usecases/room/init_chat_room_usecase
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:path/path.dart';
@@ -36,6 +39,7 @@ class ChatRoomPageModel extends BaseViewModel {
   final GetMessagesUseCase _getMessagesUseCase;
   final SendMessagesUsecase _sendMessagesUsecase;
   final InitChatRoomsUseCase _initChatRoomsUseCase;
+  final LikePostUsecase _likePostUsecase;
 
   final MediaService _mediaService;
   final FirebaseAuth _auth;
@@ -80,6 +84,7 @@ class ChatRoomPageModel extends BaseViewModel {
     this._sendMessagesUsecase,
     this._auth,
     this._initChatRoomsUseCase,
+    this._likePostUsecase,
   );
 
   @override
@@ -313,6 +318,8 @@ class ChatRoomPageModel extends BaseViewModel {
             _updateNewMessage(sendingMessage, notifyChatRoom: false);
             _cleanSender();
             newMessage = await _sendMessage(sendingMessage);
+            // Trigger like post it - it means that the logged in user wants to adop/matting with post's pet
+            unawaited(_triggerFunctionalPost());
           }
 
           // find the new message in the recent message list ==> mark it as sent
@@ -447,6 +454,17 @@ class ChatRoomPageModel extends BaseViewModel {
   void onRemoveAttachmentPost() {
     if (attachmentPost.value != null) {
       attachmentPost.value = null;
+    }
+  }
+
+  Future _triggerFunctionalPost() async {
+    final Post post = attachmentPost.value!;
+    if (!post.isLiked!) {
+      await call(
+        () async => _likePostUsecase.call(attachmentPost.value!.id),
+        onSuccess: () => post.isLiked = true,
+        showLoading: false,
+      );
     }
   }
 }

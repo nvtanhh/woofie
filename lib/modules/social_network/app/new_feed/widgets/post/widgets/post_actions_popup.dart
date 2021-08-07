@@ -8,17 +8,19 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class PostActionsTrailing extends StatelessWidget {
   final Post post;
-  final VoidCallback onDeletePost;
-  final VoidCallback onEditPost;
-  final VoidCallback onReportPost;
+  final VoidCallback? onDeletePost;
+  final VoidCallback? onEditPost;
+  final VoidCallback? onReportPost;
+  final Widget? child;
 
-  const PostActionsTrailing({
-    Key? key,
-    required this.post,
-    required this.onDeletePost,
-    required this.onEditPost,
-    required this.onReportPost,
-  }) : super(key: key);
+  const PostActionsTrailing(
+      {Key? key,
+      required this.post,
+      required this.onDeletePost,
+      required this.onEditPost,
+      required this.onReportPost,
+      this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +34,13 @@ class PostActionsTrailing extends StatelessWidget {
       onSelected: (PostTrailingAction action) {
         switch (action) {
           case PostTrailingAction.edit:
-            onEditPost();
+            if (onEditPost != null) onEditPost!();
             break;
           case PostTrailingAction.delete:
-            onDeletePost();
+            if (onDeletePost != null) onDeletePost!();
             break;
           case PostTrailingAction.report:
-            onReportPost();
+            if (onReportPost != null) onReportPost!();
             break;
           default:
         }
@@ -99,15 +101,16 @@ class PostActionsTrailing extends StatelessWidget {
             ),
           ),
       ],
-      child: Container(
-        width: 20.w,
-        alignment: Alignment.topRight,
-        padding: EdgeInsets.only(top: 5.h),
-        child: const MWIcon(
-          MWIcons.moreVerical,
-          themeColor: MWIconThemeColor.secondaryText,
-        ),
-      ),
+      child: child ??
+          Container(
+            width: 20.w,
+            alignment: Alignment.topRight,
+            padding: EdgeInsets.only(top: 5.h),
+            child: const MWIcon(
+              MWIcons.moreVerical,
+              themeColor: MWIconThemeColor.secondaryText,
+            ),
+          ),
     );
   }
 }

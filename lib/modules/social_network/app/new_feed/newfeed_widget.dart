@@ -52,7 +52,7 @@ class _NewFeedWidgetState
                         onLikeClick: viewModel.postService.onLikeClick,
                         onPostClick: viewModel.postService.onPostClick,
                         onDeletePost: () =>
-                            viewModel.postService.onDeletePost(post, index),
+                            viewModel.postService.onWantsToDeletePost(post, index),
                         onEditPost: () =>
                             viewModel.postService.onWantsToEditPost(post),
                         onReportPost: () =>

@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -14,6 +15,8 @@ import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/core/ui/button_widget.dart';
+import 'package:meowoof/core/ui/confirm_dialog.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/save_post/new_post_uploader.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
@@ -49,7 +52,6 @@ class PostService extends BaseViewModel {
   final ReportPostUsecase _reportPostUsecase;
   final UpdateLocationUsecase _updateLocationUsecase;
 
-  final LocationService _locationService;
   final BottomSheetService _bottomSheetService;
   final MediaService _mediaService;
   final PlaySoundReactPost _playSoundReactPost;
@@ -71,7 +73,6 @@ class PostService extends BaseViewModel {
     this._reportPostUsecase,
     this._playSoundReactPost,
     this._updateLocationUsecase,
-    this._locationService,
   );
 
   @override
@@ -115,9 +116,13 @@ class PostService extends BaseViewModel {
 
   void onPostClick(Post post) {
     if (post.type == PostType.activity) {
-      injector<NavigationService>().navigateToPostDetail(post);
+      injector<NavigationService>().navigateToPostDetail(
+        post,
+      );
     } else {
-      injector<NavigationService>().navigateToFunctionalPostDetail(post);
+      injector<NavigationService>().navigateToFunctionalPostDetail(
+        post,
+      );
     }
   }
 
@@ -143,6 +148,18 @@ class PostService extends BaseViewModel {
       onFailure: (err) {
         _toastService.success(message: err.toString(), context: Get.context!);
       },
+    );
+  }
+
+  void onWantsToDeletePost(Post post, int index) {
+    Get.dialog(
+      ConfirmDialog(
+        title: 'Xác nhận xóa',
+        content: 'Bạn có chắc chắn muốn xóa bài viết này?',
+        confirmText: 'Xóa',
+        cancelText: 'Hủy',
+        onConfirm: () => onDeletePost(post, index),
+      ),
     );
   }
 

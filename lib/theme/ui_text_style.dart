@@ -109,6 +109,12 @@ class UITextStyle {
         fontSize: 14.0.sp,
         fontWeight: FontWeight.w700),
   );
+  static TextStyle text_header_16_w500 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.textHeader,
+        fontSize: 16.0.sp,
+        fontWeight: FontWeight.w500),
+  );
   static TextStyle text_header_16_w600 = GoogleFonts.montserrat(
     textStyle: TextStyle(
         color: UIColor.textHeader,
@@ -126,12 +132,6 @@ class UITextStyle {
         color: UIColor.textHeader,
         fontSize: 16.0.sp,
         fontWeight: FontWeight.w400),
-  );
-  static TextStyle text_header_16_w500 = GoogleFonts.montserrat(
-    textStyle: TextStyle(
-        color: UIColor.textHeader,
-        fontSize: 16.0.sp,
-        fontWeight: FontWeight.w500),
   );
   static TextStyle text_header_14_w400 = GoogleFonts.montserrat(
     textStyle: TextStyle(
@@ -226,6 +226,14 @@ class UITextStyle {
   static TextStyle white_12_w600 = GoogleFonts.montserrat(
     textStyle: TextStyle(
         color: UIColor.white, fontSize: 12.0.sp, fontWeight: FontWeight.w600),
+  );
+  static TextStyle white_14_w500 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.white, fontSize: 14.0.sp, fontWeight: FontWeight.w500),
+  );
+  static TextStyle white_14_w600 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.white, fontSize: 14.0.sp, fontWeight: FontWeight.w600),
   );
   static TextStyle white_18_w500 = GoogleFonts.montserrat(
     textStyle: TextStyle(

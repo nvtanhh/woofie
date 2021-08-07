@@ -13,6 +13,7 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget_model.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/widgets/card_detail_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/images_view_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_actions_popup.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -22,8 +23,17 @@ import 'package:suga_core/suga_core.dart';
 class AdoptionPetDetailWidget extends StatefulWidget {
   final Post post;
 
-  const AdoptionPetDetailWidget({Key? key, required this.post})
-      : super(key: key);
+  final VoidCallback? onDeletePost;
+  final VoidCallback? onEditPost;
+  final VoidCallback? onReportPost;
+
+  const AdoptionPetDetailWidget({
+    Key? key,
+    required this.post,
+    this.onDeletePost,
+    this.onEditPost,
+    this.onReportPost,
+  }) : super(key: key);
 
   @override
   _AdoptionPetDetailState createState() => _AdoptionPetDetailState();
@@ -82,13 +92,18 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             backgroundColor: UIColor.white,
                             contentWidget: const MWIcon(MWIcons.back),
                           ),
-                          ButtonWidget(
-                            onPress: () => null,
-                            width: 40.w,
-                            height: 40.w,
-                            borderRadius: 20.w,
-                            backgroundColor: UIColor.white,
-                            contentWidget: const MWIcon(MWIcons.moreHoriz),
+                          PostActionsTrailing(
+                            post: viewModel.post,
+                            onDeletePost: widget.onDeletePost,
+                            onEditPost: widget.onEditPost,
+                            onReportPost: widget.onReportPost,
+                            child: ButtonWidget(
+                              width: 40.w,
+                              height: 40.w,
+                              borderRadius: 20.w,
+                              backgroundColor: UIColor.white,
+                              contentWidget: const MWIcon(MWIcons.moreHoriz),
+                            ),
                           )
                         ],
                       ),

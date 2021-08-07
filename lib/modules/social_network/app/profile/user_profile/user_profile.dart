@@ -22,7 +22,8 @@ class UserProfile extends StatefulWidget {
   _UserProfileState createState() => _UserProfileState();
 }
 
-class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> with AutomaticKeepAliveClientMixin {
+class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
+    with AutomaticKeepAliveClientMixin {
   @override
   void loadArguments() {
     viewModel.user = widget.user;
@@ -41,14 +42,17 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> wit
                   Obx(
                     () => Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Column(children: viewModel.postService.prependedWidgets.toList()),
+                      child: Column(
+                          children:
+                              viewModel.postService.prependedWidgets.toList()),
                     ),
                   ),
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async => viewModel.onRefresh(),
                       child: PagedListView<int, Post>(
-                        pagingController: viewModel.postService.pagingController,
+                        pagingController:
+                            viewModel.postService.pagingController,
                         builderDelegate: PagedChildBuilderDelegate(
                           itemBuilder: (context, post, index) {
                             if (index == 0) {
@@ -66,9 +70,12 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel> wit
                               child: PostItem(
                                 post: post,
                                 onLikeClick: viewModel.postService.onLikeClick,
-                                onEditPost: () => viewModel.postService.onWantsToEditPost(post),
-                                onDeletePost: () => viewModel.onPostDeleted(post, index),
-                                onCommentClick: viewModel.postService.onCommentClick,
+                                onEditPost: () => viewModel.postService
+                                    .onWantsToEditPost(post),
+                                onDeletePost: () => viewModel.postService
+                                    .onWantsToDeletePost(post, index),
+                                onCommentClick:
+                                    viewModel.postService.onCommentClick,
                                 onPostClick: viewModel.postService.onPostClick,
                               ),
                             );

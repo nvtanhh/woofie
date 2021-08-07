@@ -4,7 +4,7 @@ import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class ButtonWidget extends StatefulWidget {
-  final Function() onPress;
+  final Function()? onPress;
   final String? title;
   final Color? backgroundColor;
   final double? borderRadius;
@@ -17,7 +17,7 @@ class ButtonWidget extends StatefulWidget {
   final EdgeInsets? contentPadding;
 
   const ButtonWidget({
-    required this.onPress,
+    this.onPress,
     this.title,
     this.backgroundColor,
     this.borderRadius,
@@ -55,21 +55,23 @@ class _ButtonWidgetState extends State<ButtonWidget> {
               style: TextButton.styleFrom(
                 padding: widget.contentPadding ?? EdgeInsets.zero,
               ),
-              onPressed: () async {
-                if (widget.onPress is Future Function()) {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  await widget.onPress();
-                  if (mounted) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                  }
-                } else if (widget.onPress is Function()) {
-                  widget.onPress();
-                }
-              },
+              onPressed: (widget.onPress != null)
+                  ? () async {
+                      if (widget.onPress is Future Function()) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        await widget.onPress!();
+                        if (mounted) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
+                      } else if (widget.onPress is Function()) {
+                        await widget.onPress!();
+                      }
+                    }
+                  : null,
               child: widget.contentWidget ??
                   Center(
                     child: Text(

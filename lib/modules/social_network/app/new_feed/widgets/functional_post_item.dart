@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/helpers/datetime_helper.dart';
+import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_actions_popup.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -170,6 +172,23 @@ class FunctionalPostItem extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 10.w,
+            top: 10.h,
+            child: PostActionsTrailing(
+              post: post,
+              onDeletePost: onDeletePost,
+              onEditPost: onEditPost,
+              onReportPost: onReportPost,
+              child: ButtonWidget(
+                width: 30.w,
+                height: 30.w,
+                borderRadius: 20.w,
+                backgroundColor: UIColor.white,
+                contentWidget: const MWIcon(MWIcons.moreHoriz),
               ),
             ),
           )
