@@ -85,9 +85,13 @@ class SavePostModel extends BaseViewModel {
 
   Future onPostTypeChosen(PostType chosenType) async {
     if (isPostEditing) return;
-    if (taggedPets.isEmpty && chosenType != PostType.activity) {
-      _showDialogRequireTagPets();
-      return;
+    if (chosenType != PostType.activity) {
+      if (taggedPets.isEmpty) {
+        _showDialogRequireTagPets();
+        return;
+      } else if (taggedPets.length > 1) {
+        taggedPets = [taggedPets[0]];
+      }
     }
     _postType.value = chosenType;
     // ignore: unrelated_type_equality_checks
@@ -187,13 +191,17 @@ class SavePostModel extends BaseViewModel {
   }
 
   void _onTaggedPetChosen(Pet pet) {
-    if (_taggedPets.contains(pet)) {
-      _taggedPets.remove(pet);
+    if (_postType.value == PostType.activity) {
+      if (_taggedPets.contains(pet)) {
+        _taggedPets.remove(pet);
+      } else {
+        _taggedPets.add(pet);
+      }
+      if (isPostEditing) {
+        _checkIsPostEdited();
+      }
     } else {
-      _taggedPets.add(pet);
-    }
-    if (isPostEditing) {
-      _checkIsPostEdited();
+      _taggedPets.value = [pet];
     }
   }
 

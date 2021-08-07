@@ -47,7 +47,6 @@ class PetDatasource {
     id
     id_pet_type
     name
-    dob
     }}
     """;
     final data = await _hasuraConnect.query(queryGetPetBreeds);
