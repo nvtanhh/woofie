@@ -37,7 +37,7 @@ class User extends UpdatableModel<User> {
   int? locationId;
   @JsonKey(name: "location")
   UserLocation? location;
-  @JsonKey(name: "settings",fromJson: allSettingFromJson)
+  @JsonKey(name: "setting")
   Setting? setting;
   User(
       {required this.id,
@@ -68,12 +68,7 @@ class User extends UpdatableModel<User> {
         ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
         .toList();
   }
-  static Setting? allSettingFromJson(List<dynamic>? list) {
-    if(list==null){
-      return null;
-    }
-    return Setting.fromJson(list[0] as Map<String, dynamic>);
-  }
+
   bool get isHavePet => (currentPets ?? []).isNotEmpty;
 
   @override

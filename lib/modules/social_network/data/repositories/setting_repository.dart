@@ -8,7 +8,7 @@ class SettingRepository {
 
   SettingRepository(this._settingDatasource);
 
-  Future<Setting> getSetting() {
+  Future<Setting?> getSetting() {
     return _settingDatasource.getSetting();
   }
 

@@ -25,10 +25,10 @@ class Setting {
     this.updatedAt,
   });
 
-  int? statusMessage() {
+  int statusMessage() {
     if (setting != null || setting?.isNotEmpty == true) {
       return (jsonDecode(setting!.replaceAll("'", "\""))
-          as Map<String, dynamic>)["message"] as int?;
+          as Map<String, dynamic>)["message"] as int;
     }
     return 1;
   }

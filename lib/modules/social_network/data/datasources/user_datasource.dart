@@ -53,7 +53,7 @@ class UserDatasource {
           avatar_url
           is_following
         }
-        settings {
+        setting {
           id
           setting
         }
@@ -61,7 +61,8 @@ class UserDatasource {
     }
     """;
     final data = await _hasuraConnect.query(query);
-    return GetMapFromHasura.getMap(data as Map)["users_by_pk"] as Map<String, dynamic>;
+    return GetMapFromHasura.getMap(data as Map)["users_by_pk"]
+        as Map<String, dynamic>;
   }
 
   Future reportUser(int userID) async {
@@ -72,7 +73,8 @@ class UserDatasource {
     return OneSignal.shared.setExternalUserId(tokenNotify);
   }
 
-  Future<Map<String, dynamic>> updateUserInformationLocation(int userId, {String? name, String? bio, int? locationId, String? avatarUrl}) async {
+  Future<Map<String, dynamic>> updateUserInformationLocation(int userId,
+      {String? name, String? bio, int? locationId, String? avatarUrl}) async {
     final nName = name == null ? "" : 'name: "$name",';
     final nBio = bio == null ? "" : 'bio: "$bio",';
     final nLocationId = locationId == null ? "" : 'location_id: $locationId,';
@@ -89,6 +91,7 @@ mutation MyMutation {
 }
 """;
     final data = await _hasuraConnect.mutation(manution);
-    return GetMapFromHasura.getMap(data as Map)["update_users_by_pk"] as Map<String, dynamic>;
+    return GetMapFromHasura.getMap(data as Map)["update_users_by_pk"]
+        as Map<String, dynamic>;
   }
 }

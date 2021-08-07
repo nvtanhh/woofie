@@ -28,7 +28,7 @@ class HasuraDatasource {
           bio
           avatar_url
         }
-        settings {
+        setting {
           id
           setting
           updated_at

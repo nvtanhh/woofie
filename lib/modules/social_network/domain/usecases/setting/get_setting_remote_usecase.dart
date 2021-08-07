@@ -7,7 +7,7 @@ class GetSettingUsecase {
   final SettingRepository _settingRepository;
   GetSettingUsecase(this._settingRepository);
 
-  Future<Setting> call() async {
+  Future<Setting?> call() async {
     return _settingRepository.getSetting();
   }
 }
