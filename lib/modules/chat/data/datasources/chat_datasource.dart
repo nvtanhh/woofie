@@ -127,6 +127,8 @@ class ChatDatasource {
         return 'I';
       case MessageType.video:
         return 'V';
+      case MessageType.post:
+        return 'P';
       default:
         return 'T';
     }

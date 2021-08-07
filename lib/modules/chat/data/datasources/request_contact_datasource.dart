@@ -34,7 +34,9 @@ class RequestContactDatasource {
   }
     """;
     final data = await _hasuraConnect.mutation(mutation);
-    final requestContact = GetMapFromHasura.getMap(data as Map)["insert_request_contact_one"] as Map<String, dynamic>;
+    final requestContact =
+        GetMapFromHasura.getMap(data as Map)["insert_request_contact_one"]
+            as Map<String, dynamic>;
     return RequestContact.fromJson(requestContact);
   }
 
@@ -53,6 +55,7 @@ class RequestContactDatasource {
     content
     from_user {
       id
+      uuid
       name
       avatar_url
       uuid
@@ -61,11 +64,15 @@ class RequestContactDatasource {
   }
     """;
     final data = await _hasuraConnect.query(query);
-    final requestContacts = GetMapFromHasura.getMap(data as Map)["request_contact"] as List;
-    return requestContacts.map((e) => RequestContact.fromJson(e as Map<String, dynamic>)).toList();
+    final requestContacts =
+        GetMapFromHasura.getMap(data as Map)["request_contact"] as List;
+    return requestContacts
+        .map((e) => RequestContact.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
-  Future<RequestContact> acceptRequestMessages(RequestContact requestContact) async {
+  Future<RequestContact> acceptRequestMessages(
+      RequestContact requestContact) async {
     final String mutation = """
   mutation MyMutation {
   update_request_contact_by_pk(pk_columns: {id: ${requestContact.id}}, _set: {status: ${RequestContactStatus.accept.index}}) {
@@ -79,11 +86,14 @@ class RequestContactDatasource {
   }
     """;
     final data = await _hasuraConnect.mutation(mutation);
-    final requestContacts = GetMapFromHasura.getMap(data as Map)["update_request_contact_by_pk"] as Map<String, dynamic>;
+    final requestContacts =
+        GetMapFromHasura.getMap(data as Map)["update_request_contact_by_pk"]
+            as Map<String, dynamic>;
     return RequestContact.fromJson(requestContacts);
   }
 
-  Future<RequestContact> denyRequestMessages(RequestContact requestContact) async {
+  Future<RequestContact> denyRequestMessages(
+      RequestContact requestContact) async {
     String mutation = """
   mutation MyMutation {
   update_request_contact_by_pk(pk_columns: {id: ${requestContact.id}}, _set: {status: ${RequestContactStatus.deny.index}}) {
@@ -97,7 +107,9 @@ class RequestContactDatasource {
   }
     """;
     final data = await _hasuraConnect.mutation(mutation);
-    final requestContacts = GetMapFromHasura.getMap(data as Map)["update_request_contact_by_pk"] as Map<String, dynamic>;
+    final requestContacts =
+        GetMapFromHasura.getMap(data as Map)["update_request_contact_by_pk"]
+            as Map<String, dynamic>;
     return RequestContact.fromJson(requestContacts);
   }
 
@@ -112,11 +124,14 @@ class RequestContactDatasource {
   }
     """;
     final data = await _hasuraConnect.query(query);
-    final requestContacts = GetMapFromHasura.getMap(data as Map)["request_contact_aggregate"] as Map<String, dynamic>;
+    final requestContacts =
+        GetMapFromHasura.getMap(data as Map)["request_contact_aggregate"]
+            as Map<String, dynamic>;
     return ObjectAggregate.fromJson(requestContacts).aggregate.count ?? -1;
   }
 
-  Future updateContentRequestMessage(RequestContact requestContact, String content) async {
+  Future updateContentRequestMessage(
+      RequestContact requestContact, String content) async {
     final String mutation = """
   mutation MyMutation {
   update_request_contact_by_pk(pk_columns: {id: ${requestContact.id}}, _set: {content: "$content"}) {
@@ -146,6 +161,7 @@ query MyQuery {
     from_user_uuid
     to_user {
       id
+      uuid
       name
       uuid
     }
@@ -157,15 +173,19 @@ query MyQuery {
 }
     """;
     final data = await _hasuraConnect.query(query);
-    final requestContacts = GetMapFromHasura.getMap(data as Map)["request_contact"] as List;
-    final listRequest = requestContacts.map((e) => RequestContact.fromJson(e as Map<String, dynamic>)).toList();
+    final requestContacts =
+        GetMapFromHasura.getMap(data as Map)["request_contact"] as List;
+    final listRequest = requestContacts
+        .map((e) => RequestContact.fromJson(e as Map<String, dynamic>))
+        .toList();
     if (listRequest.isNotEmpty == true) {
       try {
         return listRequest.singleWhere(
           (element) => element.status == RequestContactStatus.accept,
         );
       } catch (e) {
-        return RequestContact.fromJson(requestContacts[0] as Map<String, dynamic>);
+        return RequestContact.fromJson(
+            requestContacts[0] as Map<String, dynamic>);
       }
     }
     return null;

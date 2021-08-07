@@ -198,6 +198,6 @@
     "send_message_error_description": "Can't send message. Please try again.",
     "sender_placeholder": "Enter message...",
     "sender_pick_media_error_tile": "Sorry",
-    "sender_pick_media_error_description": "Currently, You can only send at most 1 media each time"
+    "sender_pick_media_error_description": "Currently, You can only send at most 1 attachment each time"
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/post_media_previewer.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 
@@ -8,22 +7,23 @@ class MediasSenderWidget extends StatelessWidget {
 
   final Function(MediaFile)? onRemoveMedia;
 
-  const MediasSenderWidget({Key? key, required this.medias, this.onRemoveMedia}) : super(key: key);
+  const MediasSenderWidget({Key? key, required this.medias, this.onRemoveMedia})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(12),
         children: medias
             .map(
               (file) => MediaPreviewer(
                 key: Key(file.file.path),
-                height: 80.h,
-                width: 80.w,
                 mediaFile: file,
-                onRemove: onRemoveMedia != null ? () => onRemoveMedia!(file) : null,
+                onRemove:
+                    onRemoveMedia != null ? () => onRemoveMedia!(file) : null,
                 allowEditMedia: false,
+                fit: BoxFit.fitHeight,
+                isConstraintsSize: false,
               ),
             )
             .toList());

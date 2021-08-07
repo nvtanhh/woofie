@@ -45,7 +45,10 @@ class Message implements Comparable<Message> {
       identical(this, other) ||
       other is Message &&
           runtimeType == other.runtimeType &&
-          ((id != null && other.id != null && id == other.id) || (localUuid != null && other.localUuid != null && localUuid == other.localUuid));
+          ((id != null && other.id != null && id == other.id) ||
+              (localUuid != null &&
+                  other.localUuid != null &&
+                  localUuid == other.localUuid));
 
   @override
   int get hashCode => id.hashCode;
@@ -58,6 +61,8 @@ class Message implements Comparable<Message> {
         return MessageType.image;
       case 'V':
         return MessageType.video;
+      case 'P':
+        return MessageType.post;
       default:
         throw Exception('Unsupported message type: $type');
     }
@@ -83,4 +88,4 @@ class Message implements Comparable<Message> {
   }
 }
 
-enum MessageType { text, image, video }
+enum MessageType { text, image, video, post }

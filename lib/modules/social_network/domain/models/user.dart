@@ -14,7 +14,7 @@ class User extends UpdatableModel<User> {
   @JsonKey(name: "id")
   final int id;
   @JsonKey(name: "uuid")
-  String? uuid;
+  String uuid;
   @JsonKey(name: "name")
   String? name;
   @JsonKey(name: "bio")
@@ -41,7 +41,7 @@ class User extends UpdatableModel<User> {
   Setting? setting;
   User(
       {required this.id,
-      this.uuid,
+      required this.uuid,
       this.name,
       this.phoneNumber,
       this.email,
@@ -49,7 +49,8 @@ class User extends UpdatableModel<User> {
       this.avatar,
       this.bio,
       this.dob,
-      this.avatarUrl}) : super(uuid);
+      this.avatarUrl})
+      : super(uuid);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
@@ -87,7 +88,9 @@ class User extends UpdatableModel<User> {
       email = json['email'] as String;
     }
     if (json['current_pets'] != null) {
-      currentPets = (json['current_pets'] as List<dynamic>?)?.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
+      currentPets = (json['current_pets'] as List<dynamic>?)
+          ?.map((e) => Pet.fromJson(e as Map<String, dynamic>))
+          .toList();
     }
     if (json['all_pet'] != null) {
       currentPets = allPetsFromJson(json['current_pets'] as List?);
@@ -108,7 +111,8 @@ class User extends UpdatableModel<User> {
       locationId = json['location_id'] as int;
     }
     if (json['location'] != null) {
-      location = UserLocation.fromJson(json['location'] as Map<String, dynamic>);
+      location =
+          UserLocation.fromJson(json['location'] as Map<String, dynamic>);
     }
   }
 

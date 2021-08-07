@@ -9,8 +9,10 @@ class CommentDatasource {
   final HasuraConnect _hasuraConnect;
   CommentDatasource(this._hasuraConnect);
 
-  Future<Comment?> createComment(int postId, String content, List<User> userTag) async {
-    final listUserTag = userTag.map((e) => {"user_id": e.id, "post_id": postId}).toList();
+  Future<Comment?> createComment(
+      int postId, String content, List<User> userTag) async {
+    final listUserTag =
+        userTag.map((e) => {"user_id": e.id, "post_id": postId}).toList();
     final mutation = """
 mutation MyMutation {
   insert_comments_one(object: {content: "$content", post_id: $postId, comment_tag_users: {data: ${listUserTag.toString()}}}) {
@@ -29,7 +31,8 @@ mutation MyMutation {
 }
     """;
     final data = await _hasuraConnect.mutation(mutation);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_comments_one"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["insert_comments_one"] as Map;
     return Comment.fromJson(affectedRows as Map<String, dynamic>);
   }
 
@@ -45,7 +48,8 @@ mutation MyMutation {
     }
     """;
     final data = await _hasuraConnect.mutation(mutation);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["likeComment"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["likeComment"] as Map;
     return int.tryParse("${affectedRows["id"]}") != null;
   }
 
@@ -130,12 +134,16 @@ mutation MyMutation {
     """;
     print(manution);
     final data = await _hasuraConnect.mutation(manution);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["delete_comment_tag_user"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["delete_comment_tag_user"] as Map;
     return affectedRows["affected_rows"] as int;
   }
 
-  Future<int> addCommentTagUser(List<int> userIds, int commentId, int postId) async {
-    final users = userIds.map((e) => {"user_id": e, "post_id": postId, "comment_id": commentId}).join(",");
+  Future<int> addCommentTagUser(
+      List<int> userIds, int commentId, int postId) async {
+    final users = userIds
+        .map((e) => {"user_id": e, "post_id": postId, "comment_id": commentId})
+        .join(",");
     final manution = """
     mutation MyMutation {
     insert_comment_tag_user(objects: [$users]) {
@@ -145,12 +153,16 @@ mutation MyMutation {
     """;
     print(manution);
     final data = await _hasuraConnect.mutation(manution);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_comment_tag_user"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["insert_comment_tag_user"] as Map;
     return affectedRows["affected_rows"] as int;
   }
 
-  Future<int> deleteOrAddCommentTagUser(List<int> usersAdd, List<int> usersDelete, int commentId, int postId) async {
-    final users = usersAdd.map((e) => {"user_id": e, "post_id": postId, "comment_id": commentId}).join(",");
+  Future<int> deleteOrAddCommentTagUser(List<int> usersAdd,
+      List<int> usersDelete, int commentId, int postId) async {
+    final users = usersAdd
+        .map((e) => {"user_id": e, "post_id": postId, "comment_id": commentId})
+        .join(",");
     final manution = """
     mutation MyMutation {
     insert_comment_tag_user(objects: [$users]) {
@@ -163,9 +175,12 @@ mutation MyMutation {
     """;
     print(manution);
     final data = await _hasuraConnect.mutation(manution);
-    final affectedRowsInsert = GetMapFromHasura.getMap(data as Map)["insert_comment_tag_user"] as Map;
-    final affectedRowsDelete = GetMapFromHasura.getMap(data)["delete_comment_tag_user"] as Map;
-    return (affectedRowsInsert["affected_rows"] as int) + (affectedRowsDelete["affected_rows"] as int);
+    final affectedRowsInsert =
+        GetMapFromHasura.getMap(data as Map)["insert_comment_tag_user"] as Map;
+    final affectedRowsDelete =
+        GetMapFromHasura.getMap(data)["delete_comment_tag_user"] as Map;
+    return (affectedRowsInsert["affected_rows"] as int) +
+        (affectedRowsDelete["affected_rows"] as int);
   }
 
   Future<Comment> editComment(Comment oldComment, Comment newComment) async {
@@ -180,13 +195,16 @@ mutation MyMutation {
     int affectedRows = 0;
     if (map.isNotEmpty) {
       if (map.length == 2) {
-        affectedRows = await deleteOrAddCommentTagUser(map["add"]!, map["remove"]!, oldComment.id, oldComment.postId!);
+        affectedRows = await deleteOrAddCommentTagUser(
+            map["add"]!, map["remove"]!, oldComment.id, oldComment.postId!);
       } else {
         if (map["remove"]?.isNotEmpty == true) {
-          affectedRows = await deleteCommentTagUsers(map["remove"]!, oldComment.id);
+          affectedRows =
+              await deleteCommentTagUsers(map["remove"]!, oldComment.id);
         }
         if (map["add"]?.isNotEmpty == true) {
-          affectedRows = await addCommentTagUser(map["add"]!, oldComment.id, oldComment.postId!);
+          affectedRows = await addCommentTagUser(
+              map["add"]!, oldComment.id, oldComment.postId!);
         }
       }
     }
@@ -200,7 +218,9 @@ mutation MyMutation {
     }
     """;
     final data = await _hasuraConnect.mutation(manution);
-    final comment = GetMapFromHasura.getMap(data as Map)["update_comments_by_pk"] as Map<String, dynamic>;
+    final comment =
+        GetMapFromHasura.getMap(data as Map)["update_comments_by_pk"]
+            as Map<String, dynamic>;
     return Comment.fromJson(comment);
   }
 
@@ -222,6 +242,7 @@ subscription MySubscription {
     comment_tag_users {
       user {
         id
+        uuid
         name
         uuid
       }

@@ -95,7 +95,7 @@ class WelcomeWidgetModel extends BaseViewModel {
       () async {
         final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
         if (haUser != null) {
-          updateTokenNotify(haUser.uuid!);
+          updateTokenNotify(haUser.uuid);
           await _saveUserToLocalUsecase.call(haUser);
           await _loggedInUser.setLoggedUser(haUser);
           status = haUser.currentPets?.isNotEmpty == true;
