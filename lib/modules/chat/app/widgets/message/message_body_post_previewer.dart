@@ -18,7 +18,9 @@ class MessageBodyPostPreviewer extends StatelessWidget {
     final Post post = Post.fromJsonFromChat(
         json.decode(message.content) as Map<String, dynamic>);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: message.isSentByMe
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       children: [
         ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 300.h),
@@ -26,7 +28,8 @@ class MessageBodyPostPreviewer extends StatelessWidget {
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.r),
               bottomRight: Radius.circular(15.r),
-              bottomLeft: Radius.circular(15.r),
+              bottomLeft:
+                  message.isSentByMe ? Radius.circular(15.r) : Radius.zero,
             ),
             child: PetItemWidget(
               post: post,
@@ -52,8 +55,11 @@ class MessageBodyPostPreviewer extends StatelessWidget {
                 .withOpacity(.9),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.r),
-              bottomLeft: Radius.circular(15.r),
               topRight: Radius.circular(15.r),
+              bottomLeft:
+                  message.isSentByMe ? Radius.circular(15.r) : Radius.zero,
+              bottomRight:
+                  !message.isSentByMe ? Radius.circular(15.r) : Radius.zero,
             ),
           ),
           child: Padding(

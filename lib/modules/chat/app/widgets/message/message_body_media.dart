@@ -23,16 +23,14 @@ class MessageBodyMedia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: message.isSentByMe
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       children: [
         ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 300.h),
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15.r),
-              bottomRight: Radius.circular(15.r),
-              bottomLeft: Radius.circular(15.r),
-            ),
+            borderRadius: BorderRadius.circular(15),
             child: _mediaWidget(message, partner),
           ),
         ),
@@ -73,8 +71,11 @@ class MessageBodyMedia extends StatelessWidget {
                 .withOpacity(.9),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.r),
-              bottomLeft: Radius.circular(15.r),
               topRight: Radius.circular(15.r),
+              bottomLeft:
+                  message.isSentByMe ? Radius.circular(15.r) : Radius.zero,
+              bottomRight:
+                  !message.isSentByMe ? Radius.circular(15.r) : Radius.zero,
             ),
           ),
           child: Padding(
