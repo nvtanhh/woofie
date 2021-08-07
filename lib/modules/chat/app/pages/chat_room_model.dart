@@ -237,6 +237,7 @@ class ChatRoomPageModel extends BaseViewModel {
   }
 
   void _setupListenCanSendMessage() {
+    attachmentPost.stream.listen((post) {});
     messageSenderTextController.addListener(() {
       if (messageSenderTextController.text.trim().isNotEmpty) {
         _isCanSendMessage.value = true;

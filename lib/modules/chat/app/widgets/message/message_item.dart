@@ -32,7 +32,7 @@ class MessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isMyMessage = message.isSentByMe;
 
-    const double _messageBorderRadius = 15;
+    final double _messageBorderRadius = 15.r;
     final _borderRadius = BorderRadius.only(
       bottomLeft: Radius.circular(
           (isMyMessage || !isDisplayAvatar) ? _messageBorderRadius : 0),
@@ -41,12 +41,12 @@ class MessageWidget extends StatelessWidget {
               ? _messageBorderRadius
               : 0
           : _messageBorderRadius),
-      topLeft: const Radius.circular(_messageBorderRadius),
-      topRight: const Radius.circular(_messageBorderRadius),
+      topLeft: Radius.circular(_messageBorderRadius),
+      topRight: Radius.circular(_messageBorderRadius),
     );
     return Container(
-      margin: const EdgeInsets.only(
-        bottom: 4,
+      margin: EdgeInsets.only(
+        bottom: 5.h,
       ),
       alignment: isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
       child: Row(
@@ -67,7 +67,11 @@ class MessageWidget extends StatelessWidget {
                       opacity: message.isSent ? 1 : 0.6,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: isMyMessage ? UIColor.primary : UIColor.holder,
+                          color: message.type == MessageType.text
+                              ? isMyMessage
+                                  ? UIColor.primary
+                                  : UIColor.holder
+                              : Colors.transparent,
                         ),
                         child: MessageBody(
                           message,

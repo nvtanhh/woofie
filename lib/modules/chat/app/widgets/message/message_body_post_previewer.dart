@@ -23,12 +23,19 @@ class MessageBodyPostPreviewer extends StatelessWidget {
         _mediaDescriptionWidget(message),
         ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 300.h),
-          child: PetItemWidget(
-            post: post,
-            pet: post.taggegPets![0],
-            postType: post.type,
-            // onClick: () {},
-            showDistance: false,
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.r),
+              topRight: Radius.circular(15.r),
+              bottomLeft: Radius.circular(15.r),
+            ),
+            child: PetItemWidget(
+              post: post,
+              pet: post.taggegPets![0],
+              postType: post.type,
+              showDistance: false,
+              isConstraintsSize: false,
+            ),
           ),
         ),
       ],
@@ -38,29 +45,42 @@ class MessageBodyPostPreviewer extends StatelessWidget {
   Widget _mediaDescriptionWidget(Message message) {
     if (message.description != null && message.description!.isNotEmpty) {
       return Padding(
-        padding: const EdgeInsets.only(
-          left: 18,
-          right: 18,
-          top: 10,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              message.description!,
-              style: message.isSentByMe
-                  ? UITextStyle.body_14_medium.apply(color: Colors.white)
-                  : UITextStyle.body_14_medium,
+        padding: EdgeInsets.only(bottom: 1.h),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: message.isSentByMe ? UIColor.primary : UIColor.holder,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.r),
+              bottomLeft: Radius.circular(15.r),
+              bottomRight: Radius.circular(15.r),
             ),
-            const SizedBox(height: 10),
-            if (message.type == MessageType.video)
-              Divider(
-                thickness: 0.5,
-                height: 1,
-                endIndent: 0,
-                color: message.isSentByMe ? Colors.white : UIColor.textBody,
-              )
-          ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 18.w,
+              right: 18.w,
+              top: 10.h,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  message.description!,
+                  style: message.isSentByMe
+                      ? UITextStyle.body_14_medium.apply(color: Colors.white)
+                      : UITextStyle.body_14_medium,
+                ),
+                const SizedBox(height: 10),
+                if (message.type == MessageType.video)
+                  Divider(
+                    thickness: 0.5,
+                    height: 1,
+                    endIndent: 0,
+                    color: message.isSentByMe ? Colors.white : UIColor.textBody,
+                  )
+              ],
+            ),
+          ),
         ),
       );
     }
