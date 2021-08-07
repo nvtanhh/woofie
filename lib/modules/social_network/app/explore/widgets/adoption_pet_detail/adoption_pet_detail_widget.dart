@@ -258,7 +258,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                               width: double.infinity,
                               height: 47.h,
                               title: _getActionButtonTitleSelf(viewModel.post),
-                              onPress: () => null,
+                              onPress: viewModel.onConfirmFuntionalPost,
                               borderRadius: 15.r,
                               backgroundColor:
                                   _getActionButtonColor(viewModel.post),

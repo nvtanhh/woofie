@@ -56,7 +56,7 @@ class Post extends UpdatableModel<Post> {
   @JsonKey(name: "medias_aggregate", fromJson: aggregateCountFromJson)
   int? postMediasCount;
   @JsonKey(name: "post_reacts", fromJson: reactorsFromJson)
-  List<User>? creators;
+  List<User>? reactors;
 
   Post({
     required this.id,

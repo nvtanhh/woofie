@@ -185,7 +185,7 @@ class SavePostModel extends BaseViewModel {
     }
     injector<BottomSheetService>().showTagPetBottomSheet(
       userPets: _user.currentPets ?? [],
-      taggedPets: _taggedPets,
+      taggedPets: _taggedPets.toList(),
       onPetChosen: _onTaggedPetChosen,
     );
   }

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/confirm_functional_post/confirm_functional_post.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/get_detail_post_usecase.dart';
@@ -59,6 +60,20 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
           colorText: UIColor.white,
         );
       }
+    }
+  }
+
+  Future onConfirmFuntionalPost() async {
+    switch (post.type) {
+      case PostType.adop:
+        await Get.to(() => ConfirmGivePet(post: post));
+        break;
+      case PostType.mating:
+        await Get.to(() => ConfirmGivePet(post: post));
+        break;
+      case PostType.lose:
+        break;
+      default:
     }
   }
 }

@@ -10,7 +10,9 @@ class PetCardItem extends StatelessWidget {
   final Function()? onClicked;
   final bool isSelected;
 
-  const PetCardItem({Key? key, required this.pet, this.onClicked, this.isSelected = false}) : super(key: key);
+  const PetCardItem(
+      {Key? key, required this.pet, this.onClicked, this.isSelected = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,8 @@ class PetCardItem extends StatelessWidget {
               blurRadius: 15,
             ),
           ],
-          border: Border.all(color: isSelected ? UIColor.accent2 : Colors.transparent),
+          border: Border.all(
+              color: isSelected ? UIColor.accent2 : Colors.transparent),
         ),
         child: Column(
           children: [
@@ -39,9 +42,17 @@ class PetCardItem extends StatelessWidget {
               borderRadius: 10,
             ),
             SizedBox(height: 10.h),
-            Text(pet.name!, style: UITextStyle.heading_18_semiBold),
-            // const SizedBox(height: 5),
-            Text(pet.petBreed?.name ?? 'Yellow cat', style: UITextStyle.body_12_medium),
+            Text(
+              pet.name!,
+              style: UITextStyle.heading_18_semiBold,
+              maxLines: 1,
+            ),
+            const SizedBox(height: 5),
+            Text(
+              pet.bio ?? '',
+              style: UITextStyle.body_12_medium,
+              maxLines: 2,
+            ),
           ],
         ),
       ),

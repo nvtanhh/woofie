@@ -28,8 +28,9 @@ class BottomSheetService {
 
   void showTagPetBottomSheet({
     required List<Pet> userPets,
-    required RxList<Pet> taggedPets,
     required ValueChanged<Pet> onPetChosen,
+    List<Pet>? taggedPets,
+    String? title,
   }) {
     showMaterialModalBottomSheet(
       context: Get.context!,
@@ -37,6 +38,7 @@ class BottomSheetService {
         userPets: userPets,
         taggedPets: taggedPets,
         onPetChosen: onPetChosen,
+        title: title,
       ),
       shape: defaultBottomSheetShape,
     );
