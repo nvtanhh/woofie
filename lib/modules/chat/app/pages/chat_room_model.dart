@@ -237,22 +237,23 @@ class ChatRoomPageModel extends BaseViewModel {
   }
 
   void _setupListenCanSendMessage() {
-    attachmentPost.stream.listen((post) {});
+    attachmentPost.stream.listen((post) {
+      checkIsCanSendMessage();
+    });
     messageSenderTextController.addListener(() {
-      if (messageSenderTextController.text.trim().isNotEmpty) {
-        _isCanSendMessage.value = true;
-      } else {
-        _isCanSendMessage.value = false;
-      }
+      checkIsCanSendMessage();
       _startSendTypingEventTimeout();
     });
     _sendingMedias.stream.listen((list) {
-      if (list != null && list.isNotEmpty) {
-        _isCanSendMessage.value = true;
-      } else if (list != null) {
-        _isCanSendMessage.value = false;
-      }
+      checkIsCanSendMessage();
     });
+  }
+
+  void checkIsCanSendMessage() {
+    _isCanSendMessage.value =
+        messageSenderTextController.text.trim().isNotEmpty ||
+            _sendingMedias.isNotEmpty ||
+            attachmentPost.value != null;
   }
 
   List<MediaFile> get sendingMedias => _sendingMedias.toList();

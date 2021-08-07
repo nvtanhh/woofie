@@ -25,18 +25,18 @@ class MessageBodyMedia extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _mediaDescriptionWidget(message),
         ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 300.h),
           child: ClipRRect(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.r),
-              topRight: Radius.circular(15.r),
+              bottomRight: Radius.circular(15.r),
               bottomLeft: Radius.circular(15.r),
             ),
             child: _mediaWidget(message, partner),
           ),
         ),
+        _mediaDescriptionWidget(message),
       ],
     );
   }
@@ -66,14 +66,15 @@ class MessageBodyMedia extends StatelessWidget {
   Widget _mediaDescriptionWidget(Message message) {
     if (message.description != null && message.description!.isNotEmpty) {
       return Padding(
-        padding: EdgeInsets.only(bottom: 1.h),
+        padding: EdgeInsets.only(top: 1.h),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: message.isSentByMe ? UIColor.primary : UIColor.holder,
+            color: (message.isSentByMe ? UIColor.primary : UIColor.holder)
+                .withOpacity(.9),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.r),
               bottomLeft: Radius.circular(15.r),
-              bottomRight: Radius.circular(15.r),
+              topRight: Radius.circular(15.r),
             ),
           ),
           child: Padding(
