@@ -114,6 +114,7 @@ class WelcomeWidgetModel extends BaseViewModel {
         }
       },
       onFailure: (err) {
+        printInfo(info: err.toString());
         _firebaseAuth.currentUser?.getIdToken(true);
         checkUserHavePetForNavigator();
       },

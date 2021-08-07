@@ -49,7 +49,7 @@ class AuthDatasource {
           await _firebaseAuth.signInWithCredential(credential);
       user = userCredential.user;
     } else {
-      throw Exception("Login fail");
+      throw Exception(facebookLoginResult.message);
     }
     return user;
   }
