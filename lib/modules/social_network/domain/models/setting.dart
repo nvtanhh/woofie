@@ -16,8 +16,6 @@ class Setting {
   DateTime? createdAt;
   @JsonKey(name: "updated_at")
   DateTime? updatedAt;
-  @JsonKey(name: "settings", fromJson: statusMessageFromJson)
-  int? statusMessage;
 
   Setting({
     required this.id,
@@ -27,16 +25,21 @@ class Setting {
     this.updatedAt,
   });
 
-  static int? statusMessageFromJson(String? settingString) {
-    if (settingString != null || settingString?.isNotEmpty == true) {
-      return (jsonDecode(settingString!) as Map<String, dynamic>)["message"] as int?;
+  int? statusMessage() {
+    if (setting != null || setting?.isNotEmpty == true) {
+      return (jsonDecode(setting!.replaceAll("'", "\""))
+          as Map<String, dynamic>)["message"] as int?;
     }
     return 1;
   }
 
-  factory Setting.fromJson(Map<String, dynamic> json) => _$SettingFromJson(json);
+  bool isEveryoneCanChatWithMe() => statusMessage() == 1;
 
-  factory Setting.fromJsonString(String jsonString) => Setting.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Setting.fromJson(Map<String, dynamic> json) =>
+      _$SettingFromJson(json);
+
+  factory Setting.fromJsonString(String jsonString) =>
+      Setting.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$SettingToJson(this);
 
