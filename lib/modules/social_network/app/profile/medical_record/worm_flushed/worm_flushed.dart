@@ -9,6 +9,7 @@ import 'package:meowoof/core/ui/button.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/medical_actions_popup.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed_model.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -109,27 +110,39 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
               },
               contentsBuilder: (context, index) => Container(
                 margin: EdgeInsets.only(left: 15.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      FormatHelper.formatDateTime(
-                        viewModel.wormFlushes[index].date,
-                        pattern: "dd/MM/yyyy",
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          FormatHelper.formatDateTime(
+                            viewModel.wormFlushes[index].date,
+                            pattern: "dd/MM/yyyy",
+                          ),
+                          style: UITextStyle.text_header_14_w600,
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Flexible(
+                          child: Text(
+                            viewModel.wormFlushes[index].description ?? "",
+                            style: UITextStyle.text_secondary_12_w500,
+                            maxLines: 3,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: MedicalActionsTrailing(
+                        onEdit: () => viewModel.onEdit(viewModel.wormFlushes[index],index),
+                        onDelete: () => viewModel.onDelete(viewModel.wormFlushes[index],index),
                       ),
-                      style: UITextStyle.text_header_14_w600,
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Flexible(
-                      child: Text(
-                        viewModel.wormFlushes[index].description ?? "",
-                        style: UITextStyle.text_secondary_12_w500,
-                        maxLines: 3,
-                      ),
-                    ),
+                    )
                   ],
                 ),
               ),

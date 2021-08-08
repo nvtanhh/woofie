@@ -2,11 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/services/dialog_service.dart';
+import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/dialog/add_weight_dialog.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/add_weights_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_pet_weight_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_weights_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/profile/update_pet_weight_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -17,6 +21,10 @@ class WeightWidgetModel extends BaseViewModel {
   PagingController<int, PetWeight> pagingController = PagingController(firstPageKey: 0);
   final AddWeightUsecase _addWeightUsecase;
   final GetWeightsUsecase _getWeightsUsecase;
+  final DialogService _dialogService;
+  final DeletePetWeightUsecase _deletePetWeightUsecase;
+  final UpdatePetWeightUsecase _updatePetWeightUsecase;
+  final ToastService _toastService;
   late List<PetWeight> petWeights;
   int nextPageKey = 0;
   final RxList<PetWeight> _listWeightChart = <PetWeight>[].obs;
@@ -26,6 +34,10 @@ class WeightWidgetModel extends BaseViewModel {
   WeightWidgetModel(
     this._addWeightUsecase,
     this._getWeightsUsecase,
+    this._dialogService,
+    this._deletePetWeightUsecase,
+    this._updatePetWeightUsecase,
+    this._toastService,
   );
 
   @override
@@ -68,14 +80,9 @@ class WeightWidgetModel extends BaseViewModel {
         petWeightNew?.id = pet.id;
       },
       onSuccess: () {
-        onAddWeight(petWeightNew!);
         pagingController.itemList?.insert.call(0, petWeightNew!);
-        if ((pagingController.itemList?.length ?? 0) > 6) {
-          petWeights = pagingController.itemList?.sublist(0, 6) ?? [];
-          listWeightChart = petWeights;
-        } else {
-          listWeightChart = pagingController.itemList ?? [];
-        }
+        sortByDate();
+        onAddWeightAndRebuildChart();
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         pagingController.notifyListeners();
       },
@@ -83,9 +90,27 @@ class WeightWidgetModel extends BaseViewModel {
     );
   }
 
-  void onAddWeight(PetWeight petWeight) {
-    pet.petWeights?.insert(0, petWeight);
-    if ((pet.petWeights?.length ?? 0) > 5) pet.petWeights?.removeLast();
+  void sortByDate() {
+    pagingController.itemList?.sort(
+      (a, b) {
+        return a.date!.compareTo(b.date!);
+      },
+    );
+  }
+
+
+
+  void onAddWeightAndRebuildChart() {
+    if((pagingController.itemList?.length??0)>6){
+      petWeights = pagingController.itemList?.sublist(0, 6) ?? [];
+      listWeightChart = petWeights;
+
+      pet.petWeights = petWeights.toList();
+    }else{
+      listWeightChart = pagingController.itemList?.toList() ?? [];
+
+      pet.petWeights = listWeightChart.toList();
+    }
     pet.notifyUpdate();
   }
 
@@ -93,5 +118,49 @@ class WeightWidgetModel extends BaseViewModel {
 
   set listWeightChart(List<PetWeight> value) {
     _listWeightChart.assignAll(value);
+  }
+
+  void onDeleteWeight(PetWeight petWeight, int index) {
+    _dialogService.showDialogConfirmDelete(() => deletePetWeight(petWeight, index));
+  }
+
+  Future onEditWeight(PetWeight petWeight, int index) async {
+    petWeightNew = null;
+    petWeightNew = await Get.dialog(
+      AddWeightDialog(
+        petWeight: petWeight,
+      ),
+    ) as PetWeight?;
+    if (petWeightNew == null) {
+      return;
+    }
+    await call(
+      () async => petWeightNew = await _updatePetWeightUsecase.run(petWeight),
+      onSuccess: () {
+        pagingController.itemList?[index] = petWeightNew!;
+        sortByDate();
+        onAddWeightAndRebuildChart();
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        pagingController.notifyListeners();
+      },
+    );
+  }
+
+  void deletePetWeight(PetWeight petWeight, int index) {
+    call(() async => _deletePetWeightUsecase.run(petWeight.id), onSuccess: () {
+      _toastService.success(message: "Delete success!", context: Get.context!);
+      pagingController.itemList?.removeAt(index);
+      sortByDate();
+      onAddWeightAndRebuildChart();
+      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+      pagingController.notifyListeners();
+    });
+  }
+
+  @override
+  void disposeState() {
+    pagingController.dispose();
+    _listWeightChart.close();
+    super.disposeState();
   }
 }

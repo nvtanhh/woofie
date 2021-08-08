@@ -107,7 +107,7 @@ class VaccinatedPreviewWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    vaccinate.description ?? "",
+                    vaccinate.name ?? "",
                     style: UITextStyle.text_body_12_w600,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

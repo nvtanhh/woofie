@@ -125,7 +125,11 @@
     "birthday": "Birthday",
     "bread": "Bread",
     "address": "Address",
-    "delete_pet": "Remove pet"
+    "delete_pet": "Remove pet",
+    "edit": "Edit",
+    "delete": "Delete",
+    "do_you_want_delete": "Do you want delete this?",
+    "confirm": "Confirm"
   },
   "year": "year",
   "month": "month",

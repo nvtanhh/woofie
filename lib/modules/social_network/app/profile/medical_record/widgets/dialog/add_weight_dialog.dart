@@ -17,12 +17,22 @@ class AddWeightDialog extends StatelessWidget {
   final _weightEditController = TextEditingController(text: "0.5");
   double maxWeight = 20;
   double doubleValueParse = 0;
-  PetWeight petWeight = PetWeight(id: 0);
+  PetWeight? petWeight;
+  ToastService toastService = injector<ToastService>();
+  bool isUpdate = false;
 
   AddWeightDialog({
     Key? key,
-  }) : super(key: key);
-  ToastService toastService = injector<ToastService>();
+    this.petWeight,
+  }) : super(key: key) {
+    if (petWeight == null) {
+      petWeight = PetWeight(id: 0);
+    } else {
+      isUpdate = true;
+      weight.value = petWeight!.weight!;
+      _weightEditController.text = petWeight!.weight.toString();
+    }
+  }
 
   void onTextChange(String value) {
     doubleValueParse = double.tryParse(_weightEditController.text) ?? 0.5;
@@ -46,6 +56,7 @@ class AddWeightDialog extends StatelessWidget {
   }
 
   final outSizeBorder = const OutlineInputBorder(borderSide: BorderSide(color: UIColor.silverSand));
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -114,7 +125,10 @@ class AddWeightDialog extends StatelessWidget {
                   SizedBox(
                     height: 10.h,
                   ),
-                  PickDateWidget(onDateSelected: onDateSelected)
+                  PickDateWidget(
+                    onDateSelected: onDateSelected,
+                    datePick: petWeight?.date,
+                  )
                 ],
               ),
             ),
@@ -139,7 +153,7 @@ class AddWeightDialog extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    LocaleKeys.profile_add.trans(),
+                    isUpdate?LocaleKeys.profile_save.trans():LocaleKeys.profile_add.trans(),
                     style: UITextStyle.white_18_w500,
                   ),
                 ),
@@ -152,12 +166,12 @@ class AddWeightDialog extends StatelessWidget {
   }
 
   bool validate() {
-    petWeight.weight = weight.value;
-    if ((petWeight.weight ?? 0) < 0.5 || (petWeight.weight ?? 0) > 210) {
+    petWeight!.weight = weight.value;
+    if ((petWeight!.weight ?? 0) < 0.5 || (petWeight!.weight ?? 0) > 210) {
       toastService.warning(message: LocaleKeys.profile_weight_invalid.trans(), context: Get.context!);
       return false;
     }
-    if (petWeight.date == null) {
+    if (petWeight!.date == null) {
       toastService.warning(message: LocaleKeys.profile_date_invalid.trans(), context: Get.context!);
       return false;
     }
@@ -165,7 +179,7 @@ class AddWeightDialog extends StatelessWidget {
   }
 
   void onDateSelected(DateTime date) {
-    petWeight.date = date;
+    petWeight!.date = date;
     return;
   }
 }

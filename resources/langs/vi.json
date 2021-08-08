@@ -125,7 +125,11 @@
     "birthday": "Ngày sinh",
     "bread": "Giống",
     "address": "Địa chỉ",
-    "delete_pet": "Xóa thú cưng"
+    "delete_pet": "Xóa thú cưng",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "do_you_want_delete": "Bạn muốn xóa?",
+    "confirm": "Xác nhận"
   },
   "year": "năm",
   "month": "tháng",

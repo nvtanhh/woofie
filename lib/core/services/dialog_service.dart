@@ -8,8 +8,11 @@ import 'package:meowoof/core/ui/button.dart';
 import 'package:meowoof/modules/social_network/app/commons/video_dialog.dart';
 import 'package:meowoof/modules/social_network/app/commons/zoom_photo.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/report_dialog_widget.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 
 @lazySingleton
 class DialogService {
@@ -102,5 +105,25 @@ class DialogService {
           title: title,
         ),
         barrierDismissible: true);
+  }
+  void showDialogConfirmDelete(Function onConfirm) {
+    Get.defaultDialog(
+      title: LocaleKeys.profile_do_you_want_delete.trans(),
+      content: const Text(""),
+      onCancel: () {
+        return;
+      },
+      onConfirm: () {
+        Get.back();
+        onConfirm();
+        return;
+      },
+      barrierDismissible: false,
+      backgroundColor: UIColor.white,
+      buttonColor: UIColor.primary,
+      textCancel: LocaleKeys.profile_cancel.trans(),
+      textConfirm: LocaleKeys.profile_confirm.trans(),
+      confirmTextColor: UIColor.white,
+    );
   }
 }
