@@ -62,9 +62,10 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                   medias: viewModel.post.medias?.isEmpty ?? true
                       ? [
                           Media(
-                              id: 0,
-                              url: viewModel.taggedPet.avatarUrl ?? "",
-                              type: MediaType.image)
+                            id: 0,
+                            url: viewModel.taggedPet.avatarUrl ?? "",
+                            type: MediaType.image,
+                          )
                         ]
                       : viewModel.post.medias!,
                   height: Get.height / 2,
@@ -143,10 +144,14 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          viewModel.taggedPet.name ?? "",
-                                          style:
-                                              UITextStyle.text_header_24_w700,
+                                        GestureDetector(
+                                          onTap:
+                                              viewModel.onWantsToGoToPetProfile,
+                                          child: Text(
+                                            viewModel.taggedPet.name ?? "",
+                                            style:
+                                                UITextStyle.text_header_24_w700,
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 5.w,
@@ -229,7 +234,8 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                           ListTile(
                             contentPadding: const EdgeInsets.symmetric(),
                             leading: MWAvatar(
-                              avatarUrl: viewModel.post.creator?.avatarUrl,
+                              avatarUrl:
+                                  viewModel.post.creator?.avatarUrl ?? '',
                               borderRadius: 10.r,
                             ),
                             title: Text(

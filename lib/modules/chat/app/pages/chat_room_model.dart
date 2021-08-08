@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:age_calculator/age_calculator.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
@@ -23,6 +24,7 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/explore/get_detail_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -42,6 +44,7 @@ class ChatRoomPageModel extends BaseViewModel {
   final SendMessagesUsecase _sendMessagesUsecase;
   final InitChatRoomsUseCase _initChatRoomsUseCase;
   final LikePostUsecase _likePostUsecase;
+  final GetDetailPostUsecase _getDetailPostUsecase;
 
   final MediaService _mediaService;
   final FirebaseAuth _auth;
@@ -87,6 +90,7 @@ class ChatRoomPageModel extends BaseViewModel {
     this._auth,
     this._initChatRoomsUseCase,
     this._likePostUsecase,
+    this._getDetailPostUsecase,
   );
 
   @override
@@ -334,7 +338,11 @@ class ChatRoomPageModel extends BaseViewModel {
               );
               if (petToMatinng == null) return;
             }
-            sendingMessage.content = attachmentPost.value!.toJsonString();
+            final Map contentMap = {'post': attachmentPost.value!.toJson()};
+            if (petToMatinng != null) {
+              contentMap['additional_data'] = petToMatinng!.toJson();
+            }
+            sendingMessage.content = json.encode(contentMap);
             sendingMessage.description =
                 messageSenderTextController.text.trim();
             _updateNewMessage(sendingMessage, notifyChatRoom: false);
@@ -482,7 +490,7 @@ class ChatRoomPageModel extends BaseViewModel {
   Future _triggerFunctionalPost(Post post) async {
     if (!post.isLiked!) {
       await call(
-        () async => _likePostUsecase.call(attachmentPost.value!.id),
+        () async => _likePostUsecase.call(post.id),
         onSuccess: () => post.isLiked = true,
         showLoading: false,
       );

@@ -11,8 +11,8 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 
 class PetCardItem extends StatelessWidget {
   final Pet pet;
-  final Function()? onClicked;
   final bool isSelected;
+  final Function()? onClicked;
 
   const PetCardItem(
       {Key? key, required this.pet, this.onClicked, this.isSelected = false})
@@ -26,7 +26,6 @@ class PetCardItem extends StatelessWidget {
       child: Container(
         constraints: BoxConstraints(minWidth: 140.w),
         padding: EdgeInsets.all(15.h),
-        margin: EdgeInsets.only(right: 20.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
           color: Colors.white,
@@ -89,7 +88,7 @@ class PetCardItem extends StatelessWidget {
                       color: UIColor.whisper,
                       borderRadius: BorderRadius.circular(5.r),
                     ),
-                    margin: EdgeInsets.only(left: 10.w),
+                    margin: EdgeInsets.only(left: 5.w),
                     padding: EdgeInsets.all(5.w),
                     child: Text(
                       age,

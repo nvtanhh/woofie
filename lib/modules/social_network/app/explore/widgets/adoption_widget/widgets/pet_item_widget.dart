@@ -133,19 +133,18 @@ class PetItemWidget extends StatelessWidget {
                                     : UITextStyle.dodger_pink_10_w500,
                               ),
                             ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
                             if (age != 'Unknown')
                               Container(
                                 decoration: BoxDecoration(
                                   color: UIColor.whisper,
                                   borderRadius: BorderRadius.circular(5.r),
                                 ),
+                                margin: EdgeInsets.only(left: 5.w),
                                 padding: EdgeInsets.all(5.w),
                                 child: Text(
                                   age,
                                   style: UITextStyle.text_body_10_w500,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               )
                           ],

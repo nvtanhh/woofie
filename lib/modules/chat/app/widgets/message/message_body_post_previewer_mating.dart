@@ -3,27 +3,32 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:meowoof/modules/chat/app/widgets/message/message_body_post_previewer_mating.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_widget/widgets/pet_item_widget.dart';
+import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
+import 'package:meowoof/modules/social_network/app/save_post/widgets/pet_card_item.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
-class MessageBodyPostPreviewer extends StatelessWidget {
+class MessageBodyPostPreviewerMating extends StatelessWidget {
   final Message message;
+  final Post? post;
 
-  const MessageBodyPostPreviewer(this.message, {Key? key}) : super(key: key);
+  const MessageBodyPostPreviewerMating(this.message, {Key? key, this.post})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final content = json.decode(message.content);
-    final Post post =
-        Post.fromJsonFromChat(content['post'] as Map<String, dynamic>);
-
-    if (post.type == PostType.mating) {
-      return MessageBodyPostPreviewerMating(message, post: post);
+    final data = json.decode(message.content);
+    final Post finalPost =
+        post ?? Post.fromJsonFromChat(data['post'] as Map<String, dynamic>);
+    Pet? matingPet;
+    if (data['additional_data'] != null) {
+      matingPet =
+          Pet.fromJsonPure(data['additional_data'] as Map<String, dynamic>);
     }
 
     return Column(
@@ -32,7 +37,7 @@ class MessageBodyPostPreviewer extends StatelessWidget {
           : CrossAxisAlignment.start,
       children: [
         ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: 300.h),
+          constraints: BoxConstraints(maxHeight: 200.h),
           child: ClipRRect(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.r),
@@ -40,19 +45,44 @@ class MessageBodyPostPreviewer extends StatelessWidget {
               bottomLeft:
                   message.isSentByMe ? Radius.circular(15.r) : Radius.zero,
             ),
-            child: GestureDetector(
-              onTap: () {
-                Get.to(() => AdoptionPetDetailWidget(post: post));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(1),
-                child: PetItemWidget(
-                  post: post,
-                  pet: post.taggegPets![0],
-                  postType: post.type,
-                  showDistance: false,
-                  isConstraintsSize: false,
-                ),
+            child: Obx(
+              () => Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(() => AdoptionPetDetailWidget(post: finalPost));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(1),
+                        child: PetItemWidget(
+                          post: finalPost.updateSubjectValue,
+                          pet: finalPost.updateSubjectValue.taggegPets![0],
+                          postType: finalPost.type,
+                          showDistance: false,
+                          isConstraintsSize: false,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2.w),
+                    child: const Text('❤️'),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(() => PetProfile(pet: matingPet!));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.5),
+                        child: PetCardItem(
+                          pet: matingPet!,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

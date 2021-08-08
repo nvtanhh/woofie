@@ -63,14 +63,17 @@ class _TagPetBottomSheetWidgetState extends State<TagPetBottomSheetWidget> {
               itemBuilder: (context, index) {
                 final bool isSelected =
                     (widget.taggedPets ?? []).contains(widget.userPets[index]);
-                return PetCardItem(
-                  pet: widget.userPets[index],
-                  isSelected: !widget.needConfirmButton
-                      ? isSelected
-                      : widget.userPets[index] == _selectedPet,
-                  onClicked: () => !widget.needConfirmButton
-                      ? widget.onPetChosen(widget.userPets[index])
-                      : _setSelectedPet(widget.userPets[index]),
+                return Padding(
+                  padding: EdgeInsets.only(right: 20.w),
+                  child: PetCardItem(
+                    pet: widget.userPets[index],
+                    isSelected: !widget.needConfirmButton
+                        ? isSelected
+                        : widget.userPets[index] == _selectedPet,
+                    onClicked: () => !widget.needConfirmButton
+                        ? widget.onPetChosen(widget.userPets[index])
+                        : _setSelectedPet(widget.userPets[index]),
+                  ),
                 );
               },
             ),

@@ -55,7 +55,7 @@ class MessageWidget extends StatelessWidget {
         children: [
           if (!isMyMessage) _buildMessageIdentifierAvatar(),
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 0.65.sw),
+            constraints: BoxConstraints(maxWidth: 0.7.sw),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -126,9 +126,6 @@ class MessageWidget extends StatelessWidget {
           );
           break;
         case MessageType.post:
-          final Post post = Post.fromJsonFromChat(
-              json.decode(message.content) as Map<String, dynamic>);
-          Get.to(() => AdoptionPetDetailWidget(post: post));
           break;
         default:
       }
