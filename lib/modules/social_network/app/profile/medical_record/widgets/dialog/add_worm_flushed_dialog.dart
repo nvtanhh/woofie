@@ -16,16 +16,23 @@ import 'package:meowoof/theme/ui_text_style.dart';
 class AddWormFlushedDialog extends StatelessWidget {
   final RxDouble weight = RxDouble(1);
   final _descriptionEditController = TextEditingController(text: "");
-  double maxWeight = 20;
-  double doubleValueParse = 0;
-  PetWormFlushed petWormFlushed = PetWormFlushed(id: 0);
-
-  AddWormFlushedDialog({
-    Key? key,
-  }) : super(key: key);
+  PetWormFlushed? petWormFlushed;
   ToastService toastService = injector<ToastService>();
 
   final outSizeBorder = const OutlineInputBorder(borderSide: BorderSide(color: UIColor.silverSand));
+  bool isUpdate = false;
+
+  AddWormFlushedDialog({
+    Key? key,
+    this.petWormFlushed,
+  }) : super(key: key) {
+    if (petWormFlushed != null) {
+      _descriptionEditController.text = petWormFlushed!.description ?? "";
+      isUpdate = true;
+    } else {
+      petWormFlushed = PetWormFlushed(id: 0);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +72,10 @@ class AddWormFlushedDialog extends StatelessWidget {
                   SizedBox(
                     height: 10.h,
                   ),
-                  PickDateWidget(onDateSelected: onDateSelected),
+                  PickDateWidget(
+                    onDateSelected: onDateSelected,
+                    datePick: petWormFlushed?.date,
+                  ),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -110,7 +120,7 @@ class AddWormFlushedDialog extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    LocaleKeys.profile_add.trans(),
+                    isUpdate ? LocaleKeys.profile_save.trans() : LocaleKeys.profile_add.trans(),
                     style: UITextStyle.white_16_w500,
                   ),
                 ),
@@ -123,8 +133,8 @@ class AddWormFlushedDialog extends StatelessWidget {
   }
 
   bool validate() {
-    petWormFlushed.description = _descriptionEditController.text;
-    if (petWormFlushed.date == null) {
+    petWormFlushed!.description = _descriptionEditController.text;
+    if (petWormFlushed!.date == null) {
       toastService.warning(message: LocaleKeys.profile_date_invalid.trans(), context: Get.context!);
       return false;
     }
@@ -132,7 +142,7 @@ class AddWormFlushedDialog extends StatelessWidget {
   }
 
   void onDateSelected(DateTime date) {
-    petWormFlushed.date = date;
+    petWormFlushed!.date = date;
     return;
   }
 }

@@ -4,51 +4,44 @@ import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
-class PostActionsTrailing extends StatelessWidget {
-  final Post post;
-  final VoidCallback? onDeletePost;
-  final VoidCallback? onEditPost;
-  final VoidCallback? onReportPost;
+class MedicalActionsTrailing extends StatelessWidget {
+  final VoidCallback? onDelete;
+  final VoidCallback? onEdit;
   final Widget? child;
 
-  const PostActionsTrailing(
+  const MedicalActionsTrailing(
       {Key? key,
-      required this.post,
-      required this.onDeletePost,
-      required this.onEditPost,
-      required this.onReportPost,
+      required this.onDelete,
+      required this.onEdit,
       this.child})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<PostTrailingAction>(
+    return PopupMenuButton<MedicalTrailingAction>(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
         ),
       ),
       padding: EdgeInsets.zero,
-      onSelected: (PostTrailingAction action) {
+      onSelected: (MedicalTrailingAction action) {
         switch (action) {
-          case PostTrailingAction.edit:
-            if (onEditPost != null) onEditPost!();
+          case MedicalTrailingAction.edit:
+            if (onEdit != null) onEdit!();
             break;
-          case PostTrailingAction.delete:
-            if (onDeletePost != null) onDeletePost!();
-            break;
-          case PostTrailingAction.report:
-            if (onReportPost != null) onReportPost!();
+          case MedicalTrailingAction.delete:
+            if (onDelete != null) onDelete!();
             break;
           default:
         }
       },
       itemBuilder: (BuildContext context) => [
-        if (post.isMyPost)
-          PopupMenuItem<PostTrailingAction>(
-            value: PostTrailingAction.edit,
+          PopupMenuItem<MedicalTrailingAction>(
+            value: MedicalTrailingAction.edit,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -58,15 +51,14 @@ class PostActionsTrailing extends StatelessWidget {
                 ),
                 SizedBox(width: 10.w),
                 Text(
-                  LocaleKeys.new_feed_edit_post.trans(),
+                  LocaleKeys.profile_edit.trans(),
                   style: UITextStyle.body_14_medium,
                 ),
               ],
             ),
           ),
-        if (post.isMyPost)
-          PopupMenuItem<PostTrailingAction>(
-            value: PostTrailingAction.delete,
+          PopupMenuItem<MedicalTrailingAction>(
+            value: MedicalTrailingAction.delete,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -76,25 +68,7 @@ class PostActionsTrailing extends StatelessWidget {
                 ),
                 SizedBox(width: 10.w),
                 Text(
-                  LocaleKeys.new_feed_delete_post.trans(),
-                  style: UITextStyle.body_14_medium,
-                ),
-              ],
-            ),
-          ),
-        if (!post.isMyPost)
-          PopupMenuItem<PostTrailingAction>(
-            value: PostTrailingAction.report,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const MWIcon(
-                  MWIcons.report,
-                  customSize: 20,
-                ),
-                SizedBox(width: 10.w),
-                Text(
-                  LocaleKeys.new_feed_report_post.trans(),
+                  LocaleKeys.profile_delete.trans(),
                   style: UITextStyle.body_14_medium,
                 ),
               ],
@@ -107,12 +81,11 @@ class PostActionsTrailing extends StatelessWidget {
             alignment: Alignment.topRight,
             padding: EdgeInsets.only(top: 5.h),
             child: const MWIcon(
-              MWIcons.moreVerical,
-              themeColor: MWIconThemeColor.secondaryText,
+              MWIcons.moreHoriz,color: UIColor.textHeader,
             ),
           ),
     );
   }
 }
 
-enum PostTrailingAction { delete, edit, report }
+enum MedicalTrailingAction { delete, edit }

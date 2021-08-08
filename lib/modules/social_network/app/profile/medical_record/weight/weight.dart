@@ -12,6 +12,7 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight_model.dart';
+import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/medical_actions_popup.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/weight_chart_preview_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
@@ -23,6 +24,7 @@ class WeightWidget extends StatefulWidget {
   final Pet pet;
   final bool isMyPet;
   final bool? addData;
+
   const WeightWidget({
     Key? key,
     required this.pet,
@@ -110,7 +112,7 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
                           style: UITextStyle.text_header_14_w600,
                         ),
                         subtitle: Text(
-                          FormatHelper.formatDateTime(petWeight.date, pattern: "MM/yyyy"),
+                          FormatHelper.formatDateTime(petWeight.date, pattern: "dd/MM/yyyy"),
                           style: UITextStyle.text_secondary_10_w600,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -137,9 +139,19 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
                                   ),
                           ),
                         ),
-                        trailing: Text(
-                          calcAgeFromWeight(viewModel.pet.dob, petWeight.date),
-                          style: UITextStyle.text_secondary_12_w500,
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            MedicalActionsTrailing(
+                              onDelete: () => viewModel.onDeleteWeight(petWeight,index),
+                              onEdit: () => viewModel.onEditWeight(petWeight,index),
+                            ),
+                            Text(
+                              calcAgeFromWeight(viewModel.pet.dob, petWeight.date),
+                              style: UITextStyle.text_secondary_12_w500,
+                            ),
+                          ],
                         ),
                       );
                     },
