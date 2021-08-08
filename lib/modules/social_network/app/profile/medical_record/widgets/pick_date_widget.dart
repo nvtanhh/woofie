@@ -12,7 +12,15 @@ class PickDateWidget extends StatelessWidget {
   RxString data = RxString("");
   Function(DateTime) onDateSelected;
 
-  PickDateWidget({Key? key, required this.onDateSelected}) : super(key: key);
+  PickDateWidget({
+    Key? key,
+    required this.onDateSelected,
+    this.datePick,
+  }) : super(key: key) {
+    if (datePick != null) {
+      data.value = FormatHelper.formatDateTime(datePick, pattern: "dd/MM/yyyy");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

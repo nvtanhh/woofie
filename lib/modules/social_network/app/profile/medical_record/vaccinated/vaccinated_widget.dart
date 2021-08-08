@@ -10,6 +10,7 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccinated/vaccinated_widget_model.dart';
+import 'package:meowoof/modules/social_network/app/profile/medical_record/widgets/medical_actions_popup.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
@@ -87,26 +88,39 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
                 ),
               ),
               itemExtent: 100.h,
+
               contentsBuilder: (context, index) => Container(
-                margin: EdgeInsets.only(left: 15.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                margin: EdgeInsets.only(left: 15.w,right: 15.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      viewModel.vaccinates[index].name ?? "",
-                      style: UITextStyle.text_header_14_w600,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          viewModel.vaccinates[index].name ?? "",
+                          style: UITextStyle.text_header_14_w600,
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Flexible(
+                          child: Text(
+                            viewModel.vaccinates[index].description ?? "",
+                            style: UITextStyle.text_secondary_12_w500,
+                            maxLines: 3,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Flexible(
-                      child: Text(
-                        viewModel.vaccinates[index].description ?? "",
-                        style: UITextStyle.text_secondary_12_w500,
-                        maxLines: 3,
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: MedicalActionsTrailing(
+                        onEdit: () => viewModel.onEdit(viewModel.vaccinates[index], index),
+                        onDelete: () => viewModel.onDelete(viewModel.vaccinates[index], index),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

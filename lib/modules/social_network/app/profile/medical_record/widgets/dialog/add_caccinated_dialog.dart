@@ -17,16 +17,21 @@ class AddVaccinatedDialog extends StatelessWidget {
   final RxDouble weight = RxDouble(1);
   final _descriptionEditController = TextEditingController(text: "");
   final _vaccineNameEditController = TextEditingController(text: "");
-  double maxWeight = 20;
-  double doubleValueParse = 0;
-  PetVaccinated petVaccinated = PetVaccinated(id: 0);
-
-  AddVaccinatedDialog({
-    Key? key,
-  }) : super(key: key);
+  PetVaccinated? petVaccinated;
+  bool isUpdate = false;
   ToastService toastService = injector<ToastService>();
 
   final outSizeBorder = const OutlineInputBorder(borderSide: BorderSide(color: UIColor.silverSand));
+
+  AddVaccinatedDialog({Key? key, this.petVaccinated}) : super(key: key) {
+    if (petVaccinated != null) {
+      _descriptionEditController.text = petVaccinated!.description ?? "";
+      _vaccineNameEditController.text = petVaccinated!.name ?? "";
+      isUpdate = true;
+    } else {
+      petVaccinated = PetVaccinated(id: 0);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +71,10 @@ class AddVaccinatedDialog extends StatelessWidget {
                   SizedBox(
                     height: 10.h,
                   ),
-                  PickDateWidget(onDateSelected: onDateSelected),
+                  PickDateWidget(
+                    onDateSelected: onDateSelected,
+                    datePick: petVaccinated?.date,
+                  ),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -131,7 +139,7 @@ class AddVaccinatedDialog extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    LocaleKeys.profile_add.trans(),
+                    isUpdate?LocaleKeys.profile_save.trans():LocaleKeys.profile_add.trans(),
                     style: UITextStyle.white_16_w500,
                   ),
                 ),
@@ -144,13 +152,13 @@ class AddVaccinatedDialog extends StatelessWidget {
   }
 
   bool validate() {
-    petVaccinated.description = _descriptionEditController.text;
-    petVaccinated.name = _vaccineNameEditController.text;
-    if (petVaccinated.name == null || petVaccinated.name?.isEmpty == true) {
+    petVaccinated?.description = _descriptionEditController.text;
+    petVaccinated?.name = _vaccineNameEditController.text;
+    if (petVaccinated!.name == null || petVaccinated?.name?.isEmpty == true) {
       toastService.warning(message: LocaleKeys.profile_vaccinate_name_invalid.trans(), context: Get.context!);
       return false;
     }
-    if (petVaccinated.date == null) {
+    if (petVaccinated!.date == null) {
       toastService.warning(message: LocaleKeys.profile_date_invalid.trans(), context: Get.context!);
       return false;
     }
@@ -158,7 +166,7 @@ class AddVaccinatedDialog extends StatelessWidget {
   }
 
   void onDateSelected(DateTime date) {
-    petVaccinated.date = date;
+    petVaccinated?.date = date;
     return;
   }
 }

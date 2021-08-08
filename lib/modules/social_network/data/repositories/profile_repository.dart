@@ -116,4 +116,28 @@ class ProfileRepository {
   Future<RequestContact> requestContact(String toUserUUID) {
     return _requestContactDatasource.requestContact(toUserUUID);
   }
+
+  Future<bool> deletePetVaccinated(int petVaccinatedId) {
+    return _petDatasource.deletePetVaccinated(petVaccinatedId);
+  }
+
+  Future<bool> deletePetWeight(int petWeightId) {
+    return _petDatasource.deletePetWeight(petWeightId);
+  }
+
+  Future<bool> deletePetWormFlush(int petWormFlushId) {
+    return _petDatasource.deletePetWormFlush(petWormFlushId);
+  }
+
+  Future<PetVaccinated> updatePetVaccinated(PetVaccinated petVaccinated) {
+    return _petDatasource.updatePetVaccinated(petVaccinated);
+  }
+
+  Future<PetWeight> updatePetWeight(PetWeight petWeight) {
+    return _petDatasource.updatePetWeight(petWeight);
+  }
+
+  Future<PetWormFlushed> updatePetWormFlush(PetWormFlushed petWormFlushed) {
+    return _petDatasource.updatePetWormFlush(petWormFlushed);
+  }
 }
