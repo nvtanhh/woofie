@@ -116,6 +116,7 @@ class PostDatasource {
             name
             bio
             dob
+            gender
           }
         }
         user {
@@ -148,7 +149,7 @@ class PostDatasource {
   content created_at creator_uuid id is_closed is_liked is_my_post reactions_counts uuid
   medias { id type url }
   post_reacts_aggregate { aggregate { count } } 
-  type post_pets { pet { name id dob } }
+  type post_pets { pet { name id dob gender } }
   comments_aggregate { aggregate { count } }
   user { uuid name id }
    } }
@@ -354,6 +355,7 @@ mutation MyMutation {
             id
             name
             dob
+            gender
             avatar_url
           }
         }

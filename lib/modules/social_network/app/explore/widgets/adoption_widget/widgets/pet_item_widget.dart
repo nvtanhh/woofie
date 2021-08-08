@@ -118,7 +118,9 @@ class PetItemWidget extends StatelessWidget {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                color: UIColor.pattensBlue2,
+                                color: pet.gender?.index == 0
+                                    ? UIColor.pattensBlue2
+                                    : UIColor.genderFemaleBackground,
                                 borderRadius: BorderRadius.circular(5.r),
                               ),
                               padding: EdgeInsets.all(5.w),
@@ -126,7 +128,9 @@ class PetItemWidget extends StatelessWidget {
                                 pet.gender?.index == 0
                                     ? LocaleKeys.add_pet_pet_male.trans()
                                     : LocaleKeys.add_pet_pet_female.trans(),
-                                style: UITextStyle.dodger_blue_10_w500,
+                                style: pet.gender?.index == 0
+                                    ? UITextStyle.dodger_blue_10_w500
+                                    : UITextStyle.dodger_pink_10_w500,
                               ),
                             ),
                             SizedBox(

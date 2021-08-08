@@ -21,9 +21,11 @@ class PostPet {
     this.post,
     this.pet,
   });
-  factory PostPet.fromJson(Map<String, dynamic> json) => _$PostPetFromJson(json);
+  factory PostPet.fromJson(Map<String, dynamic> json) =>
+      _$PostPetFromJson(json);
 
-  factory PostPet.fromJsonString(String jsonString) => PostPet.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory PostPet.fromJsonString(String jsonString) =>
+      PostPet.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PostPetToJson(this);
 

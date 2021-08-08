@@ -321,6 +321,12 @@ class UITextStyle {
         fontSize: 10.0.sp,
         fontWeight: FontWeight.w500),
   );
+  static TextStyle dodger_pink_10_w500 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.genderFemaleTextColor,
+        fontSize: 10.0.sp,
+        fontWeight: FontWeight.w500),
+  );
   static TextStyle dodger_blue_12_w500 = GoogleFonts.montserrat(
     textStyle: TextStyle(
         color: UIColor.dodgerBlue,

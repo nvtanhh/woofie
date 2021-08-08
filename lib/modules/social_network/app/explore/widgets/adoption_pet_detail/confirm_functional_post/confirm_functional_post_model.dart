@@ -86,7 +86,7 @@ class ConfirmGivePetModel extends BaseViewModel {
 
   Future<void> onWantsMatingPetWithThisUser(User user) async {
     await _refreshUser(user);
-    injector<BottomSheetService>().showTagPetBottomSheet(
+    await injector<BottomSheetService>().showTagPetBottomSheet(
       title: 'Chọn thú cưng muốn ghép đôi',
       userPets: user.currentPets ?? [],
       onPetChosen: (pet) {
@@ -101,26 +101,6 @@ class ConfirmGivePetModel extends BaseViewModel {
       () async => user.update(await _getUseProfileUseacse.call(user.id)),
     );
   }
-
-  // Widget _chooseMatingPetDialog(User user) {
-  //   final myPet = post.taggegPets![0];
-  //   final pets = user.currentPets!;
-  //   return Column(
-  //     children: [
-  //       Text('Chọn thú cưng muốn ghép đôi cho ${myPet.name}}'),
-  //       GridView.count(
-  //         crossAxisCount: pets.length,
-  //         padding: const EdgeInsets.all(4.0),
-  //         childAspectRatio: 8.0 / 9.0,
-  //         children: pets.map(_petCardWidget).toList(),
-  //       )
-  //     ],
-  //   );
-  // }
-
-  // Widget _petCardWidget(Pet pet) {
-  //   return SizedBox();
-  // }
 
   void _onPetChosen(Pet pet) {
     final myPet = post.taggegPets![0];

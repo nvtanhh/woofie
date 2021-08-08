@@ -44,4 +44,6 @@ class UIColor {
   static const Color gray25 = Color(0x33868686);
   static const Color cosmicLatte = Color(0xFFE1F8E9);
   static const Color aquaSpring = Color(0xFFF8E2E2);
+  static const Color genderFemaleBackground = Color(0xFFF7E1F8);
+  static const Color genderFemaleTextColor = Color(0xFFEF21F3);
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:meowoof/core/helpers/datetime_helper.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
+import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 
 class ChatSenderPostPreviewer extends StatelessWidget {
   final Post post;
@@ -15,6 +18,8 @@ class ChatSenderPostPreviewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pet = post.taggegPets![0];
+    final String age = DateTimeHelper.calcAge(pet.dob);
     return ClipRRect(
       borderRadius: BorderRadius.circular(15.r),
       child: Stack(
@@ -51,11 +56,53 @@ class ChatSenderPostPreviewer extends StatelessWidget {
                   ),
                   SizedBox(width: 5.w),
                   Expanded(
-                    child: Text(
-                      post.taggegPets![0].name ?? "",
-                      style: UITextStyle.text_header_14_w700,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          post.taggegPets![0].name ?? "",
+                          style: UITextStyle.text_header_14_w700,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                        ),
+                        SizedBox(height: 5.h),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: pet.gender?.index == 0
+                                    ? UIColor.pattensBlue2
+                                    : UIColor.genderFemaleBackground,
+                                borderRadius: BorderRadius.circular(5.r),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5.w, vertical: 2.h),
+                              child: Text(
+                                pet.gender?.index == 0
+                                    ? LocaleKeys.add_pet_pet_male.trans()
+                                    : LocaleKeys.add_pet_pet_female.trans(),
+                                style: pet.gender?.index == 0
+                                    ? UITextStyle.dodger_blue_10_w500
+                                    : UITextStyle.dodger_pink_10_w500,
+                              ),
+                            ),
+                            if (age != 'Unknown')
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: UIColor.whisper,
+                                  borderRadius: BorderRadius.circular(5.r),
+                                ),
+                                margin: EdgeInsets.only(left: 5.w),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5.w, vertical: 2.h),
+                                child: Text(
+                                  age,
+                                  style: UITextStyle.text_body_10_w500,
+                                ),
+                              )
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],

@@ -87,6 +87,7 @@ class MWAvatar extends StatelessWidget {
         width: avatarSize.w,
         fit: fit ?? BoxFit.cover,
         retries: 0,
+        timeLimit: const Duration(seconds: 3),
         loadStateChanged: (e) {
           switch (e.extendedImageLoadState) {
             case LoadState.loading:
@@ -143,7 +144,8 @@ class MWAvatar extends StatelessWidget {
     return SizedBox(
       height: avatarSize.h,
       width: avatarSize.w,
-      child: placeHolderImage ?? Assets.resources.images.fallbacks.avatarFallback.image(),
+      child: placeHolderImage ??
+          Assets.resources.images.fallbacks.avatarFallback.image(),
     );
   }
 }

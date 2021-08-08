@@ -24,9 +24,9 @@ class HasuraDatasource {
         current_pets {
           id
           name
-          gender
           bio
           avatar_url
+          gender
         }
         setting {
           id

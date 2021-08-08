@@ -1,16 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:age_calculator/age_calculator.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/media_service.dart';
+import 'package:meowoof/core/ui/confirm_dialog.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
@@ -18,6 +19,7 @@ import 'package:meowoof/modules/chat/domain/usecases/message/get_messages_usecas
 import 'package:meowoof/modules/chat/domain/usecases/room/get_messages_usecase.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/get_presined_url_usecase.dart';
 import 'package:meowoof/modules/chat/domain/usecases/room/init_chat_room_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -116,6 +118,9 @@ class ChatRoomPageModel extends BaseViewModel {
         room.privateChatPartner = partner;
         _initModel();
       });
+    }
+    if (attachmentPost.value != null) {
+      _isCanSendMessage.value = true;
     }
   }
 
@@ -312,14 +317,31 @@ class ChatRoomPageModel extends BaseViewModel {
             sendingMessage.content = await _startUploadMedia(mediaToUpload);
             newMessage = await _sendMessage(sendingMessage);
           } else if (sendingMessage.type == MessageType.post) {
+            final isConfirmed = await _showConfirmActionFunctionalPost();
+            if (!isConfirmed) return;
+            Pet? petToMatinng;
+            if (attachmentPost.value!.type == PostType.mating) {
+              await injector<BottomSheetService>().showTagPetBottomSheet(
+                title: 'Chọn thú cưng để ghép đôi cùng',
+                userPets: injector<LoggedInUser>().user!.currentPets!,
+                needConfirmButton: true,
+                onPetChosen: (pet) {
+                  if (_isCanMating(pet)) {
+                    Get.back();
+                    petToMatinng = pet;
+                  }
+                },
+              );
+              if (petToMatinng == null) return;
+            }
             sendingMessage.content = attachmentPost.value!.toJsonString();
             sendingMessage.description =
                 messageSenderTextController.text.trim();
             _updateNewMessage(sendingMessage, notifyChatRoom: false);
+            // Trigger like post it - it means that the logged in user wants to adop/matting with post's pet
+            unawaited(_triggerFunctionalPost(attachmentPost.value!));
             _cleanSender();
             newMessage = await _sendMessage(sendingMessage);
-            // Trigger like post it - it means that the logged in user wants to adop/matting with post's pet
-            unawaited(_triggerFunctionalPost());
           }
 
           // find the new message in the recent message list ==> mark it as sent
@@ -457,8 +479,7 @@ class ChatRoomPageModel extends BaseViewModel {
     }
   }
 
-  Future _triggerFunctionalPost() async {
-    final Post post = attachmentPost.value!;
+  Future _triggerFunctionalPost(Post post) async {
     if (!post.isLiked!) {
       await call(
         () async => _likePostUsecase.call(attachmentPost.value!.id),
@@ -466,5 +487,56 @@ class ChatRoomPageModel extends BaseViewModel {
         showLoading: false,
       );
     }
+  }
+
+  Future<bool> _showConfirmActionFunctionalPost() async {
+    final Pet pet = attachmentPost.value!.taggegPets![0];
+    final String content = attachmentPost.value!.type == PostType.adop
+        ? 'Khi bạn gửi tin nhắn này đồng nghĩa bạn muốn nhận ${pet.name} làm thú cưng, và bạn sẽ trở thành chủ sở hữu mới của ${pet.name} khi được chủ cũ đồng ý.'
+        : 'Khi bạn gửi tin nhắn này đồng nghĩa bạn muốn ghép đôi ${pet.name} với thú cưng của bạn.';
+    bool isConfirm = false;
+    await Get.dialog(
+      ConfirmDialog(
+        title: 'Lưu ý',
+        content: content,
+        confirmText: 'Xác nhận',
+        cancelText: 'Hủy',
+        onConfirm: () async {
+          isConfirm = true;
+        },
+        onCancel: () {
+          isConfirm = false;
+        },
+      ),
+    );
+    return isConfirm;
+  }
+
+  bool _isCanMating(Pet pet) {
+    final Pet postPet = attachmentPost.value!.taggegPets![0];
+    if (AgeCalculator.age(pet.dob!).months < 6) {
+      Get.dialog(
+        const ConfirmDialog(
+          title: 'Không thể ghép đôi',
+          content:
+              'Không thể ghép đôi do thú cưng của bạn chưa đủ 6 tháng tuổi.',
+          confirmText: 'Đã hiểu',
+          cancelText: '',
+        ),
+      );
+      return false;
+    }
+    if (pet.gender == postPet.gender) {
+      Get.dialog(
+        const ConfirmDialog(
+          title: 'Không thể ghép đôi',
+          content: 'Bạn không thể ghép đôi 2 thú cưng có cùng giới tính.',
+          confirmText: 'Đã hiểu',
+          cancelText: '',
+        ),
+      );
+      return false;
+    }
+    return true;
   }
 }

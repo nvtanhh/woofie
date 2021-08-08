@@ -26,19 +26,21 @@ class BottomSheetService {
     );
   }
 
-  void showTagPetBottomSheet({
+  Future showTagPetBottomSheet({
     required List<Pet> userPets,
     required ValueChanged<Pet> onPetChosen,
     List<Pet>? taggedPets,
     String? title,
+    bool needConfirmButton = false
   }) {
-    showMaterialModalBottomSheet(
+    return showMaterialModalBottomSheet(
       context: Get.context!,
       builder: (context) => TagPetBottomSheetWidget(
         userPets: userPets,
         taggedPets: taggedPets,
         onPetChosen: onPetChosen,
         title: title,
+        needConfirmButton: needConfirmButton,
       ),
       shape: defaultBottomSheetShape,
     );
