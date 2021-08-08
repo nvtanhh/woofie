@@ -32,8 +32,11 @@ class PetDatasource {
       }}
     """;
     final data = await _hasuraConnect.query(queryGetPetTypes);
-    final listPetType = GetMapFromHasura.getMap(data as Map)["pet_types"] as List;
-    return listPetType.map((e) => PetType.fromJson(e as Map<String, dynamic>)).toList();
+    final listPetType =
+        GetMapFromHasura.getMap(data as Map)["pet_types"] as List;
+    return listPetType
+        .map((e) => PetType.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<User>> getAllUserInPost(int postId, int limit, int offset) async {
@@ -48,8 +51,11 @@ class PetDatasource {
   }
 """;
     final data = await _hasuraConnect.query(query);
-    final petWormFlushes = GetMapFromHasura.getMap(data as Map)["get_all_user_in_post"] as List;
-    return petWormFlushes.map((e) => User.fromJson(e as Map<String, dynamic>)).toList();
+    final petWormFlushes =
+        GetMapFromHasura.getMap(data as Map)["get_all_user_in_post"] as List;
+    return petWormFlushes
+        .map((e) => User.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<PetBreed>> getPetBreeds(int petTypeId) async {
@@ -63,8 +69,11 @@ class PetDatasource {
     }}
     """;
     final data = await _hasuraConnect.query(queryGetPetBreeds);
-    final listPetType = GetMapFromHasura.getMap(data as Map)["pet_breeds"] as List;
-    return listPetType.map((e) => PetBreed.fromJson(e as Map<String, dynamic>)).toList();
+    final listPetType =
+        GetMapFromHasura.getMap(data as Map)["pet_breeds"] as List;
+    return listPetType
+        .map((e) => PetBreed.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<Pet> addPet(Pet pet) async {
@@ -83,11 +92,13 @@ class PetDatasource {
   }}
     """;
     final data = await _hasuraConnect.mutation(mutationInsertPet);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pets_one"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["insert_pets_one"] as Map;
     return Pet.fromJson(affectedRows as Map<String, dynamic>);
   }
 
-  Future<List<PetVaccinated>> getVaccinates(int idPet, int limit, int offset) async {
+  Future<List<PetVaccinated>> getVaccinates(
+      int idPet, int limit, int offset) async {
     final query = """
     query MyQuery {
   pet_vaccinateds(limit: $limit, offset: $offset, where: {pet_id: {_eq: $idPet}}, order_by: {date: desc}) {
@@ -99,8 +110,11 @@ class PetDatasource {
   }}
 """;
     final data = await _hasuraConnect.query(query);
-    final petVaccinates = GetMapFromHasura.getMap(data as Map)["pet_vaccinateds"] as List;
-    return petVaccinates.map((e) => PetVaccinated.fromJson(e as Map<String, dynamic>)).toList();
+    final petVaccinates =
+        GetMapFromHasura.getMap(data as Map)["pet_vaccinateds"] as List;
+    return petVaccinates
+        .map((e) => PetVaccinated.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<PetWeight>> getWeights(int idPet, int limit, int offset) async {
@@ -115,11 +129,15 @@ class PetDatasource {
   }}
 """;
     final data = await _hasuraConnect.query(query);
-    final petWeights = GetMapFromHasura.getMap(data as Map)["pet_weights"] as List;
-    return petWeights.map((e) => PetWeight.fromJson(e as Map<String, dynamic>)).toList();
+    final petWeights =
+        GetMapFromHasura.getMap(data as Map)["pet_weights"] as List;
+    return petWeights
+        .map((e) => PetWeight.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
-  Future<List<PetWormFlushed>> getWormFlushes(int idPet, int limit, int offset) async {
+  Future<List<PetWormFlushed>> getWormFlushes(
+      int idPet, int limit, int offset) async {
     final query = """
     query MyQuery {
   pet_worm_flusheds(limit: $limit, offset: $offset, where: {pet_id: {_eq: $idPet}}, order_by: {date: desc}) {
@@ -129,8 +147,11 @@ class PetDatasource {
     id}}
 """;
     final data = await _hasuraConnect.query(query);
-    final petWormFlushes = GetMapFromHasura.getMap(data as Map)["pet_worm_flusheds"] as List;
-    return petWormFlushes.map((e) => PetWormFlushed.fromJson(e as Map<String, dynamic>)).toList();
+    final petWormFlushes =
+        GetMapFromHasura.getMap(data as Map)["pet_worm_flusheds"] as List;
+    return petWormFlushes
+        .map((e) => PetWormFlushed.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<Map<String, dynamic>> getDetailInfoPet(int idPet) async {
@@ -169,7 +190,8 @@ class PetDatasource {
     }}}
     """;
     final data = await _hasuraConnect.query(query);
-    return GetMapFromHasura.getMap(data as Map)["pets_by_pk"] as Map<String, dynamic>;
+    return GetMapFromHasura.getMap(data as Map)["pets_by_pk"]
+        as Map<String, dynamic>;
   }
 
   Future<List<Pet>> getPetsOfUser(String userUUID) async {
@@ -197,7 +219,9 @@ mutation MyMutation {
 }
 """;
     final data = await _hasuraConnect.mutation(manution);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pet_vaccinateds_one"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["insert_pet_vaccinateds_one"]
+            as Map;
     petVaccinated.id = affectedRows["id"] as int;
     return petVaccinated;
   }
@@ -210,7 +234,9 @@ mutation MyMutation {
   }}
 """;
     final data = await _hasuraConnect.mutation(manution);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pet_worm_flusheds_one"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["insert_pet_worm_flusheds_one"]
+            as Map;
     petWormFlushed.id = affectedRows["id"] as int;
     return petWormFlushed;
   }
@@ -223,7 +249,8 @@ mutation MyMutation {
   }}
 """;
     final data = await _hasuraConnect.mutation(manution);
-    final affectedRows = GetMapFromHasura.getMap(data as Map)["insert_pet_weights_one"] as Map;
+    final affectedRows =
+        GetMapFromHasura.getMap(data as Map)["insert_pet_weights_one"] as Map;
     petWeight.id = affectedRows["id"] as int;
     return petWeight;
   }
@@ -325,7 +352,8 @@ mutation MyMutation {
 
 """;
     final data = await _hasuraConnect.mutation(manution);
-    return GetMapFromHasura.getMap(data as Map)["update_pets_by_pk"] as Map<String, dynamic>;
+    return GetMapFromHasura.getMap(data as Map)["update_pets_by_pk"]
+        as Map<String, dynamic>;
   }
 
   Future<PetVaccinated> updatePetVaccinated(PetVaccinated petVaccinated) async {
@@ -344,7 +372,9 @@ mutation MyMutation {
 
 """;
     final data = await _hasuraConnect.mutation(manution);
-    return PetVaccinated.fromJson(GetMapFromHasura.getMap(data as Map)["update_pet_vaccinateds_by_pk"] as Map<String, dynamic>);
+    return PetVaccinated.fromJson(
+        GetMapFromHasura.getMap(data as Map)["update_pet_vaccinateds_by_pk"]
+            as Map<String, dynamic>);
   }
 
   Future<PetWeight> updatePetWeight(PetWeight petWeight) async {
@@ -362,10 +392,13 @@ mutation MyMutation {
 }
 """;
     final data = await _hasuraConnect.mutation(manution);
-    return PetWeight.fromJson(GetMapFromHasura.getMap(data as Map)["update_pet_weights_by_pk"] as Map<String, dynamic>);
+    return PetWeight.fromJson(
+        GetMapFromHasura.getMap(data as Map)["update_pet_weights_by_pk"]
+            as Map<String, dynamic>);
   }
 
-  Future<PetWormFlushed> updatePetWormFlush(PetWormFlushed petWormFlushed) async {
+  Future<PetWormFlushed> updatePetWormFlush(
+      PetWormFlushed petWormFlushed) async {
     final manution = """
 mutation MyMutation {
   update_pet_worm_flusheds_by_pk(pk_columns: {id: ${petWormFlushed.id}}, _set: {date: "${petWormFlushed.date.toString()}", description: "${petWormFlushed.description}"}) {
@@ -380,6 +413,38 @@ mutation MyMutation {
 
 """;
     final data = await _hasuraConnect.mutation(manution);
-    return PetWormFlushed.fromJson(GetMapFromHasura.getMap(data as Map)["update_pet_worm_flusheds_by_pk"] as Map<String, dynamic>);
+    return PetWormFlushed.fromJson(
+        GetMapFromHasura.getMap(data as Map)["update_pet_worm_flusheds_by_pk"]
+            as Map<String, dynamic>);
+  }
+
+  Future<bool> changePetOwner(User user, Pet pet) async {
+    final String addNewOwner = """
+    mutation MyMutation {
+      insert_pet_owners_one(object: {owner_uuid: "${user.uuid}", pet_id: ${pet.id}}) {
+        id
+      }
+    }
+    """;
+    await _hasuraConnect.mutation(addNewOwner);
+
+    final String updateGiveTime = """
+    mutation MyMutation {
+      update_pet_owners(where: {owner_uuid: {_eq: "${_loggedInUser.user!.uuid}"}, pet_id: {_eq: ${pet.id}}}, _set: {give_time: "${DateTime.now().toString()}"}) {
+        affected_rows
+      }
+    }
+    """;
+    await _hasuraConnect.mutation(updateGiveTime);
+    // Update current pet owner
+    final String updateCurrentOwner = """
+    mutation MyMutation {
+      update_pets_by_pk(pk_columns: {id: ${pet.id}}, _set: {current_owner_uuid: "${user.uuid}"}){
+        id
+      }
+    }
+    """;
+    await _hasuraConnect.mutation(updateCurrentOwner);
+    return true;
   }
 }

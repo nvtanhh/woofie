@@ -2,6 +2,7 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post_reaction.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
@@ -192,11 +193,11 @@ class PostDatasource {
 
   Future<bool> deletePost(int idPost) async {
     final manution = """
-mutation MyMutation {
-  delete_posts_by_pk(id: $idPost) {
-    id
-  }
-}
+    mutation MyMutation {
+      delete_posts_by_pk(id: $idPost) {
+        id
+      }
+    }
     """;
     await _hasuraConnect.mutation(manution);
     return true;
@@ -233,6 +234,7 @@ mutation MyMutation {
             name
           }
         }
+        is_closed
       }
     }
     """;
@@ -278,16 +280,18 @@ mutation MyMutation {
           name
         }
         post_reacts_aggregate {
-      aggregate {
-        count
-      }
-    }
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
+          aggregate {
+            count
+          }
+        }
+        comments_aggregate {
+          aggregate {
+            count
+          }
+        }
         created_at
+        is_closed
+        additional_data
       }
     }
     """;
@@ -366,6 +370,7 @@ mutation MyMutation {
           name
         }
         created_at
+        is_closed
       }
     }
     """;
@@ -417,5 +422,94 @@ mutation MyMutation {
     final data = await _hasuraConnect.mutation(manution);
     GetMapFromHasura.getMap(data as Map)["insert_report_post"] as Map;
     return;
+  }
+
+  Future<bool> reactFunctionalPost(int postId, int? matingPetId) async {
+    final String mating =
+        matingPetId == null ? "" : ", mating_pet_id: $matingPetId,";
+    final String mutation = """
+    mutation MyMutation {
+      insert_post_reacts_one(object: {post_id: $postId$mating}, on_conflict: {constraint: post_reacts_reactor_uuid_post_id_mating_pet_id_key, update_columns: []}) {
+        id
+      }
+    }
+    """;
+    await _hasuraConnect.mutation(mutation);
+    return true;
+  }
+
+  Future<List<PostReaction>> getPostFunctionalPostReact(int postId) async {
+    final String query = """
+    query MyQuery {
+      post_reacts(where: {post_id: {_eq: $postId }}) {
+        reactor {
+          id
+          uuid
+          name
+          avatar_url
+        }
+        mating_pet {
+          id
+          name
+          bio
+          avatar_url
+          dob
+          gender
+        }
+      }
+    }
+    """;
+    final data = await _hasuraConnect.query(query);
+    final json = GetMapFromHasura.getMap(data as Map)["post_reacts"] as List;
+    return json
+        .map((e) => PostReaction.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future closePost(Post post, {String? additionalData}) async {
+    final String additonal =
+        additionalData == null ? '' : ', additional_data: "$additionalData"';
+    final String query = """
+    mutation MyMutation {
+      update_posts_by_pk(pk_columns: {id: ${post.id}}, _set: {is_closed: true$additonal}) {
+        id
+        uuid
+        content
+        type
+        medias {
+          id
+          url
+          type
+        }
+        user {
+          id
+          uuid
+          name
+          avatar_url
+        }
+        post_pets {
+          pet {
+            id
+            name
+            dob
+            gender
+            avatar_url
+          }
+        }
+        location {
+          id
+          lat
+          long
+          name
+        }
+        created_at
+        is_closed
+      }
+    }
+    """;
+    final data = await _hasuraConnect.mutation(query);
+    final postJson =
+        GetMapFromHasura.getMap(data as Map)["update_posts_by_pk"] as Map;
+    return Post.fromJson(postJson as Map<String, dynamic>);
   }
 }

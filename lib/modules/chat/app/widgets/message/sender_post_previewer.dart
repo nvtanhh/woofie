@@ -68,36 +68,45 @@ class ChatSenderPostPreviewer extends StatelessWidget {
                         SizedBox(height: 5.h),
                         Row(
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: pet.gender?.index == 0
-                                    ? UIColor.pattensBlue2
-                                    : UIColor.genderFemaleBackground,
-                                borderRadius: BorderRadius.circular(5.r),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5.w, vertical: 2.h),
-                              child: Text(
-                                pet.gender?.index == 0
-                                    ? LocaleKeys.add_pet_pet_male.trans()
-                                    : LocaleKeys.add_pet_pet_female.trans(),
-                                style: pet.gender?.index == 0
-                                    ? UITextStyle.dodger_blue_10_w500
-                                    : UITextStyle.dodger_pink_10_w500,
-                              ),
-                            ),
-                            if (age != 'Unknown')
-                              Container(
+                            Expanded(
+                              child: Container(
                                 decoration: BoxDecoration(
-                                  color: UIColor.whisper,
+                                  color: pet.gender?.index == 0
+                                      ? UIColor.pattensBlue2
+                                      : UIColor.genderFemaleBackground,
                                   borderRadius: BorderRadius.circular(5.r),
                                 ),
-                                margin: EdgeInsets.only(left: 5.w),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 5.w, vertical: 2.h),
                                 child: Text(
-                                  age,
-                                  style: UITextStyle.text_body_10_w500,
+                                  pet.gender?.index == 0
+                                      ? LocaleKeys.add_pet_pet_male.trans()
+                                      : LocaleKeys.add_pet_pet_female.trans(),
+                                  style: pet.gender?.index == 0
+                                      ? UITextStyle.dodger_blue_10_w500
+                                      : UITextStyle.dodger_pink_10_w500,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: false,
+                                ),
+                              ),
+                            ),
+                            if (age != 'Unknown')
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: UIColor.whisper,
+                                    borderRadius: BorderRadius.circular(5.r),
+                                  ),
+                                  margin: EdgeInsets.only(left: 5.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 5.w, vertical: 2.h),
+                                  child: Text(
+                                    age,
+                                    style: UITextStyle.text_body_10_w500,
+                                    overflow: TextOverflow.clip,
+                                    softWrap: false,
+                                  ),
                                 ),
                               )
                           ],

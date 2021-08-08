@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -230,13 +231,17 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             ],
                           ),
                         ),
-                        if (!viewModel.post.isMyPost)
+                        if (viewModel.post.isClosed ?? false)
+                          _buildClosedPostButton()
+                        else if (!viewModel.post.isMyPost)
                           ListTile(
                             contentPadding: const EdgeInsets.symmetric(),
                             leading: MWAvatar(
                               avatarUrl:
                                   viewModel.post.creator?.avatarUrl ?? '',
                               borderRadius: 10.r,
+                              onPressed: () =>
+                                  viewModel.onWantsToGoToUserProfile(),
                             ),
                             title: Text(
                               viewModel.post.creator?.name ?? "",
@@ -323,5 +328,82 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
       case PostType.activity:
         throw Exception("Unsupport post type");
     }
+  }
+
+  Widget _buildClosedPostButton() {
+    if (viewModel.post.type == PostType.adop && viewModel.adopter != null) {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 10.h),
+        child: ButtonWidget(
+          width: double.infinity,
+          contentWidget: Text.rich(
+            TextSpan(
+              text: 'Đã được nhận nuôi bởi ',
+              children: [
+                TextSpan(
+                  text: viewModel.adopter!.name,
+                  style: UITextStyle.text_header_16_w700.apply(
+                    color: _getActionButtonColor(viewModel.post),
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => viewModel.openProfileAdopter(),
+                )
+              ],
+              style: UITextStyle.white_16_w500.apply(
+                color: _getActionButtonColor(viewModel.post),
+              ),
+            ),
+            maxLines: 2,
+            textAlign: TextAlign.center,
+          ),
+          borderRadius: 15.r,
+          backgroundColor:
+              _getActionButtonColor(viewModel.post).withOpacity(.3),
+        ),
+      );
+    } else if (viewModel.post.type == PostType.mating &&
+        viewModel.matedPet != null) {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 10.h),
+        child: ButtonWidget(
+          width: double.infinity,
+          contentWidget: Text.rich(
+            TextSpan(
+              text: 'Đã ghép đôi với ',
+              children: [
+                TextSpan(
+                  text: viewModel.matedPet!.name,
+                  style: UITextStyle.text_header_16_w700.apply(
+                    color: _getActionButtonColor(viewModel.post),
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => viewModel.openProfileMatedPet(),
+                )
+              ],
+              style: UITextStyle.white_16_w500.apply(
+                color: _getActionButtonColor(viewModel.post),
+              ),
+            ),
+            maxLines: 2,
+            textAlign: TextAlign.center,
+          ),
+          borderRadius: 15.r,
+          backgroundColor:
+              _getActionButtonColor(viewModel.post).withOpacity(.3),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10.h),
+      child: ButtonWidget(
+        width: double.infinity,
+        height: 47.h,
+        title: 'Bài viết đã đóng',
+        titleStyle: UITextStyle.white_16_w500,
+        borderRadius: 15.r,
+        backgroundColor: UIColor.textSecondary,
+      ),
+    );
   }
 }

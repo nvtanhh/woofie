@@ -121,6 +121,10 @@ class UITextStyle {
         fontSize: 16.0.sp,
         fontWeight: FontWeight.w600),
   );
+  static TextStyle white_16_w600 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.white, fontSize: 16.0.sp, fontWeight: FontWeight.w600),
+  );
   static TextStyle text_header_16_w700 = GoogleFonts.montserrat(
     textStyle: TextStyle(
         color: UIColor.textHeader,

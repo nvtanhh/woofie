@@ -45,45 +45,43 @@ class MessageBodyPostPreviewerMating extends StatelessWidget {
               bottomLeft:
                   message.isSentByMe ? Radius.circular(15.r) : Radius.zero,
             ),
-            child: Obx(
-              () => Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(() => AdoptionPetDetailWidget(post: finalPost));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(1),
-                        child: PetItemWidget(
-                          post: finalPost.updateSubjectValue,
-                          pet: finalPost.updateSubjectValue.taggegPets![0],
-                          postType: finalPost.type,
-                          showDistance: false,
-                          isConstraintsSize: false,
-                        ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(() => AdoptionPetDetailWidget(post: finalPost));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(1),
+                      child: PetItemWidget(
+                        post: finalPost,
+                        pet: finalPost.taggegPets![0],
+                        postType: finalPost.type,
+                        showDistance: false,
+                        isConstraintsSize: false,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 2.w),
-                    child: const Text('❤️'),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(() => PetProfile(pet: matingPet!));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(1.5),
-                        child: PetCardItem(
-                          pet: matingPet!,
-                        ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                  child: const Text('❤️'),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(() => PetProfile(pet: matingPet!));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(1.5),
+                      child: PetCardItem(
+                        pet: matingPet!,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

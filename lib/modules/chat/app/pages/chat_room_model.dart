@@ -25,6 +25,7 @@ import 'package:meowoof/modules/social_network/domain/models/post/media_file.dar
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/get_detail_post_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/explore/save_functional_post_react.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/like_post_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_media_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -43,8 +44,7 @@ class ChatRoomPageModel extends BaseViewModel {
   final GetMessagesUseCase _getMessagesUseCase;
   final SendMessagesUsecase _sendMessagesUsecase;
   final InitChatRoomsUseCase _initChatRoomsUseCase;
-  final LikePostUsecase _likePostUsecase;
-  final GetDetailPostUsecase _getDetailPostUsecase;
+  final SaveFunctionalPostReact _saveFunctionalPostReact;
 
   final MediaService _mediaService;
   final FirebaseAuth _auth;
@@ -89,8 +89,7 @@ class ChatRoomPageModel extends BaseViewModel {
     this._sendMessagesUsecase,
     this._auth,
     this._initChatRoomsUseCase,
-    this._likePostUsecase,
-    this._getDetailPostUsecase,
+    this._saveFunctionalPostReact,
   );
 
   @override
@@ -347,7 +346,12 @@ class ChatRoomPageModel extends BaseViewModel {
                 messageSenderTextController.text.trim();
             _updateNewMessage(sendingMessage, notifyChatRoom: false);
             // Trigger like post it - it means that the logged in user wants to adop/matting with post's pet
-            unawaited(_triggerFunctionalPost(attachmentPost.value!));
+            unawaited(
+              _triggerFunctionalPost(
+                attachmentPost.value!,
+                matingPetId: petToMatinng?.id,
+              ),
+            );
             _cleanSender();
             newMessage = await _sendMessage(sendingMessage);
           }
@@ -487,10 +491,11 @@ class ChatRoomPageModel extends BaseViewModel {
     }
   }
 
-  Future _triggerFunctionalPost(Post post) async {
-    if (!post.isLiked!) {
+  Future _triggerFunctionalPost(Post post, {int? matingPetId}) async {
+    if (post.type != PostType.adop || !post.isLiked!) {
       await call(
-        () async => _likePostUsecase.call(post.id),
+        () async => _saveFunctionalPostReact.call(
+            postId: post.id, matingPetId: matingPetId),
         onSuccess: () => post.isLiked = true,
         showLoading: false,
       );

@@ -57,6 +57,8 @@ class Post extends UpdatableModel<Post> {
   int? postMediasCount;
   @JsonKey(name: "post_reacts", fromJson: reactorsFromJson)
   List<User>? reactors;
+  @JsonKey(name: "additional_data")
+  String? additionalData;
 
   Post({
     required this.id,
@@ -71,6 +73,7 @@ class Post extends UpdatableModel<Post> {
     this.comments,
     this.taggegPets = const [],
     this.location,
+    this.additionalData,
   }) : super(id);
 
   bool get isIncludeLocation => location != null;
@@ -217,6 +220,9 @@ class Post extends UpdatableModel<Post> {
     }
     if (json['uuid'] != null) {
       uuid = json['uuid'] as String;
+    }
+    if (json['additional_data'] != null) {
+      additionalData = json['additional_data'] as String;
     }
   }
 }

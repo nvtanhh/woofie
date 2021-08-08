@@ -24,7 +24,7 @@ class PetCardItem extends StatelessWidget {
     return GestureDetector(
       onTap: onClicked,
       child: Container(
-        constraints: BoxConstraints(minWidth: 140.w),
+        constraints: BoxConstraints(maxWidth: 150.w),
         padding: EdgeInsets.all(15.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
@@ -55,15 +55,19 @@ class PetCardItem extends StatelessWidget {
               maxLines: 1,
             ),
             SizedBox(height: 3.h),
-            Text(
-              pet.bio ?? '',
-              style: UITextStyle.body_12_medium,
-              maxLines: 2,
+            Flexible(
+              child: Text(
+                pet.bio ?? '',
+                style: UITextStyle.body_12_medium,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             Expanded(
               child: SizedBox(height: 10.h),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   decoration: BoxDecoration(

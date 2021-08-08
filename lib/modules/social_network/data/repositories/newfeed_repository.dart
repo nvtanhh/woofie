@@ -20,7 +20,8 @@ class NewFeedRepository {
     this._commentDatasource,
   );
 
-  Future<List<Post>> getPosts({int limit = 10, int offset = 0, DateTime? lastValue}) {
+  Future<List<Post>> getPosts(
+      {int limit = 10, int offset = 0, DateTime? lastValue}) {
     return _postDatasource.getPostsTimeline(offset, limit);
   }
 
@@ -40,7 +41,8 @@ class NewFeedRepository {
     return _postDatasource.createPost(post);
   }
 
-  Future<Comment?> createComment(int postId, String content, List<User> userTag) {
+  Future<Comment?> createComment(
+      int postId, String content, List<User> userTag) {
     return _commentDatasource.createComment(postId, content, userTag);
   }
 
@@ -81,5 +83,9 @@ class NewFeedRepository {
 
   Future<Snapshot> subscriptionComment(int postId) {
     return _commentDatasource.subscriptComment(postId);
+  }
+
+  Future closePost(Post post, {String? additionalData}) {
+    return _postDatasource.closePost(post, additionalData: additionalData);
   }
 }

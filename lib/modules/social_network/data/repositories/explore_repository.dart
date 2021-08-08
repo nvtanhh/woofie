@@ -1,9 +1,11 @@
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post_reaction.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/service.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class ExploreRepository {
@@ -63,5 +65,17 @@ class ExploreRepository {
 
   Future<List<Pet>> searchPet(String keyWord, int offset, int limit) {
     return _petDatasource.searchPet(keyWord, offset, limit);
+  }
+
+  Future<bool> reactFunctionalPost(int postId, int? matingPetId) {
+    return _postDatasource.reactFunctionalPost(postId, matingPetId);
+  }
+
+  Future<List<PostReaction>> getPostFunctionalPostReact(int postId) {
+    return _postDatasource.getPostFunctionalPostReact(postId);
+  }
+
+  Future<bool> changePetOwner(User user, Pet pet) {
+   return _petDatasource.changePetOwner(user, pet);
   }
 }
