@@ -44,7 +44,7 @@ class EditPetProfileWidgetModel extends BaseViewModel {
   @override
   void initState() {
     genderSelected = pet.gender ?? Gender.male;
-    petBreads = [pet.petBreed!];
+    petBreads = pet.petBreed==null?[]:[pet.petBreed!];
     introduceEditingController = TextEditingController(text: pet.bio ?? "");
     nameEditingController = TextEditingController(text: pet.name ?? "");
     datePicker = pet.dob;
