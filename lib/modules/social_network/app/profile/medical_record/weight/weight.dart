@@ -140,9 +140,10 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
                           ),
                         ),
                         trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
+                            if(viewModel.isMyPet)
                             MedicalActionsTrailing(
                               onDelete: () => viewModel.onDeleteWeight(petWeight,index),
                               onEdit: () => viewModel.onEditWeight(petWeight,index),

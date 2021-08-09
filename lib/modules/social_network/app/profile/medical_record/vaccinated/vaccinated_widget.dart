@@ -114,6 +114,7 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
                         ),
                       ],
                     ),
+                    if(viewModel.isMyPet)
                     Align(
                       alignment: Alignment.topRight,
                       child: MedicalActionsTrailing(

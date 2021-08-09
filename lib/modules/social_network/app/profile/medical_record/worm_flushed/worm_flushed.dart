@@ -136,6 +136,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                         ),
                       ],
                     ),
+                    if(viewModel.isMyPet)
                     Align(
                       alignment: Alignment.topRight,
                       child: MedicalActionsTrailing(
