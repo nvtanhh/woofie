@@ -1,4 +1,4 @@
-package com.example.meowoof
+package com.greentea.woofie
 
 import io.flutter.embedding.android.FlutterActivity
 
