@@ -139,7 +139,7 @@ class WormFlushedWidgetModel extends BaseViewModel {
   }
   void sortByDate(){
     _wormFlushes.sort((a,b){
-      return a.date!.compareTo(b.date!);
+      return a.date!.compareTo(b.date!)>=0?-1:1;
     });
   }
   List<PetWormFlushed> get wormFlushes => _wormFlushes.toList();

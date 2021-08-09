@@ -93,7 +93,7 @@ class WeightWidgetModel extends BaseViewModel {
   void sortByDate() {
     pagingController.itemList?.sort(
       (a, b) {
-        return a.date!.compareTo(b.date!);
+        return a.date!.compareTo(b.date!)>=0?-1:1;
       },
     );
   }

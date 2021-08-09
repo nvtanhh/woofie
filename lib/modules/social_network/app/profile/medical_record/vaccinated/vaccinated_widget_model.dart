@@ -140,7 +140,7 @@ class VaccinatedWidgetModel extends BaseViewModel {
 
   void sortByDate() {
     _vaccinates.sort((a, b) {
-      return a.date!.compareTo(b.date!);
+      return a.date!.compareTo(b.date!)>=0?-1:1;
     });
   }
 
