@@ -73,17 +73,17 @@ class LoginWidgetModel extends BaseViewModel {
       call(
         () async {
           await login();
-          // if (firebaseUser != null && !firebaseUser!.emailVerified) {
-          //   Get.snackbar(
-          //     LocaleKeys.login_verify_email_error_title.trans(),
-          //     LocaleKeys.login_verify_email_error_description.trans(),
-          //     duration: const Duration(seconds: 4),
-          //     backgroundColor: UIColor.danger,
-          //     colorText: UIColor.white,
-          //   );
-          //   isShowingResendEmailIcon.value = true;
-          //   throw Error();
-          // }
+          if (firebaseUser != null && !firebaseUser!.emailVerified) {
+            Get.snackbar(
+              LocaleKeys.login_verify_email_error_title.trans(),
+              LocaleKeys.login_verify_email_error_description.trans(),
+              duration: const Duration(seconds: 4),
+              backgroundColor: UIColor.danger,
+              colorText: UIColor.white,
+            );
+            isShowingResendEmailIcon.value = true;
+            throw Error();
+          }
           if (firebaseUser != null) {
             _user = await _getUserWithUuidUsecase.call(firebaseUser!.uid);
           }

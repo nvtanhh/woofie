@@ -187,7 +187,7 @@ class UserProfileModel extends BaseViewModel {
   }
 
   Future sendContentRequestMessage(RequestContact requestContact) async {
-    String? content = await injector<DialogService>()
+    final String? content = await injector<DialogService>()
         .showInputReport(title: "Nội dung") as String?;
     await call(
       () async => _updateContentRequestMessagesUsecase.run(

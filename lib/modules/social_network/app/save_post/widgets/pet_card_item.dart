@@ -32,7 +32,7 @@ class PetCardItem extends StatelessWidget {
           boxShadow: const [
             BoxShadow(
               color: UIColor.boxShadowColor,
-              blurRadius: 15,
+              blurRadius: 5,
             ),
           ],
           border: Border.all(

@@ -72,7 +72,7 @@ class PetsWidget extends StatelessWidget {
           height: 5.h,
         ),
         SizedBox(
-          height: 185.h,
+          height: 190.h,
           child: user.currentPets?.isEmpty ?? true
               ? isMyPets
                   ? Row(
@@ -80,7 +80,6 @@ class PetsWidget extends StatelessWidget {
                       children: [
                         Container(
                           width: 160.w,
-                          // margin: EdgeInsets.only(right: 12.w),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.r),
                             boxShadow: const [
@@ -113,7 +112,8 @@ class PetsWidget extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
+                  : Center(
+                      child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
               : Obx(
                   () => ListView.builder(
                     padding: EdgeInsets.only(left: 15.w, top: 5.h, bottom: 5.h),
