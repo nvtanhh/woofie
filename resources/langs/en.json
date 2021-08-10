@@ -147,7 +147,10 @@
     "rate_feedback": "Rate and feedback",
     "message": "Message",
     "message_public": "Anyone can contact me",
-    "message_private": "Must be accepted by me"
+    "message_private": "Must be accepted by me",
+    "restart_app": "You need restart app to update new language",
+    "now": "Now",
+    "later": "Later"
   },
   "notification": {
     "notifications": "Notifications",

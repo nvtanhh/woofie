@@ -147,7 +147,9 @@
     "rate_feedback": "Đánh giá và phản hồi",
     "message": "Tin nhắn",
     "message_public": "Ai cũng có thể liên lạc với tôi",
-    "message_private": "Phải được tôi chấp nhận"
+    "message_private": "Phải được tôi chấp nhận",
+    "now": "Bây giờ",
+    "later": "Để sau"
   },
   "notification": {
     "notifications": "Thông báo",
@@ -195,7 +197,8 @@
     "success_tile": "Chúc mừng 🎉",
     "success_description": "Tạo bài viết thành công",
     "update_failed_toast": "Chỉnh sửa bài viết thất bại vui long thử lại sau",
-    "update_success_toast": "Đã chỉnh sửa bài viết"
+    "update_success_toast": "Đã chỉnh sửa bài viết",
+    "restart_app": "Bạn cần khởi động lại ứng dụng để cập nhật ngôn ngữ mới"
   },
   "chat": {
     "dashboard_tile": "Nhắn tin",
