@@ -62,6 +62,10 @@ class AddPetWidgetModel extends BaseViewModel {
     return call(
       () async => petBreeds = await _getPetBreedUsecase.call(idPetType),
       onSuccess: () {
+        if(petBreeds.isEmpty==true){
+          currentStepAddPet =3;
+          return;
+        }
         currentStepAddPet++;
       },
     );

@@ -71,6 +71,7 @@ class NotificationWidgetModel extends BaseViewModel {
   void onItemTab(Notification item) {
     switch (item.type) {
       case NotificationType.react:
+        goToPost(item.postId!);
         return;
       case NotificationType.follow:
         return;

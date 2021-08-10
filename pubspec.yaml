@@ -89,7 +89,7 @@ dependencies:
   timeago: ^3.0.2
 
   # A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
-  better_player: ^0.0.66
+  better_player: ^0.0.72
 
   # Create awesome and powerful modal bottom sheets.
   modal_bottom_sheet: ^2.0.0

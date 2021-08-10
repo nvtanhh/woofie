@@ -55,6 +55,13 @@ class ImagesViewWidget extends StatelessWidget {
                   } else if (medias[index].type == MediaType.video) {
                     return BetterPlayer.network(
                       medias[index].url ?? "",
+                      betterPlayerConfiguration: BetterPlayerConfiguration(
+                        fit: BoxFit.scaleDown,
+                        aspectRatio: 16 / 9,
+                        errorBuilder: (context, string) {
+                          return Text(string ?? "");
+                        },
+                      ),
                     );
                   } else {
                     return const SizedBox();
