@@ -81,7 +81,7 @@ class DialogService {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              'You need to provide your location if wanted to use this function',
+              LocaleKeys.system_permission_location.trans(),
               style: UITextStyle.body_14_medium,
             ),
             const SizedBox(height: 20),

@@ -163,7 +163,8 @@
   },
   "system": {
     "comming_soon": "This feature will be coming soon",
-    "press_to_exit": "Press again to exit"
+    "press_to_exit": "Press again to exit",
+    "permission_location": "You need to provide your location if wanted to use this function"
   },
   "save_post": {
     "create_post": "Create Post",

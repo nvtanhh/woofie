@@ -163,7 +163,8 @@
   },
   "system": {
     "comming_soon": "Tính năng này sẽ sớm ra mắt",
-    "press_to_exit": "Nhấn lần nữa để thoát"
+    "press_to_exit": "Nhấn lần nữa để thoát",
+    "permission_location": "Bạn cần cung cấp vị trí của mình nếu muốn sử dụng chức năng này"
   },
   "save_post": {
     "create_post": "Tạo bài viết",
@@ -177,7 +178,7 @@
     "choose_type_activity_type": "Hoạt động",
     "choose_type_adoption_type": "Tìm chủ mới",
     "choose_type_mating_type": "Tìm bạn tình",
-    "choose_type_loss_type": "Thật lạc",
+    "choose_type_loss_type": "Thất lạc",
     "choose_type_error_title": "Oops!... 🤭",
     "choose_type_error_suf_description": "Hiện tại bạn chưa có thú cưng nào, hãy sở hữu 1 bé trước nhé!",
     "choose_type_error_description": "Bạn phải gắn thẻ thú cưng",
@@ -194,7 +195,7 @@
     "success_tile": "Chúc mừng 🎉",
     "success_description": "Tạo bài viết thành công",
     "update_failed_toast": "Chỉnh sửa bài viết thất bại vui long thử lại sau",
-    "update_success_toast": "Đẵ chỉnh sửa bài viết"
+    "update_success_toast": "Đã chỉnh sửa bài viết"
   },
   "chat": {
     "dashboard_tile": "Nhắn tin",
