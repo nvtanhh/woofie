@@ -47,9 +47,9 @@ class ImagesViewWidget extends StatelessWidget {
                           minScale: 0.9,
                           animationMinScale: 0.7,
                           maxScale: 3.0,
-                          animationMaxScale: 3.5,
                         );
                       },
+                      isConstraintsSize: false,
                       mode: ExtendedImageMode.gesture,
                     );
                   } else if (medias[index].type == MediaType.video) {

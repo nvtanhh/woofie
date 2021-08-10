@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/ui/avatar/pet_avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/icon.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/edit_pet_profile/edit_pet_profile.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/other_info_menu_widget.dart';
@@ -38,10 +40,16 @@ class PetInfoWidget extends StatelessWidget {
           height: 5.h,
         ),
         Obx(
-          () => PetAvatar(
-            avatarUrl: pet.updateSubjectValue.avatarUrl,
-            customSize: 80.w,
-            borderRadius: 15.r,
+          () => GestureDetector(
+            onTap: () => injector<DialogService>().showZoomablePhotoBoxView(
+              imageUrl: pet.updateSubjectValue.avatarUrl ?? "",
+              context: context,
+            ),
+            child: PetAvatar(
+              avatarUrl: pet.updateSubjectValue.avatarUrl,
+              customSize: 80.w,
+              borderRadius: 15.r,
+            ),
           ),
         ),
         SizedBox(

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart ';
+import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/icon.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/edit_user_profile/edit_user_profile.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/pets_widget.dart';
@@ -60,6 +62,10 @@ class InfoUserWidget extends StatelessWidget {
                   avatarUrl: user.updateSubjectValue.avatarUrl,
                   customSize: 80.w,
                   borderRadius: 15.r,
+                  onPressed: () => injector<DialogService>().showZoomablePhotoBoxView(
+                    imageUrl: user.updateSubjectValue.avatarUrl ?? "",
+                    context: context,
+                  ),
                 ),
               ),
               SizedBox(
