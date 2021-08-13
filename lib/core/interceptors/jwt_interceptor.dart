@@ -58,7 +58,7 @@ class MyHttpOverrides extends HttpOverrides {
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
       ..badCertificateCallback = ((X509Certificate cert, String host, int port) {
-        final isValidHost = ["203.113.148.132"].contains(host); // <-- allow only hosts in array
+        final isValidHost = ["103.195.238.188"].contains(host); // <-- allow only hosts in array
         return isValidHost;
       });
   }
