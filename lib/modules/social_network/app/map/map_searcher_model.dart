@@ -4,6 +4,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -11,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
@@ -46,9 +48,10 @@ class MapSearcherModel extends BaseViewModel {
     '10 kilometers',
   ];
 
-  final int _radiusByKm = 20;
-  late Set<Circle> circles = HashSet<Circle>();
-  late Set<Marker> markers = HashSet<Marker>();
+  final int _radiusByKm = 1;
+
+  RxSet<Circle> circles = <Circle>{}.obs;
+  RxSet<Marker> markers = <Marker>{}.obs;
   late String currentRadius;
   static const double DEFAULTZOOMLEVEL = 12.0;
   LatLng initialPosition = const LatLng(10.8546928, 106.7181451);
@@ -92,12 +95,12 @@ class MapSearcherModel extends BaseViewModel {
         center: initialPosition,
         strokeWidth: 1,
         strokeColor: UIColor.primary.withOpacity(.4),
-        fillColor: UIColor.primary.withOpacity(.1),
+        fillColor: UIColor.primary.withOpacity(.05),
         onTap: () {
           debugPrint('circle pressed');
         },
       )
-    };
+    }.obs;
   }
 
   void _initPostService() {
@@ -125,6 +128,9 @@ class MapSearcherModel extends BaseViewModel {
       }
     } catch (error) {
       postService.pagingController.error = error;
+    } finally {
+      final List<Post> posts = postService.pagingController.itemList ?? [];
+      unawaited(_drawMarker(posts));
     }
   }
 
@@ -166,7 +172,7 @@ class MapSearcherModel extends BaseViewModel {
   }
 
   Future<void> _drawMarker(List<Post> posts) async {
-    markers.clear();
+    // markers.clear();
     for (final Post post in posts) {
       final icon =
           await _getCustomIcon(post.medias![0].url!, post.taggegPets![0].name!);
@@ -198,39 +204,22 @@ class MapSearcherModel extends BaseViewModel {
 
     final Radius radius = Radius.circular(size.width / 2);
 
-    final Paint tagPaint = Paint()..color = Colors.blue;
-    final double tagWidth = 40.0;
-
-    final Paint shadowPaint = Paint()..color = Colors.blue.withAlpha(50);
-    final double shadowWidth = 15.0;
-
-    final Paint borderPaint = Paint()..color = Colors.white;
-    final double borderWidth = 3.0;
-
-    final double imageOffset = shadowWidth + borderWidth;
+    final Paint shadowPaint = Paint()..color = UIColor.primary.withAlpha(80);
+    const double shadowWidth = 15.0;
+    const double borderWidth = 3.0;
+    const double imageOffset = shadowWidth + borderWidth;
 
     // Add shadow circle
     canvas.drawRRect(
-        RRect.fromRectAndCorners(
-          Rect.fromLTWH(0.0, 0.0, size.width, size.height),
-          topLeft: radius,
-          topRight: radius,
-          bottomLeft: radius,
-          bottomRight: radius,
-        ),
-        shadowPaint);
-
-    // // Add tag text
-    // TextPainter textPainter = TextPainter(textDirection: TextDirection.ltr);
-    // textPainter.text = TextSpan(
-    //   text: '1',
-    //   style: TextStyle(fontSize: 20.0, color: Colors.white),
-    // );
-    // textPainter.layout();
-    // textPainter.paint(
-    //     canvas,
-    //     Offset(size.width - tagWidth / 2 - textPainter.width / 2,
-    //         tagWidth / 2 - textPainter.height / 2));
+      RRect.fromRectAndCorners(
+        Rect.fromLTWH(0.0, 0.0, size.width, size.height),
+        topLeft: radius,
+        topRight: radius,
+        bottomLeft: radius,
+        bottomRight: radius,
+      ),
+      shadowPaint,
+    );
 
     // Oval for the image
     final Rect oval = Rect.fromLTWH(imageOffset, imageOffset,

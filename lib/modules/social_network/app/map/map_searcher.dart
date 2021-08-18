@@ -43,20 +43,22 @@ class _MapSearcherState extends BaseViewState<MapSearcher, MapSearcherModel> {
   }
 
   Widget _googleMap() {
-    return SizedBox(
-      height: 1.sh,
-      width: 1.sw,
-      child: GoogleMap(
-        onMapCreated: viewModel.onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: viewModel.initialPosition,
-          zoom: viewModel.getZoomLevel(),
+    return Obx(
+      () => SizedBox(
+        height: 1.sh,
+        width: 1.sw,
+        child: GoogleMap(
+          onMapCreated: viewModel.onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: viewModel.initialPosition,
+            zoom: viewModel.getZoomLevel(),
+          ),
+          markers: viewModel.markers.toSet(),
+          zoomControlsEnabled: false,
+          padding: const EdgeInsets.only(top: 100),
+          circles: viewModel.circles.toSet(),
+          myLocationEnabled: true,
         ),
-        markers: viewModel.markers,
-        zoomControlsEnabled: false,
-        padding: const EdgeInsets.only(top: 100),
-        circles: viewModel.circles,
-        myLocationEnabled: true,
       ),
     );
   }
