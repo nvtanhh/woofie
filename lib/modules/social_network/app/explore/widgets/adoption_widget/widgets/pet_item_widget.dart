@@ -50,16 +50,17 @@ class PetItemWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 50.h),
               child: ImageWithPlaceHolderWidget(
-                  imageUrl: post.medias?.isEmpty ?? true
-                      ? (pet.avatarUrl ?? '')
-                      : post.medias!.first.url!,
-                  fit: BoxFit.cover,
-                  topLeftRadius: 15.r,
-                  topRightRadius: 15.r,
-                  bottomLeftRadius: 0,
-                  bottomRightRadius: 0,
-                  placeHolderImage:
-                      "resources/images/fallbacks/pet-avatar-fallback.jpg"),
+                imageUrl: post.medias?.isEmpty ?? true
+                    ? (pet.avatarUrl ?? '')
+                    : post.medias!.first.url!,
+                fit: BoxFit.cover,
+                topLeftRadius: 15.r,
+                topRightRadius: 15.r,
+                bottomLeftRadius: 0,
+                bottomRightRadius: 0,
+                placeHolderImage:
+                    "resources/images/fallbacks/pet-avatar-fallback.jpg",
+              ),
             ),
             Positioned(
               bottom: 0,

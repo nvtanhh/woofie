@@ -512,4 +512,48 @@ class PostDatasource {
         GetMapFromHasura.getMap(data as Map)["update_posts_by_pk"] as Map;
     return Post.fromJson(postJson as Map<String, dynamic>);
   }
+
+  Future<List<Post>> getPostsByLocation(
+      double lat, double long, int radius) async {
+    final query = """
+    query MyQuery {
+      get_functional_posts_by_location(args: {long_user: $long, lat_user: $lat, kilomiters: $radius}) {
+        id
+        type
+        uuid
+        medias {
+          id
+          url
+          type
+        }
+        location {
+          id
+          lat
+          long
+        }
+        post_pets {
+          pet {
+            avatar_url
+            pet_breed {
+              name
+              id
+            }
+            id
+            dob
+            gender
+            name
+          }
+        }
+        is_closed
+      }
+    }
+    """;
+    final data = await _hasuraConnect.query(query);
+    final listPost =
+        GetMapFromHasura.getMap(data as Map)["get_functional_posts_by_location"]
+            as List;
+    return listPost
+        .map((e) => Post.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
 }

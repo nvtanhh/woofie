@@ -17,21 +17,24 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/explore/get_post_by_location.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class MapSearcherModel extends BaseViewModel {
-  final GetPostsUsecase _getPostsUsecase;
+  final GetPostByLocationUsecase _getPostByLocationUsecase;
 
   final LoggedInUser _loggedInUser;
   final PostService postService;
 
+  final ScrollController scrollController = ScrollController();
+
   MapSearcherModel(
     this._loggedInUser,
     this.postService,
-    this._getPostsUsecase,
+    this._getPostByLocationUsecase,
   );
 
   List<String> radiuses = [
@@ -43,7 +46,7 @@ class MapSearcherModel extends BaseViewModel {
     '10 kilometers',
   ];
 
-  final double _radius = 1000;
+  final int _radiusByKm = 20;
   late Set<Circle> circles = HashSet<Circle>();
   late Set<Marker> markers = HashSet<Marker>();
   late String currentRadius;
@@ -85,7 +88,7 @@ class MapSearcherModel extends BaseViewModel {
     circles = {
       Circle(
         circleId: const CircleId("myCircle"),
-        radius: _radius,
+        radius: _radiusByKm * 1000,
         center: initialPosition,
         strokeWidth: 1,
         strokeColor: UIColor.primary.withOpacity(.4),
@@ -108,7 +111,11 @@ class MapSearcherModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
-      final newItems = await _getPostsUsecase.call(offset: nextPageKey);
+      final newItems = await _getPostByLocationUsecase.call(
+        lat: initialPosition.latitude,
+        long: initialPosition.longitude,
+        radius: _radiusByKm,
+      );
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         postService.pagingController.appendLastPage(newItems);
@@ -136,8 +143,9 @@ class MapSearcherModel extends BaseViewModel {
       return DEFAULTZOOMLEVEL;
     }
     double zoomLevel = 11;
-    if (_radius > 0) {
-      final double radiusElevated = _radius + _radius / 2;
+    final double radiusByMetter = _radiusByKm * 1000;
+    if (radiusByMetter > 0) {
+      final double radiusElevated = radiusByMetter + radiusByMetter / 2;
       final double scale = radiusElevated / 650;
       zoomLevel = 16 - log(scale) / log(2);
     }
@@ -255,5 +263,9 @@ class MapSearcherModel extends BaseViewModel {
     } else {
       return null;
     }
+  }
+
+  void calculateDistance(Post post) {
+    postService.calculateDistance(post);
   }
 }
