@@ -46,13 +46,14 @@ class MapSearcherModel extends BaseViewModel {
     '4 kilometers',
     '5 kilometers',
     '10 kilometers',
+    '20 kilometers',
   ];
 
-  final int _radiusByKm = 1;
+  int _radiusByKm = 1;
 
   RxSet<Circle> circles = <Circle>{}.obs;
   RxSet<Marker> markers = <Marker>{}.obs;
-  late String currentRadius;
+  RxString currentRadius = ''.obs;
   static const double DEFAULTZOOMLEVEL = 12.0;
   LatLng initialPosition = const LatLng(10.8546928, 106.7181451);
   // Ho Chi Minh City is default Position
@@ -69,7 +70,7 @@ class MapSearcherModel extends BaseViewModel {
     super.initState();
     _initUserLocation();
     _initPostService();
-    currentRadius = radiuses[0];
+    currentRadius.value = radiuses[0];
   }
 
   Future _initUserLocation() async {
@@ -88,19 +89,18 @@ class MapSearcherModel extends BaseViewModel {
   }
 
   void _initCircle() {
-    circles = {
-      Circle(
-        circleId: const CircleId("myCircle"),
-        radius: _radiusByKm * 1000,
-        center: initialPosition,
-        strokeWidth: 1,
-        strokeColor: UIColor.primary.withOpacity(.4),
-        fillColor: UIColor.primary.withOpacity(.05),
-        onTap: () {
-          debugPrint('circle pressed');
-        },
-      )
-    }.obs;
+    circles.clear();
+    circles.add(Circle(
+      circleId: const CircleId("myCircle"),
+      radius: _radiusByKm * 1000,
+      center: initialPosition,
+      strokeWidth: 1,
+      strokeColor: UIColor.primary.withOpacity(.4),
+      fillColor: UIColor.primary.withOpacity(.05),
+      onTap: () {
+        debugPrint('circle pressed');
+      },
+    ));
   }
 
   void _initPostService() {
@@ -256,5 +256,18 @@ class MapSearcherModel extends BaseViewModel {
 
   void calculateDistance(Post post) {
     postService.calculateDistance(post);
+  }
+
+  void onChangedChoosenRadius(String? value) {
+    if (value == null) return;
+    currentRadius.value = value;
+    _radiusByKm = int.parse(
+      currentRadius.substring(
+        0,
+        currentRadius.indexOf(' '),
+      ),
+    );
+    _initCircle();
+    postService.pagingController.refresh();
   }
 }
