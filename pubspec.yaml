@@ -178,6 +178,9 @@ dependencies:
   # A Flutter plugin that provides a Google Maps widget.
   google_maps_flutter: ^2.0.6
 
+  # A CacheManager to download and cache files in the cache directory of the app. Various settings on how long to keep a file can be changed.
+  flutter_cache_manager: ^3.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -212,3 +215,4 @@ flutter:
     - resources/images/explore/
     - resources/images/profile/
     - resources/sounds/
+    - resources/map_style.txt

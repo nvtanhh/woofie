@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/map/map_searcher_model.dart';
 import 'package:suga_core/suga_core.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MapSearcher extends StatefulWidget {
   const MapSearcher({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _MapSearcherState extends BaseViewState<MapSearcher, MapSearcherModel> {
             () => Expanded(
               child: Stack(
                 children: <Widget>[
-                  _googleMap(context),
+                  _googleMap(),
                   _buildSearchBar(),
                   if (viewModel.isLoaded) _buildPostsWrapper(),
                 ],
@@ -38,26 +39,22 @@ class _MapSearcherState extends BaseViewState<MapSearcher, MapSearcherModel> {
     );
   }
 
-  Widget _googleMap(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
+  Widget _googleMap() {
+    return SizedBox(
+      height: 1.sh,
+      width: 1.sw,
       child: GoogleMap(
+        
         onMapCreated: viewModel.onMapCreated,
         initialCameraPosition: CameraPosition(
           target: viewModel.initialPosition,
           zoom: viewModel.getZoomLevel(),
         ),
-        markers: _allMarkers,
-        myLocationEnabled: true,
-        myLocationButtonEnabled: true,
-        compassEnabled: true,
+        markers: viewModel.markers,
         zoomControlsEnabled: false,
-        padding: EdgeInsets.only(top: 100),
-        circles: _circles,
-        scrollGesturesEnabled: true,
-        rotateGesturesEnabled: true,
-        tiltGesturesEnabled: true,
+        padding: const EdgeInsets.only(top: 100),
+        circles: viewModel.circles,
+        myLocationEnabled: true,
       ),
     );
   }
@@ -67,9 +64,6 @@ class _MapSearcherState extends BaseViewState<MapSearcher, MapSearcherModel> {
   }
 
   Widget _buildPostsWrapper() {
-    return SizedBox();
+    return const SizedBox();
   }
-
-
-  
 }
