@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -90,9 +93,29 @@ void setupOneSignal() {
   OneSignal.shared.setAppId(AppConfig.APP_ID_ONESIGNAL);
   OneSignal.shared.setNotificationWillShowInForegroundHandler(
     (OSNotificationReceivedEvent notification) {
-      // Will be called whenever a notification is received in foreground
-      // Display Notification, pass null param for not displaying the notification
-      notification.complete(notification.notification);
+      // injector<FlutterLocalNotificationsPlugin>().show(
+      //   Random(0).nextInt(100),
+      //   notification.notification.title,
+      //   notification.notification.body,
+      //   const NotificationDetails(
+      //     android: AndroidNotificationDetails(
+      //       '123',
+      //       'Woofie',
+      //       'Thông báo',
+      //       enableLights: true,
+      //       visibility: NotificationVisibility.public,
+      //       importance: Importance.high,
+      //       priority: Priority.max,
+      //       icon: 'ic_stat_onesignal_default',
+      //       largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
+      //       color: UIColor.primary,
+      //       ledColor: Colors.white,
+      //       ledOnMs: 1000,
+      //       ledOffMs: 500,
+      //     ),
+      //   ),
+      // );
+      // notification.complete(notification.notification);
     },
   );
   OneSignal.shared.setNotificationOpenedHandler((openedResult) {

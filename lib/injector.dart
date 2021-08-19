@@ -2,6 +2,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasura_connect/hasura_connect.dart';
@@ -49,5 +50,17 @@ abstract class RegisterModule {
   @lazySingleton
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {
     return HasuraConnect(BackendConfig.BASE_HASURA_URL, interceptors: [interceptor]);
+  }
+
+  @lazySingleton
+  FlutterLocalNotificationsPlugin getFlutterLocalNotificationsPlugin() {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@drawable/ic_stat_onesignal_default');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid,);
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+    return flutterLocalNotificationsPlugin;
   }
 }

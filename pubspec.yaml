@@ -180,6 +180,8 @@ dependencies:
 
   # A CacheManager to download and cache files in the cache directory of the app. Various settings on how long to keep a file can be changed.
   flutter_cache_manager: ^3.1.2
+  #A cross platform plugin for displaying local notifications.
+  flutter_local_notifications: ^8.1.1+1
 
 dev_dependencies:
   flutter_test:
