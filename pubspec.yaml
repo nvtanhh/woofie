@@ -169,11 +169,17 @@ dependencies:
   #  #On most operating systems, permissions aren't just granted to apps at install time.
   #  permission_handler: 8.1.2
 
-  #A Flutter plugin to play multiple simultaneously audio files, works for Android, iOS, macOS and web.
+  # A Flutter plugin to play multiple simultaneously audio files, works for Android, iOS, macOS and web.
   audioplayers: ^0.19.1
 
-  #A Flutter plugin connect socket_io server
+  # A Flutter plugin connect socket_io server
   socket_io_client: ^1.0.1
+
+  # A Flutter plugin that provides a Google Maps widget.
+  google_maps_flutter: ^2.0.6
+
+  # A CacheManager to download and cache files in the cache directory of the app. Various settings on how long to keep a file can be changed.
+  flutter_cache_manager: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -209,3 +215,4 @@ flutter:
     - resources/images/explore/
     - resources/images/profile/
     - resources/sounds/
+    - resources/map_style.txt

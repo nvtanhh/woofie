@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/services/navigation_service.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_widget/adoption_widget.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/search_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -18,7 +20,9 @@ class ExploreWidgetModel extends BaseViewModel {
     );
   }
 
-  void onLocationClick() {}
+  void onLocationClick() {
+    injector<NavigationService>().navigateToMapSearcher();
+  }
 
   void onAdoptionClick() {
     Get.to(() => const AdoptionWidget(postType: PostType.adop));

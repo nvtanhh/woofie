@@ -15,7 +15,6 @@ import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
-import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/confirm_dialog.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/save_post/new_post_uploader.dart';

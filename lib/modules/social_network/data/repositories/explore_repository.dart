@@ -47,7 +47,8 @@ class ExploreRepository {
         Service(
           id: 0,
           name: "Animal Emergency",
-          logo: "https://animalemergencyhospital.net/wp-content/uploads/2021/04/animal-emergency-hospital.png",
+          logo:
+              "https://animalemergencyhospital.net/wp-content/uploads/2021/04/animal-emergency-hospital.png",
         ),
         Service(
           id: 1,
@@ -57,7 +58,8 @@ class ExploreRepository {
         Service(
           id: 2,
           name: "Bệnh Viện Thú Y Petcare",
-          logo: "https://petcare.vn/wp-content/uploads/2016/06/petcarevn_logo.png",
+          logo:
+              "https://petcare.vn/wp-content/uploads/2016/06/petcarevn_logo.png",
         ),
       ];
     }
@@ -76,6 +78,10 @@ class ExploreRepository {
   }
 
   Future<bool> changePetOwner(User user, Pet pet) {
-   return _petDatasource.changePetOwner(user, pet);
+    return _petDatasource.changePetOwner(user, pet);
+  }
+
+  Future<List<Post>> getPostsByLocation(double lat, double long, int radius) {
+    return _postDatasource.getPostsByLocation(lat, long, radius);
   }
 }
