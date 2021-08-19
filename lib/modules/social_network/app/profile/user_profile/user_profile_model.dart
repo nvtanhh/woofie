@@ -31,7 +31,7 @@ class UserProfileModel extends BaseViewModel {
   final int pageSize = 10;
   int nextPageKey = 0;
   bool isMe = false;
-  User? user;
+  final Rxn<User> _user = Rxn<User>();
   StreamSubscription? _petDeletedStreamSubscription;
   final GetUseProfileUseacse _getUseProfileUseacse;
   final GetPostOfUserUsecase _getPostOfUserUsecase;
@@ -63,6 +63,11 @@ class UserProfileModel extends BaseViewModel {
     this._requestContactUsecase,
     this._updateContentRequestMessagesUsecase,
   );
+
+  User? get user => _user.value;
+  set user(User? user) {
+    _user.value = user;
+  }
 
   @override
   void initState() {
