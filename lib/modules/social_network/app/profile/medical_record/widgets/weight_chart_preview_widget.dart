@@ -125,7 +125,7 @@ class WeightChartPreviewWidget extends StatelessWidget {
                       ),
                     ),
                     lineBarsData: lineBarsData,
-                    minY: 1,
+                    minY: 0,
                     titlesData: FlTitlesData(
                       leftTitles: SideTitles(
                         showTitles: false,
