@@ -81,9 +81,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
             ],
           ),
         ),
-        endDrawer: Drawer(
-          child: Setting(),
-        ),
+        endDrawer: Setting(),
       ),
     );
   }

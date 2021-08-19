@@ -47,13 +47,16 @@ class InfoUserWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ButtonWidget(
-                    onPress: () => Scaffold.of(context).openEndDrawer(),
-                    backgroundColor: UIColor.white,
-                    width: 40.w,
-                    height: 40.h,
-                    borderRadius: 10.r,
-                    contentWidget: const MWIcon(MWIcons.moreHoriz),
+                  Transform.translate(
+                    offset: const Offset(2, 0),
+                    child: GestureDetector(
+                      onTap: () => Scaffold.of(context).openEndDrawer(),
+                      child: MWIcon(
+                        MWIcons.drawer,
+                        customSize: 28.h,
+                        color: UIColor.textHeader,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -62,7 +65,8 @@ class InfoUserWidget extends StatelessWidget {
                   avatarUrl: user.updateSubjectValue.avatarUrl,
                   customSize: 80.w,
                   borderRadius: 15.r,
-                  onPressed: () => injector<DialogService>().showZoomablePhotoBoxView(
+                  onPressed: () =>
+                      injector<DialogService>().showZoomablePhotoBoxView(
                     imageUrl: user.updateSubjectValue.avatarUrl ?? "",
                     context: context,
                   ),
@@ -93,9 +97,12 @@ class InfoUserWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ButtonWidget(
-                      onPress: () => isMe ? goToEditUserProfile() : onWantsToContact(user),
+                      onPress: () =>
+                          isMe ? goToEditUserProfile() : onWantsToContact(user),
                       height: 40.h,
-                      title: isMe ? LocaleKeys.profile_edit_profile.trans() : LocaleKeys.profile_contact.trans(),
+                      title: isMe
+                          ? LocaleKeys.profile_edit_profile.trans()
+                          : LocaleKeys.profile_contact.trans(),
                       borderRadius: 10.r,
                     ),
                   ),
