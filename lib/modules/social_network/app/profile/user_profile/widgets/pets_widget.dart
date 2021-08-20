@@ -71,58 +71,17 @@ class PetsWidget extends StatelessWidget {
         SizedBox(
           height: 5.h,
         ),
-        SizedBox(
-          height: 190.h,
-          child: user.currentPets?.isEmpty ?? true
-              ? isMyPets
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 160.w,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: UIColor.dimGray,
-                                blurRadius: 5,
-                                offset: Offset(2, 0),
-                                spreadRadius: 2,
-                              ),
-                            ],
-                            color: UIColor.white,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(LocaleKeys.add_pet_do_not_have_pet.trans()),
-                              IconButton(
-                                onPressed: () => onPressAddPet(),
-                                icon: const Icon(
-                                  Icons.add_box_outlined,
-                                  color: UIColor.textBody,
-                                ),
-                              ),
-                              Text(
-                                LocaleKeys.profile_add_pet.trans(),
-                                style: UITextStyle.text_body_12_w600,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  : Center(
-                      child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
-              : Obx(
-                  () => ListView.builder(
-                    padding: EdgeInsets.only(left: 15.w, top: 5.h, bottom: 5.h),
-                    itemBuilder: (context, index) {
-                      if (isMyPets && index == _list.length) {
-                        return InkWell(
-                          onTap: () => onPressAddPet(),
-                          child: Container(
-                            width: 120.w,
+        GestureDetector(
+          onTap: onPressAddPet,
+          child: SizedBox(
+            height: 190.h,
+            child: user.currentPets?.isEmpty ?? true
+                ? isMyPets
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 160.w,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
                               boxShadow: const [
@@ -138,9 +97,14 @@ class PetsWidget extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const MWIcon(
-                                  MWIcons.addOutlined,
-                                  color: UIColor.textBody,
+                                Text(
+                                    LocaleKeys.add_pet_do_not_have_pet.trans()),
+                                IconButton(
+                                  onPressed: () => onPressAddPet(),
+                                  icon: const Icon(
+                                    Icons.add_box_outlined,
+                                    color: UIColor.textBody,
+                                  ),
                                 ),
                                 Text(
                                   LocaleKeys.profile_add_pet.trans(),
@@ -149,19 +113,60 @@ class PetsWidget extends StatelessWidget {
                               ],
                             ),
                           ),
+                        ],
+                      )
+                    : Center(
+                        child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
+                : Obx(
+                    () => ListView.builder(
+                      padding:
+                          EdgeInsets.only(left: 15.w, top: 5.h, bottom: 5.h),
+                      itemBuilder: (context, index) {
+                        if (isMyPets && index == _list.length) {
+                          return InkWell(
+                            onTap: () => onPressAddPet(),
+                            child: Container(
+                              width: 120.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: UIColor.dimGray,
+                                    blurRadius: 5,
+                                    offset: Offset(2, 0),
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                                color: UIColor.white,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const MWIcon(
+                                    MWIcons.addOutlined,
+                                    color: UIColor.textBody,
+                                  ),
+                                  Text(
+                                    LocaleKeys.profile_add_pet.trans(),
+                                    style: UITextStyle.text_body_12_w600,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                        return PreviewFollowPet(
+                          pet: _list[index].updateSubjectValue,
+                          onFollow: onFollow,
+                          margin: EdgeInsets.only(right: 12.w),
+                          isMyPet: isMyPets,
                         );
-                      }
-                      return PreviewFollowPet(
-                        pet: _list[index].updateSubjectValue,
-                        onFollow: onFollow,
-                        margin: EdgeInsets.only(right: 12.w),
-                        isMyPet: isMyPets,
-                      );
-                    },
-                    itemCount: isMyPets ? _list.length + 1 : _list.length,
-                    scrollDirection: Axis.horizontal,
+                      },
+                      itemCount: isMyPets ? _list.length + 1 : _list.length,
+                      scrollDirection: Axis.horizontal,
+                    ),
                   ),
-                ),
+          ),
         ),
       ],
     );

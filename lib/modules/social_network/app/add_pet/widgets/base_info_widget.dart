@@ -43,205 +43,229 @@ class BaseInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 40.h,
-          ),
-          Text(
-            LocaleKeys.add_pet_base_info.trans(),
-            style: UITextStyle.text_body_18_w500,
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          SizedBox(
-            height: 250.h,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 115,
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: () => onUpdateAvatarClick(),
-                        child: Obx(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 30.h),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              LocaleKeys.add_pet_base_info.trans(),
+              style: UITextStyle.text_body_18_w500,
+            ),
+            SizedBox(
+              height: 30.h,
+            ),
+            SizedBox(
+              height: 250.h,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 115,
+                    child: Column(
+                      children: [
+                        Obx(
                           () => Container(
                             decoration: BoxDecoration(
                               color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(10.r),
                               image: DecorationImage(
                                 image: image(_imageFile.value),
-                                fit: BoxFit.contain,
+                                fit: _imageFile.value == null
+                                    ? BoxFit.contain
+                                    : BoxFit.cover,
                               ),
                             ),
                             width: 100.w,
                             height: 135.h,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Text(
-                        LocaleKeys.add_pet_avatar.trans(),
-                        style: UITextStyle.primary_12_w500,
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          LocaleKeys.add_pet_name.trans(),
-                          style: UITextStyle.text_body_14_w600,
-                        ),
                         SizedBox(
-                          height: 5.h,
+                          height: 10.h,
                         ),
-                        SizedBox(
-                          height: 40.h,
-                          child: TextField(
-                            controller: _nameEditingController,
-                            decoration: InputDecoration(
-                                border: outlineInputBorder(),
-                                enabledBorder: outlineInputBorder(),
-                                focusedBorder: outlineInputBorder(),
-                                contentPadding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w)),
-                            onChanged: onNameChange,
+                        GestureDetector(
+                          onTap: () => onUpdateAvatarClick(),
+                          child: Text(
+                            LocaleKeys.add_pet_avatar.trans(),
+                            style: UITextStyle.primary_14_w500,
                           ),
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Text(
-                          LocaleKeys.add_pet_age.trans(),
-                          style: UITextStyle.text_body_14_w600,
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Container(
-                          height: 40.h,
-                          padding: EdgeInsets.only(left: 5.w),
-                          decoration: BoxDecoration(border: Border.all(color: UIColor.silverSand), borderRadius: BorderRadius.circular(5.r)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Obx(
-                                () => Text(
-                                  _ageData.value.isEmpty ? "dd/mm/yyyy" : _ageData.value,
-                                  style: _ageData.value.isEmpty ? UITextStyle.second_12_medium : UITextStyle.text_body_12_w600,
-                                ),
-                              ),
-                              IconButton(
-                                icon: MWIcon(
-                                  MWIcons.calendar,
-                                  customSize: 20.w,
-                                  color: UIColor.primary,
-                                ),
-                                onPressed: () => onCalendarPress(),
-                                constraints: const BoxConstraints(),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Text(
-                          LocaleKeys.add_pet_gender.trans(),
-                          style: UITextStyle.text_body_14_w600,
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Obx(
-                              () => TextButton(
-                                onPressed: () => genderChange(Gender.male),
-                                style: TextButton.styleFrom(
-                                  backgroundColor: _genderSelected.value == Gender.male ? UIColor.accent2 : UIColor.textSecondary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.r),
-                                  ),
-                                ),
-                                child: SizedBox(
-                                  height: 34.h,
-                                  width: 80.w,
-                                  child: Center(
-                                    child: Text(
-                                      "Duc",
-                                      style: _genderSelected.value == Gender.male ? UITextStyle.white_12_w500 : UITextStyle.text_body_12_w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Obx(
-                              () => TextButton(
-                                onPressed: () => genderChange(Gender.female),
-                                style: TextButton.styleFrom(
-                                  backgroundColor: _genderSelected.value == Gender.female ? UIColor.accent2 : UIColor.textSecondary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.r),
-                                  ),
-                                ),
-                                child: SizedBox(
-                                  height: 34.h,
-                                  width: 80.w,
-                                  child: Center(
-                                    child: Text(
-                                      "Cai",
-                                      style: _genderSelected.value == Gender.female ? UITextStyle.white_12_w500 : UITextStyle.text_body_12_w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                        )
                       ],
                     ),
                   ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            LocaleKeys.add_pet_name.trans(),
+                            style: UITextStyle.text_body_14_w600,
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          SizedBox(
+                            height: 40.h,
+                            child: TextField(
+                              controller: _nameEditingController,
+                              decoration: InputDecoration(
+                                border: outlineInputBorder(),
+                                enabledBorder: outlineInputBorder(),
+                                focusedBorder: outlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 5.h,
+                                  horizontal: 10.w,
+                                ),
+                              ),
+                              onChanged: onNameChange,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
+                          Text(
+                            LocaleKeys.add_pet_age.trans(),
+                            style: UITextStyle.text_body_14_w600,
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Container(
+                            height: 40.h,
+                            padding: EdgeInsets.only(left: 10.w),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: UIColor.silverSand),
+                                borderRadius: BorderRadius.circular(5.r)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Obx(
+                                  () => Text(
+                                    _ageData.value.isEmpty
+                                        ? "dd/mm/yyyy"
+                                        : _ageData.value,
+                                    style: _ageData.value.isEmpty
+                                        ? UITextStyle.second_12_medium
+                                        : UITextStyle.text_body_12_w600,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: MWIcon(
+                                    MWIcons.calendar,
+                                    customSize: 20.w,
+                                    color: UIColor.primary,
+                                  ),
+                                  onPressed: () => onCalendarPress(),
+                                  constraints: const BoxConstraints(),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
+                          Text(
+                            LocaleKeys.add_pet_gender.trans(),
+                            style: UITextStyle.text_body_14_w600,
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Obx(
+                                () => TextButton(
+                                  onPressed: () => genderChange(Gender.male),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        _genderSelected.value == Gender.male
+                                            ? UIColor.primary
+                                            : UIColor.holder,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.r),
+                                    ),
+                                  ),
+                                  child: SizedBox(
+                                    height: 34.h,
+                                    width: 80.w,
+                                    child: Center(
+                                      child: Text(
+                                        "Duc",
+                                        style:
+                                            _genderSelected.value == Gender.male
+                                                ? UITextStyle.white_14_w600
+                                                : UITextStyle.text_body_14_w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Obx(
+                                () => TextButton(
+                                  onPressed: () => genderChange(Gender.female),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        _genderSelected.value == Gender.female
+                                            ? UIColor.primary
+                                            : UIColor.holder,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.r),
+                                    ),
+                                  ),
+                                  child: SizedBox(
+                                    height: 34.h,
+                                    width: 80.w,
+                                    child: Center(
+                                      child: Text(
+                                        "Cai",
+                                        style: _genderSelected.value ==
+                                                Gender.female
+                                            ? UITextStyle.white_14_w600
+                                            : UITextStyle.text_body_14_w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  LocaleKeys.add_pet_pet_description.trans(),
+                  style: UITextStyle.text_body_14_w600,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                TextField(
+                  controller: _bioEditingController,
+                  decoration: InputDecoration(
+                    border: outlineInputBorder(),
+                    enabledBorder: outlineInputBorder(),
+                    focusedBorder: outlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 5.h,
+                      horizontal: 10.w,
+                    ),
+                    hintText: "Cute thân thiện",
+                    hintStyle: UITextStyle.second_14_medium,
+                  ),
+                  onChanged: onBioChange,
                 )
               ],
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                LocaleKeys.add_pet_pet_description.trans(),
-                style: UITextStyle.text_body_14_w600,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              TextField(
-                controller: _bioEditingController,
-                decoration: InputDecoration(
-                  border: outlineInputBorder(),
-                  enabledBorder: outlineInputBorder(),
-                  focusedBorder: outlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 5.h,
-                    horizontal: 5.w,
-                  ),
-                  hintText: "Cute thân thiện",
-                  hintStyle: UITextStyle.second_14_medium,
-                ),
-                onChanged: onBioChange,
-              )
-            ],
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -270,12 +294,12 @@ class BaseInfoWidget extends StatelessWidget {
 
   Future onUpdateAvatarClick() async {
     List<File>? files;
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
-    } else {
-      injector<ToastService>().warning(message: "Cancel", context: Get.context!);
     }
+
     if (files != null) {
       _imageFile.value = files[0];
       _imageFile.refresh();
@@ -295,7 +319,8 @@ class BaseInfoWidget extends StatelessWidget {
     if (datePick == null) {
       return;
     } else {
-      _ageData.value = "${FormatHelper.formatDateTime(datePick, pattern: "dd/MM/yyyy")} (${DateTimeHelper.calcAge(datePick)})";
+      _ageData.value =
+          "${FormatHelper.formatDateTime(datePick, pattern: "dd/MM/yyyy")} (${DateTimeHelper.calcAge(datePick)})";
       onAgeChange(datePick);
     }
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget_model.dart';
@@ -15,13 +16,13 @@ import 'package:suga_core/suga_core.dart';
 
 class AddPetWidget extends StatefulWidget {
   final bool? isAddMore;
-
   const AddPetWidget({Key? key, this.isAddMore}) : super(key: key);
   @override
   _AddPetWidgetState createState() => _AddPetWidgetState();
 }
 
-class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> {
+class _AddPetWidgetState
+    extends BaseViewState<AddPetWidget, AddPetWidgetModel> {
   @override
   void loadArguments() {
     viewModel.isAddMore = widget.isAddMore;
@@ -34,6 +35,10 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: viewModel.onPressBack,
+            icon: const MWIcon(MWIcons.back),
+          ),
           title: Text(
             LocaleKeys.add_pet_add_pet.trans(),
             style: UITextStyle.text_header_24_w600,
@@ -127,28 +132,36 @@ class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> 
                     ],
                   );
                 case 3:
-                  return TextButton(
-                    onPressed: () => viewModel.onDone(),
-                    style: TextButton.styleFrom(
-                      backgroundColor: UIColor.primary,
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 67.h,
-                          child: Center(
-                            child: Text(
-                              LocaleKeys.add_pet_done.trans(),
-                              style: UITextStyle.white_18_w500,
-                            ),
+                    child: TextButton(
+                      onPressed: () => viewModel.onDone(),
+                      style: TextButton.styleFrom(
+                        backgroundColor: UIColor.primary,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25.r),
+                            topRight: Radius.circular(25.r),
                           ),
                         ),
-                      ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 67.h,
+                            child: Center(
+                              child: Text(
+                                LocaleKeys.add_pet_done.trans(),
+                                style: UITextStyle.white_18_w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 default:

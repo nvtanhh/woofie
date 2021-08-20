@@ -259,6 +259,10 @@ class UITextStyle {
     textStyle: TextStyle(
         color: UIColor.primary, fontSize: 12.0.sp, fontWeight: FontWeight.w500),
   );
+  static TextStyle primary_14_w500 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.primary, fontSize: 14.0.sp, fontWeight: FontWeight.w500),
+  );
   static TextStyle primary_10_w600 = GoogleFonts.montserrat(
     textStyle: TextStyle(
         color: UIColor.primary, fontSize: 10.0.sp, fontWeight: FontWeight.w600),

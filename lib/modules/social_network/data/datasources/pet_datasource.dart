@@ -24,12 +24,13 @@ class PetDatasource {
   Future<List<PetType>> getPetTypes() async {
     const queryGetPetTypes = """
     query get_pet_type {
-      pet_types {
-      id
-      name
-      descriptions
-      avatar
-      }}
+      pet_types(order_by: {order: asc}) {
+        id
+        name
+        descriptions
+        avatar
+      }
+    }
     """;
     final data = await _hasuraConnect.query(queryGetPetTypes);
     final listPetType =
