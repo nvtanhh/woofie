@@ -49,9 +49,10 @@ class _PetProfileState extends BaseViewState<PetProfile, PetProfileModel>
               icon: const MWIcon(MWIcons.back),
             ),
           ),
-          body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+          body: RefreshIndicator(
+            onRefresh: viewModel.onRefresh,
             child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -100,7 +101,9 @@ class _PetProfileState extends BaseViewState<PetProfile, PetProfileModel>
                               viewModel.onAddWormFlushedClick,
                         ),
                         PostsOfPetWidget(
-                            idPet: viewModel.pet.updateSubjectValue.id),
+                          idPet: viewModel.pet.updateSubjectValue.id,
+                          controller: viewModel.postsOfPetWidgetController,
+                        ),
                       ],
                     ),
                   )

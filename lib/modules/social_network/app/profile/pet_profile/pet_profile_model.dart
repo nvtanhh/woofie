@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccinated/vaccinated_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed.dart';
+import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/posts_of_pet_widget.dart';
 import 'package:meowoof/modules/social_network/domain/events/pet/pet_deleted_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_pet_usecase.dart';
@@ -24,6 +25,8 @@ class PetProfileModel extends BaseViewModel {
   final FollowPetUsecase _followPetUsecase;
   final DeletePetUsecase _deletePetUsecase;
   final EventBus _eventBus;
+  final PostsOfPetWidgetController postsOfPetWidgetController =
+      PostsOfPetWidgetController();
 
   PetProfileModel(
     this._getDetailInfoPetUsecase,
@@ -35,12 +38,11 @@ class PetProfileModel extends BaseViewModel {
   @override
   void initState() {
     super.initState();
-    _loadPetDetailInfo();
+    _refreshPet();
   }
 
-  Future _loadPetDetailInfo() async {
+  Future _refreshPet() async {
     pet.update(await _getDetailInfoPetUsecase.call(pet.id));
-    printInfo(info: 'break');
   }
 
   void onPetBlock(Pet pet) {}
@@ -154,5 +156,12 @@ class PetProfileModel extends BaseViewModel {
   void disposeState() {
     tabController.dispose();
     super.disposeState();
+  }
+
+  Future<void> onRefresh() async {
+    await _refreshPet();
+    if (tabController.index == 1) {
+      postsOfPetWidgetController.refreshPost();
+    }
   }
 }
