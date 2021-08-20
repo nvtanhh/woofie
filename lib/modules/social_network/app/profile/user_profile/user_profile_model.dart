@@ -49,6 +49,7 @@ class UserProfileModel extends BaseViewModel {
   final LoggedInUser _loggedInUser;
   CancelableOperation? _cancelableOperationLoadInit,
       _cancelableOperationLoadMorePost;
+  
 
   UserProfileModel(
     this._getUseProfileUseacse,
