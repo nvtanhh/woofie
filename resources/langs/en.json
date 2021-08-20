@@ -38,7 +38,7 @@
   },
   "add_pet": {
     "add_pet": "Add pet",
-    "do_not_have_pet": "I don't have pet",
+    "do_not_have_pet": "You don't have pet yet",
     "unknown": "Unknown",
     "continue": "Continue",
     "done": "Done",
@@ -50,12 +50,12 @@
     "pet_female": "Female",
     "age": "Age",
     "gender": "Gender",
-    "age_invalid": "Name invalid!",
-    "name_invalid": "Age invalid!",
+    "age_invalid": "Invalid name! ",
+    "name_invalid": "Invalid age!",
     "pet_description": "Pet description"
   },
   "new_feed": {
-    "with": "with",
+    "with": "is with",
     "comment": "Comment",
     "post": "Post",
     "write_a_comment": "Write a comment",
@@ -148,7 +148,7 @@
     "message": "Message",
     "message_public": "Anyone can contact me",
     "message_private": "Must be accepted by me",
-    "restart_app": "You need restart app to update new language",
+    "restart_app": "You need to restart app to update new language",
     "now": "Now",
     "later": "Later"
   },
@@ -181,7 +181,7 @@
     "choose_type_activity_type": "Activity",
     "choose_type_adoption_type": "Adoption",
     "choose_type_mating_type": "Mating",
-    "choose_type_loss_type": "Loss",
+    "choose_type_loss_type": "Lost",
     "choose_type_error_title": "Oops!... 🤭",
     "choose_type_error_suf_description": "You currently don't have any pet. Please own a pet first!",
     "choose_type_error_description": "You need to tag your pet first!",
