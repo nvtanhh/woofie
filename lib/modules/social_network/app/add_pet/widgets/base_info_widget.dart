@@ -191,7 +191,7 @@ class BaseInfoWidget extends StatelessWidget {
                                     width: 80.w,
                                     child: Center(
                                       child: Text(
-                                        "Duc",
+                                        LocaleKeys.add_pet_pet_male.trans(),
                                         style:
                                             _genderSelected.value == Gender.male
                                                 ? UITextStyle.white_14_w600
@@ -218,7 +218,7 @@ class BaseInfoWidget extends StatelessWidget {
                                     width: 80.w,
                                     child: Center(
                                       child: Text(
-                                        "Cai",
+                                        LocaleKeys.add_pet_pet_female.trans(),
                                         style: _genderSelected.value ==
                                                 Gender.female
                                             ? UITextStyle.white_14_w600

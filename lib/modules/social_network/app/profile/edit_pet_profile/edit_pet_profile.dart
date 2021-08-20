@@ -27,7 +27,8 @@ class EditPetProfileWidget extends StatefulWidget {
   _EditPetProfileWidgetState createState() => _EditPetProfileWidgetState();
 }
 
-class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, EditPetProfileWidgetModel> {
+class _EditPetProfileWidgetState
+    extends BaseViewState<EditPetProfileWidget, EditPetProfileWidgetModel> {
   @override
   void loadArguments() {
     viewModel.pet = widget.pet;
@@ -98,7 +99,9 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
                             child: Container(
                               width: 30.w,
                               height: 30.w,
-                              decoration: BoxDecoration(color: UIColor.accent, borderRadius: BorderRadius.circular(5.r)),
+                              decoration: BoxDecoration(
+                                  color: UIColor.accent,
+                                  borderRadius: BorderRadius.circular(5.r)),
                               // padding: EdgeInsets.all(5.w),
                               child: const MWIcon(
                                 MWIcons.camera,
@@ -139,9 +142,13 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
                           children: [
                             Obx(
                               () => TextButton(
-                                onPressed: () => viewModel.genderChange(Gender.male),
+                                onPressed: () =>
+                                    viewModel.genderChange(Gender.male),
                                 style: TextButton.styleFrom(
-                                  backgroundColor: viewModel.genderSelected == Gender.male ? UIColor.accent2 : UIColor.textSecondary,
+                                  backgroundColor:
+                                      viewModel.genderSelected == Gender.male
+                                          ? UIColor.primary
+                                          : UIColor.holder,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.r),
                                   ),
@@ -152,7 +159,10 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
                                   child: Center(
                                     child: Text(
                                       LocaleKeys.add_pet_pet_male.trans(),
-                                      style: viewModel.genderSelected == Gender.male ? UITextStyle.white_12_w500 : UITextStyle.text_body_12_w600,
+                                      style: viewModel.genderSelected ==
+                                              Gender.male
+                                          ? UITextStyle.white_12_w600
+                                          : UITextStyle.text_body_12_w600,
                                     ),
                                   ),
                                 ),
@@ -160,9 +170,13 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
                             ),
                             Obx(
                               () => TextButton(
-                                onPressed: () => viewModel.genderChange(Gender.female),
+                                onPressed: () =>
+                                    viewModel.genderChange(Gender.female),
                                 style: TextButton.styleFrom(
-                                  backgroundColor: viewModel.genderSelected == Gender.female ? UIColor.accent2 : UIColor.textSecondary,
+                                  backgroundColor:
+                                      viewModel.genderSelected == Gender.female
+                                          ? UIColor.primary
+                                          : UIColor.holder,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.r),
                                   ),
@@ -173,7 +187,10 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
                                   child: Center(
                                     child: Text(
                                       LocaleKeys.add_pet_pet_female.trans(),
-                                      style: viewModel.genderSelected == Gender.female ? UITextStyle.white_12_w500 : UITextStyle.text_body_12_w600,
+                                      style: viewModel.genderSelected ==
+                                              Gender.female
+                                          ? UITextStyle.white_12_w600
+                                          : UITextStyle.text_body_12_w600,
                                     ),
                                   ),
                                 ),
@@ -221,7 +238,9 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
                           height: 40.h,
                           width: 150.w,
                           padding: EdgeInsets.only(left: 5.w),
-                          decoration: BoxDecoration(border: Border.all(color: UIColor.silverSand), borderRadius: BorderRadius.circular(5.r)),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: UIColor.silverSand),
+                              borderRadius: BorderRadius.circular(5.r)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -229,8 +248,12 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
                                 () => Text(
                                   viewModel.datePicker == null
                                       ? "dd/mm/yyyy"
-                                      : FormatHelper.formatDateTime(viewModel.datePicker, pattern: "dd/MM/yyyy"),
-                                  style: viewModel.datePicker == null ? UITextStyle.second_12_medium : UITextStyle.text_body_12_w600,
+                                      : FormatHelper.formatDateTime(
+                                          viewModel.datePicker,
+                                          pattern: "dd/MM/yyyy"),
+                                  style: viewModel.datePicker == null
+                                      ? UITextStyle.second_12_medium
+                                      : UITextStyle.text_body_12_w600,
                                 ),
                               ),
                               IconButton(
@@ -285,5 +308,6 @@ class _EditPetProfileWidgetState extends BaseViewState<EditPetProfileWidget, Edi
   }
 
   @override
-  EditPetProfileWidgetModel createViewModel() => injector<EditPetProfileWidgetModel>();
+  EditPetProfileWidgetModel createViewModel() =>
+      injector<EditPetProfileWidgetModel>();
 }

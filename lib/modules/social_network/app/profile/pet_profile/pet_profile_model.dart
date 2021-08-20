@@ -2,6 +2,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/ui/confirm_dialog.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccinated/vaccinated_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed.dart';
@@ -104,23 +105,21 @@ class PetProfileModel extends BaseViewModel {
   }
 
   void onDeletePost(Pet mPet) {
-    Get.defaultDialog(
-      title: "Do you want delete ${mPet.name}?",
-      content: const Text(""),
-      onCancel: () {
-        return;
-      },
-      onConfirm: () {
-        Get.back();
-        deletePet(mPet);
-        return;
-      },
-      barrierDismissible: false,
-      backgroundColor: UIColor.white,
-      buttonColor: UIColor.primary,
-      textCancel: "Cancel",
-      textConfirm: "Confirm",
-      confirmTextColor: UIColor.white,
+    Get.dialog(
+      ConfirmDialog(
+        title: 'Confirm',
+        content: "Are you sure you want delete ${mPet.name}?",
+        confirmText: 'Xác nhận',
+        cancelText: 'Hủy',
+        onConfirm: () async {
+          Get.back();
+          deletePet(mPet);
+          return;
+        },
+        onCancel: () {
+          return;
+        },
+      ),
     );
   }
 
