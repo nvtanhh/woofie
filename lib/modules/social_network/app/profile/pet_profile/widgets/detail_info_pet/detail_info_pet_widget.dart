@@ -35,7 +35,9 @@ class DetailInfoPetWidget extends StatefulWidget {
   _DetailInfoPetWidgetState createState() => _DetailInfoPetWidgetState();
 }
 
-class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, DetailInfoPetWidgetModel> with AutomaticKeepAliveClientMixin {
+class _DetailInfoPetWidgetState
+    extends BaseViewState<DetailInfoPetWidget, DetailInfoPetWidgetModel>
+    with AutomaticKeepAliveClientMixin {
   @override
   void loadArguments() {
     viewModel.pet = widget.pet;
@@ -86,7 +88,8 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
               width: Get.width,
               height: 175.h,
               isMyPet: viewModel.isMyPet,
-              onAddClick: viewModel.isMyPet ? viewModel.onAddWeightClick : () => null,
+              onAddClick:
+                  viewModel.isMyPet ? viewModel.onAddWeightClick : () => null,
               weights: viewModel.pet.updateSubjectValue.petWeights ?? [],
             ),
           ),
@@ -105,9 +108,12 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
                   () => WormFlushedPreviewWidget(
                     width: 160.w,
                     height: 188.h,
-                    wormFlushed: viewModel.pet.updateSubjectValue.petWormFlushes ?? [],
+                    wormFlushed:
+                        viewModel.pet.updateSubjectValue.petWormFlushes ?? [],
                     isMyPet: viewModel.isMyPet,
-                    onAddClick: viewModel.isMyPet ? viewModel.onAddWormFlushedClick : () => null,
+                    onAddClick: viewModel.isMyPet
+                        ? viewModel.onAddWormFlushedClick
+                        : () => null,
                   ),
                 ),
               ),
@@ -117,9 +123,12 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
                   () => VaccinatedPreviewWidget(
                     width: 160.w,
                     height: 188.h,
-                    vaccinates: viewModel.pet.updateSubjectValue.petVaccinates ?? [],
+                    vaccinates:
+                        viewModel.pet.updateSubjectValue.petVaccinates ?? [],
                     isMyPet: viewModel.isMyPet,
-                    onAddClick: viewModel.isMyPet ? viewModel.onAddVaccinatedClick : () => null,
+                    onAddClick: viewModel.isMyPet
+                        ? viewModel.onAddVaccinatedClick
+                        : () => null,
                   ),
                 ),
               ),
@@ -131,7 +140,8 @@ class _DetailInfoPetWidgetState extends BaseViewState<DetailInfoPetWidget, Detai
   }
 
   @override
-  DetailInfoPetWidgetModel createViewModel() => injector<DetailInfoPetWidgetModel>();
+  DetailInfoPetWidgetModel createViewModel() =>
+      injector<DetailInfoPetWidgetModel>();
 
   @override
   // TODO: implement wantKeepAlive

@@ -34,23 +34,13 @@ class PetProfileModel extends BaseViewModel {
 
   @override
   void initState() {
-    _loadPetDetailInfo();
     super.initState();
+    _loadPetDetailInfo();
   }
 
   Future _loadPetDetailInfo() async {
-    await call(
-      () async {
-        pet.update(await _getDetailInfoPetUsecase.call(pet.id));
-      },
-      onSuccess: () {
-        _isLoaded.value = true;
-      },
-      onFailure: (err) {
-        _isLoaded.value = false;
-      },
-      showLoading: false,
-    );
+    pet.update(await _getDetailInfoPetUsecase.call(pet.id));
+    printInfo(info: 'break');
   }
 
   void onPetBlock(Pet pet) {}
