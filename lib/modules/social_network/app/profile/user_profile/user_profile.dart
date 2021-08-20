@@ -25,6 +25,8 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
     with AutomaticKeepAliveClientMixin {
+  late bool _isFirstRoute;
+
   @override
   void loadArguments() {
     viewModel.user = widget.user;
@@ -32,6 +34,11 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    _isFirstRoute = Navigator.canPop(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +47,14 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
         key: _scaffoldKey,
         endDrawerEnableOpenDragGesture: false,
         appBar: AppBar(
-          leading: Navigator.of(context).canPop()
+          leading: _isFirstRoute
               ? IconButton(
                   onPressed: () => Get.back(),
                   icon: const MWIcon(MWIcons.back),
                 )
               : const SizedBox(),
           actions: [
-            if (!Navigator.of(context).canPop())
+            if (!_isFirstRoute)
               Padding(
                 padding: EdgeInsets.only(right: 14.w),
                 child: GestureDetector(

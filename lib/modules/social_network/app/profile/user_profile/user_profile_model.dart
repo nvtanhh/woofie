@@ -50,6 +50,7 @@ class UserProfileModel extends BaseViewModel {
   CancelableOperation? _cancelableOperationLoadInit,
       _cancelableOperationLoadMorePost;
 
+
   UserProfileModel(
     this._getUseProfileUseacse,
     this._getPostOfUserUsecase,
