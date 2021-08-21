@@ -92,7 +92,7 @@ class PetInfoWidget extends StatelessWidget {
         ),
         Obx(
           () => Text(
-            pet.updateSubjectValue.name ?? "Unknown",
+            pet.updateSubjectValue.name ?? "",
             style: UITextStyle.text_header_24_w600,
           ),
         ),
@@ -101,7 +101,7 @@ class PetInfoWidget extends StatelessWidget {
         ),
         Obx(
           () => Text(
-            pet.updateSubjectValue.bio ?? "Unknown",
+            pet.updateSubjectValue.bio ?? "",
             style: UITextStyle.text_body_14_w500,
           ),
         ),
@@ -133,11 +133,12 @@ class PetInfoWidget extends StatelessWidget {
                 ),
               ),
             ),
-            InkWell(
+            GestureDetector(
               onTap: () => Get.to(
                 () => OtherInfoMenuWidget(
                   onDeletePost: () => onDeletePost?.call(pet),
                   isMyPet: isMyPet,
+                  pet: pet,
                 ),
               ),
               child: Container(

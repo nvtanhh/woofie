@@ -203,6 +203,17 @@ class PetDatasource {
           avatar_url
           bio
         }
+        pet_owners(order_by: {created_at: desc}) {
+          owner {
+            id
+            uuid
+            name
+            bio
+            avatar_url
+          }
+          give_time
+          created_at
+        }
       }
     }
     """;

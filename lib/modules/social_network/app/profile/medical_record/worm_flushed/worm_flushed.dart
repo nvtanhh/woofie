@@ -33,13 +33,15 @@ class WormFlushedWidget extends StatefulWidget {
   _WormFlushedWidgetState createState() => _WormFlushedWidgetState();
 }
 
-class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlushedWidgetModel> {
+class _WormFlushedWidgetState
+    extends BaseViewState<WormFlushedWidget, WormFlushedWidgetModel> {
   @override
   void loadArguments() {
     viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
     if (widget.addData == true) {
-      SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
+      SchedulerBinding.instance!
+          .addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }
     super.loadArguments();
   }
@@ -52,7 +54,7 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
           centerTitle: true,
           title: Text(
             LocaleKeys.profile_worm_flush.trans(),
-            style: UITextStyle.text_header_18_w700,
+            style: UITextStyle.text_header_18_w600,
           ),
           leading: IconButton(
             icon: const MWIcon(MWIcons.back),
@@ -61,10 +63,12 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
           actions: [
             if (viewModel.isMyPet)
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                 child: MWButton(
                   onPressed: () => viewModel.showDialogAddWeight(),
                   minWidth: 50.w,
+                  borderRadius: BorderRadius.circular(10.r),
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Text(
                     LocaleKeys.profile_add.trans(),
                     style: UITextStyle.white_12_w600,
@@ -136,14 +140,16 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
                         ),
                       ],
                     ),
-                    if(viewModel.isMyPet)
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: MedicalActionsTrailing(
-                        onEdit: () => viewModel.onEdit(viewModel.wormFlushes[index],index),
-                        onDelete: () => viewModel.onDelete(viewModel.wormFlushes[index],index),
-                      ),
-                    )
+                    if (viewModel.isMyPet)
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: MedicalActionsTrailing(
+                          onEdit: () => viewModel.onEdit(
+                              viewModel.wormFlushes[index], index),
+                          onDelete: () => viewModel.onDelete(
+                              viewModel.wormFlushes[index], index),
+                        ),
+                      )
                   ],
                 ),
               ),
@@ -159,5 +165,6 @@ class _WormFlushedWidgetState extends BaseViewState<WormFlushedWidget, WormFlush
   }
 
   @override
-  WormFlushedWidgetModel createViewModel() => injector<WormFlushedWidgetModel>();
+  WormFlushedWidgetModel createViewModel() =>
+      injector<WormFlushedWidgetModel>();
 }

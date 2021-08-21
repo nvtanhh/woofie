@@ -9,9 +9,10 @@ class FormatHelper {
     return formatter.format(value);
   }
 
-  static String formatDateTime(DateTime? dateTime, {String pattern = "E, d MMM yyyy - HH:mm"}) {
+  static String formatDateTime(DateTime? dateTime,
+      {String pattern = "E, d MMM yyyy - HH:mm"}) {
     if (dateTime == null) {
-      return "";
+      return '';
     }
     final dateFormatter = DateFormat(pattern);
     return dateFormatter.format(dateTime);

@@ -33,13 +33,15 @@ class VaccinatedWidget extends StatefulWidget {
   _VaccinatedWidgetState createState() => _VaccinatedWidgetState();
 }
 
-class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedWidgetModel> {
+class _VaccinatedWidgetState
+    extends BaseViewState<VaccinatedWidget, VaccinatedWidgetModel> {
   @override
   void loadArguments() {
     viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
     if (widget.addData == true) {
-      SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
+      SchedulerBinding.instance!
+          .addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }
     super.loadArguments();
   }
@@ -52,7 +54,7 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
           centerTitle: true,
           title: Text(
             LocaleKeys.profile_vaccinated.trans(),
-            style: UITextStyle.text_header_18_w700,
+            style: UITextStyle.text_header_18_w600,
           ),
           leading: IconButton(
             icon: const MWIcon(MWIcons.back),
@@ -61,9 +63,11 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
           actions: [
             if (viewModel.isMyPet)
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
+                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
                 child: MWButton(
                   onPressed: () => viewModel.showDialogAddWeight(),
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  borderRadius: BorderRadius.circular(10.r),
                   minWidth: 50.w,
                   child: Text(
                     LocaleKeys.profile_add.trans(),
@@ -83,14 +87,14 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
               oppositeContentsBuilder: (context, index) => Padding(
                 padding: EdgeInsets.only(right: 10.w),
                 child: Text(
-                  FormatHelper.formatDateTime(viewModel.vaccinates[index].date, pattern: "dd/MM/yyyy"),
+                  FormatHelper.formatDateTime(viewModel.vaccinates[index].date,
+                      pattern: "dd/MM/yyyy"),
                   style: UITextStyle.text_secondary_12_w500,
                 ),
               ),
               itemExtent: 100.h,
-
               contentsBuilder: (context, index) => Container(
-                margin: EdgeInsets.only(left: 15.w,right: 15.w),
+                margin: EdgeInsets.only(left: 15.w, right: 15.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -114,14 +118,16 @@ class _VaccinatedWidgetState extends BaseViewState<VaccinatedWidget, VaccinatedW
                         ),
                       ],
                     ),
-                    if(viewModel.isMyPet)
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: MedicalActionsTrailing(
-                        onEdit: () => viewModel.onEdit(viewModel.vaccinates[index], index),
-                        onDelete: () => viewModel.onDelete(viewModel.vaccinates[index], index),
-                      ),
-                    )
+                    if (viewModel.isMyPet)
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: MedicalActionsTrailing(
+                          onEdit: () => viewModel.onEdit(
+                              viewModel.vaccinates[index], index),
+                          onDelete: () => viewModel.onDelete(
+                              viewModel.vaccinates[index], index),
+                        ),
+                      )
                   ],
                 ),
               ),
