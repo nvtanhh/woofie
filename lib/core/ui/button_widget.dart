@@ -53,7 +53,8 @@ class _ButtonWidgetState extends State<ButtonWidget> {
             ),
             child: TextButton(
               style: TextButton.styleFrom(
-                padding: widget.contentPadding ?? EdgeInsets.zero,
+                padding: widget.contentPadding ??
+                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
               ),
               onPressed: (widget.onPress != null)
                   ? () async {
@@ -77,6 +78,9 @@ class _ButtonWidgetState extends State<ButtonWidget> {
                     child: Text(
                       widget.title ?? "",
                       style: widget.titleStyle ?? UITextStyle.white_18_w600,
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
             ),

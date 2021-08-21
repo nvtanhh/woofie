@@ -16,6 +16,7 @@ class CardDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(10.w),
       width: 107.w,
       height: 70.h,
       decoration: BoxDecoration(
@@ -36,8 +37,9 @@ class CardDetailWidget extends StatelessWidget {
             child: Text(
               value,
               style: UITextStyle.text_header_14_w600,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              overflow: TextOverflow.clip,
+              softWrap: false,
             ),
           ),
         ],

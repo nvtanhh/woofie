@@ -143,7 +143,7 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                                       height: 5.h,
                                     ),
                                     Text(
-                                      "Ngày tháng đẹp biết bao nhiêu. ",
+                                      "Ngày tháng đẹp biết bao nhiêu.",
                                       style: UITextStyle.text_body_10_w500,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,

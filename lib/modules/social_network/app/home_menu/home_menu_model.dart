@@ -16,12 +16,13 @@ import 'package:suga_core/suga_core.dart';
 
 @injectable
 class HomeMenuWidgetModel extends BaseViewModel {
-  List<Widget> listScreen = [
-    NewFeedWidget(),
-    ExploreWidget(),
-    NotificationWidget(),
-    UserProfile(),
-  ];
+  final NewFeedWidgetController _newFeedWidgetController =
+      NewFeedWidgetController();
+  final NotificationWidgetController _notificationWidgetController =
+      NotificationWidgetController();
+  final UserProfileController _userProfileController = UserProfileController();
+  late List<Widget> listScreen;
+
   late TabController tabController;
   final RxInt _currentTab = RxInt(0);
   final RxInt _countUnreadNotify = RxInt(0);
@@ -41,6 +42,13 @@ class HomeMenuWidgetModel extends BaseViewModel {
 
   @override
   void initState() {
+    listScreen = [
+      NewFeedWidget(controller: _newFeedWidgetController),
+      ExploreWidget(),
+      NotificationWidget(controller: _notificationWidgetController),
+      UserProfile(controller: _userProfileController),
+    ];
+
     getNumberNotificationUnread();
     _timer = Timer.periodic(
         const Duration(seconds: 10), (_) => getNumberNotificationUnread());
@@ -77,7 +85,20 @@ class HomeMenuWidgetModel extends BaseViewModel {
   }
 
   void onTabChange(int index) {
-    if (currentTab == index) return;
+    if (currentTab == index) {
+      switch (index) {
+        case 0:
+          _newFeedWidgetController.scrollToTop();
+          break;
+        case 2:
+          _notificationWidgetController.scrollToTop();
+          break;
+        case 3:
+          _userProfileController.scrollToTop();
+          break;
+      }
+      return;
+    }
     currentTab = index;
     tabController.index = index;
     if (index == 2) {

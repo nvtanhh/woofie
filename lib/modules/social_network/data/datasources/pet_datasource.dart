@@ -274,15 +274,15 @@ mutation MyMutation {
 
   Future<List<Pet>> searchPet(String keyWord, int offset, int limit) async {
     final query = """
-query MyQuery {
-  pets(where: {name: {_ilike: "$keyWord%"}}) {
-    id
-    avatar_url
-    name
-    bio
-    is_following
-  }
-}
+    query MyQuery {
+      pets(where: {name: {_ilike: "$keyWord%"}}, limit: $limit, offset: $offset, order_by: {name: desc}) {
+        id
+        avatar_url
+        name
+        bio
+        is_following
+      }
+    }
     """;
     final data = await _hasuraConnect.query(query);
     final list = GetMapFromHasura.getMap(data as Map)["pets"] as List;

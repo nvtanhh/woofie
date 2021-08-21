@@ -19,11 +19,24 @@ import 'package:suga_core/suga_core.dart';
 import 'package:timeago/timeago.dart' as time_ago;
 
 class NotificationWidget extends StatefulWidget {
+  final NotificationWidgetController? controller;
+
+  const NotificationWidget({Key? key, this.controller}) : super(key: key);
+
   @override
-  _NotificationWidgetState createState() => _NotificationWidgetState();
+  NotificationWidgetState createState() => NotificationWidgetState();
 }
 
-class _NotificationWidgetState extends BaseViewState<NotificationWidget, NotificationWidgetModel> with AutomaticKeepAliveClientMixin {
+class NotificationWidgetState
+    extends BaseViewState<NotificationWidget, NotificationWidgetModel>
+    with AutomaticKeepAliveClientMixin {
+      
+  @override
+  void initState() {
+    widget.controller?.attach(context: context, state: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,8 +67,10 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
               child: RefreshIndicator(
                 onRefresh: () => viewModel.onRefresh(),
                 child: PagedListView<int, Notification>(
+                  scrollController: viewModel.scrollController,
                   pagingController: viewModel.pagingController,
-                  builderDelegate: PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
+                  builderDelegate: PagedChildBuilderDelegate(
+                      itemBuilder: (context, item, index) {
                     return Dismissible(
                       key: ObjectKey(item.id),
                       background: Row(
@@ -93,7 +108,7 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
                   }, noItemsFoundIndicatorBuilder: (_) {
                     return Center(
                       child: Text(
-                        "No have notification",
+                        "You don't have any notifications",
                         style: UITextStyle.text_body_14_w600,
                       ),
                     );
@@ -220,8 +235,25 @@ class _NotificationWidgetState extends BaseViewState<NotificationWidget, Notific
   }
 
   @override
-  NotificationWidgetModel createViewModel() => injector<NotificationWidgetModel>();
+  NotificationWidgetModel createViewModel() =>
+      injector<NotificationWidgetModel>();
 
   @override
   bool get wantKeepAlive => true;
+
+  void scrollToTop() {
+    viewModel.scrollToTop();
+  }
+}
+
+class NotificationWidgetController {
+  late NotificationWidgetState _state;
+  void attach(
+      {required BuildContext context, required NotificationWidgetState state}) {
+    _state = state;
+  }
+
+  void scrollToTop() {
+    _state.scrollToTop();
+  }
 }

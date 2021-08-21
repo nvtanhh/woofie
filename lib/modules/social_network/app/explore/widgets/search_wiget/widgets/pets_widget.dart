@@ -24,33 +24,38 @@ class PetsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PagedListView<int, Pet>(
+      padding: EdgeInsets.only(top: 10.h),
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, pet, index) {
-          return InkWell(
+          return GestureDetector(
             onTap: () => Get.to(() => PetProfile(pet: pet)),
             child: Container(
-              padding: EdgeInsets.all(10.w),
+              padding: EdgeInsets.only(top: 10.h),
               height: 165.h,
               child: Row(
                 children: [
                   ImageWithPlaceHolderWidget(
-                      imageUrl: pet.avatarUrl ?? "",
-                      width: 117.w,
-                      height: 152.h,
-                      radius: 10.r,
-                      fit: BoxFit.cover,
-                      placeHolderImage: "resources/images/fallbacks/pet-avatar-fallback.jpg"),
+                    imageUrl: pet.avatarUrl ?? "",
+                    width: 117.w,
+                    height: 152.h,
+                    radius: 10.r,
+                    fit: BoxFit.cover,
+                    placeHolderImage:
+                        "resources/images/fallbacks/pet-avatar-fallback.jpg",
+                  ),
                   SizedBox(
                     width: 25.w,
                   ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           pet.name ?? "",
                           style: UITextStyle.text_header_16_w700,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
                           height: 5.h,
@@ -58,9 +63,11 @@ class PetsWidget extends StatelessWidget {
                         Text(
                           pet.bio ?? "",
                           style: UITextStyle.text_body_14_w500,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
-                          height: 5.h,
+                          height: 15.h,
                         ),
                         Obx(
                           () => ButtonWidget(
@@ -73,13 +80,16 @@ class PetsWidget extends StatelessWidget {
                               follow(pet.id);
                             },
                             height: 30.h,
-                            width: 65.w,
+                            width: 75.w,
                             title: (pet.updateSubjectValue.isFollowing ?? false)
                                 ? LocaleKeys.profile_un_follow.trans()
                                 : LocaleKeys.profile_follow.trans(),
                             titleStyle: UITextStyle.white_12_w600,
-                            borderRadius: 10.r,
-                            backgroundColor: (pet.updateSubjectValue.isFollowing ?? false) ? UIColor.textSecondary : UIColor.primary,
+                            borderRadius: 8.r,
+                            backgroundColor:
+                                (pet.updateSubjectValue.isFollowing ?? false)
+                                    ? UIColor.textSecondary
+                                    : UIColor.primary,
                           ),
                         ),
                       ],
@@ -90,8 +100,10 @@ class PetsWidget extends StatelessWidget {
             ),
           );
         },
-        newPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
-        firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
+        newPageProgressIndicatorBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
+        firstPageProgressIndicatorBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
       ),
       pagingController: pagingController,
     );
