@@ -49,7 +49,7 @@ class MWAvatar extends StatelessWidget {
         break;
     }
 
-    return avatarSize;
+    return avatarSize.w;
   }
 
   const MWAvatar({
@@ -83,8 +83,8 @@ class MWAvatar extends StatelessWidget {
     } else if (avatarUrl != null && avatarUrl!.isNotEmpty) {
       finalAvatarImage = ExtendedImage.network(
         avatarUrl!,
-        height: avatarSize.w,
-        width: avatarSize.w,
+        height: avatarSize,
+        width: avatarSize,
         fit: fit ?? BoxFit.cover,
         retries: 0,
         timeLimit: const Duration(seconds: 3),
@@ -95,8 +95,8 @@ class MWAvatar extends StatelessWidget {
                 baseColor: UIColor.white,
                 highlightColor: UIColor.silverSand,
                 child: Container(
-                  width: avatarSize.w,
-                  height: avatarSize.h,
+                  width: avatarSize,
+                  height: avatarSize,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(10.r),
@@ -142,8 +142,8 @@ class MWAvatar extends StatelessWidget {
 
   Widget _getAvatarPlaceholder(double avatarSize) {
     return SizedBox(
-      height: avatarSize.h,
-      width: avatarSize.w,
+      height: avatarSize,
+      width: avatarSize,
       child: placeHolderImage ??
           Assets.resources.images.fallbacks.avatarFallback.image(),
     );

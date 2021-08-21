@@ -29,6 +29,7 @@ class ChatSenderPostPreviewer extends StatelessWidget {
                 ? (post.taggegPets![0].avatarUrl ?? '')
                 : post.medias!.first.url!,
             fit: BoxFit.fitWidth,
+            isConstraintsSize: false,
             placeHolderImage:
                 "resources/images/fallbacks/pet-avatar-fallback.jpg",
           ),
@@ -45,7 +46,7 @@ class ChatSenderPostPreviewer extends StatelessWidget {
                 ),
               ),
               padding: EdgeInsets.symmetric(
-                horizontal: 12.w,
+                horizontal: 8.w,
                 vertical: 8.h,
               ),
               child: Row(

@@ -184,11 +184,15 @@ class FunctionalPostItem extends StatelessWidget {
               onEditPost: onEditPost,
               onReportPost: onReportPost,
               child: ButtonWidget(
-                width: 30.w,
-                height: 30.w,
+                contentPadding: EdgeInsets.zero,
+                width: 35.w,
+                height: 35.w,
                 borderRadius: 20.w,
                 backgroundColor: UIColor.white,
-                contentWidget: const MWIcon(MWIcons.moreHoriz),
+                contentWidget: MWIcon(
+                  MWIcons.moreHoriz,
+                  customSize: 28.w,
+                ),
               ),
             ),
           )

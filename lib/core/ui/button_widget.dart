@@ -73,16 +73,17 @@ class _ButtonWidgetState extends State<ButtonWidget> {
                       }
                     }
                   : null,
-              child: widget.contentWidget ??
-                  Center(
-                    child: Text(
-                      widget.title ?? "",
-                      style: widget.titleStyle ?? UITextStyle.white_18_w600,
-                      maxLines: 1,
-                      softWrap: false,
-                      overflow: TextOverflow.ellipsis,
+              child: widget.contentWidget != null
+                  ? Center(child: widget.contentWidget)
+                  : Center(
+                      child: Text(
+                        widget.title ?? "",
+                        style: widget.titleStyle ?? UITextStyle.white_18_w600,
+                        maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
             ),
           );
   }

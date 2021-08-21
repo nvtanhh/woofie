@@ -88,6 +88,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                         children: [
                           ButtonWidget(
                             onPress: () => Get.back(),
+                            contentPadding: EdgeInsets.zero,
                             width: 40.w,
                             height: 40.w,
                             borderRadius: 20.w,
@@ -100,6 +101,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             onEditPost: widget.onEditPost,
                             onReportPost: widget.onReportPost,
                             child: ButtonWidget(
+                              contentPadding: EdgeInsets.zero,
                               width: 40.w,
                               height: 40.w,
                               borderRadius: 20.w,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +18,9 @@ class PostMapWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final Pet pet = post.taggegPets![0];
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.to(() => AdoptionPetDetailWidget(post: post));
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -35,9 +39,9 @@ class PostMapWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(
-              // height: 150,
               width: 0.3.sw,
               child: ImageWithPlaceHolderWidget(
+                clickable: false,
                 imageUrl: post.medias?.isEmpty ?? true
                     ? (pet.avatarUrl ?? '')
                     : post.medias!.first.url!,

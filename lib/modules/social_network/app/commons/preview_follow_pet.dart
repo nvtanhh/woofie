@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/avatar/pet_avatar.dart';
 import 'package:meowoof/core/ui/button.dart';
-import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -52,14 +52,10 @@ class PreviewFollowPet extends StatelessWidget {
           // mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Obx(
-              () => ImageWithPlaceHolderWidget(
-                imageUrl: pet.updateSubjectValue.avatarUrl ?? "",
-                width: 60.w,
-                height: 60.w,
-                radius: 10.r,
-                fit: BoxFit.cover,
-                placeHolderImage:
-                    "resources/images/fallbacks/pet-avatar-fallback.jpg",
+              () => PetAvatar(
+                avatarUrl: pet.updateSubjectValue.avatarUrl ?? "",
+                borderRadius: 10.r,
+                customSize: 60.w,
               ),
             ),
             SizedBox(
