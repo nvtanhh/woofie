@@ -70,7 +70,8 @@ class WeightChartPreviewWidget extends StatelessWidget {
               SizedBox(
                 width: 10.w,
               ),
-              Assets.resources.icons.icWeight.image(fit: BoxFit.fill, width: 24.w, height: 24.w),
+              Assets.resources.icons.icWeight
+                  .image(fit: BoxFit.fill, width: 24.w, height: 24.w),
               SizedBox(
                 width: 5.w,
               ),
@@ -89,20 +90,27 @@ class WeightChartPreviewWidget extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 30.w),
                 child: LineChart(
                   LineChartData(
-                    showingTooltipIndicators: showIndexes.map((index) {
-                      return ShowingTooltipIndicators([
-                        LineBarSpot(tooltipsOnBar, lineBarsData.indexOf(tooltipsOnBar), tooltipsOnBar.spots[index]),
-                      ]);
-                    }).toList(),
+                    showingTooltipIndicators: showIndexes.map(
+                      (index) {
+                        return ShowingTooltipIndicators([
+                          LineBarSpot(
+                              tooltipsOnBar,
+                              lineBarsData.indexOf(tooltipsOnBar),
+                              tooltipsOnBar.spots[index]),
+                        ]);
+                      },
+                    ).toList(),
                     lineTouchData: LineTouchData(
                       enabled: false,
-                      getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
+                      getTouchedSpotIndicator:
+                          (LineChartBarData barData, List<int> spotIndexes) {
                         return spotIndexes.map((index) {
                           return TouchedSpotIndicatorData(
                             FlLine(color: Colors.transparent),
                             FlDotData(
                               show: true,
-                              getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
+                              getDotPainter: (spot, percent, barData, index) =>
+                                  FlDotCirclePainter(
                                 radius: 5,
                                 color: UIColor.primary,
                                 strokeWidth: 0.5,
@@ -133,9 +141,12 @@ class WeightChartPreviewWidget extends StatelessWidget {
                       bottomTitles: SideTitles(
                           showTitles: true,
                           getTitles: (val) {
-                            return FormatHelper.formatDateTime(weights[val.toInt()].date, pattern: "MM/yyyy");
+                            return FormatHelper.formatDateTime(
+                                weights[val.toInt()].date,
+                                pattern: "MM/yyyy");
                           },
-                          getTextStyles: (value) => UITextStyle.text_body_10_w500),
+                          getTextStyles: (value) =>
+                              UITextStyle.text_body_10_w500),
                     ),
                     gridData: FlGridData(show: false),
                     borderData: FlBorderData(

@@ -44,22 +44,22 @@ class InfoUserWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Transform.translate(
-                    offset: const Offset(2, 0),
-                    child: GestureDetector(
-                      onTap: () => Scaffold.of(context).openEndDrawer(),
-                      child: MWIcon(
-                        MWIcons.drawer,
-                        customSize: 28.h,
-                        color: UIColor.textHeader,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     Transform.translate(
+              //       offset: const Offset(2, 0),
+              //       child: GestureDetector(
+              //         onTap: () => Scaffold.of(context).openEndDrawer(),
+              //         child: MWIcon(
+              //           MWIcons.drawer,
+              //           customSize: 28.h,
+              //           color: UIColor.textHeader,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Obx(
                 () => MWAvatar(
                   avatarUrl: user.updateSubjectValue.avatarUrl,

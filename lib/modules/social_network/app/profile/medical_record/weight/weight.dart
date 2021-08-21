@@ -36,14 +36,16 @@ class WeightWidget extends StatefulWidget {
   _WeightWidgetState createState() => _WeightWidgetState();
 }
 
-class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> {
+class _WeightWidgetState
+    extends BaseViewState<WeightWidget, WeightWidgetModel> {
   @override
   void loadArguments() {
     viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
     viewModel.listWeightChart = widget.pet.petWeights ?? [];
     if (widget.addData == true) {
-      SchedulerBinding.instance!.addPostFrameCallback((_) => viewModel.addWeightPress());
+      SchedulerBinding.instance!
+          .addPostFrameCallback((_) => viewModel.addWeightPress());
     }
     super.loadArguments();
   }
@@ -90,6 +92,7 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
                   onPressed: () => viewModel.addWeightPress(),
                   minWidth: Get.width,
                   borderRadius: BorderRadius.circular(10.r),
+                  minHeight: 45.h,
                   child: Text(
                     LocaleKeys.profile_add.trans(),
                     style: UITextStyle.white_12_w600.copyWith(fontSize: 14.sp),
@@ -103,8 +106,13 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
                   key: viewModel.gloalKey,
                   builderDelegate: PagedChildBuilderDelegate(
                     itemBuilder: (context, petWeight, index) {
-                      if ((viewModel.pagingController.itemList?.length ?? 0) - 1 >= index + 1) {
-                        increase = (petWeight.weight ?? 0) >= (viewModel.pagingController.itemList?[index + 1].weight ?? 0);
+                      if ((viewModel.pagingController.itemList?.length ?? 0) -
+                              1 >=
+                          index + 1) {
+                        increase = (petWeight.weight ?? 0) >=
+                            (viewModel.pagingController.itemList?[index + 1]
+                                    .weight ??
+                                0);
                       }
                       return ListTile(
                         title: Text(
@@ -112,7 +120,8 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
                           style: UITextStyle.text_header_14_w600,
                         ),
                         subtitle: Text(
-                          FormatHelper.formatDateTime(petWeight.date, pattern: "dd/MM/yyyy"),
+                          FormatHelper.formatDateTime(petWeight.date,
+                              pattern: "dd/MM/yyyy"),
                           style: UITextStyle.text_secondary_10_w600,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -122,11 +131,20 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
                           height: 50.w,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.r),
-                            color: increase ? UIColor.cosmicLatte : UIColor.aquaSpring,
+                            color: increase
+                                ? UIColor.cosmicLatte
+                                : UIColor.aquaSpring,
                           ),
                           child: RotatedBox(
-                            quarterTurns: defineAngle(index, viewModel.pagingController.itemList?.length ?? 0),
-                            child: index == ((viewModel.pagingController.itemList?.length ?? 0) - 1)
+                            quarterTurns: defineAngle(
+                                index,
+                                viewModel.pagingController.itemList?.length ??
+                                    0),
+                            child: index ==
+                                    ((viewModel.pagingController.itemList
+                                                ?.length ??
+                                            0) -
+                                        1)
                                 ? Assets.resources.icons.icWeight.image(
                                     fit: BoxFit.fill,
                                     width: 32.w,
@@ -135,7 +153,9 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
                                 : MWIcon(
                                     MWIcons.doubleArrow,
                                     customSize: 24.w,
-                                    color: increase ? UIColor.accent2 : UIColor.danger,
+                                    color: increase
+                                        ? UIColor.accent2
+                                        : UIColor.danger,
                                   ),
                           ),
                         ),
@@ -143,13 +163,16 @@ class _WeightWidgetState extends BaseViewState<WeightWidget, WeightWidgetModel> 
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            if(viewModel.isMyPet)
-                            MedicalActionsTrailing(
-                              onDelete: () => viewModel.onDeleteWeight(petWeight,index),
-                              onEdit: () => viewModel.onEditWeight(petWeight,index),
-                            ),
+                            if (viewModel.isMyPet)
+                              MedicalActionsTrailing(
+                                onDelete: () =>
+                                    viewModel.onDeleteWeight(petWeight, index),
+                                onEdit: () =>
+                                    viewModel.onEditWeight(petWeight, index),
+                              ),
                             Text(
-                              calcAgeFromWeight(viewModel.pet.dob, petWeight.date),
+                              calcAgeFromWeight(
+                                  viewModel.pet.dob, petWeight.date),
                               style: UITextStyle.text_secondary_12_w500,
                             ),
                           ],

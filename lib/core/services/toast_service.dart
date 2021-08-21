@@ -17,7 +17,13 @@ class ToastService {
     VoidCallback? onDismissed,
     Duration? duration,
   }) {
-    toast(message: message, type: ToastType.warning, context: context, duration: duration, onDismissed: onDismissed, scaffoldKey: scaffoldKey);
+    toast(
+        message: message,
+        type: ToastType.warning,
+        context: context,
+        duration: duration,
+        onDismissed: onDismissed,
+        scaffoldKey: scaffoldKey);
   }
 
   void success({
@@ -45,7 +51,13 @@ class ToastService {
     VoidCallback? onDismissed,
     Duration? duration,
   }) {
-    toast(message: message, type: ToastType.error, context: context, onDismissed: onDismissed, duration: duration, scaffoldKey: scaffoldKey);
+    toast(
+        message: message,
+        type: ToastType.error,
+        context: context,
+        onDismissed: onDismissed,
+        duration: duration,
+        scaffoldKey: scaffoldKey);
   }
 
   void info({
@@ -57,13 +69,14 @@ class ToastService {
     Duration? duration,
   }) {
     toast(
-        child: child,
-        message: message,
-        type: ToastType.info,
-        context: context,
-        duration: duration,
-        scaffoldKey: scaffoldKey,
-        onDismissed: onDismissed);
+      child: child,
+      message: message,
+      type: ToastType.info,
+      context: context,
+      duration: duration,
+      scaffoldKey: scaffoldKey,
+      onDismissed: onDismissed,
+    );
   }
 
   void toast({
@@ -75,7 +88,12 @@ class ToastService {
     VoidCallback? onDismissed,
     Duration? duration,
   }) {
-    MFToast.of(context).showToast(child: child, color: _getToastColor(type), message: message, duration: duration, onDismissed: onDismissed);
+    MFToast.of(context).showToast(
+        child: child,
+        color: _getToastColor(type),
+        message: message,
+        duration: duration,
+        onDismissed: onDismissed);
   }
 
   Color _getToastColor(ToastType type) {
@@ -83,16 +101,16 @@ class ToastService {
 
     switch (type) {
       case ToastType.error:
-        color = UIColor.accent;
+        color = UIColor.danger;
         break;
       case ToastType.info:
-        color = UIColor.primary;
+        color = UIColor.primary.withOpacity(.5);
         break;
       case ToastType.success:
         color = UIColor.accent2;
         break;
       case ToastType.warning:
-        color = UIColor.waringColor;
+        color = UIColor.accent;
         break;
     }
 

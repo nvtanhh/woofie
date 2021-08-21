@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/assets.gen.dart';
@@ -21,7 +22,7 @@ class SelectPetTypeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 620.h,
-      padding: EdgeInsets.symmetric(horizontal: 50.w),
+      padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 20.h),
       child: petTypes.isNotEmpty
           ? GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -41,23 +42,36 @@ class SelectPetTypeWidget extends StatelessWidget {
                           width: 80.w,
                           height: 80.0.w,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: UIColor.antiqueWhite,
-                              border: Border.all(color: index == selectedIndex ? UIColor.accent2 : UIColor.antiqueWhite)),
-                          child: index == petTypes.length - 1
-                              ? Assets.resources.icons.icAnotherPet.image()
-                              : Image.network(
-                                  petTypes[index].avatar ??
-                                      "https://image.shutterstock.com/image-vector/pet-friendly-logo-design-vector-600w-1297665529.jpg",
-                                  fit: BoxFit.fill,
-                                ),
+                            borderRadius: BorderRadius.circular(10.r),
+                            color: UIColor.antiqueWhite,
+                            border: Border.all(
+                              color: index == selectedIndex
+                                  ? UIColor.accent2
+                                  : UIColor.antiqueWhite,
+                            ),
+                          ),
+                          child: ExtendedImage.network(
+                              petTypes[index].avatar ?? "",
+                              retries: 1,
+                              fit: BoxFit.fill, loadStateChanged: (e) {
+                            switch (e.extendedImageLoadState) {
+                              case LoadState.loading:
+                                return _getPlaceholder();
+                              case LoadState.completed:
+                                return null;
+                              case LoadState.failed:
+                                return _getPlaceholder();
+                            }
+                          }),
                         ),
                         SizedBox(
                           height: 5.h,
                         ),
                         Text(
                           petTypes[index].name ?? "",
-                          style: index == selectedIndex ? UITextStyle.accent2_14_w600 : UITextStyle.text_body_14_w600,
+                          style: index == selectedIndex
+                              ? UITextStyle.accent2_14_w600
+                              : UITextStyle.text_body_14_w600,
                         )
                       ],
                     ),
@@ -71,5 +85,9 @@ class SelectPetTypeWidget extends StatelessWidget {
               style: UITextStyle.text_header_18_w700,
             ),
     );
+  }
+
+  Widget _getPlaceholder() {
+    return Assets.resources.images.fallbacks.petTypeFallback.image();
   }
 }

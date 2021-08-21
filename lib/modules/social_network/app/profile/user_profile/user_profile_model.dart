@@ -50,6 +50,7 @@ class UserProfileModel extends BaseViewModel {
   CancelableOperation? _cancelableOperationLoadInit,
       _cancelableOperationLoadMorePost;
 
+
   UserProfileModel(
     this._getUseProfileUseacse,
     this._getPostOfUserUsecase,
@@ -107,8 +108,8 @@ class UserProfileModel extends BaseViewModel {
       () async => user?.update(await _getUseProfileUseacse.call(user!.id)),
       showLoading: false,
       onSuccess: () {
-        User.factory.addToCache(user!);
-        _loggedInUser.saveToLocal();
+        // User.factory.addToCache(user!);
+        // _loggedInUser.saveToLocal();
       },
     );
   }

@@ -20,9 +20,9 @@
     "error_title": "Lỗi rồi",
     "verify_email_error_title": "Xác minh tài khoản",
     "verify_email_error_description": "Tài khoản của bạn chưa được xác minh. Vui lòng xác minh địa chỉ email để tiếp tục sử dụng.",
-    "no_user_found_error_firebase_description": "Không tim thấy người dùng",
+    "no_user_found_error_firebase_description": "Không tìm thấy người dùng",
     "wrong_password_error_description": "Sai mật khẩu.",
-    "no_user_found_error_description": "Không tim thấy người dùng"
+    "no_user_found_error_description": "Không tìm thấy người dùng"
   },
   "register": {
     "register": "Đăng ký",

@@ -31,6 +31,8 @@ class NotHaveData extends StatelessWidget {
           MWButton(
             onPressed: () => onAddClick(),
             minWidth: 50.w,
+            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
+            borderRadius: BorderRadius.circular(8.r),
             child: Text(
               LocaleKeys.profile_add.trans(),
               style: UITextStyle.white_12_w600,

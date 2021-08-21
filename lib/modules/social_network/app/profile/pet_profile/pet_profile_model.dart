@@ -2,9 +2,11 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/ui/confirm_dialog.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/vaccinated/vaccinated_widget.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/weight/weight.dart';
 import 'package:meowoof/modules/social_network/app/profile/medical_record/worm_flushed/worm_flushed.dart';
+import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/posts_of_pet_widget.dart';
 import 'package:meowoof/modules/social_network/domain/events/pet/pet_deleted_event.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_pet_usecase.dart';
@@ -24,6 +26,8 @@ class PetProfileModel extends BaseViewModel {
   final FollowPetUsecase _followPetUsecase;
   final DeletePetUsecase _deletePetUsecase;
   final EventBus _eventBus;
+  final PostsOfPetWidgetController postsOfPetWidgetController =
+      PostsOfPetWidgetController();
 
   PetProfileModel(
     this._getDetailInfoPetUsecase,
@@ -34,23 +38,12 @@ class PetProfileModel extends BaseViewModel {
 
   @override
   void initState() {
-    _loadPetDetailInfo();
     super.initState();
+    _refreshPet();
   }
 
-  Future _loadPetDetailInfo() async {
-    await call(
-      () async {
-        pet.update(await _getDetailInfoPetUsecase.call(pet.id));
-      },
-      onSuccess: () {
-        _isLoaded.value = true;
-      },
-      onFailure: (err) {
-        _isLoaded.value = false;
-      },
-      showLoading: false,
-    );
+  Future _refreshPet() async {
+    pet.update(await _getDetailInfoPetUsecase.call(pet.id));
   }
 
   void onPetBlock(Pet pet) {}
@@ -112,23 +105,21 @@ class PetProfileModel extends BaseViewModel {
   }
 
   void onDeletePost(Pet mPet) {
-    Get.defaultDialog(
-      title: "Do you want delete ${mPet.name}?",
-      content: const Text(""),
-      onCancel: () {
-        return;
-      },
-      onConfirm: () {
-        Get.back();
-        deletePet(mPet);
-        return;
-      },
-      barrierDismissible: false,
-      backgroundColor: UIColor.white,
-      buttonColor: UIColor.primary,
-      textCancel: "Cancel",
-      textConfirm: "Confirm",
-      confirmTextColor: UIColor.white,
+    Get.dialog(
+      ConfirmDialog(
+        title: 'Confirm',
+        content: "Are you sure you want delete ${mPet.name}?",
+        confirmText: 'Xác nhận',
+        cancelText: 'Hủy',
+        onConfirm: () async {
+          Get.back();
+          deletePet(mPet);
+          return;
+        },
+        onCancel: () {
+          return;
+        },
+      ),
     );
   }
 
@@ -164,5 +155,12 @@ class PetProfileModel extends BaseViewModel {
   void disposeState() {
     tabController.dispose();
     super.disposeState();
+  }
+
+  Future<void> onRefresh() async {
+    await _refreshPet();
+    if (tabController.index == 1) {
+      postsOfPetWidgetController.refreshPost();
+    }
   }
 }

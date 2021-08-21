@@ -38,6 +38,8 @@ class AddPetWidgetModel extends BaseViewModel {
   bool? isAddMore;
   File? avatarFile;
 
+  late bool isBackToHome;
+
   AddPetWidgetModel(
     this._getPetTypesUsecase,
     this._getPetBreedUsecase,
@@ -62,8 +64,8 @@ class AddPetWidgetModel extends BaseViewModel {
     return call(
       () async => petBreeds = await _getPetBreedUsecase.call(idPetType),
       onSuccess: () {
-        if(petBreeds.isEmpty==true){
-          currentStepAddPet =3;
+        if (petBreeds.isEmpty == true) {
+          currentStepAddPet = 3;
           return;
         }
         currentStepAddPet++;
@@ -85,7 +87,11 @@ class AddPetWidgetModel extends BaseViewModel {
   }
 
   void doNotHavePet() {
-    Get.offAll(() => HomeMenuWidget());
+    if (!(isAddMore ?? true)) {
+      Get.offAll(() => HomeMenuWidget());
+    } else {
+      Get.back();
+    }
   }
 
   void unknownBreed() {
@@ -100,11 +106,15 @@ class AddPetWidgetModel extends BaseViewModel {
 
   bool validate() {
     if (pet.name == null || pet.name?.isEmpty == true) {
-      _toastService.warning(message: LocaleKeys.add_pet_name_invalid.trans(), context: Get.context!);
+      _toastService.warning(
+          message: LocaleKeys.add_pet_name_invalid.trans(),
+          context: Get.context!);
       return false;
     }
     if (pet.dob == null) {
-      _toastService.warning(message: LocaleKeys.add_pet_age_invalid.trans(), context: Get.context!);
+      _toastService.warning(
+          message: LocaleKeys.add_pet_age_invalid.trans(),
+          context: Get.context!);
       return false;
     }
     return true;
@@ -113,7 +123,8 @@ class AddPetWidgetModel extends BaseViewModel {
   Future<String?> _uploadMediaItem(File mediaFile) async {
     final String fileName = basename(mediaFile.path);
     // get presigned URL
-    final String? preSignedUrl = await _getPresignedAvatarPetUrlUsecase.run(fileName, pet.uuid ??= const Uuid().v4());
+    final String? preSignedUrl = await _getPresignedAvatarPetUrlUsecase.run(
+        fileName, pet.uuid ??= const Uuid().v4());
     // upload media to s3
     if (preSignedUrl != null) {
       printInfo(info: 'Uploading media to s3');
@@ -198,5 +209,18 @@ class AddPetWidgetModel extends BaseViewModel {
 
   set indexPetBreedSelected(int value) {
     _indexPetBreedSelected.value = value;
+  }
+
+  void onPressBack() {
+    if (currentStepAddPet == 1) {
+      Get.back();
+    } else {
+      if (petTypes.indexOf(petTypeSelected!) == petTypes.length - 1) {
+        // Unknow pet breed
+        currentStepAddPet = currentStepAddPet - 2;
+      } else {
+        currentStepAddPet--;
+      }
+    }
   }
 }

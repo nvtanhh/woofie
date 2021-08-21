@@ -44,7 +44,7 @@ class EditPetProfileWidgetModel extends BaseViewModel {
   @override
   void initState() {
     genderSelected = pet.gender ?? Gender.male;
-    petBreads = pet.petBreed==null?[]:[pet.petBreed!];
+    petBreads = pet.petBreed == null ? [] : [pet.petBreed!];
     introduceEditingController = TextEditingController(text: pet.bio ?? "");
     nameEditingController = TextEditingController(text: pet.name ?? "");
     datePicker = pet.dob;
@@ -85,6 +85,7 @@ class EditPetProfileWidgetModel extends BaseViewModel {
       pet.updateFromJson(nPet);
       pet.notifyUpdate();
       _toastService.success(message: "Update success", context: Get.context!);
+      Get.back();
     } catch (e) {
       _toastService.error(message: "Update fail", context: Get.context!);
       return;
@@ -93,7 +94,8 @@ class EditPetProfileWidgetModel extends BaseViewModel {
 
   Future onUpdateAvatarClick() async {
     List<File>? files;
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -108,7 +110,8 @@ class EditPetProfileWidgetModel extends BaseViewModel {
   Future<String?> _uploadMediaItem(File mediaFile) async {
     final String fileName = basename(mediaFile.path);
     // get presigned URL
-    final String? preSignedUrl = await _getPresignedAvatarPetUrlUsecase.run(fileName, pet.uuid ??= const Uuid().v4());
+    final String? preSignedUrl = await _getPresignedAvatarPetUrlUsecase.run(
+        fileName, pet.uuid ??= const Uuid().v4());
     // upload media to s3
     if (preSignedUrl != null) {
       printInfo(info: 'Uploading media to s3');
@@ -123,7 +126,8 @@ class EditPetProfileWidgetModel extends BaseViewModel {
   }
 
   void getPetBreads() {
-    call(() async => petBreads = await _getPetBreedUsecase.call(pet.petTypeId!), onSuccess: () {
+    call(() async => petBreads = await _getPetBreedUsecase.call(pet.petTypeId!),
+        onSuccess: () {
       _petBreads.refresh();
     });
   }

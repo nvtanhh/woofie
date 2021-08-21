@@ -24,7 +24,7 @@ class OtherInfoMenuWidget extends StatelessWidget {
           centerTitle: true,
           title: Text(
             LocaleKeys.profile_other_information.trans(),
-            style: UITextStyle.text_header_18_w700,
+            style: UITextStyle.text_header_18_w600,
           ),
           leading: IconButton(
             icon: const MWIcon(MWIcons.back),
@@ -40,7 +40,6 @@ class OtherInfoMenuWidget extends StatelessWidget {
                   children: [
                     MWIcon(
                       MWIcons.otherInformation,
-                      customSize: 24.w,
                     ),
                     SizedBox(
                       width: 12.w,
@@ -60,7 +59,6 @@ class OtherInfoMenuWidget extends StatelessWidget {
                   children: [
                     MWIcon(
                       MWIcons.petOwners,
-                      customSize: 24.w,
                     ),
                     SizedBox(
                       width: 12.w,
@@ -83,9 +81,8 @@ class OtherInfoMenuWidget extends StatelessWidget {
                   },
                   child: Row(
                     children: [
-                      MWIcon(
+                      const MWIcon(
                         MWIcons.delete,
-                        customSize: 24.w,
                       ),
                       SizedBox(
                         width: 12.w,
