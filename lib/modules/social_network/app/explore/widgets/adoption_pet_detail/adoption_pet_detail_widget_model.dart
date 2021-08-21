@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/confirm_functional_post/confirm_functional_post.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -18,11 +20,15 @@ import 'package:suga_core/suga_core.dart';
 class AdoptionPetDetailWidgetModel extends BaseViewModel {
   final Rxn<Post> _post = Rxn<Post>();
   final GetDetailPostUsecase _getDetailPostUsecase;
+  final PostService _postService;
   final RxBool _isLoaded = RxBool(false);
   Pet? matedPet;
   User? adopter;
 
-  AdoptionPetDetailWidgetModel(this._getDetailPostUsecase);
+  AdoptionPetDetailWidgetModel(
+    this._getDetailPostUsecase,
+    this._postService,
+  );
 
   @override
   void initState() {
@@ -30,10 +36,15 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
     super.initState();
   }
 
+  
+
   Future getPostDetail() async {
     await call(
       () async {
         post.update(await _getDetailPostUsecase.call(post.id));
+        if (post.distanceUserToPost == null) {
+          unawaited(_postService.calculateDistance(post));
+        }
         if (post.isClosed ?? false) {
           _handleClosedPost();
         }
