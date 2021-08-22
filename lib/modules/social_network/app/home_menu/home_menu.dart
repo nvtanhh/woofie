@@ -12,11 +12,13 @@ class HomeMenuWidget extends StatefulWidget {
   _HomeMenuWidgetState createState() => _HomeMenuWidgetState();
 }
 
-class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetModel> with TickerProviderStateMixin {
+class _HomeMenuWidgetState
+    extends BaseViewState<HomeMenuWidget, HomeMenuWidgetModel>
+    with TickerProviderStateMixin {
   @override
   void loadArguments() {
     viewModel.tabController = TabController(
-      length: viewModel.listScreen.length,
+      length: 4,
       vsync: this,
       initialIndex: viewModel.currentTab,
     );
@@ -115,7 +117,9 @@ class _HomeMenuWidgetState extends BaseViewState<HomeMenuWidget, HomeMenuWidgetM
           right: 0,
           child: Container(
             width: 20.w,
-            decoration: BoxDecoration(color: UIColor.danger, borderRadius: BorderRadius.circular(10.r)),
+            decoration: BoxDecoration(
+                color: UIColor.danger,
+                borderRadius: BorderRadius.circular(10.r)),
             child: Center(
               child: Text(
                 "${viewModel.countUnreadNotify}",

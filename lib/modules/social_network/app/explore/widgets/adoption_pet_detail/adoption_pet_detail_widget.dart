@@ -60,15 +60,16 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
               alignment: Alignment.topCenter,
               children: [
                 ImagesViewWidget(
-                  medias: viewModel.post.medias?.isEmpty ?? true
-                      ? [
-                          Media(
-                            id: 0,
-                            url: viewModel.taggedPet.avatarUrl ?? "",
-                            type: MediaType.image,
-                          )
-                        ]
-                      : viewModel.post.medias!,
+                  medias:
+                      viewModel.post.updateSubjectValue.medias?.isEmpty ?? true
+                          ? [
+                              Media(
+                                id: 0,
+                                url: viewModel.taggedPet.avatarUrl ?? "",
+                                type: MediaType.image,
+                              )
+                            ]
+                          : viewModel.post.updateSubjectValue.medias!,
                   height: Get.height / 2,
                   fit: BoxFit.cover,
                   counterPositionTop: false,
@@ -88,6 +89,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                         children: [
                           ButtonWidget(
                             onPress: () => Get.back(),
+                            contentPadding: EdgeInsets.zero,
                             width: 40.w,
                             height: 40.w,
                             borderRadius: 20.w,
@@ -95,11 +97,12 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             contentWidget: const MWIcon(MWIcons.back),
                           ),
                           PostActionsTrailing(
-                            post: viewModel.post,
+                            post: viewModel.post.updateSubjectValue,
                             onDeletePost: widget.onDeletePost,
                             onEditPost: widget.onEditPost,
                             onReportPost: widget.onReportPost,
                             child: ButtonWidget(
+                              contentPadding: EdgeInsets.zero,
                               width: 40.w,
                               height: 40.w,
                               borderRadius: 20.w,
@@ -168,7 +171,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                                             ),
                                             Flexible(
                                               child: Text(
-                                                "${viewModel.post.location?.name ?? ""} (${viewModel.post.distanceUserToPost?.toPrecision(1)} Km)",
+                                                "${viewModel.post.updateSubjectValue.location?.name ?? ""} ${_getDistanceToPost()}",
                                                 style: UITextStyle
                                                     .text_body_14_w500,
                                                 maxLines: 2,
@@ -223,7 +226,8 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                               Expanded(
                                 child: SingleChildScrollView(
                                   child: Text(
-                                    viewModel.post.content ?? "",
+                                    viewModel.post.updateSubjectValue.content ??
+                                        "",
                                     style: UITextStyle.text_body_14_w500,
                                   ),
                                 ),
@@ -231,20 +235,22 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             ],
                           ),
                         ),
-                        if (viewModel.post.isClosed ?? false)
+                        if (viewModel.post.updateSubjectValue.isClosed ?? false)
                           _buildClosedPostButton()
-                        else if (!viewModel.post.isMyPost)
+                        else if (!viewModel.post.updateSubjectValue.isMyPost)
                           ListTile(
                             contentPadding: const EdgeInsets.symmetric(),
                             leading: MWAvatar(
-                              avatarUrl:
-                                  viewModel.post.creator?.avatarUrl ?? '',
+                              avatarUrl: viewModel.post.updateSubjectValue
+                                      .creator?.avatarUrl ??
+                                  '',
                               borderRadius: 10.r,
                               onPressed: () =>
                                   viewModel.onWantsToGoToUserProfile(),
                             ),
                             title: Text(
-                              viewModel.post.creator?.name ?? "",
+                              viewModel.post.updateSubjectValue.creator?.name ??
+                                  "",
                               style: UITextStyle.text_header_16_w6002,
                             ),
                             subtitle: Text(
@@ -268,11 +274,12 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             child: ButtonWidget(
                               width: double.infinity,
                               height: 47.h,
-                              title: _getActionButtonTitleSelf(viewModel.post),
+                              title: _getActionButtonTitleSelf(
+                                  viewModel.post.updateSubjectValue),
                               onPress: viewModel.onConfirmFuntionalPost,
                               borderRadius: 15.r,
-                              backgroundColor:
-                                  _getActionButtonColor(viewModel.post),
+                              backgroundColor: _getActionButtonColor(
+                                  viewModel.post.updateSubjectValue),
                             ),
                           ),
                       ],
@@ -405,5 +412,12 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
         backgroundColor: UIColor.textSecondary,
       ),
     );
+  }
+
+  String _getDistanceToPost() {
+    if (viewModel.post.updateSubjectValue.distanceUserToPost == null) {
+      return '';
+    }
+    return '(${viewModel.post.updateSubjectValue.distanceUserToPost?.toPrecision(1)} Km)';
   }
 }

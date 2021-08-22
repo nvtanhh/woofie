@@ -9,6 +9,8 @@ import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/search_widget_model.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/widgets/pets_widget.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/widgets/services_widget.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/widgets/users_widget.dart';
+import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -21,11 +23,12 @@ class SearchWidget extends StatefulWidget {
   _SearchWidgetState createState() => _SearchWidgetState();
 }
 
-class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> with TickerProviderStateMixin {
+class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
+    with TickerProviderStateMixin {
   @override
   void loadArguments() {
     viewModel.tabController = TabController(
-      length: 2,
+      length: 3,
       vsync: this,
     );
     viewModel.keyWord = widget.textSearch;
@@ -56,34 +59,55 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> 
                   ),
                 ],
               ),
-              TabBar(
-                tabs: [
-                  Tab(
-                    child: Text(
-                      LocaleKeys.explore_pet.trans(),
-                      style: UITextStyle.text_header_14_w600,
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      LocaleKeys.explore_service.trans(),
-                      style: UITextStyle.text_header_14_w600,
-                    ),
-                  ),
-                ],
-                controller: viewModel.tabController,
-                onTap: (index) => viewModel.onTab(index),
-              ),
               Expanded(
-                child: TabBarView(
-                  controller: viewModel.tabController,
-                  children: [
-                    PetsWidget(
-                      pagingController: viewModel.petPagingController,
-                      follow: viewModel.followPet,
-                    ),
-                    ServicesWidget(pagingController: viewModel.servicePagingController),
-                  ],
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Column(
+                    children: [
+                      TabBar(
+                        indicatorColor: UIColor.primary,
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              LocaleKeys.explore_user.trans(),
+                              style: UITextStyle.text_header_14_w600,
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              LocaleKeys.explore_pet.trans(),
+                              style: UITextStyle.text_header_14_w600,
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              LocaleKeys.explore_service.trans(),
+                              style: UITextStyle.text_header_14_w600,
+                            ),
+                          ),
+                        ],
+                        controller: viewModel.tabController,
+                        onTap: (index) => viewModel.onTab(index),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          controller: viewModel.tabController,
+                          children: [
+                            UsersWidget(
+                                pagingController:
+                                    viewModel.userPagingController),
+                            PetsWidget(
+                              pagingController: viewModel.petPagingController,
+                              follow: viewModel.followPet,
+                            ),
+                            ServicesWidget(
+                                pagingController:
+                                    viewModel.servicePagingController),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

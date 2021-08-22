@@ -28,6 +28,12 @@ class HasuraDatasource {
           avatar_url
           gender
         }
+        location {
+          id
+          lat
+          long
+          name
+        }
         setting {
           id
           setting

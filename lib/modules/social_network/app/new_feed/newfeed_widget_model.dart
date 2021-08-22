@@ -100,7 +100,7 @@ class NewFeedWidgetModel extends BaseViewModel {
     if (scrollController.hasClients) {
       scrollController.animateTo(
         0,
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
     }
@@ -108,5 +108,9 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   void calculateDistance(Post post) {
     postService.calculateDistance(post);
+  }
+
+  void scrollToTop() {
+    _scrollToTop();
   }
 }

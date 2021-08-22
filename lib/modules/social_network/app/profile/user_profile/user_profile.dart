@@ -17,19 +17,22 @@ import 'package:suga_core/suga_core.dart';
 class UserProfile extends StatefulWidget {
   final User? user;
 
-  const UserProfile({Key? key, this.user}) : super(key: key);
+  final UserProfileController? controller;
+
+  const UserProfile({Key? key, this.user, this.controller}) : super(key: key);
 
   @override
-  _UserProfileState createState() => _UserProfileState();
+  UserProfileState createState() => UserProfileState();
 }
 
-class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
+class UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
     with AutomaticKeepAliveClientMixin {
   late bool _isFirstRoute;
 
   @override
   void loadArguments() {
     viewModel.user = widget.user;
+    widget.controller?.attach(context: context, state: this);
     super.loadArguments();
   }
 
@@ -86,6 +89,7 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
                   onRefresh: () async => viewModel.onRefresh(),
                   child: PagedListView<int, Post>(
                     pagingController: viewModel.postService.pagingController,
+                    scrollController: viewModel.scrollController,
                     builderDelegate: PagedChildBuilderDelegate(
                       itemBuilder: (context, post, index) {
                         if (index == 0) {
@@ -130,4 +134,20 @@ class _UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
 
   @override
   bool get wantKeepAlive => true;
+
+  void scrollToTop() {
+    viewModel.scrollToTop();
+  }
+}
+
+class UserProfileController {
+  late UserProfileState _state;
+  void attach(
+      {required BuildContext context, required UserProfileState state}) {
+    _state = state;
+  }
+
+  void scrollToTop() {
+    _state.scrollToTop();
+  }
 }

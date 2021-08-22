@@ -5,30 +5,40 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/delay_action_helper.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/service.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/search_pet_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/search_service_usecase.dart';
+import 'package:meowoof/modules/social_network/domain/usecases/explore/search_user_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/follow_pet_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
 class SearchWidgetModel extends BaseViewModel {
+  final SearchUserUsecase _searchUserUsecase;
   final SearchPetUsecase _searchPetUsecase;
   final SearchServiceUsecase _searchServiceUsecase;
   final FollowPetUsecase _followPetUsecase;
   late TabController tabController;
+  final RxList<User> _users = RxList<User>();
   final RxList<Pet> _pets = RxList<Pet>();
   final RxList<Service> _services = RxList<Service>();
 
-  final int pageSize = 10;
-  final PagingController<int, Pet> petPagingController = PagingController<int, Pet>(firstPageKey: 0);
-  final PagingController<int, Service> servicePagingController = PagingController<int, Service>(firstPageKey: 0);
+  final int pageSize = 50;
+  final PagingController<int, User> userPagingController =
+      PagingController<int, User>(firstPageKey: 0);
+  final PagingController<int, Pet> petPagingController =
+      PagingController<int, Pet>(firstPageKey: 0);
+  final PagingController<int, Service> servicePagingController =
+      PagingController<int, Service>(firstPageKey: 0);
   String? keyWord;
-  final DelayActionHelper _delayActionHelper = DelayActionHelper(milliseconds: 500);
+  final DelayActionHelper _delayActionHelper =
+      DelayActionHelper(milliseconds: 500);
 
   SearchWidgetModel(
     this._searchPetUsecase,
     this._searchServiceUsecase,
     this._followPetUsecase,
+    this._searchUserUsecase,
   );
 
   @override
@@ -43,12 +53,30 @@ class SearchWidgetModel extends BaseViewModel {
     _delayActionHelper.run(
       () {
         if (tabController.index == 0) {
-          searchPets(keyWord ?? "");
+          searchUsers(keyWord ?? "");
         } else if (tabController.index == 1) {
+          searchPets(keyWord ?? "");
+        } else if (tabController.index == 2) {
           searchServices(keyWord ?? "");
         }
       },
     );
+  }
+
+  Future searchUsers(String keyWord) async {
+    userPagingController.itemList?.clear();
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    userPagingController.notifyListeners();
+    await call(
+      () async =>
+          users = await _searchUserUsecase.call(keyWord, limit: pageSize),
+      showLoading: false,
+    );
+    if (users.length == pageSize) {
+      userPagingController.appendPage(users, users.length);
+    } else {
+      userPagingController.appendLastPage(users);
+    }
   }
 
   Future searchPets(String keyWord) async {
@@ -56,7 +84,7 @@ class SearchWidgetModel extends BaseViewModel {
     // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
     petPagingController.notifyListeners();
     await call(
-      () async => pets = await _searchPetUsecase.call(keyWord),
+      () async => pets = await _searchPetUsecase.call(keyWord, limit: pageSize),
       showLoading: false,
     );
     if (pets.length == pageSize) {
@@ -91,14 +119,22 @@ class SearchWidgetModel extends BaseViewModel {
   void searchData() {
     if (keyWord?.isEmpty == true) return;
     if (pets.isEmpty && tabController.index == 0) {
-      searchPets(keyWord ?? "");
+      searchUsers(keyWord ?? "");
     } else if (services.isEmpty && tabController.index == 1) {
+      searchPets(keyWord ?? "");
+    } else if (services.isEmpty && tabController.index == 2) {
       searchServices(keyWord ?? "");
     }
   }
 
   void onTab(int index) {
     searchData();
+  }
+
+  List<User> get users => _users.toList();
+
+  set users(List<User> value) {
+    _users.assignAll(value);
   }
 
   List<Pet> get pets => _pets.toList();
@@ -115,6 +151,7 @@ class SearchWidgetModel extends BaseViewModel {
 
   @override
   void disposeState() {
+    userPagingController.dispose();
     petPagingController.dispose();
     servicePagingController.dispose();
     tabController.dispose();

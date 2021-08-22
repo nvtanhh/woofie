@@ -4,16 +4,20 @@ import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/profile/pet_profile/widgets/other_infor/owner_history.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class OtherInfoMenuWidget extends StatelessWidget {
   final bool isMyPet;
   final Function? onDeletePost;
+  final Pet pet;
 
   const OtherInfoMenuWidget({
     Key? key,
     this.onDeletePost,
     required this.isMyPet,
+    required this.pet,
   }) : super(key: key);
 
   @override
@@ -31,70 +35,77 @@ class OtherInfoMenuWidget extends StatelessWidget {
             onPressed: () => Get.back(),
           ),
         ),
-        body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            children: [
-              InkWell(
-                child: Row(
-                  children: [
-                    MWIcon(
-                      MWIcons.otherInformation,
-                    ),
-                    SizedBox(
-                      width: 12.w,
-                    ),
-                    Text(
-                      LocaleKeys.profile_other_information.trans(),
-                      style: UITextStyle.text_body_14_w500,
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              InkWell(
-                child: Row(
-                  children: [
-                    MWIcon(
-                      MWIcons.petOwners,
-                    ),
-                    SizedBox(
-                      width: 12.w,
-                    ),
-                    Text(
-                      LocaleKeys.profile_pet_owners.trans(),
-                      style: UITextStyle.text_body_14_w500,
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              if (isMyPet)
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                    onDeletePost?.call();
-                  },
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                GestureDetector(
                   child: Row(
                     children: [
-                      const MWIcon(
-                        MWIcons.delete,
+                      MWIcon(
+                        MWIcons.otherInformation,
                       ),
                       SizedBox(
                         width: 12.w,
                       ),
                       Text(
-                        LocaleKeys.profile_delete_pet.trans(),
+                        LocaleKeys.profile_other_information.trans(),
                         style: UITextStyle.text_body_14_w500,
                       )
                     ],
                   ),
                 ),
-            ],
+                SizedBox(
+                  height: 20.h,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => PetOwnerHistoryScreen(
+                          ownerHistories: pet.allOwners ?? [],
+                        ));
+                  },
+                  child: Row(
+                    children: [
+                      MWIcon(
+                        MWIcons.petOwners,
+                      ),
+                      SizedBox(
+                        width: 12.w,
+                      ),
+                      Text(
+                        LocaleKeys.profile_pet_owners.trans(),
+                        style: UITextStyle.text_body_14_w500,
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                if (isMyPet)
+                  GestureDetector(
+                    onTap: () {
+                      Get.back();
+                      onDeletePost?.call();
+                    },
+                    child: Row(
+                      children: [
+                        const MWIcon(
+                          MWIcons.delete,
+                        ),
+                        SizedBox(
+                          width: 12.w,
+                        ),
+                        Text(
+                          LocaleKeys.profile_delete_pet.trans(),
+                          style: UITextStyle.text_body_14_w500,
+                        )
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

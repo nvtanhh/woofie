@@ -12,7 +12,6 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/delete_pet_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/follow_pet_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/profile/get_detail_info_pet_usecase.dart';
-import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
 @injectable
@@ -39,10 +38,10 @@ class PetProfileModel extends BaseViewModel {
   @override
   void initState() {
     super.initState();
-    _refreshPet();
+    _refreshPetDetail();
   }
 
-  Future _refreshPet() async {
+  Future _refreshPetDetail() async {
     pet.update(await _getDetailInfoPetUsecase.call(pet.id));
   }
 
@@ -158,7 +157,7 @@ class PetProfileModel extends BaseViewModel {
   }
 
   Future<void> onRefresh() async {
-    await _refreshPet();
+    await _refreshPetDetail();
     if (tabController.index == 1) {
       postsOfPetWidgetController.refreshPost();
     }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/gender.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
+import 'package:meowoof/modules/social_network/domain/models/pet/pet_owner_history.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
@@ -39,7 +40,7 @@ class Pet extends UpdatableModel<Pet> {
   @JsonKey(name: "current_owner")
   User? currentOwner;
   @JsonKey(name: "pet_owners", fromJson: allOwnersFromJson)
-  List<User>? allOwners;
+  List<PetOwnerHistory>? allOwners;
   @JsonKey(name: "pet_breed_id")
   int? petBreedId;
   @JsonKey(name: "pet_breed")
@@ -105,9 +106,9 @@ class Pet extends UpdatableModel<Pet> {
   @override
   int get hashCode => id.hashCode;
 
-  static List<User>? allOwnersFromJson(List<dynamic>? list) {
+  static List<PetOwnerHistory>? allOwnersFromJson(List<dynamic>? list) {
     return list
-        ?.map((e) => User.fromJson(e["owner"] as Map<String, dynamic>))
+        ?.map((e) => PetOwnerHistory.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 

@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
@@ -21,6 +22,8 @@ class NotificationWidgetModel extends BaseViewModel {
   CancelableOperation? cancelableOperation;
   final GetNotificationUsecase _getNotificationUsecase;
 
+  material.ScrollController scrollController = material.ScrollController();
+
   NotificationWidgetModel(
     this._getNotificationUsecase,
     this._deleteNotificationUsecase,
@@ -31,7 +34,8 @@ class NotificationWidgetModel extends BaseViewModel {
     pagingController = PagingController(firstPageKey: nextPageKey);
     pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation = CancelableOperation.fromFuture(_loadMoreNotification(pageKey));
+        cancelableOperation =
+            CancelableOperation.fromFuture(_loadMoreNotification(pageKey));
       },
     );
     super.initState();
@@ -99,7 +103,8 @@ class NotificationWidgetModel extends BaseViewModel {
   }
 
   void goToPost(int postId) {
-    Get.to(() => PostDetail(post: Post(id: postId, uuid: "", type: PostType.activity)));
+    Get.to(() =>
+        PostDetail(post: Post(id: postId, uuid: "", type: PostType.activity)));
   }
 
   @override
@@ -107,5 +112,15 @@ class NotificationWidgetModel extends BaseViewModel {
     cancelableOperation?.cancel();
     pagingController.dispose();
     super.disposeState();
+  }
+
+  void scrollToTop() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: material.Curves.easeOut,
+      );
+    }
   }
 }

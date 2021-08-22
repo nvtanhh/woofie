@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
+import 'package:meowoof/modules/social_network/data/datasources/user_datasource.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post_reaction.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -9,10 +10,15 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class ExploreRepository {
+  final UserDatasource _userDatasource;
   final PostDatasource _postDatasource;
   final PetDatasource _petDatasource;
 
-  ExploreRepository(this._postDatasource, this._petDatasource);
+  ExploreRepository(
+    this._postDatasource,
+    this._petDatasource,
+    this._userDatasource,
+  );
 
   Future<List<Service>> getServicesPet() async {
     return [];
@@ -83,5 +89,9 @@ class ExploreRepository {
 
   Future<List<Post>> getPostsByLocation(double lat, double long, int radius) {
     return _postDatasource.getPostsByLocation(lat, long, radius);
+  }
+
+  Future<List<User>> searchUser(String keyWord, int offset, int limit) {
+    return _userDatasource.searchUser(keyWord, offset, limit);
   }
 }

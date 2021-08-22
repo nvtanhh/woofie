@@ -20,9 +20,9 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
   final BoxFit? fit;
   final GestureConfig Function(ExtendedImageState)? initGestureConfigHandler;
   final ExtendedImageMode? mode;
-
   final String? placeHolderImage;
   final bool isConstraintsSize;
+  final bool clickable;
 
   const ImageWithPlaceHolderWidget({
     required this.imageUrl,
@@ -38,6 +38,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
     this.mode,
     this.placeHolderImage,
     this.isConstraintsSize = true,
+    this.clickable = true,
   });
 
   @override
@@ -46,10 +47,12 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
       return itemPlaceholder();
     } else {
       return GestureDetector(
-        onTap: () => injector<DialogService>().showZoomablePhotoBoxView(
-          imageUrl: imageUrl,
-          context: context,
-        ),
+        onTap: clickable
+            ? () => injector<DialogService>().showZoomablePhotoBoxView(
+                  imageUrl: imageUrl,
+                  context: context,
+                )
+            : null,
         child: ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(radius ?? topLeftRadius ?? 0),
@@ -107,7 +110,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
         image: DecorationImage(
-          image: AssetGenImage(placeHolderImage ?? "resources/images/fallbacks/avatar-fallback.jpg"),
+          image: AssetGenImage(placeHolderImage ??
+              "resources/images/fallbacks/avatar-fallback.jpg"),
           fit: BoxFit.cover,
         ),
       ),

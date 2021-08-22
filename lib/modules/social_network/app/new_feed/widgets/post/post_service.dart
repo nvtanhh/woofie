@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
+import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
@@ -338,14 +339,17 @@ class PostService extends BaseViewModel {
 
   Future<void> calculateDistance(Post post) async {
     if (post.location == null) return;
-    final UserLocation? userLocation = await getUserLocation(post.creator!);
+    final UserLocation? userLocation =
+        await getUserLocation(injector<LoggedInUser>().user!);
     if (userLocation != null) {
-      post.distanceUserToPost = Geolocator.distanceBetween(
-        userLocation.lat!,
-        userLocation.long!,
-        post.location!.lat!,
-        post.location!.long!,
-      ).toPrecision(1);
+      post.distanceUserToPost = (Geolocator.distanceBetween(
+                userLocation.lat!,
+                userLocation.long!,
+                post.location!.lat!,
+                post.location!.long!,
+              ) /
+              1000)
+          .toPrecision(1);
       post.notifyUpdate();
     }
   }

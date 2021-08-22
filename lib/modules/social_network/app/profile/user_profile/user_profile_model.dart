@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:event_bus/event_bus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
@@ -50,6 +51,7 @@ class UserProfileModel extends BaseViewModel {
   CancelableOperation? _cancelableOperationLoadInit,
       _cancelableOperationLoadMorePost;
 
+  ScrollController scrollController = ScrollController();
 
   UserProfileModel(
     this._getUseProfileUseacse,
@@ -276,5 +278,15 @@ class UserProfileModel extends BaseViewModel {
     _cancelableOperationLoadMorePost?.cancel();
     _petDeletedStreamSubscription?.cancel();
     super.disposeState();
+  }
+
+  void scrollToTop() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
   }
 }

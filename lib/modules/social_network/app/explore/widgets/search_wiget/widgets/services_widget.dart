@@ -16,6 +16,7 @@ class ServicesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PagedListView<int, Service>(
+      padding: EdgeInsets.only(top: 10.h),
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, service, index) {
           return ServiceWidget(

@@ -17,13 +17,22 @@ import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
 class NewFeedWidget extends StatefulWidget {
+  final NewFeedWidgetController? controller;
+  const NewFeedWidget({Key? key, this.controller}) : super(key: key);
+
   @override
-  _NewFeedWidgetState createState() => _NewFeedWidgetState();
+  NewFeedWidgetState createState() => NewFeedWidgetState();
 }
 
-class _NewFeedWidgetState
+class NewFeedWidgetState
     extends BaseViewState<NewFeedWidget, NewFeedWidgetModel>
     with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    widget.controller?.attach(context: context, state: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +60,8 @@ class _NewFeedWidgetState
                         onCommentClick: viewModel.postService.onCommentClick,
                         onLikeClick: viewModel.postService.onLikeClick,
                         onPostClick: viewModel.postService.onPostClick,
-                        onDeletePost: () =>
-                            viewModel.postService.onWantsToDeletePost(post, index),
+                        onDeletePost: () => viewModel.postService
+                            .onWantsToDeletePost(post, index),
                         onEditPost: () =>
                             viewModel.postService.onWantsToEditPost(post),
                         onReportPost: () =>
@@ -127,4 +136,20 @@ class _NewFeedWidgetState
 
   @override
   bool get wantKeepAlive => true;
+
+  void scrollToTop() {
+    viewModel.scrollToTop();
+  }
+}
+
+class NewFeedWidgetController {
+  late NewFeedWidgetState _state;
+  void attach(
+      {required BuildContext context, required NewFeedWidgetState state}) {
+    _state = state;
+  }
+
+  void scrollToTop() {
+    _state.scrollToTop();
+  }
 }

@@ -528,6 +528,7 @@ class PostDatasource {
         }
         location {
           id
+          name
           lat
           long
         }
