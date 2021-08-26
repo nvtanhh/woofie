@@ -38,7 +38,8 @@
   },
   "add_pet": {
     "add_pet": "Thêm thú cưng",
-    "do_not_have_pet": "Tôi chưa có thú cưng",
+    "do_not_have_pet": "Chưa có thú cưng",
+    "you_do_not_have_pet": "Bạn chưa có thú cưng",
     "unknown": "Không biết",
     "continue": "Tiếp tục",
     "done": "Hoàn tất",

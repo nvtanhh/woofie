@@ -38,7 +38,8 @@
   },
   "add_pet": {
     "add_pet": "Add pet",
-    "do_not_have_pet": "You don't have pet yet",
+    "do_not_have_pet": "Don't have pet yet",
+    "you_do_not_have_pet": "You don't have pet yet",
     "unknown": "Unknown",
     "continue": "Continue",
     "done": "Done",
