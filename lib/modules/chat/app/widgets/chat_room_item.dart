@@ -80,7 +80,7 @@ class ChatRoomItem extends StatelessWidget {
       return 'Bạn • $subTitle';
     } else {
       final String partnerName = room.privateChatPartner?.name ?? '';
-      return '$partnerName • $subTitle';
+      return subTitle;
     }
   }
 }

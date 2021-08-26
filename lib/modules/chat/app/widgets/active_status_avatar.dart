@@ -8,12 +8,15 @@ class ActiveStatusAvatar extends StatelessWidget {
 
   final double borderRadius;
 
+  final VoidCallback? onPressed;
+
   const ActiveStatusAvatar({
     Key? key,
     required this.avatarUrl,
     required this.isActive,
     this.isSmallSize = false,
     this.borderRadius = 10,
+    this.onPressed,
   }) : super(key: key);
 
   @override
@@ -21,11 +24,14 @@ class ActiveStatusAvatar extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: isActive ? const EdgeInsets.only(bottom: 3, right: 3) : EdgeInsets.zero,
+          padding: isActive
+              ? const EdgeInsets.only(bottom: 3, right: 3)
+              : EdgeInsets.zero,
           child: MWAvatar(
             avatarUrl: avatarUrl,
             borderRadius: borderRadius,
             size: isSmallSize ? MWAvatarSize.small : MWAvatarSize.medium,
+            onPressed: onPressed,
           ),
         ),
         if (isActive)

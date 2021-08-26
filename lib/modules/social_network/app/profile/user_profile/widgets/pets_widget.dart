@@ -97,8 +97,8 @@ class PetsWidget extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                    LocaleKeys.add_pet_do_not_have_pet.trans()),
+                                Text(LocaleKeys.add_pet_you_do_not_have_pet
+                                    .trans()),
                                 IconButton(
                                   onPressed: () => onPressAddPet(),
                                   icon: const Icon(
@@ -119,11 +119,11 @@ class PetsWidget extends StatelessWidget {
                         child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
                 : Obx(
                     () => ListView.builder(
-                      padding:
-                          EdgeInsets.only(left: 15.w, top: 5.h, bottom: 5.h),
+                      padding: EdgeInsets.only(
+                          left: 15.w, top: 5.h, bottom: 5.h, right: 16.w),
                       itemBuilder: (context, index) {
                         if (isMyPets && index == _list.length) {
-                          return InkWell(
+                          return GestureDetector(
                             onTap: () => onPressAddPet(),
                             child: Container(
                               width: 120.w,

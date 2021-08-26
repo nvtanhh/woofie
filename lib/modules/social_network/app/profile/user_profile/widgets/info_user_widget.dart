@@ -6,7 +6,6 @@ import 'package:meowoof/core/extensions/string_ext.dart ';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
-import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/edit_user_profile/edit_user_profile.dart';
@@ -14,7 +13,6 @@ import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/
 import 'package:meowoof/modules/social_network/app/profile/user_profile/widgets/user_menu_action_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
-import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class InfoUserWidget extends StatelessWidget {
@@ -77,7 +75,7 @@ class InfoUserWidget extends StatelessWidget {
               ),
               Obx(
                 () => Text(
-                  user.updateSubjectValue.name ?? "Unknown",
+                  user.updateSubjectValue.name ?? "",
                   style: UITextStyle.text_header_24_w600,
                 ),
               ),
@@ -86,7 +84,7 @@ class InfoUserWidget extends StatelessWidget {
               ),
               Obx(
                 () => Text(
-                  user.updateSubjectValue.bio ?? "Unknown",
+                  user.updateSubjectValue.bio ?? "",
                   style: UITextStyle.text_body_14_w500,
                 ),
               ),
