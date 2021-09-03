@@ -51,8 +51,8 @@
     "pet_female": "Female",
     "age": "Age",
     "gender": "Gender",
-    "age_invalid": "Invalid name! ",
-    "name_invalid": "Invalid age!",
+    "age_invalid": "Invalid age! ",
+    "name_invalid": "Invalid name!",
     "pet_description": "Pet description"
   },
   "new_feed": {

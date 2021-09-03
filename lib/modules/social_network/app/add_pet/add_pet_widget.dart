@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,13 +17,14 @@ import 'package:suga_core/suga_core.dart';
 
 class AddPetWidget extends StatefulWidget {
   final bool? isAddMore;
+
   const AddPetWidget({Key? key, this.isAddMore}) : super(key: key);
+
   @override
   _AddPetWidgetState createState() => _AddPetWidgetState();
 }
 
-class _AddPetWidgetState
-    extends BaseViewState<AddPetWidget, AddPetWidgetModel> {
+class _AddPetWidgetState extends BaseViewState<AddPetWidget, AddPetWidgetModel> {
   @override
   void loadArguments() {
     viewModel.isAddMore = widget.isAddMore;
@@ -132,36 +134,31 @@ class _AddPetWidgetState
                     ],
                   );
                 case 3:
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
-                    ),
-                    child: TextButton(
-                      onPressed: () => viewModel.onDone(),
-                      style: TextButton.styleFrom(
-                        backgroundColor: UIColor.primary,
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(25.r),
-                            topRight: Radius.circular(25.r),
-                          ),
+                  return TextButton(
+                    onPressed: () => viewModel.onDone(),
+                    style: TextButton.styleFrom(
+                      backgroundColor: UIColor.primary,
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.r),
+                          topRight: Radius.circular(20.r),
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 67.h,
-                            child: Center(
-                              child: Text(
-                                LocaleKeys.add_pet_done.trans(),
-                                style: UITextStyle.white_18_w500,
-                              ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 67.h,
+                          child: Center(
+                            child: Text(
+                              LocaleKeys.add_pet_done.trans(),
+                              style: UITextStyle.white_18_w500,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                 default:

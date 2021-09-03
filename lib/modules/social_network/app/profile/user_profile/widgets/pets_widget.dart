@@ -20,7 +20,6 @@ class PetsWidget extends StatelessWidget {
   final User user;
   final Function(Pet)? onFollow;
   final bool isMyPets;
-  final RxList<Pet> _list = RxList();
 
   PetsWidget({
     Key? key,
@@ -31,13 +30,11 @@ class PetsWidget extends StatelessWidget {
     if (user.currentPets == null) {
       user.currentPets = [];
       user.notifyUpdate();
-    } else {
-      _list.assignAll(user.currentPets!);
     }
     injector<EventBus>().on<PetDeletedEvent>().listen(
       (event) {
-        _list.removeWhere((element) => element.id == event.pet.id);
-        _list.refresh();
+        user.currentPets?.removeWhere((element) => element.id == event.pet.id);
+        user.notifyUpdate();
       },
     );
   }
@@ -49,9 +46,7 @@ class PetsWidget extends StatelessWidget {
       ),
     );
     if (petNew != null) {
-      _list.add(petNew as Pet);
-      _list.refresh();
-      user.currentPets?.add(petNew);
+      user.currentPets?.add(petNew as Pet);
       user.notifyUpdate();
     }
   }
@@ -71,104 +66,90 @@ class PetsWidget extends StatelessWidget {
         SizedBox(
           height: 5.h,
         ),
-        GestureDetector(
-          onTap: onPressAddPet,
-          child: SizedBox(
-            height: 190.h,
-            child: user.currentPets?.isEmpty ?? true
-                ? isMyPets
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 160.w,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: UIColor.dimGray,
-                                  blurRadius: 5,
-                                  offset: Offset(2, 0),
-                                  spreadRadius: 2,
-                                ),
-                              ],
-                              color: UIColor.white,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(LocaleKeys.add_pet_you_do_not_have_pet
-                                    .trans()),
-                                IconButton(
-                                  onPressed: () => onPressAddPet(),
-                                  icon: const Icon(
-                                    Icons.add_box_outlined,
-                                    color: UIColor.textBody,
-                                  ),
-                                ),
-                                Text(
-                                  LocaleKeys.profile_add_pet.trans(),
-                                  style: UITextStyle.text_body_12_w600,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
-                    : Center(
-                        child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
-                : Obx(
-                    () => ListView.builder(
+        SizedBox(
+          height: 190.h,
+          child: Obx(
+            () {
+              return user.updateSubjectValue.currentPets?.isEmpty ?? true
+                  ? isMyPets
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            buildCardAddPet(showTitle: true),
+                          ],
+                        )
+                      : Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
+                  : ListView.builder(
                       padding: EdgeInsets.only(
-                          left: 15.w, top: 5.h, bottom: 5.h, right: 16.w),
+                        left: 15.w,
+                        top: 5.h,
+                        bottom: 5.h,
+                        right: 16.w,
+                      ),
                       itemBuilder: (context, index) {
-                        if (isMyPets && index == _list.length) {
-                          return GestureDetector(
-                            onTap: () => onPressAddPet(),
-                            child: Container(
-                              width: 120.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: UIColor.dimGray,
-                                    blurRadius: 5,
-                                    offset: Offset(2, 0),
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                                color: UIColor.white,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const MWIcon(
-                                    MWIcons.addOutlined,
-                                    color: UIColor.textBody,
-                                  ),
-                                  Text(
-                                    LocaleKeys.profile_add_pet.trans(),
-                                    style: UITextStyle.text_body_12_w600,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                        if (isMyPets && index == user.currentPets!.length) {
+                          return buildCardAddPet();
                         }
                         return PreviewFollowPet(
-                          pet: _list[index].updateSubjectValue,
+                          pet: user.currentPets![index].updateSubjectValue,
                           onFollow: onFollow,
                           margin: EdgeInsets.only(right: 12.w),
                           isMyPet: isMyPets,
                         );
                       },
-                      itemCount: isMyPets ? _list.length + 1 : _list.length,
+                      itemCount: isMyPets ? user.currentPets!.length + 1 : user.currentPets!.length,
                       scrollDirection: Axis.horizontal,
-                    ),
-                  ),
+                    );
+            },
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildCardAddPet({bool showTitle = false}) {
+    return GestureDetector(
+      onTap: () => onPressAddPet(),
+      child: Container(
+        width: showTitle ? 150.w : 120.w,
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.r),
+          boxShadow: const [
+            BoxShadow(
+              color: UIColor.dimGray,
+              blurRadius: 5,
+              offset: Offset(2, 0),
+              spreadRadius: 2,
+            ),
+          ],
+          color: UIColor.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (showTitle)
+              Text(
+                LocaleKeys.add_pet_you_do_not_have_pet.trans(),
+                textAlign: TextAlign.center,
+              ),
+            SizedBox(
+              height: 5.h,
+            ),
+            const MWIcon(
+              MWIcons.addOutlined,
+              color: UIColor.textBody,
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            Text(
+              LocaleKeys.profile_add_pet.trans(),
+              style: UITextStyle.text_body_12_w600,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
