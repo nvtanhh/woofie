@@ -29,7 +29,11 @@ class Post extends UpdatableModel<Post> {
   String? creatorUUID;
   @JsonKey(name: "type")
   PostType type;
-  @JsonKey(name: "user")
+  @JsonKey(
+    name: "user",
+    toJson: toNull,
+    includeIfNull: false,
+  )
   User? creator;
   @JsonKey(name: "is_my_post")
   bool? _isMyPost;
@@ -75,6 +79,8 @@ class Post extends UpdatableModel<Post> {
     this.location,
     this.additionalData,
   }) : super(id);
+
+  static toNull(_) => null;
 
   bool get isIncludeLocation => location != null;
 
@@ -131,6 +137,24 @@ class Post extends UpdatableModel<Post> {
       Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
+  // Map<String, dynamic> toJsonMessage() => <String, dynamic>{
+  //       'id': id,
+  //       'uuid': uuid,
+  //       'content': content,
+  //       'is_closed': isClosed,
+  //       'created_at': createdAt?.toIso8601String(),
+  //       'creator_uuid': creatorUUID,
+  //       'type': _$PostTypeEnumMap[type],
+  //       'is_liked': isLiked,
+  //       'comments': comments?.map((e) => e.toJson()).toList(),
+  //       'post_pets': taggegPets?.map((e) => e.toJson()).toList(),
+  //       'medias': medias?.map((e) => e.toJson()).toList(),
+  //       'location': location?.toJson(),
+  //       'status': _$PostStatusEnumMap[status],
+  //       'distance_user_to_post': distanceUserToPost,
+  //       'post_reacts_aggregate': postReactsCount,
+  //       'additional_data': additionalData,
+  //     };
 
   String toJsonString() => json.encode(toJson());
 

@@ -318,8 +318,11 @@ class ChatRoomPageModel extends BaseViewModel {
             sendingMessage.content = await _startUploadMedia(mediaToUpload);
             newMessage = await _sendMessage(sendingMessage);
           } else if (sendingMessage.type == MessageType.post) {
-            final isConfirmed = await _showConfirmActionFunctionalPost();
-            if (!isConfirmed) return;
+            if (_isShowConfirmActionDialog()) {
+              final isConfirmed = await _showConfirmActionFunctionalPost();
+              if (!isConfirmed) return;
+            }
+
             Pet? petToMatinng;
             if (attachmentPost.value!.type == PostType.mating) {
               await injector<BottomSheetService>().showTagPetBottomSheet(
@@ -335,7 +338,9 @@ class ChatRoomPageModel extends BaseViewModel {
               );
               if (petToMatinng == null) return;
             }
-            final Map contentMap = {'post': attachmentPost.value!.toJson()};
+            final Map contentMap = {
+              'post': attachmentPost.value!.toJson()
+            };
             if (petToMatinng != null) {
               contentMap['additional_data'] = petToMatinng!.toJson();
             }
@@ -490,7 +495,7 @@ class ChatRoomPageModel extends BaseViewModel {
   }
 
   Future _triggerFunctionalPost(Post post, {int? matingPetId}) async {
-    if (post.type != PostType.adop || !post.isLiked!) {
+    if (post.type != PostType.lose && !post.isLiked!) {
       await call(
         () async => _saveFunctionalPostReact.call(
             postId: post.id, matingPetId: matingPetId),
@@ -525,6 +530,18 @@ class ChatRoomPageModel extends BaseViewModel {
 
   bool _isCanMating(Pet pet) {
     final Pet postPet = attachmentPost.value!.taggegPets![0];
+    if (pet.dob == null) {
+      Get.dialog(
+        const ConfirmDialog(
+          title: 'Chưa thể ghép đôi',
+          content:
+              'Bạn cần cập nhật ngày sinh của thú cưng trước khi ghép đôi. Đảm bảo thú cưng của bạn đủ tuôi để ghép đôi.',
+          confirmText: 'Đã hiểu',
+          cancelText: '',
+        ),
+      );
+      return false;
+    }
     if (AgeCalculator.age(pet.dob!).months < 6) {
       Get.dialog(
         const ConfirmDialog(
@@ -549,5 +566,10 @@ class ChatRoomPageModel extends BaseViewModel {
       return false;
     }
     return true;
+  }
+
+  bool _isShowConfirmActionDialog() {
+    return attachmentPost.value!.type == PostType.adop ||
+        attachmentPost.value!.type == PostType.mating;
   }
 }

@@ -23,9 +23,13 @@ class User extends UpdatableModel<User> {
   String? phoneNumber;
   @JsonKey(name: "email")
   String? email;
-  @JsonKey(name: "current_pets")
+  @JsonKey(name: "current_pets", toJson: toNull, includeIfNull: false)
   List<Pet>? currentPets;
-  @JsonKey(name: "all_pets", fromJson: allPetsFromJson)
+  @JsonKey(
+      name: "all_pets",
+      fromJson: allPetsFromJson,
+      toJson: toNull,
+      includeIfNull: false)
   List<Pet>? allPets;
   @JsonKey(name: "avatar")
   Media? avatar;
@@ -51,6 +55,8 @@ class User extends UpdatableModel<User> {
       this.dob,
       this.avatarUrl})
       : super(uuid);
+
+  static toNull(_) => null;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);

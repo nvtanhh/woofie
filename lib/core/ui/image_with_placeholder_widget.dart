@@ -64,7 +64,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
             imageUrl,
             height: isConstraintsSize ? height ?? 180.0.h : null,
             width: isConstraintsSize ? width ?? 180.0.w : null,
-            fit: fit ?? BoxFit.fill,
+            fit: fit ?? BoxFit.cover,
             initGestureConfigHandler: initGestureConfigHandler,
             mode: mode ?? ExtendedImageMode.none,
             loadStateChanged: (e) {

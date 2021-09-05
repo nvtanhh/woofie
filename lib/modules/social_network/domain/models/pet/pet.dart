@@ -37,9 +37,13 @@ class Pet extends UpdatableModel<Pet> {
   Media? avatar;
   @JsonKey(name: "current_owner_uuid")
   String? currentOwnerUuid;
-  @JsonKey(name: "current_owner")
+  @JsonKey(name: "current_owner", toJson: toNull, includeIfNull: false)
   User? currentOwner;
-  @JsonKey(name: "pet_owners", fromJson: allOwnersFromJson)
+  @JsonKey(
+      name: "pet_owners",
+      fromJson: allOwnersFromJson,
+      toJson: toNull,
+      includeIfNull: false)
   List<PetOwnerHistory>? allOwners;
   @JsonKey(name: "pet_breed_id")
   int? petBreedId;
@@ -76,6 +80,8 @@ class Pet extends UpdatableModel<Pet> {
       this.avatarUrl})
       : super(id);
 
+  static toNull(_) => null;
+
   factory Pet.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
   }
@@ -107,6 +113,7 @@ class Pet extends UpdatableModel<Pet> {
   int get hashCode => id.hashCode;
 
   static List<PetOwnerHistory>? allOwnersFromJson(List<dynamic>? list) {
+    if (list?.isEmpty ?? true) return null;
     return list
         ?.map((e) => PetOwnerHistory.fromJson(e as Map<String, dynamic>))
         .toList();
