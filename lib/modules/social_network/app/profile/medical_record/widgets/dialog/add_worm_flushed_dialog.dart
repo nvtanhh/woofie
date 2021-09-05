@@ -38,6 +38,11 @@ class AddWormFlushedDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(15.r),
+        ),
+      ),
       elevation: 0,
       child: Container(
         width: 400.w,
@@ -64,7 +69,7 @@ class AddWormFlushedDialog extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 20.h,
                   ),
                   Text(
                     LocaleKeys.profile_select_date.trans(),

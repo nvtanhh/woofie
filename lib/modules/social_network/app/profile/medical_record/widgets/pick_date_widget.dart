@@ -25,7 +25,7 @@ class PickDateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
           border: Border.all(color: UIColor.silverSand),
           borderRadius: BorderRadius.circular(5.r)),

@@ -55,11 +55,17 @@ class AddWeightDialog extends StatelessWidget {
     weight.value = doubleValueParse;
   }
 
-  final outSizeBorder = const OutlineInputBorder(borderSide: BorderSide(color: UIColor.silverSand));
+  final outSizeBorder = const OutlineInputBorder(
+      borderSide: BorderSide(color: UIColor.silverSand));
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(15.r),
+        ),
+      ),
       elevation: 0,
       child: Container(
         width: 400.w,
@@ -105,7 +111,8 @@ class AddWeightDialog extends StatelessWidget {
                       value: weight.value,
                       onChanged: (value) {
                         weight.value = value.toPrecision(1);
-                        _weightEditController.text = value.toPrecision(1).toString();
+                        _weightEditController.text =
+                            value.toPrecision(1).toString();
                         if (value == maxWeight) {
                           if (maxWeight >= 200) return;
                           maxWeight += 10;
@@ -141,6 +148,7 @@ class AddWeightDialog extends StatelessWidget {
                       Get.back();
                     }
                   },
+                  borderRadius: BorderRadius.circular(10.r),
                   child: Text(
                     LocaleKeys.profile_cancel.trans(),
                     style: UITextStyle.white_18_w500,
@@ -152,8 +160,11 @@ class AddWeightDialog extends StatelessWidget {
                       Get.back(result: petWeight);
                     }
                   },
+                  borderRadius: BorderRadius.circular(10.r),
                   child: Text(
-                    isUpdate?LocaleKeys.profile_save.trans():LocaleKeys.profile_add.trans(),
+                    isUpdate
+                        ? LocaleKeys.profile_save.trans()
+                        : LocaleKeys.profile_add.trans(),
                     style: UITextStyle.white_18_w500,
                   ),
                 ),
@@ -168,11 +179,15 @@ class AddWeightDialog extends StatelessWidget {
   bool validate() {
     petWeight!.weight = weight.value;
     if ((petWeight!.weight ?? 0) < 0.5 || (petWeight!.weight ?? 0) > 210) {
-      toastService.warning(message: LocaleKeys.profile_weight_invalid.trans(), context: Get.context!);
+      toastService.warning(
+          message: LocaleKeys.profile_weight_invalid.trans(),
+          context: Get.context!);
       return false;
     }
     if (petWeight!.date == null) {
-      toastService.warning(message: LocaleKeys.profile_date_invalid.trans(), context: Get.context!);
+      toastService.warning(
+          message: LocaleKeys.profile_date_invalid.trans(),
+          context: Get.context!);
       return false;
     }
     return true;

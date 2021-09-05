@@ -21,7 +21,8 @@ class AddVaccinatedDialog extends StatelessWidget {
   bool isUpdate = false;
   ToastService toastService = injector<ToastService>();
 
-  final outSizeBorder = const OutlineInputBorder(borderSide: BorderSide(color: UIColor.silverSand));
+  final outSizeBorder = const OutlineInputBorder(
+      borderSide: BorderSide(color: UIColor.silverSand));
 
   AddVaccinatedDialog({Key? key, this.petVaccinated}) : super(key: key) {
     if (petVaccinated != null) {
@@ -37,14 +38,15 @@ class AddVaccinatedDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(15.r),
+        ),
+      ),
       child: Container(
         width: 400.w,
         height: 400.h,
-        decoration: BoxDecoration(
-          color: UIColor.white,
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        padding: EdgeInsets.all(10.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -62,14 +64,14 @@ class AddVaccinatedDialog extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 20.h,
                   ),
                   Text(
                     LocaleKeys.profile_select_date.trans(),
                     style: UITextStyle.text_header_18_w600,
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 5.h,
                   ),
                   PickDateWidget(
                     onDateSelected: onDateSelected,
@@ -82,13 +84,16 @@ class AddVaccinatedDialog extends StatelessWidget {
                     LocaleKeys.profile_vaccine_name.trans(),
                     style: UITextStyle.text_header_18_w600,
                   ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
                   TextField(
                     controller: _vaccineNameEditController,
                     decoration: InputDecoration(
                       border: outSizeBorder,
                       enabledBorder: outSizeBorder,
                       focusedBorder: outSizeBorder,
-                      contentPadding: EdgeInsets.all(5.w),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
                       suffixIcon: const MWIcon(
                         MWIcons.edit,
                         color: UIColor.accent,
@@ -102,13 +107,16 @@ class AddVaccinatedDialog extends StatelessWidget {
                     LocaleKeys.profile_description.trans(),
                     style: UITextStyle.text_header_18_w600,
                   ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
                   TextField(
                     controller: _descriptionEditController,
                     decoration: InputDecoration(
                       border: outSizeBorder,
                       enabledBorder: outSizeBorder,
                       focusedBorder: outSizeBorder,
-                      contentPadding: EdgeInsets.all(5.w),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
                       suffixIcon: const MWIcon(
                         MWIcons.edit,
                         color: UIColor.accent,
@@ -127,6 +135,7 @@ class AddVaccinatedDialog extends StatelessWidget {
                       Get.back();
                     }
                   },
+                  borderRadius: BorderRadius.circular(10.r),
                   child: Text(
                     LocaleKeys.profile_cancel.trans(),
                     style: UITextStyle.white_16_w500,
@@ -138,8 +147,11 @@ class AddVaccinatedDialog extends StatelessWidget {
                       Get.back(result: petVaccinated);
                     }
                   },
+                  borderRadius: BorderRadius.circular(10.r),
                   child: Text(
-                    isUpdate?LocaleKeys.profile_save.trans():LocaleKeys.profile_add.trans(),
+                    isUpdate
+                        ? LocaleKeys.profile_save.trans()
+                        : LocaleKeys.profile_add.trans(),
                     style: UITextStyle.white_16_w500,
                   ),
                 ),
@@ -155,11 +167,15 @@ class AddVaccinatedDialog extends StatelessWidget {
     petVaccinated?.description = _descriptionEditController.text;
     petVaccinated?.name = _vaccineNameEditController.text;
     if (petVaccinated!.name == null || petVaccinated?.name?.isEmpty == true) {
-      toastService.warning(message: LocaleKeys.profile_vaccinate_name_invalid.trans(), context: Get.context!);
+      toastService.warning(
+          message: LocaleKeys.profile_vaccinate_name_invalid.trans(),
+          context: Get.context!);
       return false;
     }
     if (petVaccinated!.date == null) {
-      toastService.warning(message: LocaleKeys.profile_date_invalid.trans(), context: Get.context!);
+      toastService.warning(
+          message: LocaleKeys.profile_date_invalid.trans(),
+          context: Get.context!);
       return false;
     }
     return true;
