@@ -19,7 +19,8 @@ class AddWormFlushedDialog extends StatelessWidget {
   PetWormFlushed? petWormFlushed;
   ToastService toastService = injector<ToastService>();
 
-  final outSizeBorder = const OutlineInputBorder(borderSide: BorderSide(color: UIColor.silverSand));
+  final outSizeBorder = const OutlineInputBorder(
+      borderSide: BorderSide(color: UIColor.silverSand));
   bool isUpdate = false;
 
   AddWormFlushedDialog({
@@ -70,18 +71,21 @@ class AddWormFlushedDialog extends StatelessWidget {
                     style: UITextStyle.text_header_18_w600,
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 5.h,
                   ),
                   PickDateWidget(
                     onDateSelected: onDateSelected,
                     datePick: petWormFlushed?.date,
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 15.h,
                   ),
                   Text(
                     LocaleKeys.profile_description.trans(),
                     style: UITextStyle.text_header_18_w600,
+                  ),
+                  SizedBox(
+                    height: 5.h,
                   ),
                   TextField(
                     controller: _descriptionEditController,
@@ -89,7 +93,7 @@ class AddWormFlushedDialog extends StatelessWidget {
                       border: outSizeBorder,
                       enabledBorder: outSizeBorder,
                       focusedBorder: outSizeBorder,
-                      contentPadding: EdgeInsets.all(5.w),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
                       suffixIcon: const MWIcon(
                         MWIcons.edit,
                         color: UIColor.accent,
@@ -108,6 +112,7 @@ class AddWormFlushedDialog extends StatelessWidget {
                       Get.back();
                     }
                   },
+                  borderRadius: BorderRadius.circular(10.r),
                   child: Text(
                     LocaleKeys.profile_cancel.trans(),
                     style: UITextStyle.white_16_w500,
@@ -119,8 +124,11 @@ class AddWormFlushedDialog extends StatelessWidget {
                       Get.back(result: petWormFlushed);
                     }
                   },
+                  borderRadius: BorderRadius.circular(10.r),
                   child: Text(
-                    isUpdate ? LocaleKeys.profile_save.trans() : LocaleKeys.profile_add.trans(),
+                    isUpdate
+                        ? LocaleKeys.profile_save.trans()
+                        : LocaleKeys.profile_add.trans(),
                     style: UITextStyle.white_16_w500,
                   ),
                 ),
@@ -135,7 +143,9 @@ class AddWormFlushedDialog extends StatelessWidget {
   bool validate() {
     petWormFlushed!.description = _descriptionEditController.text;
     if (petWormFlushed!.date == null) {
-      toastService.warning(message: LocaleKeys.profile_date_invalid.trans(), context: Get.context!);
+      toastService.warning(
+          message: LocaleKeys.profile_date_invalid.trans(),
+          context: Get.context!);
       return false;
     }
     return true;

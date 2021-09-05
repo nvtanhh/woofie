@@ -25,15 +25,19 @@ class PickDateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 5.w),
-      decoration: BoxDecoration(border: Border.all(color: UIColor.silverSand), borderRadius: BorderRadius.circular(5.r)),
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      decoration: BoxDecoration(
+          border: Border.all(color: UIColor.silverSand),
+          borderRadius: BorderRadius.circular(5.r)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Obx(
             () => Text(
               data.value.isEmpty ? "dd/mm/yyyy" : data.value,
-              style: data.value.isEmpty ? UITextStyle.second_12_medium : UITextStyle.text_body_12_w600,
+              style: data.value.isEmpty
+                  ? UITextStyle.second_12_medium
+                  : UITextStyle.text_body_12_w600,
             ),
           ),
           IconButton(
