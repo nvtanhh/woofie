@@ -27,6 +27,7 @@ class HasuraDatasource {
           bio
           avatar_url
           gender
+          dob
         }
         location {
           id
