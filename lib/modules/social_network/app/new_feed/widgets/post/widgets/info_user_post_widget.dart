@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
@@ -32,12 +33,9 @@ class InfoUserPostWidget extends StatelessWidget {
       height: 55.w,
       child: Row(
         children: [
-          ImageWithPlaceHolderWidget(
-            width: 45.w,
-            height: 45.w,
-            fit: BoxFit.fill,
-            imageUrl: user.avatarUrl ?? "",
-            radius: 10.r,
+          MWAvatar(
+            avatarUrl: user.avatarUrl ?? "",
+            borderRadius: 10.r,
           ),
           SizedBox(
             width: 10.w,
@@ -45,16 +43,18 @@ class InfoUserPostWidget extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text.rich(
                   TextSpan(
                       text: user.name,
                       children: createTagPet(),
                       style: UITextStyle.text_header_16_w600,
-                      recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(user)),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => openProfileUser(user)),
                   maxLines: 2,
                 ),
+                SizedBox(height: 3.h),
                 Text(
                   time_ago.format(postCreatedAt, locale: 'vi'),
                   style: UITextStyle.text_secondary_12_w500,
@@ -90,7 +90,8 @@ class InfoUserPostWidget extends StatelessWidget {
         TextSpan(
           text: "${pets[i].name}${i != pets.length - 1 ? ", " : " "}",
           style: UITextStyle.text_header_16_w600,
-          recognizer: TapGestureRecognizer()..onTap = () => openProfilePet(pets[i]),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => openProfilePet(pets[i]),
         ),
       );
     }

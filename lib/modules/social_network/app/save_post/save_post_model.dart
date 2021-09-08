@@ -316,7 +316,7 @@ class SavePostModel extends BaseViewModel {
   void _checkIsPostEdited() {
     final Function eq = const ListEquality().equals;
     final bool isContentChanged =
-        contentController.text != (post?.content ?? '');
+        contentController.text.trim() != (post?.content ?? '');
     final bool isTaggedPetsChanged =
         !(eq(taggedPets, post?.taggegPets ?? []) as bool);
     final bool isLocationChanged = _currentLocation.value != post?.location;

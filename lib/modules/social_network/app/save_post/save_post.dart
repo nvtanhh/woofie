@@ -162,6 +162,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
             child: Obx(
               () => MWButton(
                 minWidth: 35.w,
+                // padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
                 onPressed: viewModel.onWantsToContinue,
                 isDisabled: viewModel.isDisable,
                 borderRadius: BorderRadius.circular(5.r),

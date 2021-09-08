@@ -173,8 +173,8 @@
   "save_post": {
     "create_post": "Tạo bài viết",
     "edit_post": "Chỉnh sửa bài viết",
-    "post_action": "Đăng bài",
-    "update_action": "Cập nhật",
+    "post_action": "Đăng",
+    "update_action": "Lưu",
     "tag_your_pet_text": "Gắn thẻ thú cưng",
     "tag_your_pet_error_title": "Xin lỗi!...🐶",
     "tag_your_pet_error_description": "Hiện tại bạn chưa có thú cưng nào, hãy sở hữu 1 bé trước nhé!",

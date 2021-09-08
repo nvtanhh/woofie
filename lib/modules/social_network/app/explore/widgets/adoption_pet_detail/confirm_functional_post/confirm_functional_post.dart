@@ -143,8 +143,8 @@ class _ConfirmGivePetState
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Text(
           widget.post.type == PostType.adop
-              ? 'Rất tiết chưa có ai nhận nuôi thú cưng của bạn.'
-              : 'Rất tiết thú cưng của bạn chưa có yêu cầu ghép đôi nào.',
+              ? 'Rất tiếc chưa có ai nhận nuôi thú cưng của bạn.'
+              : 'Rất tiếc thú cưng của bạn chưa có yêu cầu ghép đôi nào.',
           textAlign: TextAlign.center,
         ),
       ),
