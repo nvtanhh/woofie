@@ -57,7 +57,7 @@ class ConfirmDialog extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 8.w, right: 8.w),
           child: MWButton(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             onPressed: () {
               if (onConfirm != null) onConfirm!();
               Navigator.of(context).pop();

@@ -30,3 +30,14 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
+
+
+# Fix bug mobile-ffmpeg crash app - (More information: https://github.com/tanersener/mobile-ffmpeg/issues/616#issuecomment-740501984)
+-keep class com.arthenica.mobileffmpeg.Config {
+    native <methods>;
+    void log(long, int, byte[]);
+    void statistics(long, int, float, float, long , int, double, double);
+}
+-keep class com.arthenica.mobileffmpeg.AbiDetect {
+    native <methods>;
+}

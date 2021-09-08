@@ -418,7 +418,7 @@ packages:
       name: flutter_ffmpeg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0"
+    version: "0.4.2"
   flutter_gen_core:
     dependency: transitive
     description:
