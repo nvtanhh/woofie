@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -20,7 +19,6 @@ import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_se
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/get_post_by_location.dart';
-import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -74,15 +72,15 @@ class MapSearcherModel extends BaseViewModel {
   }
 
   Future _initUserLocation() async {
-    final UserLocation? userLocation = _loggedInUser.user!.location;
-    if (userLocation != null) {
-      initialPosition = LatLng(userLocation.lat!, userLocation.long!);
-    } else {
-      final Position currentPosition =
-          await injector<LocationService>().determineCurrentPosition();
-      initialPosition =
-          LatLng(currentPosition.latitude, currentPosition.longitude);
-    }
+    // final UserLocation? userLocation = _loggedInUser.user!.location;
+    // if (userLocation != null) {
+    //   initialPosition = LatLng(userLocation.lat!, userLocation.long!);
+    // } else {
+    // }
+    final Position currentPosition =
+        await injector<LocationService>().determineCurrentPosition();
+    initialPosition =
+        LatLng(currentPosition.latitude, currentPosition.longitude);
     _isLoaded.value = true;
     getZoomLevel();
     _initCircle();
@@ -152,7 +150,7 @@ class MapSearcherModel extends BaseViewModel {
     final double radiusByMetter = _radiusByKm * 1000;
     if (radiusByMetter > 0) {
       final double radiusElevated = radiusByMetter + radiusByMetter / 2;
-      final double scale = radiusElevated / 650;
+      final double scale = radiusElevated / 600;
       zoomLevel = 16 - log(scale) / log(2);
     }
     zoomLevel = num.parse(zoomLevel.toStringAsFixed(2)) as double;

@@ -27,10 +27,9 @@ class PostMapWidget extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(20.r)),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 2,
-              offset: const Offset(1, 1),
+              color: Colors.grey.withOpacity(0.8),
+              spreadRadius: 2,
+              blurRadius: 5,
             ),
           ],
         ),
@@ -77,29 +76,44 @@ class PostMapWidget extends StatelessWidget {
                       softWrap: false,
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const MWIcon(
-                          MWIcons.location,
-                          color: UIColor.primary,
-                          customSize: 18,
+                        Transform.translate(
+                          offset: const Offset(-2, 0),
+                          child: MWIcon(
+                            MWIcons.location,
+                            color: UIColor.primary,
+                            customSize: 18.w,
+                          ),
                         ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Text(
-                          post.location?.name ?? "",
-                          style: UITextStyle.text_body_12_w400,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        // SizedBox(
+                        //   width: 2.w,
+                        // ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                post.location?.name ?? "",
+                                style: UITextStyle.text_body_12_w400,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(
+                                height: 2.h,
+                              ),
+                              if (post.distanceUserToPost != null)
+                                Text(
+                                  '(${post.distanceUserToPost.toString()} Km)',
+                                  style: UITextStyle.text_body_12_w600,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    Text(
-                      '(${post.distanceUserToPost?.toString()} Km)',
-                      style: UITextStyle.text_body_12_w600,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    )
                   ],
                 ),
               ),

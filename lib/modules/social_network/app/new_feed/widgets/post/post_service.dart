@@ -363,8 +363,10 @@ class PostService extends BaseViewModel {
       } else {
         final Position currentPosition =
             await injector<LocationService>().determineCurrentPosition();
-        return UserLocation(
+        final userLocation = UserLocation(
             lat: currentPosition.latitude, long: currentPosition.longitude);
+        // unawaited(updateLocation(userLocation));
+        return userLocation;
       }
     } catch (e) {
       return null;

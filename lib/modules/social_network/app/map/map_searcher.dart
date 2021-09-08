@@ -152,16 +152,19 @@ class _MapSearcherState extends BaseViewState<MapSearcher, MapSearcherModel> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: SizedBox(
-        height: 150.h,
+        height: 156.h,
         child: PagedListView<int, Post>(
           scrollDirection: Axis.horizontal,
           scrollController: viewModel.scrollController,
-          padding: EdgeInsets.only(left: 16.w, bottom: 10.h),
+          padding: EdgeInsets.only(left: 16.w, bottom: 10.h, top: 10.h),
           pagingController: viewModel.postService.pagingController,
           builderDelegate: PagedChildBuilderDelegate<Post>(
             itemBuilder: (context, post, index) {
               viewModel.calculateDistance(post);
-              return PostMapWidget(post: post);
+              return Padding(
+                padding: EdgeInsets.only(right: 16.w),
+                child: PostMapWidget(post: post),
+              );
             },
             newPageErrorIndicatorBuilder: (_) => const SizedBox(),
             firstPageErrorIndicatorBuilder: (_) => const SizedBox(),
