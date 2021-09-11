@@ -53,7 +53,7 @@
     "gender": "Giới tính",
     "age_invalid": "Tuổi không hợp lệ!",
     "name_invalid": "Tên không hợp lệ!",
-    "pet_description": "Mô tả thú cưng"
+    "pet_description": "Mô tả thú cưng (Không bắt buộc)"
   },
   "new_feed": {
     "with": "cùng với",

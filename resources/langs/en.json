@@ -53,7 +53,7 @@
     "gender": "Gender",
     "age_invalid": "Invalid age! ",
     "name_invalid": "Invalid name!",
-    "pet_description": "Pet description"
+    "pet_description": "Pet description (Optional)"
   },
   "new_feed": {
     "with": "is with",
