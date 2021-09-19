@@ -142,7 +142,7 @@ class WeightChartPreviewWidget extends StatelessWidget {
                           showTitles: true,
                           getTitles: (val) {
                             return FormatHelper.formatDateTime(
-                                weights[val.toInt()].date,
+                                weights[weights.length - 1 - val.toInt()].date,
                                 pattern: "MM/yyyy");
                           },
                           getTextStyles: (value) =>

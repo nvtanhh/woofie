@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 812),
       builder: () => MFToast(
         child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'MeoWoof',
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
