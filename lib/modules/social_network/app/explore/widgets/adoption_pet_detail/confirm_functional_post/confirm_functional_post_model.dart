@@ -39,14 +39,11 @@ class ConfirmGivePetModel extends BaseViewModel {
 
   Future<List<PostReaction>> getAllUserInPost() async {
     List<PostReaction> reactions = [];
-    await call(
-      () async =>
-          reactions = await _getFunctionalPostReactions.call(postId: post.id),
-      showLoading: false,
-    );
+    await call(() async => reactions = await _getFunctionalPostReactions.call(postId: post.id), showLoading: false, onFailure: (err) {
+      print(err.toString());
+    });
     // remove myself
-    reactions
-        .removeWhere((element) => element.reactor.id == _loggedInUser.user!.id);
+    reactions.removeWhere((element) => element.reactor.id == _loggedInUser.user!.id);
     if (post.type == PostType.mating) {
       reactions.removeWhere((element) => element.matingPet == null);
     }
@@ -121,8 +118,7 @@ class ConfirmGivePetModel extends BaseViewModel {
     await call(
       () async {
         await _changePetOwnerUsecase.call(user, pet);
-        await _closePostUsecase.run(post,
-            additionalData: user.toJsonString().replaceAll("\"", "'"));
+        await _closePostUsecase.run(post, additionalData: user.toJsonString().replaceAll("\"", "'"));
       },
       onSuccess: () {
         _refreshUser(_loggedInUser.user!);
@@ -134,15 +130,16 @@ class ConfirmGivePetModel extends BaseViewModel {
           colorText: UIColor.white,
         );
       },
-      onFailure: (error) {},
+      onFailure: (error) {
+        print(error.toString());
+      },
     );
   }
 
   Future _matingWith(Pet pet, Pet myPet) async {
     await call(
       () async {
-        await _closePostUsecase.run(post,
-            additionalData: pet.toJsonString().replaceAll("\"", "'"));
+        await _closePostUsecase.run(post, additionalData: pet.toJsonString().replaceAll("\"", "'"));
       },
       onSuccess: () {
         Get.back();
@@ -153,7 +150,9 @@ class ConfirmGivePetModel extends BaseViewModel {
           colorText: UIColor.white,
         );
       },
-      onFailure: (error) {},
+      onFailure: (error) {
+        print(error.toString());
+      },
     );
   }
 }

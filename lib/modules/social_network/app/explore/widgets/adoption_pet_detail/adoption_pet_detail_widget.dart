@@ -400,7 +400,6 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
         ),
       );
     }
-
     return Padding(
       padding: EdgeInsets.only(bottom: 10.h),
       child: ButtonWidget(

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/core/ui/search_bar.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
@@ -242,28 +243,22 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                 SizedBox(
                   width: Get.width,
                   height: 120.h,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      ServiceWidget(
-                        title: "Animal Emergency",
-                        distance: 0.3,
-                        widget: Assets.resources.images.explore.emergency.image(
-                          width: 60.w,
-                          height: 60.w,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      ServiceWidget(
-                        title: "Pety",
-                        distance: 0.3,
-                        widget: Assets.resources.images.explore.pety.image(
-                          width: 60.w,
-                          height: 60.w,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    ],
+                  child: Obx(
+                    ()=> ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ServiceWidget(
+                          title: viewModel.services[index].name ?? "",
+                          distance: viewModel.calculateDistance(viewModel.services[index].location!),
+                          widget: ImageWithPlaceHolderWidget(
+                            imageUrl: viewModel.services[index].logo ?? "",
+                            width: 60.w,
+                            height: 60.w,fit: BoxFit.scaleDown,
+                          ),
+                        );
+                      },
+                      itemCount: viewModel.services.length,
+                    ),
                   ),
                 )
               ],

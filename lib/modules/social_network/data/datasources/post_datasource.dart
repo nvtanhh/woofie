@@ -210,37 +210,67 @@ class PostDatasource {
     int limit,
     int offset,
   ) async {
-    final query = """
+    final query ="""
     query MyQuery {
-      get_posts_by_type(args: {post_type: ${postType.index},long_user: $longUser,lat_user: $latUser , mlimit: $limit, moffset: $offset }, order_by: {created_at: desc},) {
-        id
-        type
-        uuid
-        location {
+  posts(limit: $limit, offset: $offset,  where: {_and: {type: {_eq: "${postType.index}"}, is_closed: {_eq: false}}}, order_by: {created_at: desc}) {
+    id
+    type
+    uuid
+    location {
+      id
+      lat
+      long
+    }
+    post_pets {
+      pet {
+        avatar_url
+        pet_breed {
+          name
           id
-          lat
-          long
         }
-        post_pets {
-          pet {
-            avatar_url
-            pet_breed {
-              name
-              id
-            }
-            id
-            dob
-            gender
-            name
-          }
-        }
-        is_closed
+        id
+        name
+        dob
+        gender
       }
     }
+    is_closed
+  }
+}
+
     """;
+    // final query = """
+    // query MyQuery {
+    //   get_posts_by_type(args: {post_type: ${postType.index},long_user: $longUser,lat_user: $latUser , mlimit: $limit, moffset: $offset }, order_by: {created_at: desc},) {
+    //     id
+    //     type
+    //     uuid
+    //     location {
+    //       id
+    //       lat
+    //       long
+    //     }
+    //     post_pets {
+    //       pet {
+    //         avatar_url
+    //         pet_breed {
+    //           name
+    //           id
+    //         }
+    //         id
+    //         dob
+    //         gender
+    //         name
+    //       }
+    //     }
+    //     is_closed
+    //   }
+    // }
+    // """;
+
     final data = await _hasuraConnect.query(query);
     final listPost =
-        GetMapFromHasura.getMap(data as Map)["get_posts_by_type"] as List;
+        GetMapFromHasura.getMap(data as Map)["posts"] as List;
     return listPost
         .map((e) => Post.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -466,7 +496,7 @@ class PostDatasource {
         .toList();
   }
 
-  Future closePost(Post post, {String? additionalData}) async {
+  Future<Post> closePost(Post post, {String? additionalData}) async {
     final String additonal =
         additionalData == null ? '' : ', additional_data: "$additionalData"';
     final String query = """
