@@ -39,57 +39,59 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Get.back(),
-                    child: const MWIcon(MWIcons.back),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child: const MWIcon(MWIcons.back),
+                ),
+                SizedBox(width: 10.h),
+                Expanded(
+                  child: MWSearchBar(
+                    textInit: widget.textSearch,
+                    onSearch: viewModel.onSearch,
                   ),
-                  SizedBox(width: 10.h),
-                  Expanded(
-                    child: MWSearchBar(
-                      textInit: widget.textSearch,
-                      onSearch: viewModel.onSearch,
+                ),
+              ],
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Column(
+                  children: [
+                    TabBar(
+                      indicatorColor: UIColor.primary,
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            LocaleKeys.explore_user.trans(),
+                            style: UITextStyle.text_header_14_w600,
+                            maxLines: 1,
+                            overflow: TextOverflow.visible,
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            LocaleKeys.explore_pet.trans(),
+                            style: UITextStyle.text_header_14_w600,
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            LocaleKeys.explore_service.trans(),
+                            style: UITextStyle.text_header_14_w600,
+                          ),
+                        ),
+                      ],
+                      controller: viewModel.tabController,
+                      onTap: (index) => viewModel.onTab(index),
                     ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => FocusScope.of(context).unfocus(),
-                  child: Column(
-                    children: [
-                      TabBar(
-                        indicatorColor: UIColor.primary,
-                        tabs: [
-                          Tab(
-                            child: Text(
-                              LocaleKeys.explore_user.trans(),
-                              style: UITextStyle.text_header_14_w600,
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              LocaleKeys.explore_pet.trans(),
-                              style: UITextStyle.text_header_14_w600,
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              LocaleKeys.explore_service.trans(),
-                              style: UITextStyle.text_header_14_w600,
-                            ),
-                          ),
-                        ],
-                        controller: viewModel.tabController,
-                        onTap: (index) => viewModel.onTab(index),
-                      ),
-                      Expanded(
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child: TabBarView(
                           controller: viewModel.tabController,
                           children: [
@@ -106,12 +108,12 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
