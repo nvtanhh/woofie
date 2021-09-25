@@ -304,6 +304,10 @@ class PostDatasource {
               id
               name
             }
+            pet_breed{
+              id
+              name
+            }
           }
         }
         location {

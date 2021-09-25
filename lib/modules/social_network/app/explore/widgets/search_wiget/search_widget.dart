@@ -42,20 +42,23 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Get.back(),
-                  child: const MWIcon(MWIcons.back),
-                ),
-                SizedBox(width: 10.h),
-                Expanded(
-                  child: MWSearchBar(
-                    textInit: widget.textSearch,
-                    onSearch: viewModel.onSearch,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Get.back(),
+                    child: const MWIcon(MWIcons.back),
                   ),
-                ),
-              ],
+                  SizedBox(width: 10.h),
+                  Expanded(
+                    child: MWSearchBar(
+                      textInit: widget.textSearch,
+                      onSearch: viewModel.onSearch,
+                    ),
+                  ),
+                ],
+              ),
             ),
             Expanded(
               child: GestureDetector(
@@ -91,7 +94,8 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
                     ),
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        padding:
+                            EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
                         child: TabBarView(
                           controller: viewModel.tabController,
                           children: [
