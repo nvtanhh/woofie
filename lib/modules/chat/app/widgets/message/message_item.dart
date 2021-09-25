@@ -1,16 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/app/widgets/active_status_avatar.dart';
 import 'package:meowoof/modules/chat/app/widgets/message/message_body.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
-import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 

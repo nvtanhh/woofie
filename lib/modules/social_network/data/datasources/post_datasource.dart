@@ -115,6 +115,7 @@ class PostDatasource {
           pet {
             id
             name
+            avatar_url
             bio
             dob
             gender
