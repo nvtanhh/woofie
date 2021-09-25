@@ -18,9 +18,13 @@ class MessageBodyPostPreviewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final content = json.decode(message.content);
-    final Post post =
-        Post.fromJsonFromChat(content['post'] as Map<String, dynamic>);
+    Post post;
+    try {
+      final content = json.decode(message.content);
+      post = Post.fromJsonFromChat(content['post'] as Map<String, dynamic>);
+    } catch (e) {
+      return const SizedBox();
+    }
 
     if (post.type == PostType.mating) {
       return MessageBodyPostPreviewerMating(message, post: post);
