@@ -338,9 +338,7 @@ class ChatRoomPageModel extends BaseViewModel {
               );
               if (petToMatinng == null) return;
             }
-            final Map contentMap = {
-              'post': attachmentPost.value!.toJson()
-            };
+            final Map contentMap = {'post': attachmentPost.value!.toJson()};
             if (petToMatinng != null) {
               contentMap['additional_data'] = petToMatinng!.toJson();
             }
@@ -559,6 +557,17 @@ class ChatRoomPageModel extends BaseViewModel {
         const ConfirmDialog(
           title: 'Không thể ghép đôi',
           content: 'Bạn không thể ghép đôi 2 thú cưng có cùng giới tính.',
+          confirmText: 'Đã hiểu',
+          cancelText: '',
+        ),
+      );
+      return false;
+    }
+    if (pet.petType != postPet.petType) {
+      Get.dialog(
+        const ConfirmDialog(
+          title: 'Không thể ghép đôi',
+          content: 'Bạn không thể ghép đôi 2 thú cưng khác loại.',
           confirmText: 'Đã hiểu',
           cancelText: '',
         ),

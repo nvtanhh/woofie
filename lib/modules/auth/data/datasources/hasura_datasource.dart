@@ -28,6 +28,10 @@ class HasuraDatasource {
           avatar_url
           gender
           dob
+          pet_type {
+            id
+            name
+          }
         }
         location {
           id

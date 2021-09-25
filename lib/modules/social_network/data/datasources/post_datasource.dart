@@ -210,7 +210,7 @@ class PostDatasource {
     int limit,
     int offset,
   ) async {
-    final query ="""
+    final query = """
     query MyQuery {
   posts(limit: $limit, offset: $offset,  where: {_and: {type: {_eq: "${postType.index}"}, is_closed: {_eq: false}}}, order_by: {created_at: desc}) {
     id
@@ -269,8 +269,7 @@ class PostDatasource {
     // """;
 
     final data = await _hasuraConnect.query(query);
-    final listPost =
-        GetMapFromHasura.getMap(data as Map)["posts"] as List;
+    final listPost = GetMapFromHasura.getMap(data as Map)["posts"] as List;
     return listPost
         .map((e) => Post.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -301,6 +300,10 @@ class PostDatasource {
             name
             avatar_url
             dob
+            pet_type {
+              id
+              name
+            }
           }
         }
         location {
