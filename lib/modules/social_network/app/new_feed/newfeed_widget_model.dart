@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/auth/data/storages/newfeed_cache_storage.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/new_feed/get_posts_usecase.dart';
@@ -17,6 +19,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   final BottomSheetService bottomSheetService = injector<BottomSheetService>();
   final GetPostsUsecase _getPostsUsecase;
   final PostService postService;
+  final NewfeedCacheStorage _newfeedCacheStorage;
 
   List<Post> posts = [];
   final int pageSize = 10;
@@ -31,6 +34,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   NewFeedWidgetModel(
     this._getPostsUsecase,
     this.postService,
+    this._newfeedCacheStorage,
   );
 
   @override
@@ -48,8 +52,17 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   @override
   void initState() {
-    postService.initState();
     super.initState();
+    final cachedPosts = _newfeedCacheStorage.get(defaultValue: []);
+    if (cachedPosts.isNotEmpty) {
+      postService.pagingController =
+          PagingController(firstPageKey: cachedPosts.length);
+      postService.pagingController.appendPage(cachedPosts, cachedPosts.length);
+      // refresh newfeed
+      onRefresh(isForceRefresh: true);
+    } else {
+      postService.initState();
+    }
     postService.pagingController.addPageRequestListener(
       (pageKey) {
         cancelableOperation =
@@ -61,6 +74,7 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   Future _loadMorePost(int pageKey) async {
     try {
+      _lastRefeshTime = DateTime.now();
       final newItems = await _getPostsUsecase.call(
           offset: nextPageKey, lastValue: dateTimeValueLast);
       final isLastPage = newItems.length < pageSize;
@@ -71,6 +85,10 @@ class NewFeedWidgetModel extends BaseViewModel {
         dateTimeValueLast = newItems.last.createdAt;
         postService.pagingController.appendPage(newItems, nextPageKey);
       }
+
+      if (pageKey == 0) {
+        _cacheNewFeedPosts(newItems);
+      }
     } catch (error) {
       postService.pagingController.error = error;
     }
@@ -80,8 +98,8 @@ class NewFeedWidgetModel extends BaseViewModel {
     injector<NavigationService>().navigateToChatDashboard();
   }
 
-  Future<void> onRefresh() async {
-    if (_isCanRefesh()) {
+  Future<void> onRefresh({bool isForceRefresh = false}) async {
+    if (isForceRefresh || _isCanRefesh()) {
       final newItems = await _getPostsUsecase.call(limit: pageSize);
       postService.pagingController.itemList = newItems;
       // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
@@ -112,5 +130,9 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   void scrollToTop() {
     _scrollToTop();
+  }
+
+  void _cacheNewFeedPosts(List<Post> newItems) {
+    _newfeedCacheStorage.set(newItems);
   }
 }

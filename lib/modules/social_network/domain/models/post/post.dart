@@ -29,11 +29,7 @@ class Post extends UpdatableModel<Post> {
   String? creatorUUID;
   @JsonKey(name: "type")
   PostType type;
-  @JsonKey(
-    name: "user",
-    toJson: toNull,
-    includeIfNull: false,
-  )
+  @JsonKey(name: "user")
   User? creator;
   @JsonKey(name: "is_my_post")
   bool? _isMyPost;
@@ -43,7 +39,7 @@ class Post extends UpdatableModel<Post> {
   int? reactionsCounts;
   @JsonKey(name: "comments")
   List<Comment>? comments;
-  @JsonKey(name: "post_pets", fromJson: allPetsFromJson)
+  @JsonKey(name: "post_pets", fromJson: allPetsFromJson, toJson: allPetsToJson)
   List<Pet>? taggegPets;
   @JsonKey(name: "medias")
   List<Media>? medias;
@@ -53,13 +49,33 @@ class Post extends UpdatableModel<Post> {
   PostStatus? status;
   @JsonKey(name: "distance_user_to_post")
   double? distanceUserToPost;
-  @JsonKey(name: "post_reacts_aggregate", fromJson: aggregateCountFromJson)
+  @JsonKey(
+    name: "post_reacts_aggregate",
+    fromJson: aggregateCountFromJson,
+    toJson: toNull,
+    includeIfNull: false,
+  )
   int? postReactsCount;
-  @JsonKey(name: "comments_aggregate", fromJson: aggregateCountFromJson)
+  @JsonKey(
+    name: "comments_aggregate",
+    fromJson: aggregateCountFromJson,
+    toJson: toNull,
+    includeIfNull: false,
+  )
   int? postCommentsCount;
-  @JsonKey(name: "medias_aggregate", fromJson: aggregateCountFromJson)
+  @JsonKey(
+    name: "medias_aggregate",
+    fromJson: aggregateCountFromJson,
+    toJson: toNull,
+    includeIfNull: false,
+  )
   int? postMediasCount;
-  @JsonKey(name: "post_reacts", fromJson: reactorsFromJson)
+  @JsonKey(
+    name: "post_reacts",
+    fromJson: reactorsFromJson,
+    toJson: toNull,
+    includeIfNull: false,
+  )
   List<User>? reactors;
   @JsonKey(name: "additional_data")
   String? additionalData;
@@ -85,9 +101,15 @@ class Post extends UpdatableModel<Post> {
   bool get isIncludeLocation => location != null;
 
   static List<Pet>? allPetsFromJson(List<dynamic>? list) {
+    if (list?.isEmpty ?? true) return [];
     return list
-        ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
-        .toList();
+            ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
+            .toList() ??
+        [];
+  }
+
+  static List<Map<String, dynamic>> allPetsToJson(List<Pet>? taggegPets) {
+    return taggegPets?.map((e) => {'pet': e.toJson()}).toList() ?? [];
   }
 
   static List<User>? reactorsFromJson(List<dynamic>? list) {
@@ -137,24 +159,6 @@ class Post extends UpdatableModel<Post> {
       Post.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
-  // Map<String, dynamic> toJsonMessage() => <String, dynamic>{
-  //       'id': id,
-  //       'uuid': uuid,
-  //       'content': content,
-  //       'is_closed': isClosed,
-  //       'created_at': createdAt?.toIso8601String(),
-  //       'creator_uuid': creatorUUID,
-  //       'type': _$PostTypeEnumMap[type],
-  //       'is_liked': isLiked,
-  //       'comments': comments?.map((e) => e.toJson()).toList(),
-  //       'post_pets': taggegPets?.map((e) => e.toJson()).toList(),
-  //       'medias': medias?.map((e) => e.toJson()).toList(),
-  //       'location': location?.toJson(),
-  //       'status': _$PostStatusEnumMap[status],
-  //       'distance_user_to_post': distanceUserToPost,
-  //       'post_reacts_aggregate': postReactsCount,
-  //       'additional_data': additionalData,
-  //     };
 
   String toJsonString() => json.encode(toJson());
 
@@ -163,6 +167,7 @@ class Post extends UpdatableModel<Post> {
   factory Post.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
   }
+
   factory Post.fromJsonPure(Map<String, dynamic> json) => _$PostFromJson(json);
 
   factory Post.fromJsonFromChat(Map<String, dynamic> json) {
@@ -175,7 +180,7 @@ class Post extends UpdatableModel<Post> {
           : User.fromJsonPure(json['user'] as Map<String, dynamic>),
       type: _$enumDecode(_$PostTypeEnumMap, json['type']),
       taggegPets: [
-        Pet.fromJsonPure(json['post_pets'][0] as Map<String, dynamic>)
+        Pet.fromJsonPure(json['post_pets'][0]['pet'] as Map<String, dynamic>)
       ],
     )..medias = (json['medias'] as List<dynamic>?)
         ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
