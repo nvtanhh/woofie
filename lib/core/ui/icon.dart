@@ -186,6 +186,8 @@ class MWIcons {
       MWIconData(assetImageFile: Assets.resources.icons.icRequestMessage);
   static final reVerifyEmail =
       MWIconData(assetImageFile: Assets.resources.icons.icReVerify);
+  static final icReactPost =
+  MWIconData(assetImageFile: Assets.resources.images.explore.icReacPost);
 }
 
 enum MWIconThemeColor {

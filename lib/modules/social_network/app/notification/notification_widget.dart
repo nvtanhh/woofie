@@ -9,6 +9,7 @@ import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/commons/shimmer_page.dart';
 import 'package:meowoof/modules/social_network/app/notification/notification_widget_model.dart';
+import 'package:meowoof/modules/social_network/app/notification/widgets/notification_menu_action_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/notification/notification.dart';
 import 'package:meowoof/modules/social_network/domain/models/notification/notification_type.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -27,10 +28,7 @@ class NotificationWidget extends StatefulWidget {
   NotificationWidgetState createState() => NotificationWidgetState();
 }
 
-class NotificationWidgetState
-    extends BaseViewState<NotificationWidget, NotificationWidgetModel>
-    with AutomaticKeepAliveClientMixin {
-      
+class NotificationWidgetState extends BaseViewState<NotificationWidget, NotificationWidgetModel> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     widget.controller?.attach(context: context, state: this);
@@ -53,57 +51,58 @@ class NotificationWidgetState
                   LocaleKeys.notification_notifications.trans(),
                   style: UITextStyle.text_header_24_w600,
                 ),
-                InkWell(
-                  onTap: () => viewModel.onOptionTap(),
-                  child: MWIcon(
-                    MWIcons.moreHoriz,
-                    customSize: 30.w,
-                    color: UIColor.black,
-                  ),
-                )
+                // InkWell(
+                //   onTap: () => viewModel.onOptionTap(),
+                //   child: MWIcon(
+                //     MWIcons.moreHoriz,
+                //     customSize: 30.w,
+                //     color: UIColor.black,
+                //   ),
+                // )
               ],
             ),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () => viewModel.onRefresh(),
                 child: PagedListView<int, Notification>(
-                  scrollController: viewModel.scrollController,
                   pagingController: viewModel.pagingController,
-                  builderDelegate: PagedChildBuilderDelegate(
-                      itemBuilder: (context, item, index) {
-                    return Dismissible(
-                      key: ObjectKey(item.id),
-                      background: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [MWIcon(MWIcons.delete)],
-                      ),
-                      confirmDismiss: (DismissDirection direction) async {
-                        if (DismissDirection.endToStart == direction) {
-                          viewModel.onDeleteNotify(item);
-                          return true;
-                        }
-                      },
-                      child: ListTile(
-                        dense: true,
-                        leading: item.actor != null
-                            ? MWAvatar(
-                                avatarUrl: item.actor?.avatarUrl,
-                                customSize: 45.w,
-                                borderRadius: 10.r,
-                              )
-                            : MWIcon(
-                                MWIcons.requestMessage,
-                                customSize: 45.w,
+                  scrollController: viewModel.scrollController,
+                  builderDelegate: PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
+                    return ListTile(
+                      dense: true,
+                      leading: item.actor != null
+                          ? SizedBox(
+                              width: 50.w,
+                              height: 50.w,
+                              child: Stack(
+                                children: [
+                                  MWAvatar(
+                                    avatarUrl: item.actor?.avatarUrl,
+                                    customSize: 43.w,
+                                    borderRadius: 10.r,
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: defineIcon(item),
+                                  )
+                                ],
                               ),
-                        onTap: () => viewModel.onItemTab(item),
-                        title: generateContentTitle(item),
-                        trailing: defineIcon(item),
-                        subtitle: Text(
-                          time_ago.format(item.createdAt!, locale: 'vi'),
-                          style: UITextStyle.second_12_medium,
-                        ),
-                        contentPadding: EdgeInsets.only(bottom: 10.h),
+                            )
+                          : MWIcon(
+                              MWIcons.requestMessage,
+                              customSize: 45.w,
+                            ),
+                      onTap: () => viewModel.onItemTab(item),
+                      trailing: NotificationMenuActionWidget(
+                        onNotification: () => viewModel.onDeleteNotify(item, index),
                       ),
+                      title: generateContentTitle(item),
+                      subtitle: Text(
+                        time_ago.format(item.createdAt!, locale: 'vi'),
+                        style: UITextStyle.second_12_medium,
+                      ),
+                      contentPadding: EdgeInsets.only(bottom: 10.h),
                     );
                   }, noItemsFoundIndicatorBuilder: (_) {
                     return Center(
@@ -212,22 +211,26 @@ class NotificationWidgetState
       case NotificationType.matting:
         return MWIcon(
           MWIcons.icMatting,
-          customSize: 35.w,
+          color: UIColor.primary,
+          customSize: 20.w,
         );
       case NotificationType.adoption:
         return MWIcon(
           MWIcons.icAdoption,
-          customSize: 35.w,
+          color: UIColor.primary,
+          customSize: 20.w,
         );
       case NotificationType.lose:
         return MWIcon(
           MWIcons.icLose,
-          customSize: 35.w,
+          customSize: 20.w,
+          color: UIColor.primary,
         );
       case NotificationType.react:
         return MWIcon(
-          MWIcons.icReact,
-          customSize: 35.w,
+          MWIcons.icReactPost,
+          customSize: 20.w,
+          color: UIColor.primary,
         );
       default:
         return const SizedBox();
@@ -235,8 +238,7 @@ class NotificationWidgetState
   }
 
   @override
-  NotificationWidgetModel createViewModel() =>
-      injector<NotificationWidgetModel>();
+  NotificationWidgetModel createViewModel() => injector<NotificationWidgetModel>();
 
   @override
   bool get wantKeepAlive => true;
@@ -248,8 +250,8 @@ class NotificationWidgetState
 
 class NotificationWidgetController {
   late NotificationWidgetState _state;
-  void attach(
-      {required BuildContext context, required NotificationWidgetState state}) {
+
+  void attach({required BuildContext context, required NotificationWidgetState state}) {
     _state = state;
   }
 

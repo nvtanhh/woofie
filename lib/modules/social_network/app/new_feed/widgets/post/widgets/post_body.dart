@@ -21,9 +21,8 @@ class PostBody extends StatelessWidget {
           padding: EdgeInsets.only(left: 5.w),
           child: Text(
             post.content ?? "",
-            maxLines: 4,
             style: UITextStyle.body_14_reg,
-            overflow: TextOverflow.ellipsis,
+            overflow: TextOverflow.clip,
             textAlign: TextAlign.left,
           ),
         ),

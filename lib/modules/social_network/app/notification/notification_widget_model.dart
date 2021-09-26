@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/chat/app/request_message/request_message.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_detail_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/notification/notification.dart';
 import 'package:meowoof/modules/social_network/domain/models/notification/notification_type.dart';
@@ -34,8 +35,7 @@ class NotificationWidgetModel extends BaseViewModel {
     pagingController = PagingController(firstPageKey: nextPageKey);
     pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation =
-            CancelableOperation.fromFuture(_loadMoreNotification(pageKey));
+        cancelableOperation = CancelableOperation.fromFuture(_loadMoreNotification(pageKey));
       },
     );
     super.initState();
@@ -63,11 +63,12 @@ class NotificationWidgetModel extends BaseViewModel {
     pagingController.refresh();
   }
 
-  void onDeleteNotify(Notification notification) {
-    call(
-      () async => _deleteNotificationUsecase.run(notification.id),
-      showLoading: false,
-    );
+  void onDeleteNotify(Notification notification, int index) {
+    call(() async => _deleteNotificationUsecase.run(notification.id), onSuccess: () {
+      pagingController.itemList?.removeAt(index);
+      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+      pagingController.notifyListeners();
+    });
   }
 
   void onOptionTap() {}
@@ -83,12 +84,13 @@ class NotificationWidgetModel extends BaseViewModel {
         goToPost(item.postId!);
         return;
       case NotificationType.adoption:
+        goToPostFunction(item.postId!);
         return;
       case NotificationType.matting:
-        goToPost(item.postId!);
+        goToPostFunction(item.postId!);
         return;
       case NotificationType.lose:
-        goToPost(item.postId!);
+        goToPostFunction(item.postId!);
         return;
       case NotificationType.commentTagUser:
         goToPost(item.postId!);
@@ -103,8 +105,20 @@ class NotificationWidgetModel extends BaseViewModel {
   }
 
   void goToPost(int postId) {
-    Get.to(() =>
-        PostDetail(post: Post(id: postId, uuid: "", type: PostType.activity)));
+    Get.to(() => PostDetail(post: Post.factory.getItemWithIdFromCache(postId) ??Post(id: postId, uuid: "", type: PostType.activity)));
+  }
+
+  void goToPostFunction(int postId) {
+    Get.to(
+      () => AdoptionPetDetailWidget(
+        post: Post.factory.getItemWithIdFromCache(postId) ??
+            Post(
+              id: postId,
+              uuid: "",
+              type: PostType.activity,
+            ),
+      ),
+    );
   }
 
   @override

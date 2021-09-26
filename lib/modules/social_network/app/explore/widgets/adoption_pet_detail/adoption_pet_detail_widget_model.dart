@@ -94,13 +94,13 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
         await Get.to(() => ConfirmGivePet(post: post));
         break;
       case PostType.lose:
-        onWantsToGivePetForThisUser();
+        confirmFoundPet();
         break;
       default:
     }
   }
 
-  void onWantsToGivePetForThisUser() {
+  void confirmFoundPet() {
     final pet = post.taggegPets![0];
     Get.dialog(
       ConfirmDialog(

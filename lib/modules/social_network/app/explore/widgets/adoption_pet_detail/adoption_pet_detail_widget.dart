@@ -229,6 +229,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                                     viewModel.post.updateSubjectValue.content ??
                                         "",
                                     style: UITextStyle.text_body_14_w500,
+                                    overflow: TextOverflow.clip,
                                   ),
                                 ),
                               ),

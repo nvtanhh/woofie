@@ -99,7 +99,7 @@ class _PostItemState extends State<PostItem> {
           width: 60.w,
           child: GestureDetector(
             onTap: () => likeClick(),
-            child: Row(
+            child:  Row(
               children: [
                 Obx(
                   () {
