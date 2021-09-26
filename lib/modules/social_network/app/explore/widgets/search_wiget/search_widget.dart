@@ -39,12 +39,12 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
                 children: [
                   GestureDetector(
                     onTap: () => Get.back(),
@@ -59,37 +59,43 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
                   ),
                 ],
               ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => FocusScope.of(context).unfocus(),
-                  child: Column(
-                    children: [
-                      TabBar(
-                        indicatorColor: UIColor.primary,
-                        tabs: [
-                          Tab(
-                            child: Text(
-                              LocaleKeys.explore_user.trans(),
-                              style: UITextStyle.text_header_14_w600,
-                            ),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Column(
+                  children: [
+                    TabBar(
+                      indicatorColor: UIColor.primary,
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            LocaleKeys.explore_user.trans(),
+                            style: UITextStyle.text_header_14_w600,
+                            maxLines: 1,
+                            overflow: TextOverflow.visible,
                           ),
-                          Tab(
-                            child: Text(
-                              LocaleKeys.explore_pet.trans(),
-                              style: UITextStyle.text_header_14_w600,
-                            ),
+                        ),
+                        Tab(
+                          child: Text(
+                            LocaleKeys.explore_pet.trans(),
+                            style: UITextStyle.text_header_14_w600,
                           ),
-                          Tab(
-                            child: Text(
-                              LocaleKeys.explore_service.trans(),
-                              style: UITextStyle.text_header_14_w600,
-                            ),
+                        ),
+                        Tab(
+                          child: Text(
+                            LocaleKeys.explore_service.trans(),
+                            style: UITextStyle.text_header_14_w600,
                           ),
-                        ],
-                        controller: viewModel.tabController,
-                        onTap: (index) => viewModel.onTab(index),
-                      ),
-                      Expanded(
+                        ),
+                      ],
+                      controller: viewModel.tabController,
+                      onTap: (index) => viewModel.onTab(index),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
                         child: TabBarView(
                           controller: viewModel.tabController,
                           children: [
@@ -106,12 +112,12 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

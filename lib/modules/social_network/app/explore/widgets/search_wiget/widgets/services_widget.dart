@@ -16,7 +16,6 @@ class ServicesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PagedListView<int, Service>(
-      padding: EdgeInsets.only(top: 10.h),
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, service, index) {
           return ServiceWidget(
@@ -30,8 +29,10 @@ class ServicesWidget extends StatelessWidget {
             margin: EdgeInsets.all(10.w),
           );
         },
-        newPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
-        firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
+        newPageProgressIndicatorBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
+        firstPageProgressIndicatorBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
       ),
       pagingController: pagingController,
     );

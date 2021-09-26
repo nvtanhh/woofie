@@ -18,7 +18,6 @@ class UsersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PagedListView<int, User>(
-      padding: EdgeInsets.only(top: 10.h),
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, user, index) {
           return GestureDetector(

@@ -117,8 +117,9 @@ class MessageBodyMedia extends StatelessWidget {
         : '${partner?.name ?? ""} • $sendVideoText';
 
     return Container(
-      height: 80,
+      height: 70,
       padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
+      color: message.isSentByMe ? UIColor.primary : UIColor.holder,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -163,6 +164,8 @@ class MessageBodyMedia extends StatelessWidget {
                       style: message.isSentByMe
                           ? UITextStyle.body_12_reg.apply(color: Colors.white70)
                           : UITextStyle.body_12_reg,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
