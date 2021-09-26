@@ -8,7 +8,7 @@ class SearchServiceUsecase {
 
   SearchServiceUsecase(this._exploreRepository);
 
-  Future<List<Service>> call(String keyWord) {
-    return _exploreRepository.searchService(keyWord);
+  Future<List<Service>> call(String keyWord,{int offset = 0, int limit = 10}) {
+    return _exploreRepository.searchService(keyWord,limit,offset);
   }
 }

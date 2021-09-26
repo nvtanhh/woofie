@@ -10,21 +10,21 @@ import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/
 import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/widgets/pets_widget.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/widgets/services_widget.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/widgets/users_widget.dart';
+import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
 class SearchWidget extends StatefulWidget {
   final String? textSearch;
-
-  const SearchWidget({Key? key, this.textSearch}) : super(key: key);
+  final UserLocation userLocation;
+  const SearchWidget({Key? key, this.textSearch,required this.userLocation}) : super(key: key);
 
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
 }
 
-class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
-    with TickerProviderStateMixin {
+class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> with TickerProviderStateMixin {
   @override
   void loadArguments() {
     viewModel.tabController = TabController(
@@ -32,6 +32,7 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
       vsync: this,
     );
     viewModel.keyWord = widget.textSearch;
+    viewModel.userLocation= widget.userLocation;
     super.loadArguments();
   }
 
@@ -94,21 +95,19 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
                     ),
                     Expanded(
                       child: Padding(
-                        padding:
-                            EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
+                        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
                         child: TabBarView(
                           controller: viewModel.tabController,
                           children: [
-                            UsersWidget(
-                                pagingController:
-                                    viewModel.userPagingController),
+                            UsersWidget(pagingController: viewModel.userPagingController),
                             PetsWidget(
                               pagingController: viewModel.petPagingController,
                               follow: viewModel.followPet,
                             ),
                             ServicesWidget(
-                                pagingController:
-                                    viewModel.servicePagingController),
+                              pagingController: viewModel.servicePagingController,
+                              userLocation: viewModel.userLocation,
+                            ),
                           ],
                         ),
                       ),

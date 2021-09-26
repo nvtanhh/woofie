@@ -82,6 +82,7 @@ class ExploreWidgetModel extends BaseViewModel {
         return userLocation;
       }
     } catch (e) {
+      printInfo(info: e.toString());
       return null;
     }
   }
@@ -104,9 +105,11 @@ class ExploreWidgetModel extends BaseViewModel {
 
   void onSubmitted(String value) {
     if (value.isEmpty) return;
+    if (userLocation == null) return;
     Get.to(
       () => SearchWidget(
         textSearch: value,
+        userLocation: userLocation!,
       ),
     );
   }
