@@ -27,7 +27,10 @@ class VideoDialog extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.black87.withOpacity(.6),
         ),
-        child: video != null ? BetterPlayer.file(video!.path) : BetterPlayer.network(videoUrl!),
+        child: video != null
+            ? BetterPlayer.file(video!.path)
+            : BetterPlayer.network(videoUrl!,
+                betterPlayerConfiguration: const BetterPlayerConfiguration()),
       ),
     );
   }
