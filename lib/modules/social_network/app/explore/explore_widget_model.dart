@@ -8,6 +8,7 @@ import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_widget/adoption_widget.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/search_wiget/search_widget.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/service_detail/service_detail_page.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/service.dart';
@@ -124,6 +125,12 @@ class ExploreWidgetModel extends BaseViewModel {
 
   void onLoseClick() {
     Get.to(() => const AdoptionWidget(postType: PostType.lose));
+  }
+
+  void onServiceClick(int index) {
+    Get.to(
+      () => ServiceDetailPage(service: services[index]),
+    );
   }
 
   List<Service> get services => _services;

@@ -247,13 +247,16 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                     ()=> ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
-                        return ServiceWidget(
-                          title: viewModel.services[index].name ?? "",
-                          distance: viewModel.calculateDistance(viewModel.services[index].location!),
-                          widget: ImageWithPlaceHolderWidget(
-                            imageUrl: viewModel.services[index].logo ?? "",
-                            width: 60.w,
-                            height: 60.w,fit: BoxFit.scaleDown,
+                        return GestureDetector(
+                          onTap: ()=>viewModel.onServiceClick(index),
+                          child: ServiceWidget(
+                            title: viewModel.services[index].name ?? "",
+                            distance: viewModel.calculateDistance(viewModel.services[index].location!),
+                            widget: ImageWithPlaceHolderWidget(
+                              imageUrl: viewModel.services[index].logo ?? "",
+                              width: 60.w,
+                              height: 60.w,fit: BoxFit.scaleDown,
+                            ),
                           ),
                         );
                       },

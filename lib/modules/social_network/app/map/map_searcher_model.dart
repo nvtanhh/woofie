@@ -83,10 +83,10 @@ class MapSearcherModel extends BaseViewModel {
         LatLng(currentPosition.latitude, currentPosition.longitude);
     _isLoaded.value = true;
     getZoomLevel();
-    _initCircle();
+    initCircle();
   }
 
-  void _initCircle() {
+  void initCircle() {
     circles.clear();
     circles.add(Circle(
       circleId: const CircleId("myCircle"),
@@ -265,7 +265,12 @@ class MapSearcherModel extends BaseViewModel {
         currentRadius.indexOf(' '),
       ),
     );
-    _initCircle();
+    initCircle();
     postService.pagingController.refresh();
+  }
+  @override
+  void disposeState() {
+    _mapController?.dispose();
+    super.disposeState();
   }
 }

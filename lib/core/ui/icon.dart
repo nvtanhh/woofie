@@ -188,6 +188,8 @@ class MWIcons {
       MWIconData(assetImageFile: Assets.resources.icons.icReVerify);
   static final icReactPost =
   MWIconData(assetImageFile: Assets.resources.images.explore.icReacPost);
+  static final icGoogleMap =
+  MWIconData(assetImageFile: Assets.resources.images.explore.icGoogleMap);
 }
 
 enum MWIconThemeColor {
