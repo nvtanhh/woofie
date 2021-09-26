@@ -28,7 +28,9 @@ class NotificationWidget extends StatefulWidget {
   NotificationWidgetState createState() => NotificationWidgetState();
 }
 
-class NotificationWidgetState extends BaseViewState<NotificationWidget, NotificationWidgetModel> with AutomaticKeepAliveClientMixin {
+class NotificationWidgetState
+    extends BaseViewState<NotificationWidget, NotificationWidgetModel>
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     widget.controller?.attach(context: context, state: this);
@@ -65,9 +67,11 @@ class NotificationWidgetState extends BaseViewState<NotificationWidget, Notifica
               child: RefreshIndicator(
                 onRefresh: () => viewModel.onRefresh(),
                 child: PagedListView<int, Notification>(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   pagingController: viewModel.pagingController,
                   scrollController: viewModel.scrollController,
-                  builderDelegate: PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
+                  builderDelegate: PagedChildBuilderDelegate(
+                      itemBuilder: (context, item, index) {
                     return ListTile(
                       dense: true,
                       leading: item.actor != null
@@ -95,7 +99,8 @@ class NotificationWidgetState extends BaseViewState<NotificationWidget, Notifica
                             ),
                       onTap: () => viewModel.onItemTab(item),
                       trailing: NotificationMenuActionWidget(
-                        onNotification: () => viewModel.onDeleteNotify(item, index),
+                        onNotification: () =>
+                            viewModel.onDeleteNotify(item, index),
                       ),
                       title: generateContentTitle(item),
                       subtitle: Text(
@@ -238,7 +243,8 @@ class NotificationWidgetState extends BaseViewState<NotificationWidget, Notifica
   }
 
   @override
-  NotificationWidgetModel createViewModel() => injector<NotificationWidgetModel>();
+  NotificationWidgetModel createViewModel() =>
+      injector<NotificationWidgetModel>();
 
   @override
   bool get wantKeepAlive => true;
@@ -251,7 +257,8 @@ class NotificationWidgetState extends BaseViewState<NotificationWidget, Notifica
 class NotificationWidgetController {
   late NotificationWidgetState _state;
 
-  void attach({required BuildContext context, required NotificationWidgetState state}) {
+  void attach(
+      {required BuildContext context, required NotificationWidgetState state}) {
     _state = state;
   }
 

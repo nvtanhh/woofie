@@ -11,6 +11,7 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:path/path.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MessageBodyMedia extends StatelessWidget {
   final Message message;
@@ -117,8 +118,7 @@ class MessageBodyMedia extends StatelessWidget {
         : '${partner?.name ?? ""} • $sendVideoText';
 
     return Container(
-      height: 70,
-      padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
+      padding: EdgeInsets.fromLTRB(16.w, 16.w, 24.w, 16.w),
       color: message.isSentByMe ? UIColor.primary : UIColor.holder,
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -143,6 +143,7 @@ class MessageBodyMedia extends StatelessWidget {
                 left: 16,
               ),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

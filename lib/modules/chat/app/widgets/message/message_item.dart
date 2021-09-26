@@ -124,6 +124,6 @@ class MessageWidget extends StatelessWidget {
           break;
         default:
       }
-    }
+    } else {}
   }
 }
