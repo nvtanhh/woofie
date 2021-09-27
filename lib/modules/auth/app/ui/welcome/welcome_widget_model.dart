@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/auth/app/ui/login/login_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
 import 'package:meowoof/modules/auth/domain/usecases/login_with_facebook_usecase.dart';
@@ -95,6 +96,10 @@ class WelcomeWidgetModel extends BaseViewModel {
       () async {
         final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
         if (haUser != null) {
+          if (haUser.active == 0) {
+            injector<ToastService>().toast(message: "Tài khoản của bạn đã bị khóa!", type: ToastType.info, context: Get.context!);
+            return;
+          }
           updateTokenNotify(haUser.uuid);
           await _saveUserToLocalUsecase.call(haUser);
           await _loggedInUser.setLoggedUser(haUser);

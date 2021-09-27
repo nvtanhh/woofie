@@ -6,6 +6,8 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/core/services/toast_service.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/auth/app/ui/register/register_widget.dart';
 import 'package:meowoof/modules/auth/domain/usecases/get_user_with_uuid_usecase.dart';
@@ -13,10 +15,10 @@ import 'package:meowoof/modules/auth/domain/usecases/login_email_password_usecas
 import 'package:meowoof/modules/auth/domain/usecases/save_user_to_local_usecase.dart';
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
 import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
+import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/notification/update_token_notify_usecase.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @injectable
 class LoginWidgetModel extends BaseViewModel {
@@ -90,6 +92,10 @@ class LoginWidgetModel extends BaseViewModel {
         },
         onSuccess: () async {
           if (_user != null) {
+            if (_user?.active == 0) {
+              injector<ToastService>().toast(message: "Tài khoản của bạn đã bị khóa!", type: ToastType.info, context: Get.context!);
+              return;
+            }
             unawaited(_loggedInUser.setLoggedUser(_user!));
             unawaited(updateTokenNotify(_user!.uuid));
             if (!_user!.isHavePets) {
@@ -110,8 +116,7 @@ class LoginWidgetModel extends BaseViewModel {
           if (error is firebase.FirebaseAuthException) {
             String? mess;
             if (error.code == 'user-not-found') {
-              mess = LocaleKeys.login_no_user_found_error_firebase_description
-                  .trans();
+              mess = LocaleKeys.login_no_user_found_error_firebase_description.trans();
             } else if (error.code == 'wrong-password') {
               mess = LocaleKeys.login_wrong_password_error_description.trans();
             }

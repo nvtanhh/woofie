@@ -21,6 +21,7 @@ class HasuraDatasource {
         email
         dob
         phone_number
+        active
         current_pets {
           id
           name
