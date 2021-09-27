@@ -32,7 +32,6 @@ query MyQuery {
     description
   }
 }
-
     """;
     final data = await _hasuraConnect.query(query);
     final listPost = GetMapFromHasura.getMap(data as Map)["pet_services"] as List;
@@ -42,7 +41,7 @@ query MyQuery {
   Future<List<Service>> searchService(String keyWord, int limit, int offset) async {
     final query = """
     query MyQuery {
-      pet_services(where: {name: {_ilike: "%$keyWord%"}}, limit: $limit, offset: $offset, order_by: {name: desc}) {
+      pet_services(where: {_or: {service_type: {_ilike: "%${keyWord.toLowerCase()}%"}, name: {_ilike: "%${keyWord.toLowerCase()}%"}}}, limit: $limit, offset: $offset, order_by: {name: desc}) {
       google_map_link
       description
       id
