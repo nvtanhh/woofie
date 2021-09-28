@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -16,7 +14,6 @@ import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
-import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/get_post_by_location.dart';
 import 'package:meowoof/theme/ui_color.dart';
@@ -117,6 +114,7 @@ class MapSearcherModel extends BaseViewModel {
         long: initialPosition.longitude,
         radius: _radiusByKm,
       );
+      await _sortByDistance(newItems);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         postService.pagingController.appendLastPage(newItems);
@@ -128,7 +126,7 @@ class MapSearcherModel extends BaseViewModel {
       postService.pagingController.error = error;
     } finally {
       final List<Post> posts = postService.pagingController.itemList ?? [];
-      unawaited(_drawMarker(posts));
+      unawaited(_drawMarkers(posts));
     }
   }
 
@@ -169,11 +167,10 @@ class MapSearcherModel extends BaseViewModel {
     }
   }
 
-  Future<void> _drawMarker(List<Post> posts) async {
-    // markers.clear();
+  Future<void> _drawMarkers(List<Post> posts) async {
+    _removeUnnesseryMarkers(posts);
     for (final Post post in posts) {
-      final icon =
-          await _getCustomIcon(post.medias![0].url!, post.taggegPets![0].name!);
+      final icon = await _getCustomIcon(post);
 
       if (icon != null &&
           post.location?.lat != null &&
@@ -194,18 +191,32 @@ class MapSearcherModel extends BaseViewModel {
     }
   }
 
-  Future<BitmapDescriptor?> _getCustomIcon(String url, String petName) async {
-    Size size = Size(150.0, 150.0);
-
+  Future<BitmapDescriptor?> _getCustomIcon(Post post) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
-    final Radius radius = Radius.circular(size.width / 2);
+    Color color;
+    switch (post.type) {
+      case PostType.adop:
+        color = UIColor.adoptionColor;
+        break;
+      case PostType.mating:
+        color = UIColor.matingColor;
+        break;
+      case PostType.lose:
+        color = UIColor.danger;
+        break;
+      default:
+        color = UIColor.primary;
+    }
 
-    final Paint shadowPaint = Paint()..color = UIColor.primary.withAlpha(80);
+    final Paint shadowPaint = Paint()..color = color.withAlpha(80);
     const double shadowWidth = 15.0;
     const double borderWidth = 3.0;
     const double imageOffset = shadowWidth + borderWidth;
+
+    const Size size = Size(150.0, 150.0);
+    final Radius radius = Radius.circular(size.width / 2);
 
     // Add shadow circle
     canvas.drawRRect(
@@ -226,14 +237,25 @@ class MapSearcherModel extends BaseViewModel {
     // Add path for oval image
     canvas.clipPath(Path()..addOval(oval));
 
-    // Add image
-    final File markerImageFile = await DefaultCacheManager().getSingleFile(url);
-    final Uint8List imageBytes = await markerImageFile.readAsBytes();
+    final String url =
+        ((post.medias?.isNotEmpty ?? false) && post.medias![0].url != null)
+            ? post.medias![0].url!
+            : post.taggegPets?[0].avatarUrl ?? '';
+    late Uint8List imageBytes;
+    if (url.isNotEmpty) {
+      final markerImageFile = await DefaultCacheManager().getSingleFile(url);
+      imageBytes = await markerImageFile.readAsBytes();
+    } else {
+      final ByteData bytes = await rootBundle
+          .load('resources/images/fallbacks/pet-avatar-fallback.jpg');
+      imageBytes = bytes.buffer.asUint8List();
+    }
 
+    // Add image
     final ui.Codec imageCodec = await ui.instantiateImageCodec(imageBytes);
     final ui.FrameInfo frameInfo = await imageCodec.getNextFrame();
 
-    ui.Image image = frameInfo.image;
+    final ui.Image image = frameInfo.image;
     paintImage(canvas: canvas, image: image, rect: oval, fit: BoxFit.fitWidth);
 
     // Convert canvas to image
@@ -268,9 +290,32 @@ class MapSearcherModel extends BaseViewModel {
     initCircle();
     postService.pagingController.refresh();
   }
+
   @override
   void disposeState() {
     _mapController?.dispose();
     super.disposeState();
+  }
+
+  Future<void> _sortByDistance(List<Post> posts) async {
+    posts.forEach(_calculateDistance);
+    posts
+        .sort((a, b) => a.distanceUserToPost!.compareTo(b.distanceUserToPost!));
+  }
+
+  void _calculateDistance(Post post) {
+    post.distanceUserToPost ??= (Geolocator.distanceBetween(
+              initialPosition.latitude,
+              initialPosition.longitude,
+              post.location!.lat!,
+              post.location!.long!,
+            ) /
+            1000)
+        .toPrecision(1);
+  }
+
+  void _removeUnnesseryMarkers(List<Post> posts) {
+    markers.removeWhere(
+        (m) => !posts.any((post) => post.id.toString() == m.markerId.value));
   }
 }
