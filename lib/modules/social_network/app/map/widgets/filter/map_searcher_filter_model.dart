@@ -112,6 +112,8 @@ class MapSearcherFilterModel extends BaseViewModel {
         selectedPetBreeds: selectedPetBreeds,
         selectedPetType: selectedPetType,
       );
+    } else {
+      filterOptions = FilterOptions(isClearFilter: true);
     }
     Get.back(result: filterOptions);
   }
@@ -128,8 +130,8 @@ class MapSearcherFilterModel extends BaseViewModel {
     }
   }
 
- void onPetTypeSelected(PetType petType) {
-    final index  = petTypes.indexOf(petType);
+  void onPetTypeSelected(PetType petType) {
+    final index = petTypes.indexOf(petType);
     if (petType != selectedPetType) {
       selectedPetType = petType;
       if (index != petTypes.length - 1) {

@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
-import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
@@ -130,8 +129,8 @@ class MapSearcherModel extends BaseViewModel {
     } catch (error) {
       postService.pagingController.error = error;
     } finally {
-      final List<Post> posts = postService.pagingController.itemList ?? [];
-      unawaited(_drawMarkers(posts));
+      _allPosts = postService.pagingController.itemList ?? [];
+      unawaited(_drawMarkers(_allPosts!));
     }
   }
 
@@ -325,11 +324,15 @@ class MapSearcherModel extends BaseViewModel {
   }
 
   Future onFilterPressed() async {
-    final FilterOptions? filter =
-        await injector<BottomSheetService>().showMapSeacherFilterBottomSheet(currentFilter: filterOptions);
+    final FilterOptions? filter = await injector<BottomSheetService>()
+        .showMapSeacherFilterBottomSheet(currentFilter: filterOptions);
     if (filter != null) {
       if (filter.isClearFilter) {
         filterOptions = null;
+        if (_allPosts != null) {
+          _setPostItems(_allPosts);
+          unawaited(_drawMarkers(_allPosts!));
+        }
       } else {
         filterOptions = filter;
         _filterResult();
@@ -338,6 +341,32 @@ class MapSearcherModel extends BaseViewModel {
   }
 
   void _filterResult() {
-    _allPosts = postService.pagingController.itemList;
+    final filteredPosts = _allPosts?.where((post) {
+      final bool postTypeFilterResult =
+          (filterOptions?.selectedPostTypes?.isEmpty ?? true) ||
+              (filterOptions?.selectedPostTypes?.contains(post.type) ?? true);
+      final bool petTypeFilterResult = (filterOptions?.selectedPetType ==
+              null) ||
+          (filterOptions?.selectedPetType == post.taggegPets?.first.petType);
+      final bool petBreedFilterResult =
+          (filterOptions?.selectedPetBreeds?.isEmpty ?? true) ||
+              (filterOptions?.selectedPetBreeds
+                      ?.contains(post.taggegPets?.first.petBreed) ??
+                  true);
+      return postTypeFilterResult &&
+          petTypeFilterResult &&
+          petBreedFilterResult;
+    }).toList();
+
+    _setPostItems(filteredPosts);
+    _removeUnnesseryMarkers(filteredPosts ?? []);
+  }
+
+  void _setPostItems(List<Post>? posts) {
+    if (posts != null) {
+      postService.pagingController.itemList = posts;
+      // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+      postService.pagingController.notifyListeners();
+    }
   }
 }

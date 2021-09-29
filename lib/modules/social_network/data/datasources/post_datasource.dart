@@ -572,15 +572,19 @@ class PostDatasource {
         }
         post_pets {
           pet {
+            id
+            name
+            gender
+            dob
             avatar_url
+            pet_type{
+              id
+              name
+            }
             pet_breed {
               name
               id
             }
-            id
-            dob
-            gender
-            name
           }
         }
         is_closed
