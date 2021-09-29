@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
@@ -317,5 +318,9 @@ class MapSearcherModel extends BaseViewModel {
   void _removeUnnesseryMarkers(List<Post> posts) {
     markers.removeWhere(
         (m) => !posts.any((post) => post.id.toString() == m.markerId.value));
+  }
+
+  Future onFilterPressed() async {
+    await injector<BottomSheetService>().showMapSeacherFilterBottomSheet();
   }
 }

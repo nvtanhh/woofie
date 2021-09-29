@@ -139,6 +139,18 @@ class _MapSearcherState extends BaseViewState<MapSearcher, MapSearcherModel> {
                       ),
                     ),
                   ),
+                  SizedBox(width: 10.w),
+                  SizedBox(
+                    height: 30.h,
+                    child: VerticalDivider(color: Colors.white, width: 2.w),
+                  ),
+                  IconButton(
+                    onPressed: viewModel.onFilterPressed,
+                    icon: const MWIcon(
+                      MWIcons.filter,
+                      color: Colors.white,
+                    ),
+                  )
                 ],
               ),
             ),

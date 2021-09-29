@@ -150,6 +150,7 @@ class MWIcons {
   static const info = MWIconData(nativeIcon: Icons.info_rounded);
   static const play = MWIconData(nativeIcon: Icons.play_arrow_rounded);
   static const drawer = MWIconData(nativeIcon: Icons.menu_rounded);
+  static const filter = MWIconData(nativeIcon: Icons.filter_alt_rounded);
 
   static const addOutlined =
       MWIconData(nativeIcon: Icons.my_library_add_outlined);
@@ -187,9 +188,9 @@ class MWIcons {
   static final reVerifyEmail =
       MWIconData(assetImageFile: Assets.resources.icons.icReVerify);
   static final icReactPost =
-  MWIconData(assetImageFile: Assets.resources.images.explore.icReacPost);
+      MWIconData(assetImageFile: Assets.resources.images.explore.icReacPost);
   static final icGoogleMap =
-  MWIconData(assetImageFile: Assets.resources.images.explore.icGoogleMap);
+      MWIconData(assetImageFile: Assets.resources.images.explore.icGoogleMap);
 }
 
 enum MWIconThemeColor {

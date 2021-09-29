@@ -82,7 +82,7 @@ class SelectPetTypeWidget extends StatelessWidget {
             )
           : Text(
               "Empty",
-              style: UITextStyle.text_header_18_w700,
+              style: UITextStyle.body_14_medium,
             ),
     );
   }
