@@ -13,6 +13,7 @@ import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
 import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -117,6 +118,7 @@ class MapSearcherModel extends BaseViewModel {
         lat: initialPosition.latitude,
         long: initialPosition.longitude,
         radius: _radiusByKm,
+        filterOptions: filterOptions,
       );
       await _sortByDistance(newItems);
       final isLastPage = newItems.length < pageSize;
@@ -152,7 +154,7 @@ class MapSearcherModel extends BaseViewModel {
     final double radiusByMetter = _radiusByKm * 1000;
     if (radiusByMetter > 0) {
       final double radiusElevated = radiusByMetter + radiusByMetter / 2;
-      final double scale = radiusElevated / 600;
+      final double scale = radiusElevated / 650;
       zoomLevel = 16 - log(scale) / log(2);
     }
     zoomLevel = num.parse(zoomLevel.toStringAsFixed(2)) as double;
@@ -187,8 +189,8 @@ class MapSearcherModel extends BaseViewModel {
             icon: icon,
             position: LatLng(lat, long),
             infoWindow: InfoWindow(
-              title: post.taggegPets![0].name,
-            ),
+                title: post.taggegPets![0].name,
+                onTap: () => Get.to(() => AdoptionPetDetailWidget(post: post))),
           ),
         );
       }
@@ -202,19 +204,19 @@ class MapSearcherModel extends BaseViewModel {
     Color color;
     switch (post.type) {
       case PostType.adop:
-        color = UIColor.adoptionColor;
+        color = UIColor.adoptionColor.withAlpha(80);
         break;
       case PostType.mating:
-        color = UIColor.matingColor;
+        color = UIColor.matingColor.withOpacity(.8);
         break;
       case PostType.lose:
-        color = UIColor.danger;
+        color = UIColor.danger.withOpacity(.8);
         break;
       default:
         color = UIColor.primary;
     }
 
-    final Paint shadowPaint = Paint()..color = color.withAlpha(80);
+    final Paint shadowPaint = Paint()..color = color;
     const double shadowWidth = 15.0;
     const double borderWidth = 3.0;
     const double imageOffset = shadowWidth + borderWidth;
@@ -283,7 +285,7 @@ class MapSearcherModel extends BaseViewModel {
   }
 
   void onChangedChoosenRadius(String? value) {
-    if (value == null) return;
+    if (value == null || value == currentRadius.value) return;
     currentRadius.value = value;
     _radiusByKm = int.parse(
       currentRadius.substring(
@@ -330,8 +332,7 @@ class MapSearcherModel extends BaseViewModel {
       if (filter.isClearFilter) {
         filterOptions = null;
         if (_allPosts != null) {
-          _setPostItems(_allPosts);
-          unawaited(_drawMarkers(_allPosts!));
+          _onClearFilter();
         }
       } else {
         filterOptions = filter;
@@ -368,5 +369,11 @@ class MapSearcherModel extends BaseViewModel {
       // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
       postService.pagingController.notifyListeners();
     }
+  }
+
+  void _onClearFilter() {
+    // _setPostItems(_allPosts);
+    // unawaited(_drawMarkers(_allPosts!));
+    postService.pagingController.refresh();
   }
 }

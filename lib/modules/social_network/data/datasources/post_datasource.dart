@@ -2,6 +2,7 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post_reaction.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
@@ -551,11 +552,38 @@ class PostDatasource {
     return Post.fromJson(postJson as Map<String, dynamic>);
   }
 
-  Future<List<Post>> getPostsByLocation(
-      double lat, double long, int radius) async {
+  Future<List<Post>> getPostsByLocation(double lat, double long, int radius,
+      {FilterOptions? filterOptions}) async {
+    String filter = '';
+    if (filterOptions != null) {
+      final postTypeIds = (filterOptions.selectedPostTypes?.isNotEmpty ?? false)
+          ? filterOptions.selectedPostTypes!.map((e) => e.index).toList()
+          : [];
+      final String filterPostType = (postTypeIds.isNotEmpty)
+          ? 'type: {_in: ${postTypeIds.toString()}}'
+          : '';
+      final String filterPetType = (filterOptions.selectedPetType != null)
+          ? 'pet_type: {id: {_eq: ${filterOptions.selectedPetType!.id}}}'
+          : '';
+
+      final petBreedIds = (filterOptions.selectedPetBreeds?.isNotEmpty ?? false)
+          ? filterOptions.selectedPetBreeds!.map((e) => e.id).toList()
+          : [];
+      final String fillterPetbreed = (petBreedIds.isNotEmpty)
+          ? ', pet_breed_id: {_in: ${petBreedIds.toString()}}'
+          : '';
+      String filterTaggedPet = '';
+      if (filterPetType.isNotEmpty || fillterPetbreed.isNotEmpty) {
+        filterTaggedPet =
+            ', post_pets: {pet: {$filterPetType$fillterPetbreed}}';
+      }
+
+      filter = '$filterPostType$filterTaggedPet';
+    }
+
     final query = """
     query MyQuery {
-      get_functional_posts_by_location(args: {long_user: $long, lat_user: $lat, kilomiters: $radius}) {
+      get_functional_posts_by_location(args: {long_user: $long, lat_user: $lat, kilomiters: $radius}, where: {$filter}) {
         id
         type
         uuid
