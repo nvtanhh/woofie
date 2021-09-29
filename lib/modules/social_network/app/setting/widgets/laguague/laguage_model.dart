@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:suga_core/suga_core.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
+import 'package:meowoof/locale_keys.g.dart';
 
 @injectable
 class LanguageWidgetModel extends BaseViewModel {
@@ -36,6 +38,17 @@ class LanguageWidgetModel extends BaseViewModel {
         EasyLocalization.of(context)?.setLocale(const Locale('en'));
         Get.updateLocale(const Locale('en'));
         break;
+    }
+  }
+
+  String defineLanguage(String string) {
+    switch (string) {
+      case 'vi':
+        return LocaleKeys.setting_vietnamese.trans();
+      case 'en':
+        return LocaleKeys.setting_english.trans();
+      default:
+        return LocaleKeys.setting_vietnamese.trans();
     }
   }
 }

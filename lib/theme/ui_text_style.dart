@@ -59,6 +59,12 @@ class UITextStyle {
         fontSize: 14.0.sp,
         fontWeight: FontWeight.w400),
   );
+  static TextStyle body_15_reg = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.textBody,
+        fontSize: 15.0.sp,
+        fontWeight: FontWeight.w400),
+  );
 
   static TextStyle second_12_medium = GoogleFonts.montserrat(
     textStyle: TextStyle(
@@ -279,6 +285,18 @@ class UITextStyle {
     textStyle: TextStyle(
         color: UIColor.primary, fontSize: 10.0.sp, fontWeight: FontWeight.w600),
   );
+  static TextStyle primary_10_w700 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.primary, fontSize: 10.0.sp, fontWeight: FontWeight.w700),
+  );
+  static TextStyle primary_12_w600 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.primary, fontSize: 12.0.sp, fontWeight: FontWeight.w600),
+  );
+  static TextStyle primary_12_w700 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.primary, fontSize: 12.0.sp, fontWeight: FontWeight.w700),
+  );
   static TextStyle text_secondary_18_w600 = GoogleFonts.montserrat(
     textStyle: TextStyle(
         color: UIColor.textSecondary,
@@ -305,6 +323,12 @@ class UITextStyle {
     textStyle: TextStyle(
         color: UIColor.textSecondary,
         fontSize: 10.0.sp,
+        fontWeight: FontWeight.w600),
+  );
+  static TextStyle text_secondary_12_w600 = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.textSecondary,
+        fontSize: 12.0.sp,
         fontWeight: FontWeight.w600),
   );
   static TextStyle accent2_14_w600 = GoogleFonts.montserrat(

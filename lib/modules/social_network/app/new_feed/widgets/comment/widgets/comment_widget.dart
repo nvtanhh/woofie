@@ -75,7 +75,9 @@ class CommentWidget extends StatelessWidget {
                 widget: Container(
                   width: Get.width * 0.7.w,
                   padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
+                  decoration: BoxDecoration(
+                      color: UIColor.holder,
+                      borderRadius: BorderRadius.circular(10.r)),
                   child: Text.rich(
                     TextSpan(
                       text: "",
@@ -93,8 +95,9 @@ class CommentWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    time_ago.format(comment.createdAt ?? DateTime.now(), locale: 'vi'),
-                    style: UITextStyle.text_secondary_10_w600,
+                    time_ago.format(comment.createdAt ?? DateTime.now(),
+                        locale: 'vi'),
+                    style: UITextStyle.text_secondary_12_w600,
                   ),
                   SizedBox(
                     width: 26.w,
@@ -103,8 +106,11 @@ class CommentWidget extends StatelessWidget {
                     () => Text.rich(
                       TextSpan(
                         text: LocaleKeys.new_feed_like.trans(),
-                        style: isLiked.value ? UITextStyle.primary_10_w600 : UITextStyle.text_body_10_w600,
-                        recognizer: TapGestureRecognizer()..onTap = () => onLikeClick(),
+                        style: isLiked.value
+                            ? UITextStyle.primary_12_w700
+                            : UITextStyle.text_body_12_w600,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => onLikeClick(),
                       ),
                     ),
                   )
@@ -129,7 +135,11 @@ class CommentWidget extends StatelessWidget {
     // ignore: unnecessary_raw_strings
     if (comment.commentTagUser != null && comment.commentTagUser!.isNotEmpty) {
       // ignore: prefer_interpolation_to_compose_strings, unnecessary_raw_strings
-      pattern = r'(?<=' + perfix + ')(' + comment.commentTagUser!.map((e) => e.name!).join('|') + r')';
+      pattern = r'(?<=' +
+          perfix +
+          ')(' +
+          comment.commentTagUser!.map((e) => e.name!).join('|') +
+          r')';
       RegExp _regex = RegExp(pattern);
       comment.content?.splitMapJoin(
         _regex,
@@ -139,7 +149,8 @@ class CommentWidget extends StatelessWidget {
             TextSpan(
               text: pattern,
               style: UITextStyle.text_header_16_w600,
-              recognizer: TapGestureRecognizer()..onTap = () => openProfileUser(getUser(pattern)),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => openProfileUser(getUser(pattern)),
             ),
           );
           return pattern;

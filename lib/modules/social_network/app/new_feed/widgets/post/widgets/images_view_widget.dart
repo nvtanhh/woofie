@@ -37,10 +37,13 @@ class ImagesViewWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.r),
               child: PageView.builder(
                 itemBuilder: (context, index) {
-                  if (medias[index].type == MediaType.image || medias[index].type == MediaType.gif) {
+                  if (medias[index].type == MediaType.image ||
+                      medias[index].type == MediaType.gif) {
                     return ImageWithPlaceHolderWidget(
                       imageUrl: medias[index].url ?? "",
                       radius: 20.r,
+                      placeHolderImage:
+                          'resources/images/fallbacks/media-fallback.png',
                       fit: BoxFit.cover,
                       initGestureConfigHandler: (state) {
                         return GestureConfig(

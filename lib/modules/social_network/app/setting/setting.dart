@@ -26,7 +26,9 @@ class _SettingState extends BaseViewState<Setting, SettingModel> {
             children: [
               Row(
                 children: [
-                  IconButton(icon: const MWIcon(MWIcons.back), onPressed: () => Get.back()),
+                  IconButton(
+                      icon: const MWIcon(MWIcons.back),
+                      onPressed: () => Get.back()),
                   Expanded(
                     child: Text(
                       LocaleKeys.setting_setting.trans(),
@@ -50,42 +52,46 @@ class _SettingState extends BaseViewState<Setting, SettingModel> {
                 leading: const MWIcon(MWIcons.language),
                 title: Obx(
                   () => Text(
-                    LocaleKeys.setting_language.trans(args: [viewModel.defineLanguage(viewModel.currentLanguage)]),
+                    LocaleKeys.setting_language.trans(args: [
+                      viewModel.defineLanguage(viewModel.currentLanguage)
+                    ]),
                     style: UITextStyle.text_body_14_w500,
                   ),
                 ),
               ),
-              ListTile(
-                onTap: () => viewModel.notification(),
-                leading: const MWIcon(MWIcons.notificaiton),
-                title: Text(
-                  LocaleKeys.setting_notification.trans(),
-                  style: UITextStyle.text_body_14_w500,
-                ),
-              ),
+              // ListTile(
+              //   onTap: () => viewModel.notification(),
+              //   leading: const MWIcon(MWIcons.notificaiton),
+              //   title: Text(
+              //     LocaleKeys.setting_notification.trans(),
+              //     style: UITextStyle.text_body_14_w500,
+              //   ),
+              // ),
               ListTile(
                 onTap: () => viewModel.message(),
-                leading: MWIcon(MWIcons.message,),
+                leading: MWIcon(
+                  MWIcons.message,
+                ),
                 title: Text(
                   LocaleKeys.setting_message.trans(),
                   style: UITextStyle.text_body_14_w500,
                 ),
               ),
-              SizedBox(height: 10.h),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 10),
-                child: Text(
-                  LocaleKeys.setting_other_setting.trans(),
-                  style: UITextStyle.text_header_14_w600,
-                ),
-              ),
-              ListTile(
-                leading: const MWIcon(MWIcons.feedback),
-                title: Text(
-                  LocaleKeys.setting_rate_feedback.trans(),
-                  style: UITextStyle.text_body_14_w500,
-                ),
-              ),
+              // SizedBox(height: 10.h),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 16, bottom: 10),
+              //   child: Text(
+              //     LocaleKeys.setting_other_setting.trans(),
+              //     style: UITextStyle.text_header_14_w600,
+              //   ),
+              // ),
+              // ListTile(
+              //   leading: const MWIcon(MWIcons.feedback),
+              //   title: Text(
+              //     LocaleKeys.setting_rate_feedback.trans(),
+              //     style: UITextStyle.text_body_14_w500,
+              //   ),
+              // ),
             ],
           ),
           ListTile(

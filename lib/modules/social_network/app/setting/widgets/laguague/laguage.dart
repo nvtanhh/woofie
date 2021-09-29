@@ -20,7 +20,7 @@ class _LanguageState extends BaseViewState<LanguageWidget, LanguageWidgetModel> 
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            LocaleKeys.setting_language.trans(args: [""]),
+            LocaleKeys.setting_language.trans(args: [viewModel.defineLanguage(viewModel.currentLanguage)]),
             style: UITextStyle.text_header_18_w600,
           ),
           leading: IconButton(

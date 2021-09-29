@@ -106,6 +106,7 @@ class _SendCommentWidgetState
               controller: viewModel.controller,
               scrollController: viewModel.controller?.scrollController,
               keyboardType: TextInputType.multiline,
+              textCapitalization: TextCapitalization.sentences,
             ),
           ),
           SizedBox(
