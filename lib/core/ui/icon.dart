@@ -150,13 +150,14 @@ class MWIcons {
   static const info = MWIconData(nativeIcon: Icons.info_rounded);
   static const play = MWIconData(nativeIcon: Icons.play_arrow_rounded);
   static const drawer = MWIconData(nativeIcon: Icons.menu_rounded);
-  static const filter = MWIconData(nativeIcon: Icons.filter_alt_rounded);
-
   static const addOutlined =
       MWIconData(nativeIcon: Icons.my_library_add_outlined);
   static const personAddOutlined =
       MWIconData(nativeIcon: Icons.person_add_outlined);
+
   // Icon with asset image
+  static final filter =
+      MWIconData(assetImageFile: Assets.resources.icons.icFilter);
   static final add =
       MWIconData(assetImageFile: Assets.resources.icons.icAddPost);
   static final message =
@@ -175,8 +176,12 @@ class MWIcons {
       MWIconData(assetImageFile: Assets.resources.icons.icPetOwners);
   static final icAdoption =
       MWIconData(assetImageFile: Assets.resources.images.explore.icAdoption);
-  static final icMatting =
-      MWIconData(assetImageFile: Assets.resources.images.explore.icMatting);
+  static final icAdoptionBold = MWIconData(
+      assetImageFile: Assets.resources.images.explore.icAdoptionBold);
+  static final icMating =
+      MWIconData(assetImageFile: Assets.resources.images.explore.icMating);
+  static final icMatingBold =
+      MWIconData(assetImageFile: Assets.resources.images.explore.icMatingBold);
   static final icLose =
       MWIconData(assetImageFile: Assets.resources.images.explore.icLose);
   static final icReact =

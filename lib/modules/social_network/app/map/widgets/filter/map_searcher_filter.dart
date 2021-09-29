@@ -6,16 +6,19 @@ import 'package:meowoof/core/ui/ios_indicator.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/add_pet/widgets/select_pet_type_widget.dart';
 import 'package:meowoof/modules/social_network/app/map/widgets/filter/map_searcher_filter_model.dart';
+import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/app/map/widgets/filter/widgets/select_pet_breed.dart';
 import 'package:meowoof/modules/social_network/app/map/widgets/filter/widgets/select_pet_type_widget.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/app/map/widgets/filter/widgets/select_post_type.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MapSearcherFilter extends StatefulWidget {
-  const MapSearcherFilter({Key? key}) : super(key: key);
+  final FilterOptions? currentFilter;
+
+  const MapSearcherFilter({Key? key, this.currentFilter}) : super(key: key);
 
   @override
   _MapSearcherFilterState createState() => _MapSearcherFilterState();
@@ -26,6 +29,12 @@ class _MapSearcherFilterState
   @override
   MapSearcherFilterModel createViewModel() =>
       injector<MapSearcherFilterModel>();
+
+  @override
+  void loadArguments() {
+    viewModel.currentFilter = widget.currentFilter;
+    super.loadArguments();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,31 +79,18 @@ class _MapSearcherFilterState
   }
 
   Widget _selectPostTypeSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Post type', style: UITextStyle.heading_18_semiBold),
-        SizedBox(height: 15.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MWIcon(
-              defineIcon(PostType.adop),
-              customSize: 48.w,
-            ),
-            SizedBox(width: 15.w),
-            MWIcon(
-              defineIcon(PostType.mating),
-              customSize: 48.w,
-            ),
-            SizedBox(width: 15.w),
-            MWIcon(
-              defineIcon(PostType.lose),
-              customSize: 48.w,
-            ),
-          ],
-        ),
-      ],
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Post type', style: UITextStyle.heading_18_semiBold),
+          SizedBox(height: 15.h),
+          MapSeacherFilterSelectPostTypeWidget(
+            onPostTypeSelected: viewModel.onPostTypeSelected,
+            selectedPostTypes: viewModel.selectedPostTypes,
+          )
+        ],
+      ),
     );
   }
 
@@ -108,8 +104,8 @@ class _MapSearcherFilterState
                 SizedBox(height: 15.h),
                 MapSeacherFilterSelectPetTypeWidget(
                   petTypes: viewModel.petTypes,
-                  selectedIndex: viewModel.indexPetTypeSelected,
-                  onSelectedIndex: viewModel.onPetTypeSelectedIndex,
+                  selectedPetType: viewModel.selectedPetType,
+                  onPetTypeSelected: viewModel.onPetTypeSelected,
                 )
               ],
             )
@@ -136,24 +132,11 @@ class _MapSearcherFilterState
     );
   }
 
-  MWIconData defineIcon(PostType postType) {
-    switch (postType) {
-      case PostType.mating:
-        return MWIcons.icMatting;
-      case PostType.adop:
-        return MWIcons.icAdoption;
-      case PostType.lose:
-        return MWIcons.icLose;
-      default:
-        return MWIcons.icAdoption;
-    }
-  }
-
   Widget _actionButtons() {
     return Row(
       children: [
         TextButton(
-          onPressed: () {},
+          onPressed: viewModel.onClearFilter,
           child: Text(
             'Clear',
             style: UITextStyle.body_16_medium,
@@ -166,6 +149,7 @@ class _MapSearcherFilterState
             borderRadius: 10.r,
             title: 'Show results',
             titleStyle: UITextStyle.white_16_w600,
+            onPress: viewModel.onApplyFilter,
           ),
         ),
       ],

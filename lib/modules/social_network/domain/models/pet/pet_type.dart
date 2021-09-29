@@ -1,11 +1,10 @@
 import 'dart:convert';
-
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 part 'pet_type.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class PetType {
+class PetType extends Equatable {
   @JsonKey(name: "id")
   int id;
   @JsonKey(name: "name")
@@ -22,9 +21,14 @@ class PetType {
     this.avatar,
   });
 
-  factory PetType.fromJson(Map<String, dynamic> json) => _$PetTypeFromJson(json);
+  @override
+  List<Object> get props => [id];
 
-  factory PetType.fromJsonString(String jsonString) => PetType.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory PetType.fromJson(Map<String, dynamic> json) =>
+      _$PetTypeFromJson(json);
+
+  factory PetType.fromJsonString(String jsonString) =>
+      PetType.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PetTypeToJson(this);
 

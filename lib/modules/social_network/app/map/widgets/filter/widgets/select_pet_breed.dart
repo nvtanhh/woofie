@@ -34,7 +34,7 @@ class MapSeacherFilterSelectPetBreedWidget extends StatelessWidget {
     }
     final isSelected = selectedPetBreeds.contains(petBreed);
     return Padding(
-      padding: EdgeInsets.only(right: 4.w, bottom: 4.w),
+      padding: EdgeInsets.only(right: 8.w, bottom: 6.w),
       child: GestureDetector(
         onTap: () => onPetBreedSelected(petBreed),
         child: DecoratedBox(
@@ -43,10 +43,12 @@ class MapSeacherFilterSelectPetBreedWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.r)),
           child: Padding(
             padding: EdgeInsets.all(8.w),
-            child: Text(breedName,
-                style: isSelected
-                    ? UITextStyle.white_12_w500
-                    : UITextStyle.body_12_medium),
+            child: Text(
+              breedName,
+              style: isSelected
+                  ? UITextStyle.white_12_w500
+                  : UITextStyle.body_12_medium,
+            ),
           ),
         ),
       ),

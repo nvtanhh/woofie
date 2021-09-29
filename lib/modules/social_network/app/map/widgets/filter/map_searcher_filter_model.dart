@@ -1,8 +1,10 @@
-import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/add_pet/get_pet_breeds_usecase.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/add_pet/get_pet_types_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -13,11 +15,13 @@ class MapSearcherFilterModel extends BaseViewModel {
   final GetPetBreedUsecase _getPetBreedUsecase;
 
   final RxList<PetType> _petTypes = RxList([]);
-  final RxInt _indexPetTypeSelected = RxInt(-1);
-  PetType? selectedPetType;
-
   final RxList<PetBreed> _petBreeds = RxList([]);
+
+  final RxList<PostType> _selectedPostTypes = RxList([]);
+  final Rxn<PetType> _selectedPetType = Rxn();
   final RxList<PetBreed> _selectedPetBreeds = RxList([]);
+
+  FilterOptions? currentFilter;
 
   MapSearcherFilterModel(
     this._getPetTypesUsecase,
@@ -26,13 +30,24 @@ class MapSearcherFilterModel extends BaseViewModel {
 
   @override
   void initState() {
+    if (currentFilter != null) {
+      selectedPostTypes = currentFilter!.selectedPostTypes ?? [];
+    }
     loadPetTypes();
     super.initState();
   }
 
   Future<Unit> loadPetTypes() async {
     return call(
-      () async => petTypes = await _getPetTypesUsecase.call(),
+      () async {
+        petTypes = await _getPetTypesUsecase.call();
+      },
+      onSuccess: () {
+        if (currentFilter != null && currentFilter!.selectedPetType != null) {
+          selectedPetType = currentFilter!.selectedPetType;
+          loadPetBreeds(currentFilter!.selectedPetType!.id);
+        }
+      },
       showLoading: false,
     );
   }
@@ -40,22 +55,19 @@ class MapSearcherFilterModel extends BaseViewModel {
   Future<Unit> loadPetBreeds(int idPetType) async {
     return call(
       () async => petBreeds = await _getPetBreedUsecase.call(idPetType),
-      onSuccess: () {},
+      onSuccess: () {
+        if (currentFilter != null && currentFilter!.selectedPetBreeds != null) {
+          selectedPetBreeds = currentFilter!.selectedPetBreeds ?? [];
+        }
+      },
       showLoading: false,
     );
   }
 
-  void onPetTypeSelectedIndex(int index) {
-    final petType = petTypes[index];
-    if (petType != selectedPetType) {
-      indexPetTypeSelected = index;
-      selectedPetType = petTypes[index];
-      if (index != petTypes.length - 1) {
-        loadPetBreeds(selectedPetType!.id);
-      } else {
-        petBreeds = [];
-      }
-    }
+  PetType? get selectedPetType => _selectedPetType.value;
+
+  set selectedPetType(PetType? value) {
+    _selectedPetType.value = value;
   }
 
   List<PetType> get petTypes => _petTypes.toList();
@@ -76,10 +88,10 @@ class MapSearcherFilterModel extends BaseViewModel {
     _selectedPetBreeds.assignAll(value);
   }
 
-  int get indexPetTypeSelected => _indexPetTypeSelected.value;
+  List<PostType> get selectedPostTypes => _selectedPostTypes.toList();
 
-  set indexPetTypeSelected(int value) {
-    _indexPetTypeSelected.value = value;
+  set selectedPostTypes(List<PostType> value) {
+    _selectedPostTypes.assignAll(value);
   }
 
   void onPetBreedSelected(PetBreed petBreed) {
@@ -87,6 +99,44 @@ class MapSearcherFilterModel extends BaseViewModel {
       _selectedPetBreeds.remove(petBreed);
     } else {
       _selectedPetBreeds.add(petBreed);
+    }
+  }
+
+  void onApplyFilter() {
+    FilterOptions? filterOptions;
+    if (selectedPostTypes.isNotEmpty ||
+        selectedPetBreeds.isNotEmpty ||
+        selectedPetType != null) {
+      filterOptions = FilterOptions(
+        selectedPostTypes: selectedPostTypes,
+        selectedPetBreeds: selectedPetBreeds,
+        selectedPetType: selectedPetType,
+      );
+    }
+    Get.back(result: filterOptions);
+  }
+
+  void onClearFilter() {
+    Get.back(result: FilterOptions(isClearFilter: true));
+  }
+
+  void onPostTypeSelected(PostType postType) {
+    if (selectedPostTypes.contains(postType)) {
+      _selectedPostTypes.remove(postType);
+    } else {
+      _selectedPostTypes.add(postType);
+    }
+  }
+
+ void onPetTypeSelected(PetType petType) {
+    final index  = petTypes.indexOf(petType);
+    if (petType != selectedPetType) {
+      selectedPetType = petType;
+      if (index != petTypes.length - 1) {
+        loadPetBreeds(selectedPetType!.id);
+      } else {
+        petBreeds = [];
+      }
     }
   }
 }

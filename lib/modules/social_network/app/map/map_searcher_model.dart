@@ -14,6 +14,7 @@ import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/get_post_by_location.dart';
@@ -24,13 +25,13 @@ import 'package:suga_core/suga_core.dart';
 class MapSearcherModel extends BaseViewModel {
   final GetPostByLocationUsecase _getPostByLocationUsecase;
 
-  final LoggedInUser _loggedInUser;
   final PostService postService;
-
   final ScrollController scrollController = ScrollController();
+  final Rxn<FilterOptions> _filterOptions = Rxn();
+
+  List<Post>? _allPosts;
 
   MapSearcherModel(
-    this._loggedInUser,
     this.postService,
     this._getPostByLocationUsecase,
   );
@@ -68,6 +69,9 @@ class MapSearcherModel extends BaseViewModel {
     _initPostService();
     currentRadius.value = radiuses[0];
   }
+
+  FilterOptions? get filterOptions => _filterOptions.value;
+  set filterOptions(FilterOptions? value) => _filterOptions.value = value;
 
   Future _initUserLocation() async {
     // final UserLocation? userLocation = _loggedInUser.user!.location;
@@ -321,6 +325,19 @@ class MapSearcherModel extends BaseViewModel {
   }
 
   Future onFilterPressed() async {
-    await injector<BottomSheetService>().showMapSeacherFilterBottomSheet();
+    final FilterOptions? filter =
+        await injector<BottomSheetService>().showMapSeacherFilterBottomSheet(currentFilter: filterOptions);
+    if (filter != null) {
+      if (filter.isClearFilter) {
+        filterOptions = null;
+      } else {
+        filterOptions = filter;
+        _filterResult();
+      }
+    }
+  }
+
+  void _filterResult() {
+    _allPosts = postService.pagingController.itemList;
   }
 }

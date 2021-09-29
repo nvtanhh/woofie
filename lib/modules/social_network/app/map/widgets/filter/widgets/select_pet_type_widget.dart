@@ -8,14 +8,14 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class MapSeacherFilterSelectPetTypeWidget extends StatelessWidget {
   final List<PetType> petTypes;
-  final int selectedIndex;
-  final Function(int) onSelectedIndex;
+  final Function(PetType) onPetTypeSelected;
+  final PetType? selectedPetType;
 
   const MapSeacherFilterSelectPetTypeWidget({
     Key? key,
     required this.petTypes,
-    this.selectedIndex = -1,
-    required this.onSelectedIndex,
+    required this.onPetTypeSelected,
+    this.selectedPetType,
   }) : super(key: key);
 
   @override
@@ -31,9 +31,8 @@ class MapSeacherFilterSelectPetTypeWidget extends StatelessWidget {
   }
 
   Widget _petTypeItem(PetType petType) {
-    final index = petTypes.indexOf(petType);
     return GestureDetector(
-      onTap: () => onSelectedIndex(index),
+      onTap: () => onPetTypeSelected(petType),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.w),
         child: SizedBox(
@@ -44,32 +43,35 @@ class MapSeacherFilterSelectPetTypeWidget extends StatelessWidget {
                 height: 60.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
-                  color: UIColor.antiqueWhite,
                   border: Border.all(
-                    color: index == selectedIndex
-                        ? UIColor.accent2
-                        : UIColor.antiqueWhite,
+                    width: 1.5.w,
+                    color: petType == selectedPetType
+                        ? UIColor.primary
+                        : Colors.transparent,
                   ),
                 ),
-                child: ExtendedImage.network(petTypes[index].avatar ?? "",
-                    retries: 1, fit: BoxFit.fill, loadStateChanged: (e) {
-                  switch (e.extendedImageLoadState) {
-                    case LoadState.loading:
-                      return _getPlaceholder();
-                    case LoadState.completed:
-                      return null;
-                    case LoadState.failed:
-                      return _getPlaceholder();
-                  }
-                }),
+                child: Padding(
+                  padding: EdgeInsets.all(2.5.w),
+                  child: ExtendedImage.network(petType.avatar ?? "",
+                      retries: 1, fit: BoxFit.fill, loadStateChanged: (e) {
+                    switch (e.extendedImageLoadState) {
+                      case LoadState.loading:
+                        return _getPlaceholder();
+                      case LoadState.completed:
+                        return null;
+                      case LoadState.failed:
+                        return _getPlaceholder();
+                    }
+                  }),
+                ),
               ),
               SizedBox(
                 height: 5.h,
               ),
               Text(
-                petTypes[index].name ?? "",
-                style: index == selectedIndex
-                    ? UITextStyle.accent2_14_w600
+                petType.name ?? "",
+                style: petType == selectedPetType
+                    ? UITextStyle.primary_14_w600
                     : UITextStyle.text_body_14_w600,
               )
             ],
