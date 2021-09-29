@@ -298,7 +298,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
   MWIconData defineIcon(PostType postType) {
     switch (postType) {
       case PostType.mating:
-        return MWIcons.icMatting;
+        return MWIcons.icMating;
       case PostType.adop:
         return MWIcons.icAdoption;
       case PostType.lose:

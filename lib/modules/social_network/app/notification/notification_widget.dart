@@ -215,7 +215,7 @@ class NotificationWidgetState
     switch (notification.type) {
       case NotificationType.matting:
         return MWIcon(
-          MWIcons.icMatting,
+          MWIcons.icMating,
           color: UIColor.primary,
           customSize: 20.w,
         );

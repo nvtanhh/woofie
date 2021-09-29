@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pet_breed.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class PetBreed {
+class PetBreed extends Equatable {
   @JsonKey(name: "id")
   int id;
   @JsonKey(name: "id_pet_type")
@@ -22,9 +23,11 @@ class PetBreed {
     this.avatar,
   });
 
-  factory PetBreed.fromJson(Map<String, dynamic> json) => _$PetBreedFromJson(json);
+  factory PetBreed.fromJson(Map<String, dynamic> json) =>
+      _$PetBreedFromJson(json);
 
-  factory PetBreed.fromJsonString(String jsonString) => PetBreed.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory PetBreed.fromJsonString(String jsonString) =>
+      PetBreed.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PetBreedToJson(this);
 
@@ -35,4 +38,8 @@ class PetBreed {
 
   @override
   int get hashCode => id.hashCode;
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
 }

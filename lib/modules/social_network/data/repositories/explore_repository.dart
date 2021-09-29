@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/service_datasource.dart';
@@ -16,19 +17,24 @@ class ExploreRepository {
   final PetDatasource _petDatasource;
   final ServiceDatasource _serviceDatasource;
 
-  ExploreRepository(this._postDatasource,
-      this._petDatasource,
-      this._userDatasource, this._serviceDatasource,);
+  ExploreRepository(
+    this._postDatasource,
+    this._petDatasource,
+    this._userDatasource,
+    this._serviceDatasource,
+  );
 
   Future<List<Service>> getServicesPet() async {
     return _serviceDatasource.getServices();
   }
 
-  Future<List<Post>> getPostsByType(PostType postType,
-      double longUser,
-      double latUser,
-      int limit,
-      int offset,) async {
+  Future<List<Post>> getPostsByType(
+    PostType postType,
+    double longUser,
+    double latUser,
+    int limit,
+    int offset,
+  ) async {
     return _postDatasource.getPostByType(
       postType,
       longUser,
@@ -42,8 +48,8 @@ class ExploreRepository {
     return _postDatasource.getDetailPost(postId);
   }
 
-  Future<List<Service>> searchService(String keyWord,int limit,int offset) {
-    return _serviceDatasource.searchService(keyWord,limit,offset);
+  Future<List<Service>> searchService(String keyWord, int limit, int offset) {
+    return _serviceDatasource.searchService(keyWord, limit, offset);
   }
 
   Future<List<Pet>> searchPet(String keyWord, int offset, int limit) {
@@ -62,8 +68,14 @@ class ExploreRepository {
     return _petDatasource.changePetOwner(user, pet);
   }
 
-  Future<List<Post>> getPostsByLocation(double lat, double long, int radius) {
-    return _postDatasource.getPostsByLocation(lat, long, radius);
+  Future<List<Post>> getPostsByLocation(double lat, double long, int radius,
+      {FilterOptions? filterOptions}) {
+    return _postDatasource.getPostsByLocation(
+      lat,
+      long,
+      radius,
+      filterOptions: filterOptions,
+    );
   }
 
   Future<List<User>> searchUser(String keyWord, int offset, int limit) {

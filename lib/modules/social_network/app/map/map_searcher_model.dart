@@ -10,9 +10,11 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
-import 'package:meowoof/core/logged_user.dart';
+import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/location_service.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
+import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/post_service.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/usecases/explore/get_post_by_location.dart';
@@ -23,13 +25,13 @@ import 'package:suga_core/suga_core.dart';
 class MapSearcherModel extends BaseViewModel {
   final GetPostByLocationUsecase _getPostByLocationUsecase;
 
-  final LoggedInUser _loggedInUser;
   final PostService postService;
-
   final ScrollController scrollController = ScrollController();
+  final Rxn<FilterOptions> _filterOptions = Rxn();
+
+  List<Post>? _allPosts;
 
   MapSearcherModel(
-    this._loggedInUser,
     this.postService,
     this._getPostByLocationUsecase,
   );
@@ -67,6 +69,9 @@ class MapSearcherModel extends BaseViewModel {
     _initPostService();
     currentRadius.value = radiuses[0];
   }
+
+  FilterOptions? get filterOptions => _filterOptions.value;
+  set filterOptions(FilterOptions? value) => _filterOptions.value = value;
 
   Future _initUserLocation() async {
     // final UserLocation? userLocation = _loggedInUser.user!.location;
@@ -113,6 +118,7 @@ class MapSearcherModel extends BaseViewModel {
         lat: initialPosition.latitude,
         long: initialPosition.longitude,
         radius: _radiusByKm,
+        filterOptions: filterOptions,
       );
       await _sortByDistance(newItems);
       final isLastPage = newItems.length < pageSize;
@@ -125,8 +131,8 @@ class MapSearcherModel extends BaseViewModel {
     } catch (error) {
       postService.pagingController.error = error;
     } finally {
-      final List<Post> posts = postService.pagingController.itemList ?? [];
-      unawaited(_drawMarkers(posts));
+      _allPosts = postService.pagingController.itemList ?? [];
+      unawaited(_drawMarkers(_allPosts!));
     }
   }
 
@@ -148,7 +154,7 @@ class MapSearcherModel extends BaseViewModel {
     final double radiusByMetter = _radiusByKm * 1000;
     if (radiusByMetter > 0) {
       final double radiusElevated = radiusByMetter + radiusByMetter / 2;
-      final double scale = radiusElevated / 600;
+      final double scale = radiusElevated / 650;
       zoomLevel = 16 - log(scale) / log(2);
     }
     zoomLevel = num.parse(zoomLevel.toStringAsFixed(2)) as double;
@@ -183,8 +189,8 @@ class MapSearcherModel extends BaseViewModel {
             icon: icon,
             position: LatLng(lat, long),
             infoWindow: InfoWindow(
-              title: post.taggegPets![0].name,
-            ),
+                title: post.taggegPets![0].name,
+                onTap: () => Get.to(() => AdoptionPetDetailWidget(post: post))),
           ),
         );
       }
@@ -198,19 +204,19 @@ class MapSearcherModel extends BaseViewModel {
     Color color;
     switch (post.type) {
       case PostType.adop:
-        color = UIColor.adoptionColor;
+        color = UIColor.adoptionColor.withAlpha(80);
         break;
       case PostType.mating:
-        color = UIColor.matingColor;
+        color = UIColor.matingColor.withOpacity(.8);
         break;
       case PostType.lose:
-        color = UIColor.danger;
+        color = UIColor.danger.withOpacity(.8);
         break;
       default:
         color = UIColor.primary;
     }
 
-    final Paint shadowPaint = Paint()..color = color.withAlpha(80);
+    final Paint shadowPaint = Paint()..color = color;
     const double shadowWidth = 15.0;
     const double borderWidth = 3.0;
     const double imageOffset = shadowWidth + borderWidth;
@@ -279,7 +285,7 @@ class MapSearcherModel extends BaseViewModel {
   }
 
   void onChangedChoosenRadius(String? value) {
-    if (value == null) return;
+    if (value == null || value == currentRadius.value) return;
     currentRadius.value = value;
     _radiusByKm = int.parse(
       currentRadius.substring(
@@ -317,5 +323,57 @@ class MapSearcherModel extends BaseViewModel {
   void _removeUnnesseryMarkers(List<Post> posts) {
     markers.removeWhere(
         (m) => !posts.any((post) => post.id.toString() == m.markerId.value));
+  }
+
+  Future onFilterPressed() async {
+    final FilterOptions? filter = await injector<BottomSheetService>()
+        .showMapSeacherFilterBottomSheet(currentFilter: filterOptions);
+    if (filter != null) {
+      if (filter.isClearFilter) {
+        filterOptions = null;
+        if (_allPosts != null) {
+          _onClearFilter();
+        }
+      } else {
+        filterOptions = filter;
+        _filterResult();
+      }
+    }
+  }
+
+  void _filterResult() {
+    final filteredPosts = _allPosts?.where((post) {
+      final bool postTypeFilterResult =
+          (filterOptions?.selectedPostTypes?.isEmpty ?? true) ||
+              (filterOptions?.selectedPostTypes?.contains(post.type) ?? true);
+      final bool petTypeFilterResult = (filterOptions?.selectedPetType ==
+              null) ||
+          (filterOptions?.selectedPetType == post.taggegPets?.first.petType);
+      final bool petBreedFilterResult =
+          (filterOptions?.selectedPetBreeds?.isEmpty ?? true) ||
+              (filterOptions?.selectedPetBreeds
+                      ?.contains(post.taggegPets?.first.petBreed) ??
+                  true);
+      return postTypeFilterResult &&
+          petTypeFilterResult &&
+          petBreedFilterResult;
+    }).toList();
+
+    _setPostItems(filteredPosts);
+    _removeUnnesseryMarkers(filteredPosts ?? []);
+  }
+
+  void _setPostItems(List<Post>? posts) {
+    if (posts != null) {
+      postService.pagingController.itemList = posts;
+      // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+      postService.pagingController.notifyListeners();
+    }
+  }
+
+  void _onClearFilter() {
+    // _setPostItems(_allPosts);
+    // unawaited(_drawMarkers(_allPosts!));
+    postService.pagingController.refresh();
   }
 }

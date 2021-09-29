@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/modules/social_network/app/map/widgets/filter/map_searcher_filter.dart';
+import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/comment/comment_bottom_sheet_widget.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/tag_pet_bottom_sheet.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
@@ -16,6 +18,7 @@ class BottomSheetService {
       topLeft: Radius.circular(30.r),
     ),
   );
+
   void showComments(Post post, BuildContext context) {
     showMaterialModalBottomSheet(
       context: context,
@@ -26,13 +29,12 @@ class BottomSheetService {
     );
   }
 
-  Future showTagPetBottomSheet({
-    required List<Pet> userPets,
-    required ValueChanged<Pet> onPetChosen,
-    List<Pet>? taggedPets,
-    String? title,
-    bool needConfirmButton = false
-  }) {
+  Future showTagPetBottomSheet(
+      {required List<Pet> userPets,
+      required ValueChanged<Pet> onPetChosen,
+      List<Pet>? taggedPets,
+      String? title,
+      bool needConfirmButton = false}) {
     return showMaterialModalBottomSheet(
       context: Get.context!,
       builder: (context) => TagPetBottomSheetWidget(
@@ -44,5 +46,16 @@ class BottomSheetService {
       ),
       shape: defaultBottomSheetShape,
     );
+  }
+
+  Future<FilterOptions?> showMapSeacherFilterBottomSheet(
+      {FilterOptions? currentFilter}) async {
+    final FilterOptions? filterOptions = await showMaterialModalBottomSheet(
+      context: Get.context!,
+      builder: (context) =>
+           MapSearcherFilter(currentFilter: currentFilter),
+      shape: defaultBottomSheetShape,
+    );
+    return filterOptions;
   }
 }

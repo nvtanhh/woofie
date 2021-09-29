@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/map/map_searcher_model.dart';
@@ -12,6 +13,7 @@ import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+@injectable
 class MapSearcher extends StatefulWidget {
   const MapSearcher({Key? key}) : super(key: key);
 
@@ -139,6 +141,12 @@ class _MapSearcherState extends BaseViewState<MapSearcher, MapSearcherModel> {
                       ),
                     ),
                   ),
+                  SizedBox(width: 10.w),
+                  SizedBox(
+                    height: 30.h,
+                    child: VerticalDivider(color: Colors.white, width: 2.w),
+                  ),
+                  _filterButton(),
                 ],
               ),
             ),
@@ -174,6 +182,40 @@ class _MapSearcherState extends BaseViewState<MapSearcher, MapSearcherModel> {
             firstPageProgressIndicatorBuilder: (_) => const SizedBox(),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _filterButton() {
+    return IconButton(
+      onPressed: viewModel.onFilterPressed,
+      icon: Stack(
+        children: [
+          MWIcon(
+            MWIcons.filter,
+            color: UIColor.accent,
+          ),
+          Obx(
+            () => viewModel.filterOptions != null
+                ? Positioned(
+                    right: 0,
+                    child: Transform.translate(
+                      offset: Offset(3.w, 0),
+                      child: SizedBox(
+                        height: 8.w,
+                        width: 8.w,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: UIColor.accent,
+                            borderRadius: BorderRadius.circular(10.w),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox(),
+          ),
+        ],
       ),
     );
   }

@@ -29,6 +29,12 @@ class UITextStyle {
         fontSize: 16.0.sp,
         fontWeight: FontWeight.w400),
   );
+  static TextStyle body_18_semiBold = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.textBody,
+        fontSize: 18.0.sp,
+        fontWeight: FontWeight.w600),
+  );
   static TextStyle body_14_semiBold = GoogleFonts.montserrat(
     textStyle: TextStyle(
         color: UIColor.textBody,
@@ -39,6 +45,12 @@ class UITextStyle {
     textStyle: TextStyle(
         color: UIColor.textBody,
         fontSize: 14.0.sp,
+        fontWeight: FontWeight.w500),
+  );
+  static TextStyle body_16_medium = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        color: UIColor.textBody,
+        fontSize: 16.0.sp,
         fontWeight: FontWeight.w500),
   );
   static TextStyle body_14_reg = GoogleFonts.montserrat(
