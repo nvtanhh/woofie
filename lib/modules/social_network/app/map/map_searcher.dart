@@ -36,7 +36,7 @@ class _MapSearcherState extends BaseViewState<MapSearcher, MapSearcherModel> {
               child: Stack(
                 children: <Widget>[
                   _googleMap(),
-                  _buildSearchBar(),
+                  if (viewModel.isLoaded) _buildSearchBar(),
                   if (viewModel.isLoaded) _buildPostsWrapper(),
                 ],
               ),
