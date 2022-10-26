@@ -98,7 +98,7 @@ class PostService extends BaseViewModel {
 
   void onLikeClick(int idPost) {
     _playSoundReactPost.run();
-    call(
+    run(
       () => _likePostUsecase.call(idPost),
       showLoading: false,
       onFailure: (err) {},
@@ -132,7 +132,7 @@ class PostService extends BaseViewModel {
 
   void onDeletePost(Post post, int index) {
     bool isSuccess = false;
-    call(
+    run(
       () async {
         isSuccess = await _deletePostUsecase.call(post.id);
       },
@@ -174,9 +174,9 @@ class PostService extends BaseViewModel {
 
   Future<List<UploadedMedia>> _startUploadNewMediaFiles(
       List<MediaFile> newAddedFiles, Post oldPost) async {
-    final List<MediaFile> compressMediaFiles = await Future.wait(newAddedFiles
-        .map((file) async => _compressPostMediaItem(file))
-        .toList());
+    final List<MediaFile> compressMediaFiles = await Future.wait(
+      newAddedFiles.map((file) async => _compressPostMediaItem(file)).toList(),
+    );
     final List<UploadedMedia> storedMediaFiles = [];
 
     for (final compressedFile in compressMediaFiles) {
@@ -191,7 +191,7 @@ class PostService extends BaseViewModel {
 
   Future<bool> _startEditPost(EditedPostData editedPostData) async {
     bool isEdited = false;
-    await call(
+    await run(
       () async {
         isEdited = await _editPostUsecase.call(editedPostData);
       },
@@ -297,7 +297,7 @@ class PostService extends BaseViewModel {
   }
 
   void _refreshPost(int postId) {
-    call(
+    run(
       () => _refreshPostsUsecase.call(postId),
       onSuccess: () {
         injector<ToastService>().success(
@@ -318,7 +318,7 @@ class PostService extends BaseViewModel {
     final String? content =
         await injector<DialogService>().showInputReport() as String?;
     if (content == null) return;
-    await call(
+    await run(
       () async => _reportPostUsecase.run(post, content),
       onSuccess: () {
         _toastService.success(
@@ -386,7 +386,7 @@ class PostService extends BaseViewModel {
   }
 
   Future updateLocation(UserLocation location) async {
-    await call(
+    await run(
       () async => _updateLocationUsecase.run(
         id: location.id!,
         long: location.long!,

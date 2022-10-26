@@ -48,7 +48,7 @@ class PetProfileModel extends BaseViewModel {
   void onPetBlock(Pet pet) {}
 
   void followPet(Pet pet) {
-    call(
+    run(
       () => _followPetUsecase.call(pet.id),
       onSuccess: () {
         pet.isFollowing = !(pet.isFollowing ?? false);
@@ -123,7 +123,7 @@ class PetProfileModel extends BaseViewModel {
   }
 
   void deletePet(Pet mPet) {
-    call(
+    run(
       () async => _deletePetUsecase.run(mPet.id),
       onSuccess: () {
         _eventBus.fire(PetDeletedEvent(mPet));

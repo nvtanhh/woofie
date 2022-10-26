@@ -48,7 +48,7 @@ class MediaService {
   void clearAllThumbnail() {}
 
   Future<File?> cropImage(File image, {double? ratioX, double? ratioY}) async {
-    return ImageCropper.cropImage(
+    return ImageCropper().cropImage(
       sourcePath: image.path,
       aspectRatio: ratioX != null && ratioY != null
           ? CropAspectRatio(ratioX: ratioX, ratioY: ratioY)

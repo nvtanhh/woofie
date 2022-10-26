@@ -39,14 +39,16 @@ class CommentBottomSheetWidgetModel extends BaseViewModel {
   }
 
   void _loadComments(int pageKey) {
-    call(
+    run(
       () async {
-        _comments = await _getCommentInPostUsecase.call(post.id, offset: nextPageKey);
+        _comments =
+            await _getCommentInPostUsecase.call(post.id, offset: nextPageKey);
         if (_comments.length < pageSize) {
           commentServiceModel.pagingController.appendLastPage(_comments);
         } else {
           nextPageKey = pageKey + _comments.length;
-          commentServiceModel.pagingController.appendPage(_comments, nextPageKey);
+          commentServiceModel.pagingController
+              .appendPage(_comments, nextPageKey);
         }
       },
       showLoading: false,

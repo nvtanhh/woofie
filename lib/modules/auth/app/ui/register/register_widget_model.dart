@@ -48,7 +48,7 @@ class RegisterWidgetModel extends BaseViewModel {
 
   void onRegisterClick() {
     if (formKey.currentState?.validate() == true) {
-      call(
+      run(
         () async {
           user = await _registerUsecase.call(emailEditingController.text,
               passwordEditingController.text, nameEditingController.text);

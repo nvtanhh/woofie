@@ -78,7 +78,7 @@ class HomeMenuWidgetModel extends BaseViewModel {
   }
 
   void readAllNotify() {
-    call(
+    run(
       () async => countUnreadNotify = await _allNotificationUsecase.run() ?? 0,
       showLoading: false,
     );

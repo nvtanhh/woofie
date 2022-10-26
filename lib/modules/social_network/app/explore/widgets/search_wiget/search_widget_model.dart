@@ -27,11 +27,15 @@ class SearchWidgetModel extends BaseViewModel {
   final RxList<Service> _services = RxList<Service>();
 
   final int pageSize = 50;
-  final PagingController<int, User> userPagingController = PagingController<int, User>(firstPageKey: 0);
-  final PagingController<int, Pet> petPagingController = PagingController<int, Pet>(firstPageKey: 0);
-  final PagingController<int, Service> servicePagingController = PagingController<int, Service>(firstPageKey: 0);
+  final PagingController<int, User> userPagingController =
+      PagingController<int, User>(firstPageKey: 0);
+  final PagingController<int, Pet> petPagingController =
+      PagingController<int, Pet>(firstPageKey: 0);
+  final PagingController<int, Service> servicePagingController =
+      PagingController<int, Service>(firstPageKey: 0);
   String? keyWord;
-  final DelayActionHelper _delayActionHelper = DelayActionHelper(milliseconds: 500);
+  final DelayActionHelper _delayActionHelper =
+      DelayActionHelper(milliseconds: 500);
   late UserLocation userLocation;
 
   SearchWidgetModel(
@@ -67,8 +71,9 @@ class SearchWidgetModel extends BaseViewModel {
     userPagingController.itemList?.clear();
     // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
     userPagingController.notifyListeners();
-    await call(
-      () async => users = await _searchUserUsecase.call(keyWord, limit: pageSize),
+    await run(
+      () async =>
+          users = await _searchUserUsecase.call(keyWord, limit: pageSize),
       showLoading: false,
     );
     if (users.length == pageSize) {
@@ -82,7 +87,7 @@ class SearchWidgetModel extends BaseViewModel {
     petPagingController.itemList?.clear();
     // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
     petPagingController.notifyListeners();
-    await call(
+    await run(
       () async => pets = await _searchPetUsecase.call(keyWord, limit: pageSize),
       showLoading: false,
     );
@@ -97,9 +102,14 @@ class SearchWidgetModel extends BaseViewModel {
     servicePagingController.itemList?.clear();
     // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
     servicePagingController.notifyListeners();
-    await call(() async => services = await _searchServiceUsecase.call(keyWord, limit: pageSize), showLoading: false, onFailure: (err) {
-      printError(info: err.toString());
-    });
+    await run(
+      () async =>
+          services = await _searchServiceUsecase.call(keyWord, limit: pageSize),
+      showLoading: false,
+      onFailure: (err) {
+        printError(info: err.toString());
+      },
+    );
     if (services.length == pageSize) {
       servicePagingController.appendPage(services, pets.length);
     } else {
@@ -108,7 +118,7 @@ class SearchWidgetModel extends BaseViewModel {
   }
 
   void followPet(int idPet) {
-    call(
+    run(
       () async => _followPetUsecase.call(idPet),
       showLoading: false,
     );

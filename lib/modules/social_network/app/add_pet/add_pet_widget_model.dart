@@ -56,12 +56,12 @@ class AddPetWidgetModel extends BaseViewModel {
     super.initState();
   }
 
-  Future<Unit> loadPetTypes() async {
-    return call(() async => petTypes = await _getPetTypesUsecase.call());
+  void loadPetTypes() {
+    run(() async => petTypes = await _getPetTypesUsecase.call());
   }
 
-  Future<Unit> loadPetBreeds(int idPetType) async {
-    return call(
+  void loadPetBreeds(int idPetType) {
+    run(
       () async => petBreeds = await _getPetBreedUsecase.call(idPetType),
       onSuccess: () {
         if (petBreeds.isEmpty == true) {
@@ -136,7 +136,7 @@ class AddPetWidgetModel extends BaseViewModel {
   void onDone() {
     if (!validate()) return;
     pet.uuid = const Uuid().v4();
-    call(
+    run(
       () async {
         if (avatarFile != null) {
           pet.avatarUrl = await _uploadMediaItem(avatarFile!);

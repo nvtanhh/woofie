@@ -38,7 +38,7 @@ class ExploreWidgetModel extends BaseViewModel {
   }
 
   void getServices() {
-    call(
+    run(
       () async => services = await _getServicesPetUsecase.call(),
       showLoading: false,
     );
@@ -48,7 +48,8 @@ class ExploreWidgetModel extends BaseViewModel {
   Future<void> _checkAndUpdateUserLocation(UserLocation userLocation) async {
     if (userLocation.updatedAt == null) return;
     if (DateTime.now().difference(userLocation.updatedAt!).inMinutes > 30) {
-      final Position currentPosition = await injector<LocationService>().determineCurrentPosition();
+      final Position currentPosition =
+          await injector<LocationService>().determineCurrentPosition();
       userLocation.lat = currentPosition.latitude;
       userLocation.long = currentPosition.longitude;
       unawaited(updateLocation(userLocation));
@@ -57,7 +58,7 @@ class ExploreWidgetModel extends BaseViewModel {
   }
 
   Future updateLocation(UserLocation location) async {
-    await call(
+    await run(
       () async => _updateLocationUsecase.run(
         id: location.id!,
         long: location.long!,
@@ -76,8 +77,10 @@ class ExploreWidgetModel extends BaseViewModel {
         unawaited(_checkAndUpdateUserLocation(userLocation));
         return userLocation;
       } else {
-        final Position currentPosition = await injector<LocationService>().determineCurrentPosition();
-        final userLocation = UserLocation(lat: currentPosition.latitude, long: currentPosition.longitude);
+        final Position currentPosition =
+            await injector<LocationService>().determineCurrentPosition();
+        final userLocation = UserLocation(
+            lat: currentPosition.latitude, long: currentPosition.longitude);
         // unawaited(updateLocation(userLocation));
         return userLocation;
       }
