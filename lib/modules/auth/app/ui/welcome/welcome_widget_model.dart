@@ -96,31 +96,31 @@ class WelcomeWidgetModel extends BaseViewModel {
     bool status = false;
     await run(
       () async {
-        final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
-        if (haUser != null) {
-          if (haUser.active == 0) {
-            injector<ToastService>().toast(
-                message: "Tài khoản của bạn đã bị khóa!",
-                type: ToastType.info,
-                context: Get.context!);
-            return;
-          }
-          updateTokenNotify(haUser.uuid);
-          await _saveUserToLocalUsecase.call(haUser);
-          await _loggedInUser.setLoggedUser(haUser);
-          status = haUser.currentPets?.isNotEmpty == true;
-          if (haUser.setting != null) {
-            _settingStorage.set(haUser.setting!);
-          }
-        } else {
+        final hasura_user.User hasuraUser =
+            await _getUserUsecase.call(user!.uid);
+        if (hasuraUser.active == 0) {
+          injector<ToastService>().toast(
+            message: "Tài khoản của bạn đã bị khóa!",
+            type: ToastType.info,
+            context: Get.context!,
+          );
           return;
+        }
+        updateTokenNotify(hasuraUser.uuid);
+        await _saveUserToLocalUsecase.call(hasuraUser);
+        await _loggedInUser.setLoggedUser(hasuraUser);
+        status = hasuraUser.currentPets?.isNotEmpty == true;
+        if (hasuraUser.setting != null) {
+          _settingStorage.set(hasuraUser.setting!);
         }
       },
       onSuccess: () {
         if (!status) {
-          Get.offAll(() => const AddPetWidget(
-                isAddMore: false,
-              ));
+          Get.offAll(
+            () => const AddPetWidget(
+              isAddMore: false,
+            ),
+          );
         } else {
           Get.offAll(() => HomeMenuWidget());
         }
