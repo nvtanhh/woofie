@@ -65,8 +65,8 @@ class LoginWidgetModel extends BaseViewModel {
 
   Future login() async {
     firebaseUser = await _loginWithEmailPasswordUsecase.call(
-      emailEditingController.text,
-      passwordEditingController.text,
+      emailEditingController.text.trim(),
+      passwordEditingController.text.trim(),
     );
   }
 
@@ -89,14 +89,16 @@ class LoginWidgetModel extends BaseViewModel {
           if (firebaseUser != null) {
             _user = await _getUserWithUuidUsecase.call(firebaseUser!.uid);
           }
+          print('user $_user');
         },
         onSuccess: () async {
           if (_user != null) {
             if (_user?.active == 0) {
               injector<ToastService>().toast(
-                  message: "Tài khoản của bạn đã bị khóa!",
-                  type: ToastType.info,
-                  context: Get.context!);
+                message: "Tài khoản của bạn đã bị khóa!",
+                type: ToastType.info,
+                context: Get.context!,
+              );
               return;
             }
             unawaited(_loggedInUser.setLoggedUser(_user!));

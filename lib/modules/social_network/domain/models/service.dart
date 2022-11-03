@@ -38,11 +38,13 @@ class Service {
     this.locationId,
     this.googleMapLink,
     this.location,
-    this.description
+    this.description,
   });
-  factory Service.fromJson(Map<String, dynamic> json) => _$ServiceFromJson(json);
+  factory Service.fromJson(Map<String, dynamic> json) =>
+      _$ServiceFromJson(json);
 
-  factory Service.fromJsonString(String jsonString) => Service.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Service.fromJsonString(String jsonString) =>
+      Service.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$ServiceToJson(this);
 

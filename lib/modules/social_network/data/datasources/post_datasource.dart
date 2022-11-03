@@ -81,8 +81,11 @@ class PostDatasource {
     return int.tryParse("${affectedRows["id"]}") != null;
   }
 
-  Future<List<Post>> getPostsTimeline(int offset, int limit,
-      {String? userUUID}) async {
+  Future<List<Post>> getPostsTimeline(
+    int offset,
+    int limit, {
+    String? userUUID,
+  }) async {
     final String userFilter =
         (userUUID != null) ? 'where: {creator_uuid: {_eq: "$userUUID"}}, ' : '';
 
