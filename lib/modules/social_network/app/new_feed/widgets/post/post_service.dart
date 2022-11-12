@@ -224,7 +224,9 @@ class PostService extends BaseViewModel {
     }
     if (uploadedMediaUrl != null) {
       final UploadedMedia mediaFileUploader = UploadedMedia(
-          uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
+        uploadedMediaUrl,
+        _convertToMediaTypeCode(mediaFile.type),
+      );
       return mediaFileUploader;
     }
     return null;

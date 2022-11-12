@@ -127,6 +127,7 @@ class NewPostUploaderModel extends BaseViewModel {
       return _createDraftPostUsecase.call(data);
     } catch (error) {
       printError(info: error.toString());
+      return null;
     }
   }
 
@@ -180,7 +181,9 @@ class NewPostUploaderModel extends BaseViewModel {
 
   Future _addMediaToPost() async {
     return _addPostMediaUsecase.call(
-        data.uploadedMediasToAddToPost, data.createdDraftPost!.id);
+      data.uploadedMediasToAddToPost,
+      data.createdDraftPost!.id,
+    );
   }
 
   Future<Post?> _publishPost() async {
@@ -221,6 +224,7 @@ class NewPostUploaderModel extends BaseViewModel {
 
       return mediaThumbnail;
     }
+    return null;
   }
 
   Future onWantsToCancel() async {

@@ -45,16 +45,20 @@ class NavigationService {
     return Get.to(() => const ChatDashboard());
   }
 
-  Future<bool?> navigateToChatRoom(
-      {ChatRoom? room,
-      User? user,
-      Function(List<Message>)? onAddNewMessages,
-      Post? attachmentPost}) async {
-    final isError = await Get.to(() => ChatRoomPage(
+  Future<bool?> navigateToChatRoom({
+    ChatRoom? room,
+    User? user,
+    Function(List<Message>)? onAddNewMessages,
+    Post? attachmentPost,
+  }) async {
+    final isError = await Get.to(
+      () => ChatRoomPage(
         room: room,
         partner: user,
         onAddNewMessages: onAddNewMessages,
-        attachmentPost: attachmentPost)) as bool?;
+        attachmentPost: attachmentPost,
+      ),
+    ) as bool?;
     return isError;
   }
 

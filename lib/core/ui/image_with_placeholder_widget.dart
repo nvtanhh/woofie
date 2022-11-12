@@ -67,6 +67,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
             fit: fit ?? BoxFit.cover,
             initGestureConfigHandler: initGestureConfigHandler,
             mode: mode ?? ExtendedImageMode.none,
+            timeLimit: const Duration(seconds: 3),
+            retries: 0,
             loadStateChanged: (e) {
               switch (e.extendedImageLoadState) {
                 case LoadState.loading:
@@ -110,8 +112,10 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
           bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
         ),
         image: DecorationImage(
-          image: AssetGenImage(placeHolderImage ??
-              "resources/images/fallbacks/avatar-fallback.jpg"),
+          image: AssetGenImage(
+            placeHolderImage ??
+                "resources/images/fallbacks/avatar-fallback.jpg",
+          ),
           fit: BoxFit.cover,
         ),
       ),

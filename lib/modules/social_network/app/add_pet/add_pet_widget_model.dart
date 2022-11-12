@@ -87,7 +87,7 @@ class AddPetWidgetModel extends BaseViewModel {
   }
 
   void doNotHavePet() {
-    if (!(isAddMore ?? true)) {
+    if (isAddMore ?? true) {
       Get.offAll(() => HomeMenuWidget());
     } else {
       Get.back();

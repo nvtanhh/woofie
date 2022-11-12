@@ -126,11 +126,11 @@ class PostDatasource {
           }
         }
         user {
-          bio
           id
+          uuid
           name
           avatar_url
-          uuid
+          bio
         }
         location {
           id
