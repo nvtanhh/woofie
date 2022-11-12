@@ -18,7 +18,8 @@ class ZoomablePhoto extends StatefulWidget {
   }
 }
 
-class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderStateMixin {
+class ZoomablePhotoState extends State<ZoomablePhoto>
+    with SingleTickerProviderStateMixin {
   late bool _isDismissible;
   late AnimationController _controller;
   late Animation<Offset> _offset;
@@ -47,7 +48,8 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _rotationAngle = 0.0;
     _rotationDirection = CLOCKWISE;
     _posX = 0.0;
@@ -77,11 +79,15 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
                   double deltaY = 0.0;
                   double deltaX = 0.0;
                   if (updateDragDetails == null && startDragDetails != null) {
-                    deltaY = updatedDetails.position.dy - startDragDetails!.position.dy;
-                    deltaX = updatedDetails.position.dx - startDragDetails!.position.dx;
+                    deltaY = updatedDetails.position.dy -
+                        startDragDetails!.position.dy;
+                    deltaX = updatedDetails.position.dx -
+                        startDragDetails!.position.dx;
                   } else if (updateDragDetails != null) {
-                    deltaY = updatedDetails.position.dy - updateDragDetails!.position.dy;
-                    deltaX = updatedDetails.position.dx - updateDragDetails!.position.dx;
+                    deltaY = updatedDetails.position.dy -
+                        updateDragDetails!.position.dy;
+                    deltaX = updatedDetails.position.dx -
+                        updateDragDetails!.position.dx;
                   }
                   _updateDragValues(deltaX, deltaY, updatedDetails);
                 },
@@ -124,8 +130,11 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
     );
   }
 
-  void _updateDragValues(double deltaX, double deltaY, PointerMoveEvent updatedDetails) {
-    if (deltaX.abs() > THRESHOLD_SECOND_POINTER_EVENT || deltaY.abs() > THRESHOLD_SECOND_POINTER_EVENT || !_isDismissible) return;
+  void _updateDragValues(
+      double deltaX, double deltaY, PointerMoveEvent updatedDetails) {
+    if (deltaX.abs() > THRESHOLD_SECOND_POINTER_EVENT ||
+        deltaY.abs() > THRESHOLD_SECOND_POINTER_EVENT ||
+        !_isDismissible) return;
     setState(() {
       _posX = _posX + deltaX;
       _posY = _posY + deltaY;
@@ -148,17 +157,21 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
 
   void _setBackToOrginalPosition() {
     setState(() {
-      _offset =
-          Tween<Offset>(begin: Offset(_posX, _posY), end: const Offset(0.0, 0.0)).chain(CurveTween(curve: Curves.easeInOutSine)).animate(_controller)
-            ..addListener(() {
-              _posX = _offset.value.dx;
-              _posY = _offset.value.dy;
-              setState(() {});
-            });
+      _offset = Tween<Offset>(
+              begin: Offset(_posX, _posY), end: const Offset(0.0, 0.0))
+          .chain(CurveTween(curve: Curves.easeInOutSine))
+          .animate(_controller)
+        ..addListener(() {
+          _posX = _offset.value.dx;
+          _posY = _offset.value.dy;
+          setState(() {});
+        });
       startDragDetails = null;
       updateDragDetails = null;
     });
-    _rotationAnimation = Tween<double>(begin: _rotationAngle, end: 0.0).chain(CurveTween(curve: Curves.easeInOutCubic)).animate(_controller)
+    _rotationAnimation = Tween<double>(begin: _rotationAngle, end: 0.0)
+        .chain(CurveTween(curve: Curves.easeInOutCubic))
+        .animate(_controller)
       ..addListener(() {
         _rotationAngle = _rotationAnimation.value;
         setState(() {});
@@ -168,7 +181,8 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
   }
 
   void _checkIsDismissible() {
-    if (_velocityX.abs() > VELOCITY_THRESHOLD || _velocityY.abs() > VELOCITY_THRESHOLD) {
+    if (_velocityX.abs() > VELOCITY_THRESHOLD ||
+        _velocityY.abs() > VELOCITY_THRESHOLD) {
       _setTweensWithVelocity();
       _dismissModal();
     } else {
@@ -183,7 +197,8 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
     final double screenMid = screenWidth / 2;
     double maxRotationAngle = pi / 2;
     // Rotation increases proportional to distance from mid of screen
-    final double rotationRatio = (startDragDetails!.position.dx - screenMid).abs() / screenMid;
+    final double rotationRatio =
+        (startDragDetails!.position.dx - screenMid).abs() / screenMid;
 
     if (startDragDetails!.position.dx < screenMid) {
       maxRotationAngle = -pi / 2;
@@ -192,7 +207,8 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
     final double distanceRatio = _posY / screenHeight;
 
     double rotationDirection;
-    if ((maxRotationAngle < 0 && _velocityY < 0) || (maxRotationAngle > 0 && _velocityY > 0)) {
+    if ((maxRotationAngle < 0 && _velocityY < 0) ||
+        (maxRotationAngle > 0 && _velocityY > 0)) {
       rotationDirection = CLOCKWISE;
     } else {
       rotationDirection = ANTICLOCKWISE;
@@ -205,22 +221,26 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
 
   void _setTweensWithVelocity() {
     setState(() {
-      _offset = Tween<Offset>(begin: Offset(_posX, _posY), end: Offset(_velocityX * EXIT_RATE_MULTIPLIER, _velocityY * EXIT_RATE_MULTIPLIER))
+      _offset = Tween<Offset>(
+              begin: Offset(_posX, _posY),
+              end: Offset(_velocityX * EXIT_RATE_MULTIPLIER,
+                  _velocityY * EXIT_RATE_MULTIPLIER))
           .chain(CurveTween(curve: Curves.easeInOutSine))
           .animate(_controller)
-            ..addListener(() {
-              _posX = _offset.value.dx + _velocityX / 2;
-              _posY = _offset.value.dy + _velocityY / 2;
-              setState(() {});
-            });
+        ..addListener(() {
+          _posX = _offset.value.dx + _velocityX / 2;
+          _posY = _offset.value.dy + _velocityY / 2;
+          setState(() {});
+        });
 
-      _rotationAnimation = Tween<double>(begin: _rotationAngle, end: 1.5 * pi * _rotationDirection)
+      _rotationAnimation = Tween<double>(
+              begin: _rotationAngle, end: 1.5 * pi * _rotationDirection)
           .chain(CurveTween(curve: Curves.easeInOutCubic))
           .animate(_controller)
-            ..addListener(() {
-              _rotationAngle = _rotationAnimation.value;
-              setState(() {});
-            });
+        ..addListener(() {
+          _rotationAngle = _rotationAnimation.value;
+          setState(() {});
+        });
 
       startDragDetails = null;
       updateDragDetails = null;
@@ -252,7 +272,9 @@ class ZoomablePhotoState extends State<ZoomablePhoto> with SingleTickerProviderS
             },
             child: Container(
               padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(color: Colors.black87, borderRadius: BorderRadius.circular(50)),
+              decoration: BoxDecoration(
+                  color: Colors.black87,
+                  borderRadius: BorderRadius.circular(50)),
               child: const MWIcon(
                 MWIcons.close,
                 size: MWIconSize.large,

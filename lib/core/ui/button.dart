@@ -52,7 +52,8 @@ class MWButton extends StatelessWidget {
 
     final buttonChild = isLoading ? _getLoadingIndicator(textColor) : child;
 
-    TextStyle defaultTextStyle = _getButtonTextStyleForSize(size: size, color: textColor);
+    TextStyle defaultTextStyle =
+        _getButtonTextStyleForSize(size: size, color: textColor);
 
     if (textStyle != null) {
       defaultTextStyle = defaultTextStyle.merge(textStyle);
@@ -74,7 +75,10 @@ class MWButton extends StatelessWidget {
           minHeight: buttonMinHeight,
         ),
         decoration: BoxDecoration(
-            border: outline ? Border.all(width: borderWidth ?? 1, color: borderColor ?? textColor) : const Border(),
+            border: outline
+                ? Border.all(
+                    width: borderWidth ?? 1, color: borderColor ?? textColor)
+                : const Border(),
             boxShadow: boxShadow ?? [],
             color: finalBackgroundColor,
             borderRadius: borderRadius ?? BorderRadius.circular(50.0)),
@@ -94,7 +98,8 @@ class MWButton extends StatelessWidget {
     );
   }
 
-  TextStyle _getButtonTextStyleForSize({MWButtonSize? size, required Color color}) {
+  TextStyle _getButtonTextStyleForSize(
+      {MWButtonSize? size, required Color color}) {
     TextStyle textStyle = TextStyle(color: color);
 
     switch (size) {
@@ -113,7 +118,8 @@ class MWButton extends StatelessWidget {
     return SizedBox(
       height: 16.h,
       width: 16.w,
-      child: CircularProgressIndicator(strokeWidth: 2.0, valueColor: AlwaysStoppedAnimation<Color>(color)),
+      child: CircularProgressIndicator(
+          strokeWidth: 2.0, valueColor: AlwaysStoppedAnimation<Color>(color)),
     );
   }
 

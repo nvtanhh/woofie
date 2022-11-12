@@ -20,7 +20,9 @@ class MWCheckbox extends StatelessWidget {
           child: MWIcon(
             value ? MWIcons.checkCircleSelected : MWIcons.checkCircle,
             customSize: 20,
-            themeColor: value ? MWIconThemeColor.success : MWIconThemeColor.secondaryText,
+            themeColor: value
+                ? MWIconThemeColor.success
+                : MWIconThemeColor.secondaryText,
           ),
         ),
       ),

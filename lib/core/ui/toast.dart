@@ -11,7 +11,8 @@ class MFToast extends StatefulWidget {
   }
 
   static MWToastState of(BuildContext context) {
-    final MWToastState toastState = context.findRootAncestorStateOfType<MWToastState>()!;
+    final MWToastState toastState =
+        context.findRootAncestorStateOfType<MWToastState>()!;
     toastState._setCurrentContext(context);
     return toastState;
   }
@@ -30,11 +31,13 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     _toastInProgress = false;
     _dismissInProgress = false;
 
-    offset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 0.1)).animate(controller);
+    offset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 0.1))
+        .animate(controller);
   }
 
   @override
@@ -44,13 +47,20 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
     );
   }
 
-  Future showToast({required Color color, String? message, Widget? child, Duration? duration, VoidCallback? onDismissed}) async {
+  Future showToast(
+      {required Color color,
+      String? message,
+      Widget? child,
+      Duration? duration,
+      VoidCallback? onDismissed}) async {
     if (_toastInProgress) return;
     _toastInProgress = true;
-    _overlayEntry = _createOverlayEntryFromTop(color: color, message: message, onDismissed: onDismissed, child: child);
+    _overlayEntry = _createOverlayEntryFromTop(
+        color: color, message: message, onDismissed: onDismissed, child: child);
     final overlay = Overlay.of(_currentContext);
     if (_overlayEntry != null) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) => overlay?.insert(_overlayEntry!));
+      WidgetsBinding.instance!
+          .addPostFrameCallback((_) => overlay?.insert(_overlayEntry!));
     }
     await controller.forward();
 
@@ -72,7 +82,11 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
     _toastInProgress = false;
   }
 
-  OverlayEntry _createOverlayEntryFromTop({required Color color, String? message, Widget? child, VoidCallback? onDismissed}) {
+  OverlayEntry _createOverlayEntryFromTop(
+      {required Color color,
+      String? message,
+      Widget? child,
+      VoidCallback? onDismissed}) {
     return OverlayEntry(builder: (context) {
       final MediaQueryData existingMediaQuery = MediaQuery.of(context);
       // 44 is header height
@@ -89,13 +103,21 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
                 if (onDismissed != null) onDismissed();
                 _dismissToast();
               },
-              child: _buildToast(paddingTop: paddingTop, color: color, message: message, child: child),
+              child: _buildToast(
+                  paddingTop: paddingTop,
+                  color: color,
+                  message: message,
+                  child: child),
             ))
       ]);
     });
   }
 
-  Widget _buildToast({required double paddingTop, required Color color, String? message, Widget? child}) {
+  Widget _buildToast(
+      {required double paddingTop,
+      required Color color,
+      String? message,
+      Widget? child}) {
     return Material(
       color: Colors.transparent,
       child: Column(
@@ -116,9 +138,13 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
                           children: <Widget>[
                             Flexible(
                               child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                                decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(50)),
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 20, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: color,
+                                    borderRadius: BorderRadius.circular(50)),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
@@ -126,7 +152,8 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
                                         Flexible(
                                           child: Text(
                                             message ?? 'Just a toast',
-                                            style: const TextStyle(color: Colors.white),
+                                            style: const TextStyle(
+                                                color: Colors.white),
                                             textAlign: TextAlign.center,
                                           ),
                                         )
@@ -156,7 +183,8 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
 }
 
 class _MeoWoofToast extends InheritedWidget {
-  const _MeoWoofToast({Key? key, required Widget child}) : super(key: key, child: child);
+  const _MeoWoofToast({Key? key, required Widget child})
+      : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(_MeoWoofToast old) {

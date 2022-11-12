@@ -23,7 +23,8 @@ class EditUserProfileWidget extends StatefulWidget {
   _EditUserProfileWidgetState createState() => _EditUserProfileWidgetState();
 }
 
-class _EditUserProfileWidgetState extends BaseViewState<EditUserProfileWidget, EditUserProfileWidgetModel> {
+class _EditUserProfileWidgetState
+    extends BaseViewState<EditUserProfileWidget, EditUserProfileWidgetModel> {
   @override
   void loadArguments() {
     viewModel.user = widget.user;
@@ -91,7 +92,9 @@ class _EditUserProfileWidgetState extends BaseViewState<EditUserProfileWidget, E
                         child: Container(
                           width: 30.w,
                           height: 30.w,
-                          decoration: BoxDecoration(color: UIColor.accent, borderRadius: BorderRadius.circular(5.r)),
+                          decoration: BoxDecoration(
+                              color: UIColor.accent,
+                              borderRadius: BorderRadius.circular(5.r)),
                           // padding: EdgeInsets.all(5.w),
                           child: const MWIcon(
                             MWIcons.camera,
@@ -178,5 +181,6 @@ class _EditUserProfileWidgetState extends BaseViewState<EditUserProfileWidget, E
   }
 
   @override
-  EditUserProfileWidgetModel createViewModel() => injector<EditUserProfileWidgetModel>();
+  EditUserProfileWidgetModel createViewModel() =>
+      injector<EditUserProfileWidgetModel>();
 }

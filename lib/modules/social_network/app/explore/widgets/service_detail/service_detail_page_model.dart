@@ -32,11 +32,13 @@ class ServiceDetailPageModel extends BaseViewModel {
   }
 
   Future openGoogleMap() async {
-    final mapSchema = 'geo:${service.location!.lat!},${service.location!.long!}';
+    final mapSchema =
+        'geo:${service.location!.lat!},${service.location!.long!}';
     if (await canLaunch(mapSchema)) {
       await launch(mapSchema);
-    }else {
-      injector<ToastService>().toast(message: "Lỗi!", type: ToastType.error, context: Get.context!);
+    } else {
+      injector<ToastService>()
+          .toast(message: "Lỗi!", type: ToastType.error, context: Get.context!);
     }
   }
 
@@ -45,7 +47,8 @@ class ServiceDetailPageModel extends BaseViewModel {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      injector<ToastService>().toast(message: "Lỗi!", type: ToastType.error, context: Get.context!);
+      injector<ToastService>()
+          .toast(message: "Lỗi!", type: ToastType.error, context: Get.context!);
     }
   }
 

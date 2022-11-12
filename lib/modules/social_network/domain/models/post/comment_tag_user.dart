@@ -27,9 +27,11 @@ class CommentTagUser {
     this.user,
   });
 
-  factory CommentTagUser.fromJson(Map<String, dynamic> json) => _$CommentTagUserFromJson(json);
+  factory CommentTagUser.fromJson(Map<String, dynamic> json) =>
+      _$CommentTagUserFromJson(json);
 
-  factory CommentTagUser.fromJsonString(String jsonString) => CommentTagUser.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory CommentTagUser.fromJsonString(String jsonString) =>
+      CommentTagUser.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$CommentTagUserToJson(this);
 

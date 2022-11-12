@@ -5,7 +5,8 @@ import 'package:suga_core/suga_core.dart';
 
 @singleton
 class SettingStorage extends Storage<Setting> {
-  SettingStorage(SharedPreferences prefs) : super(prefs: prefs, key: "current_setting") {
+  SettingStorage(SharedPreferences prefs)
+      : super(prefs: prefs, key: "current_setting") {
     get();
   }
 

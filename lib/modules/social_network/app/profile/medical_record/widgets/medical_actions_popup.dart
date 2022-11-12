@@ -12,10 +12,7 @@ class MedicalActionsTrailing extends StatelessWidget {
   final Widget? child;
 
   const MedicalActionsTrailing(
-      {Key? key,
-      required this.onDelete,
-      required this.onEdit,
-      this.child})
+      {Key? key, required this.onDelete, required this.onEdit, this.child})
       : super(key: key);
 
   @override
@@ -39,40 +36,40 @@ class MedicalActionsTrailing extends StatelessWidget {
         }
       },
       itemBuilder: (BuildContext context) => [
-          PopupMenuItem<MedicalTrailingAction>(
-            value: MedicalTrailingAction.edit,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const MWIcon(
-                  MWIcons.edit,
-                  customSize: 20,
-                ),
-                SizedBox(width: 10.w),
-                Text(
-                  LocaleKeys.profile_edit.trans(),
-                  style: UITextStyle.body_14_medium,
-                ),
-              ],
-            ),
+        PopupMenuItem<MedicalTrailingAction>(
+          value: MedicalTrailingAction.edit,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const MWIcon(
+                MWIcons.edit,
+                customSize: 20,
+              ),
+              SizedBox(width: 10.w),
+              Text(
+                LocaleKeys.profile_edit.trans(),
+                style: UITextStyle.body_14_medium,
+              ),
+            ],
           ),
-          PopupMenuItem<MedicalTrailingAction>(
-            value: MedicalTrailingAction.delete,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const MWIcon(
-                  MWIcons.delete,
-                  customSize: 20,
-                ),
-                SizedBox(width: 10.w),
-                Text(
-                  LocaleKeys.profile_delete.trans(),
-                  style: UITextStyle.body_14_medium,
-                ),
-              ],
-            ),
+        ),
+        PopupMenuItem<MedicalTrailingAction>(
+          value: MedicalTrailingAction.delete,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const MWIcon(
+                MWIcons.delete,
+                customSize: 20,
+              ),
+              SizedBox(width: 10.w),
+              Text(
+                LocaleKeys.profile_delete.trans(),
+                style: UITextStyle.body_14_medium,
+              ),
+            ],
           ),
+        ),
       ],
       child: child ??
           Container(
@@ -80,7 +77,8 @@ class MedicalActionsTrailing extends StatelessWidget {
             alignment: Alignment.topRight,
             padding: EdgeInsets.only(top: 5.h),
             child: const MWIcon(
-              MWIcons.moreHoriz,color: UIColor.textHeader,
+              MWIcons.moreHoriz,
+              color: UIColor.textHeader,
             ),
           ),
     );

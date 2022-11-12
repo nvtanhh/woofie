@@ -8,7 +8,11 @@ class UpdateLocationUsecase {
 
   UpdateLocationUsecase(this._profileRepository);
 
-  Future<UserLocation> run({required int id, required double long, required double lat, required String name}) {
+  Future<UserLocation> run(
+      {required int id,
+      required double long,
+      required double lat,
+      required String name}) {
     return _profileRepository.updateLocation(id, long, long, name);
   }
 }

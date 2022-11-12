@@ -29,7 +29,10 @@ class MWButtonAlert extends StatelessWidget {
       child: MWAlert(
         child: Row(children: [
           if (assetImage != null)
-            Padding(padding: const EdgeInsets.only(right: 30, left: 10, top: 10, bottom: 10), child: assetImage!.image())
+            Padding(
+                padding: const EdgeInsets.only(
+                    right: 30, left: 10, top: 10, bottom: 10),
+                child: assetImage!.image())
           else
             const SizedBox(),
           Flexible(

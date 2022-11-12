@@ -24,7 +24,12 @@ class NewPostData {
   late String newPostUuid;
   // late String _cachedKey;
 
-  NewPostData({required this.content, required this.type, this.mediaFiles, this.taggegPets, this.location}) {
+  NewPostData(
+      {required this.content,
+      required this.type,
+      this.mediaFiles,
+      this.taggegPets,
+      this.location}) {
     remainingMediaToCompress = mediaFiles ?? [];
     newPostUuid = const Uuid().v4();
   }

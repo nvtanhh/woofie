@@ -3,7 +3,7 @@ import 'package:meowoof/modules/social_network/data/repositories/setting_reposit
 import 'package:meowoof/modules/social_network/domain/models/setting.dart';
 
 @lazySingleton
-class CreateSettingUsecase{
+class CreateSettingUsecase {
   final SettingRepository _settingRepository;
   CreateSettingUsecase(this._settingRepository);
 

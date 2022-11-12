@@ -17,7 +17,8 @@ class RequestMessagePage extends StatefulWidget {
   _RequestMessagePageState createState() => _RequestMessagePageState();
 }
 
-class _RequestMessagePageState extends BaseViewState<RequestMessagePage, RequestMessagePageModel> {
+class _RequestMessagePageState
+    extends BaseViewState<RequestMessagePage, RequestMessagePageModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,5 +90,6 @@ class _RequestMessagePageState extends BaseViewState<RequestMessagePage, Request
   }
 
   @override
-  RequestMessagePageModel createViewModel() => injector<RequestMessagePageModel>();
+  RequestMessagePageModel createViewModel() =>
+      injector<RequestMessagePageModel>();
 }

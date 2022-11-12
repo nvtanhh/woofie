@@ -7,7 +7,9 @@ class UpdateContentRequestMessagesUsecase {
   final ChatRepository _chatRepository;
 
   UpdateContentRequestMessagesUsecase(this._chatRepository);
-  Future run({required RequestContact requestContact, required String content}) {
-    return _chatRepository.updateContentRequestMessages(requestContact, content);
+  Future run(
+      {required RequestContact requestContact, required String content}) {
+    return _chatRepository.updateContentRequestMessages(
+        requestContact, content);
   }
 }

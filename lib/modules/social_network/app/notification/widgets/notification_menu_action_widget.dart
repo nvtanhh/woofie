@@ -8,7 +8,8 @@ import 'package:meowoof/theme/ui_text_style.dart';
 class NotificationMenuActionWidget extends StatelessWidget {
   final Function onNotification;
 
-  const NotificationMenuActionWidget({Key? key, required this.onNotification}) : super(key: key);
+  const NotificationMenuActionWidget({Key? key, required this.onNotification})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

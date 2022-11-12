@@ -52,8 +52,7 @@ class BottomSheetService {
       {FilterOptions? currentFilter}) async {
     final FilterOptions? filterOptions = await showMaterialModalBottomSheet(
       context: Get.context!,
-      builder: (context) =>
-           MapSearcherFilter(currentFilter: currentFilter),
+      builder: (context) => MapSearcherFilter(currentFilter: currentFilter),
       shape: defaultBottomSheetShape,
     );
     return filterOptions;

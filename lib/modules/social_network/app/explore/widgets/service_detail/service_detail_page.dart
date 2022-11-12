@@ -23,11 +23,13 @@ class ServiceDetailPage extends StatefulWidget {
   _ServiceDetailPageState createState() => _ServiceDetailPageState();
 }
 
-class _ServiceDetailPageState extends BaseViewState<ServiceDetailPage, ServiceDetailPageModel> {
+class _ServiceDetailPageState
+    extends BaseViewState<ServiceDetailPage, ServiceDetailPageModel> {
   @override
   void loadArguments() {
     viewModel.service = widget.service;
-    WidgetsBinding.instance?.addPostFrameCallback((_) => viewModel.mapSearcherModel.getZoomLevel());
+    WidgetsBinding.instance?.addPostFrameCallback(
+        (_) => viewModel.mapSearcherModel.getZoomLevel());
     super.loadArguments();
   }
 
@@ -110,7 +112,7 @@ class _ServiceDetailPageState extends BaseViewState<ServiceDetailPage, ServiceDe
                       width: 280.w,
                       height: 50.h,
                       borderRadius: 15.r,
-                      onPress: ()=>viewModel.onContactClick(),
+                      onPress: () => viewModel.onContactClick(),
                     ),
                     GestureDetector(
                       onTap: () => viewModel.openGoogleMap(),
@@ -156,5 +158,6 @@ class _ServiceDetailPageState extends BaseViewState<ServiceDetailPage, ServiceDe
   }
 
   @override
-  ServiceDetailPageModel createViewModel() => injector<ServiceDetailPageModel>();
+  ServiceDetailPageModel createViewModel() =>
+      injector<ServiceDetailPageModel>();
 }

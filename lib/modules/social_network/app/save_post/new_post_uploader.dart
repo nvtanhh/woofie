@@ -26,7 +26,8 @@ class NewPostUploader extends StatefulWidget {
   _NewPostUploaderState createState() => _NewPostUploaderState();
 }
 
-class _NewPostUploaderState extends BaseViewState<NewPostUploader, NewPostUploaderModel> {
+class _NewPostUploaderState
+    extends BaseViewState<NewPostUploader, NewPostUploaderModel> {
   @override
   NewPostUploaderModel createViewModel() => injector<NewPostUploaderModel>();
 
@@ -83,9 +84,12 @@ class _NewPostUploaderState extends BaseViewState<NewPostUploader, NewPostUpload
               bottom: -3,
               left: 0,
               right: 0,
-              child: viewModel.status.value == PostUploaderStatus.creatingPost ||
-                      viewModel.status.value == PostUploaderStatus.compressingPostMedia ||
-                      viewModel.status.value == PostUploaderStatus.addingPostMedia ||
+              child: viewModel.status.value ==
+                          PostUploaderStatus.creatingPost ||
+                      viewModel.status.value ==
+                          PostUploaderStatus.compressingPostMedia ||
+                      viewModel.status.value ==
+                          PostUploaderStatus.addingPostMedia ||
                       viewModel.status.value == PostUploaderStatus.processing
                   ? _buildProgressBar()
                   : const SizedBox(),
