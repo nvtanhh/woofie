@@ -44,7 +44,8 @@ class AuthDatasource {
     final LoginResult facebookLoginResult = await _facebookAuth.login();
     if (facebookLoginResult.status == LoginStatus.success) {
       final AuthCredential credential = FacebookAuthProvider.credential(
-          facebookLoginResult.accessToken?.token ?? "");
+        facebookLoginResult.accessToken?.token ?? "",
+      );
       final UserCredential userCredential =
           await _firebaseAuth.signInWithCredential(credential);
       user = userCredential.user;

@@ -35,7 +35,7 @@ class AddPetWidgetModel extends BaseViewModel {
   PetType? petTypeSelected;
   PetBreed? petBreedSelected;
   late Pet pet;
-  bool? isAddMore;
+  late bool isAddMore;
   File? avatarFile;
 
   late bool isBackToHome;
@@ -87,7 +87,7 @@ class AddPetWidgetModel extends BaseViewModel {
   }
 
   void doNotHavePet() {
-    if (isAddMore ?? true) {
+    if (isAddMore) {
       Get.offAll(() => HomeMenuWidget());
     } else {
       Get.back();

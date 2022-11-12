@@ -4,6 +4,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/assets.gen.dart';
+import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -81,48 +82,14 @@ class MWAvatar extends StatelessWidget {
         image: FileImage(avatarFile!),
       );
     } else if (avatarUrl != null && avatarUrl!.isNotEmpty) {
-      finalAvatarImage = ExtendedImage.network(
-        avatarUrl!,
+      finalAvatarImage = ImageWithPlaceHolderWidget(
+        imageUrl: avatarUrl!,
         height: avatarSize,
         width: avatarSize,
-        fit: fit ?? BoxFit.cover,
-        retries: 0,
-        timeLimit: const Duration(seconds: 3),
-        loadStateChanged: (e) {
-          switch (e.extendedImageLoadState) {
-            case LoadState.loading:
-              return Shimmer.fromColors(
-                baseColor: UIColor.white,
-                highlightColor: UIColor.silverSand,
-                child: Container(
-                  width: avatarSize,
-                  height: avatarSize,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10.r),
-                      topLeft: Radius.circular(10.r),
-                    ),
-                    color: UIColor.white,
-                  ),
-                  margin: EdgeInsets.only(
-                    right: 10.w,
-                  ),
-                ),
-              );
-            case LoadState.completed:
-              return null;
-            case LoadState.failed:
-              return _getAvatarPlaceholder(avatarSize);
-          }
-        },
+        clickable: isZoomable,
+        placeHolderImage: placeHolderImage ??
+            Assets.resources.images.fallbacks.avatarFallback.image(),
       );
-
-      if (isZoomable) {
-        finalAvatarImage = GestureDetector(
-          onTap: () {},
-          child: finalAvatarImage,
-        );
-      }
     } else {
       finalAvatarImage = _getAvatarPlaceholder(avatarSize);
     }
