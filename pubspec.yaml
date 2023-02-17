@@ -170,7 +170,7 @@ dependencies:
   #  permission_handler: 8.1.2
 
   # A Flutter plugin to play multiple simultaneously audio files, works for Android, iOS, macOS and web.
-  audioplayers: ^0.19.1
+  audioplayers: ^0.20.0
 
   # A Flutter plugin connect socket_io server
   socket_io_client: ^1.0.1
