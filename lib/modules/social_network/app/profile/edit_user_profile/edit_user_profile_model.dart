@@ -24,7 +24,10 @@ import 'package:suga_core/suga_core.dart';
 @injectable
 class EditUserProfileWidgetModel extends BaseViewModel {
   late User user;
-  late TextEditingController nameEditingController, introduceEditingController, addressEditingController, emailEditingController;
+  late TextEditingController nameEditingController,
+      introduceEditingController,
+      addressEditingController,
+      emailEditingController;
   final Rx<File?> _avatarFile = Rx<File?>(null);
   final ToastService _toastService;
   final GetPresignedAvatarUrlUsecase _getPresignedAvatarUrlUsecase;
@@ -53,7 +56,8 @@ class EditUserProfileWidgetModel extends BaseViewModel {
     nameEditingController = TextEditingController(text: user.name ?? "");
     introduceEditingController = TextEditingController(text: user.bio ?? "");
     emailEditingController = TextEditingController(text: user.email ?? "");
-    addressEditingController = TextEditingController(text: user.location?.name ?? "");
+    addressEditingController =
+        TextEditingController(text: user.location?.name ?? "");
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         getCurrentAddress();
@@ -123,7 +127,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
   }
 
   Future updateLocation() async {
-    await call(
+    await run(
       () async => location = await _updateLocationUsecase.run(
         id: user.locationId!,
         long: location!.long!,
@@ -142,7 +146,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
   }
 
   Future createLocation() async {
-    await call(
+    await run(
       () async => location = await _createLocationUsecase.run(
         long: location!.long!,
         lat: location!.lat!,
@@ -168,10 +172,17 @@ class EditUserProfileWidgetModel extends BaseViewModel {
     }
     try {
       currentPlacemark = await locationService.getCurrentPlacemark();
-      final String address = (currentPlacemark!.street!.isNotEmpty ? '${currentPlacemark!.street!}, ' : '') +
-          (currentPlacemark!.locality!.isNotEmpty ? '${currentPlacemark!.locality!}, ' : '') +
-          (currentPlacemark!.subAdministrativeArea!.isNotEmpty ? '${currentPlacemark!.subAdministrativeArea!}, ' : '');
-      addressEditingController.text = address.trim().substring(0, address.length - 2);
+      final String address = (currentPlacemark!.street!.isNotEmpty
+              ? '${currentPlacemark!.street!}, '
+              : '') +
+          (currentPlacemark!.locality!.isNotEmpty
+              ? '${currentPlacemark!.locality!}, '
+              : '') +
+          (currentPlacemark!.subAdministrativeArea!.isNotEmpty
+              ? '${currentPlacemark!.subAdministrativeArea!}, '
+              : '');
+      addressEditingController.text =
+          address.trim().substring(0, address.length - 2);
     } catch (error) {
       addressEditingController.text = error.toString();
     }
@@ -193,7 +204,8 @@ class EditUserProfileWidgetModel extends BaseViewModel {
 
   Future pickMedia() async {
     List<File>? files;
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -209,7 +221,8 @@ class EditUserProfileWidgetModel extends BaseViewModel {
     final String fileName = basename(mediaFile.path);
     // get presigned URL
     printInfo(info: 'Getting presigned URL');
-    final String? preSignedUrl = await _getPresignedAvatarUrlUsecase.run(fileName);
+    final String? preSignedUrl =
+        await _getPresignedAvatarUrlUsecase.run(fileName);
     // upload media to s3
     if (preSignedUrl != null) {
       printInfo(info: 'Uploading media to s3');

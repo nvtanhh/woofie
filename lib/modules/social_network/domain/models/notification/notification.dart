@@ -49,9 +49,11 @@ class Notification {
       this.owner,
       this.ownerId});
 
-  factory Notification.fromJson(Map<String, dynamic> json) => _$NotificationFromJson(json);
+  factory Notification.fromJson(Map<String, dynamic> json) =>
+      _$NotificationFromJson(json);
 
-  factory Notification.fromJsonString(String jsonString) => Notification.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Notification.fromJsonString(String jsonString) =>
+      Notification.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$NotificationToJson(this);
 

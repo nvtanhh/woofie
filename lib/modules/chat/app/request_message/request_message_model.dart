@@ -57,7 +57,7 @@ class RequestMessagePageModel extends BaseViewModel {
   }
 
   void acceptRequest(RequestContact requestContact) {
-    call(
+    run(
       () async => _acceptRequestMessagesUsecase.run(requestContact),
       onSuccess: () {
         _navigationService.navigateToChatRoom(user: requestContact.fromUser);
@@ -69,7 +69,7 @@ class RequestMessagePageModel extends BaseViewModel {
   }
 
   void denyRequest(RequestContact requestContact, int index) {
-    call(
+    run(
       () async => _denyRequestMessagesUsecase.run(requestContact),
       onSuccess: () {
         pagingController.itemList?.removeAt(index);

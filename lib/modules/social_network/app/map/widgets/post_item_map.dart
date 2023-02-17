@@ -49,7 +49,7 @@ class PostMapWidget extends StatelessWidget {
                 topRightRadius: 0,
                 bottomLeftRadius: 15.r,
                 bottomRightRadius: 0,
-                placeHolderImage:
+                placeHolderImagePath:
                     "resources/images/fallbacks/pet-avatar-fallback.jpg",
               ),
             ),

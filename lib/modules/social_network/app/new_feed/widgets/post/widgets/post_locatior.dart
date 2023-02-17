@@ -10,7 +10,9 @@ class PostLocator extends StatelessWidget {
 
   final String? location;
 
-  const PostLocator({Key? key, required this.location, this.maxLines = 1, this.iconSize = 20}) : super(key: key);
+  const PostLocator(
+      {Key? key, required this.location, this.maxLines = 1, this.iconSize = 20})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

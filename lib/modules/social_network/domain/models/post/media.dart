@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meowoof/configs/backend_config.dart';
 
 part 'media.g.dart';
 
@@ -8,7 +9,12 @@ part 'media.g.dart';
 class Media {
   @JsonKey(name: "id")
   int id;
-  @JsonKey(name: "url")
+  @JsonKey(
+    name: "url",
+    fromJson: _parseAvatarUrl,
+    toJson: toNull,
+    includeIfNull: false,
+  )
   String? url;
   @JsonKey(name: "type")
   MediaType? type;
@@ -19,9 +25,23 @@ class Media {
     this.type,
   });
 
+  static toNull(_) => null;
+
+  static String _parseAvatarUrl(String url) {
+    if (url.startsWith("http")) {
+      return url;
+    }
+    var finalUrl = url;
+    if (!url.startsWith('/')) {
+      finalUrl = '/$url';
+    }
+    return BackendConfig.S3_URL + finalUrl;
+  }
+
   factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);
 
-  factory Media.fromJsonString(String jsonString) => Media.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Media.fromJsonString(String jsonString) =>
+      Media.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$MediaToJson(this);
 

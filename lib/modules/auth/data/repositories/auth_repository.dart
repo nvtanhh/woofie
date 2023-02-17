@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/auth/data/datasources/auth_datasource.dart';
 import 'package:meowoof/modules/auth/data/datasources/hasura_datasource.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
+import 'package:meowoof/modules/social_network/domain/models/user.dart'
+    as hasura_user;
 
 @lazySingleton
 class AuthRepository {
@@ -27,7 +28,8 @@ class AuthRepository {
     return _authDatasource.loginWithEmailPassword(email, password);
   }
 
-  Future<User?> registerWithEmailPassword(String email, String password, String name) {
+  Future<User?> registerWithEmailPassword(
+      String email, String password, String name) {
     return _authDatasource.registerWithEmailPassword(email, password, name);
   }
 

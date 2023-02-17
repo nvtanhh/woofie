@@ -106,7 +106,7 @@ class UserProfileModel extends BaseViewModel {
   }
 
   Future _getUserProfile() async {
-    return call(
+    return run(
       () async => user?.update(await _getUseProfileUseacse.call(user!.id)),
       showLoading: false,
       onSuccess: () {
@@ -145,7 +145,7 @@ class UserProfileModel extends BaseViewModel {
   }
 
   void onFollowPet(Pet pet) {
-    call(
+    run(
       () => _followPetUsecase.call(pet.id),
       onSuccess: () {
         pet.isFollowing = !(pet.isFollowing ?? false);
@@ -157,7 +157,7 @@ class UserProfileModel extends BaseViewModel {
 
   void onPostDeleted(Post post, int index) {
     bool result = false;
-    call(
+    run(
       () async => result = await _deletePostUsecase.call(post.id),
       onSuccess: () {
         if (result) {
@@ -197,7 +197,7 @@ class UserProfileModel extends BaseViewModel {
   Future sendContentRequestMessage(RequestContact requestContact) async {
     final String? content = await injector<DialogService>()
         .showInputReport(title: "Nội dung") as String?;
-    await call(
+    await run(
       () async => _updateContentRequestMessagesUsecase.run(
         requestContact: requestContact,
         content: content ?? "",
@@ -219,7 +219,7 @@ class UserProfileModel extends BaseViewModel {
   Future<void> onWantsToContact(User targetUser) async {
     if (user?.setting != null && user?.setting?.statusMessage == 0) {
       RequestContact? requestContact;
-      await call(
+      await run(
         () async => requestContact =
             await _requestContactUsecase.run(toUserUUID: targetUser.uuid),
         onSuccess: () {

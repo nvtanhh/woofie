@@ -22,7 +22,7 @@ class HasuraDatasource {
         dob
         phone_number
         active
-        current_pets {
+        pets {
           id
           name
           bio

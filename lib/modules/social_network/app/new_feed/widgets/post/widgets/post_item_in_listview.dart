@@ -56,7 +56,9 @@ class PostItemInListView extends StatelessWidget {
                       onTap: () => likeClick(),
                       child: Obx(
                         () => MWIcon(
-                          post.updateSubjectValue.isLiked! ? MWIcons.react : MWIcons.unReact,
+                          post.updateSubjectValue.isLiked!
+                              ? MWIcons.react
+                              : MWIcons.unReact,
                           size: MWIconSize.small,
                         ),
                       ),

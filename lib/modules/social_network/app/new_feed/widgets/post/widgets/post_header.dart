@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_actions_popup.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_locatior.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
@@ -13,8 +14,6 @@ import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:timeago/timeago.dart' as time_ago;
-
-import './post_actions_popup.dart';
 
 class PostHeader extends StatelessWidget {
   final Post post;

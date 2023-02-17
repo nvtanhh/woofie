@@ -11,9 +11,11 @@ class Aggregate {
 
   Aggregate({this.count});
 
-  factory Aggregate.fromJson(Map<String, dynamic> json) => _$AggregateFromJson(json);
+  factory Aggregate.fromJson(Map<String, dynamic> json) =>
+      _$AggregateFromJson(json);
 
-  factory Aggregate.fromJsonString(String jsonString) => Aggregate.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory Aggregate.fromJsonString(String jsonString) =>
+      Aggregate.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$AggregateToJson(this);
 

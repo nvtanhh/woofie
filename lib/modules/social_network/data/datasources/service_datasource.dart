@@ -34,11 +34,15 @@ query MyQuery {
 }
     """;
     final data = await _hasuraConnect.query(query);
-    final listPost = GetMapFromHasura.getMap(data as Map)["pet_services"] as List;
-    return listPost.map((e) => Service.fromJson(e as Map<String, dynamic>)).toList();
+    final listPost =
+        GetMapFromHasura.getMap(data as Map)["pet_services"] as List;
+    return listPost
+        .map((e) => Service.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
-  Future<List<Service>> searchService(String keyWord, int limit, int offset) async {
+  Future<List<Service>> searchService(
+      String keyWord, int limit, int offset) async {
     final query = """
     query MyQuery {
       pet_services(where: {_or: {service_type: {_ilike: "%${keyWord.toLowerCase()}%"}, name: {_ilike: "%${keyWord.toLowerCase()}%"}}}, limit: $limit, offset: $offset, order_by: {name: desc}) {
@@ -62,6 +66,8 @@ query MyQuery {
     """;
     final data = await _hasuraConnect.query(query);
     final list = GetMapFromHasura.getMap(data as Map)["pet_services"] as List;
-    return list.map((e) => Service.fromJson(e as Map<String, dynamic>)).toList();
+    return list
+        .map((e) => Service.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }

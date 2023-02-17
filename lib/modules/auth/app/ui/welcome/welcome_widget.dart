@@ -17,7 +17,8 @@ class WelcomeWidget extends StatefulWidget {
   _WelcomeWidgetState createState() => _WelcomeWidgetState();
 }
 
-class _WelcomeWidgetState extends BaseViewState<WelcomeWidget, WelcomeWidgetModel> {
+class _WelcomeWidgetState
+    extends BaseViewState<WelcomeWidget, WelcomeWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

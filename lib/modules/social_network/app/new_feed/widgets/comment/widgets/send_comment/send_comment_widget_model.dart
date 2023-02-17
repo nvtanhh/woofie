@@ -39,7 +39,8 @@ class SendCommentWidgetModel extends BaseViewModel {
   PrefixMatchState? filterState;
   OverlayEntry? overlayEntry;
   bool isUpdate = false;
-  StreamSubscription? _commentUpdatingStreamSubscription, _commentUpdatedStreamSubscription;
+  StreamSubscription? _commentUpdatingStreamSubscription,
+      _commentUpdatedStreamSubscription;
 
   SendCommentWidgetModel(
     this._getAllUserInPostUsecase,
@@ -92,7 +93,8 @@ class SendCommentWidgetModel extends BaseViewModel {
   }
 
   void _registerCommentUpdatingStreamSubscription() {
-    _commentUpdatingStreamSubscription = _eventBus.on<CommentUpdatingEvent>().listen(
+    _commentUpdatingStreamSubscription =
+        _eventBus.on<CommentUpdatingEvent>().listen(
       (event) {
         isUpdate = true;
         comment = event.comment;
@@ -104,7 +106,8 @@ class SendCommentWidgetModel extends BaseViewModel {
   }
 
   void _registerCommentUpdatedStreamSubscription() {
-    _commentUpdatedStreamSubscription = _eventBus.on<CommentUpdatedEvent>().listen(
+    _commentUpdatedStreamSubscription =
+        _eventBus.on<CommentUpdatedEvent>().listen(
       (event) {
         isUpdate = false;
         controller?.clear();
@@ -136,7 +139,11 @@ class SendCommentWidgetModel extends BaseViewModel {
   void filterData() {
     dataFilter = data
         .where((element) =>
-            element.item?.name?.toLowerCase().contains((filterState?.text ?? " ").substring(1, filterState?.text.length ?? 1).toLowerCase()) == true)
+            element.item?.name?.toLowerCase().contains(
+                (filterState?.text ?? " ")
+                    .substring(1, filterState?.text.length ?? 1)
+                    .toLowerCase()) ==
+            true)
         .toList();
   }
 
@@ -155,7 +162,7 @@ class SendCommentWidgetModel extends BaseViewModel {
 
   Future<List<User>> _getAllUserInPost(String keyword) async {
     List<User> users = [];
-    await call(
+    await run(
       () async => users = await _getAllUserInPostUsecase.run(post.id),
       showLoading: false,
       onSuccess: () {
@@ -182,7 +189,7 @@ class SendCommentWidgetModel extends BaseViewModel {
     }
     Comment? newComment;
     if (!isUpdate) {
-      call(
+      run(
         () async => newComment = await _createCommentUsecase.call(
           post.id,
           controller!.text.replaceAll("\n", "\\n"),

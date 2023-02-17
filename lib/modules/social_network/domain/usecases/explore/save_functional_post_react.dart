@@ -7,7 +7,7 @@ class SaveFunctionalPostReact {
 
   SaveFunctionalPostReact(this._exploreRepository);
 
-  Future<bool> call({required int postId, int? matingPetId }) {
+  Future<bool> call({required int postId, int? matingPetId}) {
     return _exploreRepository.reactFunctionalPost(postId, matingPetId);
   }
 }

@@ -15,9 +15,11 @@ class ObjectAggregate {
     required this.aggregate,
   });
 
-  factory ObjectAggregate.fromJson(Map<String, dynamic> json) => _$ObjectAggregateFromJson(json);
+  factory ObjectAggregate.fromJson(Map<String, dynamic> json) =>
+      _$ObjectAggregateFromJson(json);
 
-  factory ObjectAggregate.fromJsonString(String jsonString) => ObjectAggregate.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory ObjectAggregate.fromJsonString(String jsonString) =>
+      ObjectAggregate.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$ObjectAggregateToJson(this);
 

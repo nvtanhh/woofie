@@ -25,7 +25,11 @@ class User extends UpdatableModel<User> {
   String? email;
   @JsonKey(name: "current_pets", toJson: toNull, includeIfNull: false)
   List<Pet>? currentPets;
-  @JsonKey(name: "all_pets", fromJson: allPetsFromJson, toJson: toNull, includeIfNull: false)
+  @JsonKey(
+      name: "all_pets",
+      fromJson: allPetsFromJson,
+      toJson: toNull,
+      includeIfNull: false)
   List<Pet>? allPets;
   @JsonKey(name: "avatar")
   Media? avatar;
@@ -64,14 +68,17 @@ class User extends UpdatableModel<User> {
 
   factory User.fromJsonPure(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  factory User.fromJsonString(String jsonString) => User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory User.fromJsonString(String jsonString) =>
+      User.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   String toJsonString() => json.encode(toJson());
 
   static List<Pet>? allPetsFromJson(List<dynamic>? list) {
-    return list?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>)).toList();
+    return list
+        ?.map((e) => Pet.fromJson(e["pet"] as Map<String, dynamic>))
+        .toList();
   }
 
   bool get isHavePet => (currentPets ?? []).isNotEmpty;
@@ -88,7 +95,9 @@ class User extends UpdatableModel<User> {
       email = json['email'] as String;
     }
     if (json['current_pets'] != null) {
-      currentPets = (json['current_pets'] as List<dynamic>?)?.map((e) => Pet.fromJson(e as Map<String, dynamic>)).toList();
+      currentPets = (json['current_pets'] as List<dynamic>?)
+          ?.map((e) => Pet.fromJson(e as Map<String, dynamic>))
+          .toList();
     }
     if (json['all_pet'] != null) {
       currentPets = allPetsFromJson(json['current_pets'] as List?);
@@ -109,7 +118,8 @@ class User extends UpdatableModel<User> {
       locationId = json['location_id'] as int;
     }
     if (json['location'] != null) {
-      location = UserLocation.fromJson(json['location'] as Map<String, dynamic>);
+      location =
+          UserLocation.fromJson(json['location'] as Map<String, dynamic>);
     }
     if (json['active'] != null) {
       active = json['active'] as int;

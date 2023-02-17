@@ -8,7 +8,8 @@ class GetPostOfUserUsecase {
 
   GetPostOfUserUsecase(this._profileRepository);
 
-  Future<List<Post>> call({int offset = 0, int limit = 10, String? userUUID}) async {
+  Future<List<Post>> call(
+      {int offset = 0, int limit = 10, String? userUUID}) async {
     return _profileRepository.getPostsTimeline(
       offset,
       limit,

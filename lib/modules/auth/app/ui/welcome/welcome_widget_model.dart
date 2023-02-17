@@ -12,7 +12,8 @@ import 'package:meowoof/modules/auth/domain/usecases/save_user_to_local_usecase.
 import 'package:meowoof/modules/social_network/app/add_pet/add_pet_widget.dart';
 import 'package:meowoof/modules/social_network/app/home_menu/home_menu.dart';
 import 'package:meowoof/modules/social_network/data/storages/setting_storage.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart' as hasura_user;
+import 'package:meowoof/modules/social_network/domain/models/user.dart'
+    as hasura_user;
 import 'package:meowoof/modules/social_network/domain/usecases/notification/update_token_notify_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -46,13 +47,14 @@ class WelcomeWidgetModel extends BaseViewModel {
   }
 
   Future onLoginWithFbClick() async {
-    await call(
+    await run(
       () async => user = await _loginWithFacebookUsecase.call(),
       onSuccess: () {
         checkUserHavePetForNavigator();
       },
       onFailure: (err) {
-        _toastService.error(message: "Login fail! Try again", context: Get.context!);
+        _toastService.error(
+            message: "Login fail! Try again", context: Get.context!);
         printError(
           info: err.toString(),
         );
@@ -61,7 +63,7 @@ class WelcomeWidgetModel extends BaseViewModel {
   }
 
   Future onLoginGoogleClick() async {
-    await call(
+    await run(
       () async {
         user = await _loginWithGoogleUsecase.call();
         await Future.delayed(
@@ -92,28 +94,31 @@ class WelcomeWidgetModel extends BaseViewModel {
 
   Future checkUserHavePetForNavigator() async {
     bool status = false;
-    await call(
+    await run(
       () async {
-        final hasura_user.User? haUser = await _getUserUsecase.call(user!.uid);
-        if (haUser != null) {
-          if (haUser.active == 0) {
-            injector<ToastService>().toast(message: "Tài khoản của bạn đã bị khóa!", type: ToastType.info, context: Get.context!);
-            return;
-          }
-          updateTokenNotify(haUser.uuid);
-          await _saveUserToLocalUsecase.call(haUser);
-          await _loggedInUser.setLoggedUser(haUser);
-          status = haUser.currentPets?.isNotEmpty == true;
-          if (haUser.setting != null) {
-            _settingStorage.set(haUser.setting!);
-          }
-        } else {
+        final hasura_user.User hasuraUser =
+            await _getUserUsecase.call(user!.uid);
+        if (hasuraUser.active == 0) {
+          injector<ToastService>().toast(
+            message: "Tài khoản của bạn đã bị khóa!",
+            type: ToastType.info,
+            context: Get.context!,
+          );
           return;
+        }
+        updateTokenNotify(hasuraUser.uuid);
+        await _saveUserToLocalUsecase.call(hasuraUser);
+        await _loggedInUser.setLoggedUser(hasuraUser);
+        status = hasuraUser.currentPets?.isNotEmpty == true;
+        if (hasuraUser.setting != null) {
+          _settingStorage.set(hasuraUser.setting!);
         }
       },
       onSuccess: () {
         if (!status) {
-          Get.offAll(() => const AddPetWidget(isAddMore: false,));
+          Get.offAll(
+            () => const AddPetWidget(),
+          );
         } else {
           Get.offAll(() => HomeMenuWidget());
         }

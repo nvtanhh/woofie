@@ -13,14 +13,16 @@ class LanguageWidget extends StatefulWidget {
   _LanguageState createState() => _LanguageState();
 }
 
-class _LanguageState extends BaseViewState<LanguageWidget, LanguageWidgetModel> {
+class _LanguageState
+    extends BaseViewState<LanguageWidget, LanguageWidgetModel> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            LocaleKeys.setting_language.trans(args: [viewModel.defineLanguage(viewModel.currentLanguage)]),
+            LocaleKeys.setting_language.trans(
+                args: [viewModel.defineLanguage(viewModel.currentLanguage)]),
             style: UITextStyle.text_header_18_w600,
           ),
           leading: IconButton(
@@ -33,13 +35,14 @@ class _LanguageState extends BaseViewState<LanguageWidget, LanguageWidgetModel> 
             RadioListTile<String>(
               value: 'vi',
               groupValue: viewModel.currentLanguage,
-              onChanged: (_) => viewModel.onLangSelected(_,context),
-              title: Text(LocaleKeys.setting_vietnamese.trans(), style: UITextStyle.text_body_14_w500),
+              onChanged: (_) => viewModel.onLangSelected(_, context),
+              title: Text(LocaleKeys.setting_vietnamese.trans(),
+                  style: UITextStyle.text_body_14_w500),
             ),
             RadioListTile<String>(
               value: 'en',
               groupValue: viewModel.currentLanguage,
-              onChanged: (_) => viewModel.onLangSelected(_,context),
+              onChanged: (_) => viewModel.onLangSelected(_, context),
               title: Text(
                 LocaleKeys.setting_english.trans(),
                 style: UITextStyle.text_body_14_w500,

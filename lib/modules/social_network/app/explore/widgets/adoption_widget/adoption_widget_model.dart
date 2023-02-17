@@ -44,7 +44,8 @@ class AdoptionWidgetModel extends BaseViewModel {
     if (location != null) {
       startLoadPage();
     } else {
-      injector<ToastService>().warning(message: "message", context: Get.context!);
+      injector<ToastService>()
+          .warning(message: "message", context: Get.context!);
     }
   }
 
@@ -78,7 +79,7 @@ class AdoptionWidgetModel extends BaseViewModel {
   }
 
   Future _loadPost(int pageKey) async {
-    await call(
+    await run(
         () async {
           posts = await _getPostByTypeUsecase.call(
             postType: postType,

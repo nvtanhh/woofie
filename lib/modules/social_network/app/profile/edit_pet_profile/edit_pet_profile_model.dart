@@ -126,10 +126,12 @@ class EditPetProfileWidgetModel extends BaseViewModel {
   }
 
   void getPetBreads() {
-    call(() async => petBreads = await _getPetBreedUsecase.call(pet.petTypeId!),
-        onSuccess: () {
-      _petBreads.refresh();
-    });
+    run(
+      () async => petBreads = await _getPetBreedUsecase.call(pet.petTypeId!),
+      onSuccess: () {
+        _petBreads.refresh();
+      },
+    );
   }
 
   Future onCalendarPress() async {

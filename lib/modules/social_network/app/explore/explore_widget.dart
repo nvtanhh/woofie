@@ -19,7 +19,9 @@ class ExploreWidget extends StatefulWidget {
   _ExploreWidgetState createState() => _ExploreWidgetState();
 }
 
-class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetModel> with AutomaticKeepAliveClientMixin {
+class _ExploreWidgetState
+    extends BaseViewState<ExploreWidget, ExploreWidgetModel>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -244,18 +246,20 @@ class _ExploreWidgetState extends BaseViewState<ExploreWidget, ExploreWidgetMode
                   width: Get.width,
                   height: 120.h,
                   child: Obx(
-                    ()=> ListView.builder(
+                    () => ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                          onTap: ()=>viewModel.onServiceClick(index),
+                          onTap: () => viewModel.onServiceClick(index),
                           child: ServiceWidget(
                             title: viewModel.services[index].name ?? "",
-                            distance: viewModel.calculateDistance(viewModel.services[index].location!),
+                            distance: viewModel.calculateDistance(
+                                viewModel.services[index].location!),
                             widget: ImageWithPlaceHolderWidget(
                               imageUrl: viewModel.services[index].logo ?? "",
                               width: 60.w,
-                              height: 60.w,fit: BoxFit.scaleDown,
+                              height: 60.w,
+                              fit: BoxFit.scaleDown,
                             ),
                           ),
                         );

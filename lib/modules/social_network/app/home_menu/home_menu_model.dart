@@ -61,8 +61,9 @@ class HomeMenuWidgetModel extends BaseViewModel {
         now!.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       toastService.warning(
-          message: LocaleKeys.system_press_to_exit.trans(),
-          context: Get.context!);
+        message: LocaleKeys.system_press_to_exit.trans(),
+        context: Get.context!,
+      );
       return Future.value(false);
     }
     return Future.value(true);
@@ -78,7 +79,7 @@ class HomeMenuWidgetModel extends BaseViewModel {
   }
 
   void readAllNotify() {
-    call(
+    run(
       () async => countUnreadNotify = await _allNotificationUsecase.run() ?? 0,
       showLoading: false,
     );

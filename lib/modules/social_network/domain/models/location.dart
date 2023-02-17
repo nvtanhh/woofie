@@ -24,9 +24,11 @@ class UserLocation {
     this.lat,
   });
 
-  factory UserLocation.fromJson(Map<String, dynamic> json) => _$UserLocationFromJson(json);
+  factory UserLocation.fromJson(Map<String, dynamic> json) =>
+      _$UserLocationFromJson(json);
 
-  factory UserLocation.fromJsonString(String jsonString) => UserLocation.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory UserLocation.fromJsonString(String jsonString) =>
+      UserLocation.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$UserLocationToJson(this);
 
