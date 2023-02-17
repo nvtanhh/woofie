@@ -18,7 +18,8 @@ import 'injector.config.dart';
 final injector = GetIt.instance;
 
 @injectableInit
-Future setupInjector() async => $initGetIt(injector, environment: Environment.dev);
+Future setupInjector() async =>
+    $initGetIt(injector, environment: Environment.dev);
 
 @module
 abstract class RegisterModule {
@@ -28,7 +29,8 @@ abstract class RegisterModule {
 
   @lazySingleton
   @preResolve
-  Future<SharedPreferences> getSharePreferences() => SharedPreferences.getInstance();
+  Future<SharedPreferences> getSharePreferences() =>
+      SharedPreferences.getInstance();
 
   @lazySingleton
   Logger getLogger() => Logger(
@@ -49,15 +51,20 @@ abstract class RegisterModule {
 
   @lazySingleton
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {
-    return HasuraConnect(BackendConfig.BASE_HASURA_URL, interceptors: [interceptor]);
+    return HasuraConnect(BackendConfig.BASE_HASURA_URL,
+        interceptors: [interceptor]);
   }
 
   @lazySingleton
   FlutterLocalNotificationsPlugin getFlutterLocalNotificationsPlugin() {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@drawable/ic_stat_onesignal_default');
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@drawable/ic_stat_onesignal_default');
     final InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid,);
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
     flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
     );

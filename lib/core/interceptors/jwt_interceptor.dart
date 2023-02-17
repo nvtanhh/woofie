@@ -18,8 +18,6 @@ class JwtInterceptor extends Interceptor {
   @override
   Future onError(HasuraError request) async {
     jwtToken = await auth.currentUser?.getIdToken(true);
-    printInfo(info: jwtToken?.substring(0, ((jwtToken?.length ?? 0) / 2).floor() + 3) ?? "");
-    printInfo(info: jwtToken?.substring(((jwtToken?.length ?? 0) / 2).floor(), jwtToken?.length ?? 0) ?? "");
     printError(info: request.message);
   }
 
@@ -37,7 +35,7 @@ class JwtInterceptor extends Interceptor {
   @override
   Future? onRequest(Request request) async {
     jwtToken = null;
-    jwtToken = await auth.currentUser?.getIdToken();
+    jwtToken = await auth.currentUser!.getIdToken();
     if (jwtToken != null) {
       request.headers["Authorization"] = "Bearer $jwtToken";
       return request;
@@ -57,8 +55,10 @@ class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = ((X509Certificate cert, String host, int port) {
-        final isValidHost = ["103.195.238.188"].contains(host); // <-- allow only hosts in array
+      ..badCertificateCallback =
+          ((X509Certificate cert, String host, int port) {
+        final isValidHost =
+            ["103.195.238.188"].contains(host); // <-- allow only hosts in array
         return isValidHost;
       });
   }

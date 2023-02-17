@@ -46,7 +46,7 @@ class UserDatasource {
         lat
         name
         }
-        current_pets {
+        pets {
           id
           name
           gender

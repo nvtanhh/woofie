@@ -18,7 +18,8 @@ class WeightWidgetModel extends BaseViewModel {
   late Pet pet;
   late bool isMyPet;
   final int pageSize = 5;
-  PagingController<int, PetWeight> pagingController = PagingController(firstPageKey: 0);
+  PagingController<int, PetWeight> pagingController =
+      PagingController(firstPageKey: 0);
   final AddWeightUsecase _addWeightUsecase;
   final GetWeightsUsecase _getWeightsUsecase;
   final DialogService _dialogService;
@@ -74,7 +75,7 @@ class WeightWidgetModel extends BaseViewModel {
       return;
     }
     petWeightNew?.petId = pet.id;
-    await call(
+    await run(
       () async {
         final pet = await _addWeightUsecase.call(petWeightNew!);
         petWeightNew?.id = pet.id;
@@ -93,20 +94,18 @@ class WeightWidgetModel extends BaseViewModel {
   void sortByDate() {
     pagingController.itemList?.sort(
       (a, b) {
-        return a.date!.compareTo(b.date!)>=0?-1:1;
+        return a.date!.compareTo(b.date!) >= 0 ? -1 : 1;
       },
     );
   }
 
-
-
   void onAddWeightAndRebuildChart() {
-    if((pagingController.itemList?.length??0)>6){
+    if ((pagingController.itemList?.length ?? 0) > 6) {
       petWeights = pagingController.itemList?.sublist(0, 6) ?? [];
       listWeightChart = petWeights;
 
       pet.petWeights = petWeights.toList();
-    }else{
+    } else {
       listWeightChart = pagingController.itemList?.toList() ?? [];
 
       pet.petWeights = listWeightChart.toList();
@@ -121,7 +120,8 @@ class WeightWidgetModel extends BaseViewModel {
   }
 
   void onDeleteWeight(PetWeight petWeight, int index) {
-    _dialogService.showDialogConfirmDelete(() => deletePetWeight(petWeight, index));
+    _dialogService
+        .showDialogConfirmDelete(() => deletePetWeight(petWeight, index));
   }
 
   Future onEditWeight(PetWeight petWeight, int index) async {
@@ -134,7 +134,7 @@ class WeightWidgetModel extends BaseViewModel {
     if (petWeightNew == null) {
       return;
     }
-    await call(
+    await run(
       () async => petWeightNew = await _updatePetWeightUsecase.run(petWeight),
       onSuccess: () {
         pagingController.itemList?[index] = petWeightNew!;
@@ -147,14 +147,18 @@ class WeightWidgetModel extends BaseViewModel {
   }
 
   void deletePetWeight(PetWeight petWeight, int index) {
-    call(() async => _deletePetWeightUsecase.run(petWeight.id), onSuccess: () {
-      _toastService.success(message: "Delete success!", context: Get.context!);
-      pagingController.itemList?.removeAt(index);
-      sortByDate();
-      onAddWeightAndRebuildChart();
-      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-      pagingController.notifyListeners();
-    });
+    run(
+      () async => _deletePetWeightUsecase.run(petWeight.id),
+      onSuccess: () {
+        _toastService.success(
+            message: "Delete success!", context: Get.context!);
+        pagingController.itemList?.removeAt(index);
+        sortByDate();
+        onAddWeightAndRebuildChart();
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        pagingController.notifyListeners();
+      },
+    );
   }
 
   @override

@@ -7,7 +7,9 @@ class IconWithBagedWidget extends StatelessWidget {
   final Function goToRequestMessagePage;
   final int count;
 
-  const IconWithBagedWidget({Key? key, required this.goToRequestMessagePage, required this.count}) : super(key: key);
+  const IconWithBagedWidget(
+      {Key? key, required this.goToRequestMessagePage, required this.count})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

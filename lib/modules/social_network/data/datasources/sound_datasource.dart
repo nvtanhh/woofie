@@ -9,7 +9,8 @@ class SoundDatasource {
   final AudioCache _player = AudioCache(prefix: "resources/sounds/");
 
   SoundDatasource(this._eventBus) {
-    _player.loadAll(["new_comment.mp3", "receiver_comment.mp3", "react_post.mp3"]);
+    _player
+        .loadAll(["new_comment.mp3", "receiver_comment.mp3", "react_post.mp3"]);
     registerSoundEvent();
   }
 

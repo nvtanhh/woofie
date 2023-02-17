@@ -8,7 +8,8 @@ class GetVaccinatesUsecase {
 
   GetVaccinatesUsecase(this._profileRepository);
 
-  Future<List<PetVaccinated>> call(int idPet, {int limit = 10, int offset = 0}) {
+  Future<List<PetVaccinated>> call(int idPet,
+      {int limit = 10, int offset = 0}) {
     return _profileRepository.getVaccinates(idPet, limit, offset);
   }
 }

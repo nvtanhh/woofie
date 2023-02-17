@@ -37,8 +37,8 @@ class MapSearcherFilterModel extends BaseViewModel {
     super.initState();
   }
 
-  Future<Unit> loadPetTypes() async {
-    return call(
+  Future<void> loadPetTypes() async {
+    await run(
       () async {
         petTypes = await _getPetTypesUsecase.call();
       },
@@ -52,8 +52,8 @@ class MapSearcherFilterModel extends BaseViewModel {
     );
   }
 
-  Future<Unit> loadPetBreeds(int idPetType) async {
-    return call(
+  Future<void> loadPetBreeds(int idPetType) async {
+    await run(
       () async => petBreeds = await _getPetBreedUsecase.call(idPetType),
       onSuccess: () {
         if (currentFilter != null && currentFilter!.selectedPetBreeds != null) {

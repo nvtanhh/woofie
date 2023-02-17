@@ -37,9 +37,11 @@ class RequestContact {
     this.updatedAt,
   });
 
-  factory RequestContact.fromJson(Map<String, dynamic> json) => _$RequestContactFromJson(json);
+  factory RequestContact.fromJson(Map<String, dynamic> json) =>
+      _$RequestContactFromJson(json);
 
-  factory RequestContact.fromJsonString(String jsonString) => RequestContact.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory RequestContact.fromJsonString(String jsonString) =>
+      RequestContact.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$RequestContactToJson(this);
 

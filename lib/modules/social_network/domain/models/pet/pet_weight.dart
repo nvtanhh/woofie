@@ -20,11 +20,19 @@ class PetWeight {
   DateTime? createdAt;
   @JsonKey(name: "updated_at")
   DateTime? updatedAt;
-  PetWeight({required this.id, this.weight, this.description, this.createdAt, this.date, this.updatedAt});
+  PetWeight(
+      {required this.id,
+      this.weight,
+      this.description,
+      this.createdAt,
+      this.date,
+      this.updatedAt});
 
-  factory PetWeight.fromJson(Map<String, dynamic> json) => _$PetWeightFromJson(json);
+  factory PetWeight.fromJson(Map<String, dynamic> json) =>
+      _$PetWeightFromJson(json);
 
-  factory PetWeight.fromJsonString(String jsonString) => PetWeight.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory PetWeight.fromJsonString(String jsonString) =>
+      PetWeight.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PetWeightToJson(this);
 

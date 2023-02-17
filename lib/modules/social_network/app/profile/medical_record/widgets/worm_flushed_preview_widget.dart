@@ -107,7 +107,8 @@ class WormFlushedPreviewWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    FormatHelper.formatDateTime(worm.date, pattern: "dd/MM/yyyy"),
+                    FormatHelper.formatDateTime(worm.date,
+                        pattern: "dd/MM/yyyy"),
                     style: UITextStyle.text_body_12_w600,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

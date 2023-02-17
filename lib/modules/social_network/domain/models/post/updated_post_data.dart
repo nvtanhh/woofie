@@ -34,9 +34,12 @@ class EditedPostData {
   //       'new_added_medias': newAddedMedias?.map((e) => e.toJson()).toList()
   //     };
 
-  List<int> get deletedMediaIds => deletedMedias?.map((e) => e.id).toList() ?? [];
-  List<int> get newTaggedPetIds => newTaggedPets?.map((e) => e.id).toList() ?? [];
-  List<int> get deletedTaggedPetIds => deletedTaggedPets?.map((e) => e.id).toList() ?? [];
+  List<int> get deletedMediaIds =>
+      deletedMedias?.map((e) => e.id).toList() ?? [];
+  List<int> get newTaggedPetIds =>
+      newTaggedPets?.map((e) => e.id).toList() ?? [];
+  List<int> get deletedTaggedPetIds =>
+      deletedTaggedPets?.map((e) => e.id).toList() ?? [];
   // List<Map> get newAddedMediasToJson =>
   //     newAddedMedias?.map((e) => e.toJson()).toList() ?? [];
 }

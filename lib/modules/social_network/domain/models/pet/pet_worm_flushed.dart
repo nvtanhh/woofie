@@ -28,9 +28,11 @@ class PetWormFlushed {
     this.updatedAt,
   });
 
-  factory PetWormFlushed.fromJson(Map<String, dynamic> json) => _$PetWormFlushedFromJson(json);
+  factory PetWormFlushed.fromJson(Map<String, dynamic> json) =>
+      _$PetWormFlushedFromJson(json);
 
-  factory PetWormFlushed.fromJsonString(String jsonString) => PetWormFlushed.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+  factory PetWormFlushed.fromJsonString(String jsonString) =>
+      PetWormFlushed.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$PetWormFlushedToJson(this);
 

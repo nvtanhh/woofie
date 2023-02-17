@@ -42,7 +42,7 @@ class ImagesViewWidget extends StatelessWidget {
                     return ImageWithPlaceHolderWidget(
                       imageUrl: medias[index].url ?? "",
                       radius: 20.r,
-                      placeHolderImage:
+                      placeHolderImagePath:
                           'resources/images/fallbacks/media-fallback.png',
                       fit: BoxFit.cover,
                       initGestureConfigHandler: (state) {

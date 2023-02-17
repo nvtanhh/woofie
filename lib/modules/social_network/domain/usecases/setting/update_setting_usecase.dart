@@ -3,11 +3,11 @@ import 'package:meowoof/modules/social_network/data/repositories/setting_reposit
 import 'package:meowoof/modules/social_network/domain/models/setting.dart';
 
 @lazySingleton
-class UpdateSettingUsecase{
+class UpdateSettingUsecase {
   final SettingRepository _settingRepository;
   UpdateSettingUsecase(this._settingRepository);
 
-  Future<Setting> run(int settingId,String setting) async {
-    return _settingRepository.updateSetting(settingId,setting);
+  Future<Setting> run(int settingId, String setting) async {
+    return _settingRepository.updateSetting(settingId, setting);
   }
 }

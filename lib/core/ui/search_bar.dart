@@ -61,7 +61,9 @@ class MWSearchBarState extends State<MWSearchBar> {
         children: <Widget>[
           Expanded(
             child: DecoratedBox(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: UIColor.holder),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: UIColor.holder),
               child: Stack(
                 children: <Widget>[
                   if (widget.searchWidget == false)
@@ -75,9 +77,11 @@ class MWSearchBarState extends State<MWSearchBar> {
                           padding: EdgeInsets.symmetric(horizontal: 8.w),
                           child: const Icon(Icons.search),
                         ),
-                        prefixIconConstraints: BoxConstraints(maxWidth: 40.w, maxHeight: 20.h),
+                        prefixIconConstraints:
+                            BoxConstraints(maxWidth: 40.w, maxHeight: 20.h),
                         hintText: widget.hintText,
-                        hintStyle: TextStyle(color: Colors.grey[500], fontSize: 15.sp),
+                        hintStyle:
+                            TextStyle(color: Colors.grey[500], fontSize: 15.sp),
                         contentPadding: EdgeInsets.only(
                           top: 8.h,
                           bottom: 8.h,
@@ -103,10 +107,13 @@ class MWSearchBarState extends State<MWSearchBar> {
                           errorBorder: _outlineInputBorder,
                           disabledBorder: _outlineInputBorder,
                           enabledBorder: _outlineInputBorder,
-                          hintStyle: TextStyle(color: Colors.grey[500], fontSize: 15.sp),
+                          hintStyle: TextStyle(
+                              color: Colors.grey[500], fontSize: 15.sp),
                           filled: true,
                           fillColor: Colors.grey.shade200,
-                          suffixIcon: (!hasText.value) ? const Icon(Icons.add) : const SizedBox(),
+                          suffixIcon: (!hasText.value)
+                              ? const Icon(Icons.add)
+                              : const SizedBox(),
                         ),
                         onSubmitted: widget.onSubmitted,
                       ),

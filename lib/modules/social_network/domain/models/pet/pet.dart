@@ -59,26 +59,26 @@ class Pet extends UpdatableModel<Pet> {
   List<PetWeight>? petWeights;
   @JsonKey(name: "avatar_url")
   String? avatarUrl;
-  Pet(
-      {required this.id,
-      this.name,
-      this.petTypeId,
-      this.gender,
-      this.dob,
-      this.avatar,
-      this.currentOwnerUuid,
-      this.currentOwner,
-      this.allOwners,
-      this.petType,
-      this.petBreed,
-      this.petBreedId,
-      this.bio,
-      this.isFollowing,
-      this.petVaccinates,
-      this.petWormFlushes,
-      this.petWeights,
-      this.avatarUrl})
-      : super(id);
+  Pet({
+    required this.id,
+    this.name,
+    this.petTypeId,
+    this.gender,
+    this.dob,
+    this.avatar,
+    this.currentOwnerUuid,
+    this.currentOwner,
+    this.allOwners,
+    this.petType,
+    this.petBreed,
+    this.petBreedId,
+    this.bio,
+    this.isFollowing,
+    this.petVaccinates,
+    this.petWormFlushes,
+    this.petWeights,
+    this.avatarUrl,
+  }) : super(id);
 
   static toNull(_) => null;
 

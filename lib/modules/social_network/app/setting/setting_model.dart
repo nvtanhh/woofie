@@ -23,7 +23,7 @@ class SettingModel extends BaseViewModel {
   }
 
   void logOut() {
-    call(
+    run(
       () async => _logoutUsecase.call(),
       onSuccess: () {
         Get.offAll(() => WelcomeWidget());
@@ -32,7 +32,8 @@ class SettingModel extends BaseViewModel {
   }
 
   void getLocale() {
-    _currentLanguage.value = EasyLocalization.of(Get.context!)?.locale.languageCode ?? "vi";
+    _currentLanguage.value =
+        EasyLocalization.of(Get.context!)?.locale.languageCode ?? "vi";
   }
 
   Future language() async {

@@ -36,7 +36,7 @@ class SettingMessagePageModel extends BaseViewModel {
   }
 
   void getSettingLocal() {
-    call(
+    run(
       () async {
         setting = await _getSettingUsecase.call();
         final loggedInUser = _loggedInUser.user;
@@ -56,16 +56,16 @@ class SettingMessagePageModel extends BaseViewModel {
   }
 
   void updateSetting() {
-    call(
+    run(
       () async => setting = await _updateSettingUsecase.run(
         setting!.id,
-        jsonEncode(jsonSetting).replaceAll("\"", "'"),
+        jsonEncode(jsonSetting).replaceAll('"', "'"),
       ),
     );
   }
 
   void createSetting() {
-    call(
+    run(
       () async => setting = await _createSettingUsecase.run(
         jsonEncode(jsonSetting).replaceAll("\"", "'"),
       ),

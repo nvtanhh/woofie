@@ -75,7 +75,7 @@ class SavePostModel extends BaseViewModel {
   }
 
   Future getPetsOfUser() async {
-    await call(
+    await run(
       () async =>
           user?.currentPets = await _getPetsOfUserUsecase.call(user!.uuid),
       showLoading: false,

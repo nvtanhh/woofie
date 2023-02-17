@@ -17,9 +17,9 @@ class ChatDatasource {
   late String baseUrl;
 
   // ignore: constant_identifier_names
-  static const GET_CHAT_ROOM_ENDPOINT = 'api/room/';
+  static const GET_CHAT_ROOM_ENDPOINT = 'api/room';
   // ignore: constant_identifier_names
-  static const INIT_CHAT_ROOM_ENDPOINT = 'api/room/';
+  static const INIT_CHAT_ROOM_ENDPOINT = 'api/room';
   // ignore: constant_identifier_names
   static const GET_MESSAGES_ENDPOINT = 'api/message/{room_id}';
   // ignore: constant_identifier_names
@@ -39,11 +39,12 @@ class ChatDatasource {
     }
 
     final response = await _httpieService.get(
-        '$baseUrl/$GET_CHAT_ROOM_ENDPOINT',
-        queryParameters: queryParameters,
-        appendAuthorizationToken: true);
+      '$baseUrl/$GET_CHAT_ROOM_ENDPOINT',
+      queryParameters: queryParameters,
+      appendAuthorizationToken: true,
+    );
     if (response.statusCode == 200) {
-      final list = json.decode(response.body)['rooms'] as List;
+      final list = (json.decode(response.body) as Map)['rooms'] as List;
       return list
           .map((room) => ChatRoom.fromJson(room as Map<String, dynamic>))
           .toList();
@@ -107,12 +108,14 @@ class ChatDatasource {
       'isGroup': false,
     };
     final response = await _httpieService.postJSON(
-        '$baseUrl/$INIT_CHAT_ROOM_ENDPOINT',
-        body: body,
-        appendAuthorizationToken: true);
+      '$baseUrl/$INIT_CHAT_ROOM_ENDPOINT',
+      body: body,
+      appendAuthorizationToken: true,
+    );
     if (response.statusCode == 200) {
       return ChatRoom.fromJson(
-          json.decode(response.body)['chatRoom'] as Map<String, dynamic>);
+        (json.decode(response.body) as Map)['chatRoom'] as Map<String, dynamic>,
+      );
     } else {
       printError(info: 'Failed to init chat room: $response');
       throw Exception();

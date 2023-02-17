@@ -45,9 +45,7 @@ class NewFeedWidgetModel extends BaseViewModel {
   }
 
   void getPosts() {
-    call(
-      () async => posts = await _getPostsUsecase.call(),
-    );
+    run(() async => posts = await _getPostsUsecase.call());
   }
 
   @override
