@@ -21,13 +21,13 @@ class ChatRoomPage extends StatefulWidget {
 
   final Post? attachmentPost;
 
-  const ChatRoomPage(
-      {Key? key,
-      this.room,
-      this.partner,
-      this.onAddNewMessages,
-      this.attachmentPost})
-      : super(key: key);
+  const ChatRoomPage({
+    Key? key,
+    this.room,
+    this.partner,
+    this.onAddNewMessages,
+    this.attachmentPost,
+  }) : super(key: key);
 
   @override
   _ChatRoomPageState createState() => _ChatRoomPageState();

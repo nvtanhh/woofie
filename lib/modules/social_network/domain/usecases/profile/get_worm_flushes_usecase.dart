@@ -8,7 +8,8 @@ class GetWormFlushesUsecase {
 
   GetWormFlushesUsecase(this._profileRepository);
 
-  Future<List<PetWormFlushed>> call(int idPet, {int limit = 10, int offset = 0}) {
+  Future<List<PetWormFlushed>> call(int idPet,
+      {int limit = 10, int offset = 0}) {
     return _profileRepository.getWormFlushes(idPet, limit, offset);
   }
 }

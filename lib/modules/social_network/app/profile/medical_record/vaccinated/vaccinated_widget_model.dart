@@ -53,7 +53,7 @@ class VaccinatedWidgetModel extends BaseViewModel {
       return;
     }
     vaccinated?.petId = pet.id;
-    await call(
+    await run(
       () async {
         final data = await _addVaccinatedUsecase.call(vaccinated!);
         vaccinated!.id = data.id;
@@ -65,7 +65,8 @@ class VaccinatedWidgetModel extends BaseViewModel {
       },
       onFailure: (err) {
         printError(info: err.toString());
-        _toastService.error(message: LocaleKeys.error.trans(), context: Get.context!);
+        _toastService.error(
+            message: LocaleKeys.error.trans(), context: Get.context!);
       },
     );
   }
@@ -82,7 +83,7 @@ class VaccinatedWidgetModel extends BaseViewModel {
 
   Future getVaccinates() async {
     if (isLastPage) return;
-    await call(
+    await run(
       () async {
         receivePetVaccinated = await _getVaccinatesUsecase.call(
           pet.id,
@@ -98,7 +99,8 @@ class VaccinatedWidgetModel extends BaseViewModel {
         _vaccinates.addAll(receivePetVaccinated);
       },
       onFailure: (err) {
-        _toastService.error(message: LocaleKeys.error.trans(), context: Get.context!);
+        _toastService.error(
+            message: LocaleKeys.error.trans(), context: Get.context!);
         printError(info: err.toString());
       },
     );
@@ -116,19 +118,24 @@ class VaccinatedWidgetModel extends BaseViewModel {
     if (vaccinated == null) {
       return;
     }
-    await call(() async => vaccinated = await _updatePetVaccinatedUsecase.run(vaccinated!), onSuccess: () {
-      _vaccinates[index] = vaccinated!;
-      updatePreviewVaccinated();
-      _vaccinates.refresh();
-    });
+    await run(
+      () async =>
+          vaccinated = await _updatePetVaccinatedUsecase.run(vaccinated!),
+      onSuccess: () {
+        _vaccinates[index] = vaccinated!;
+        updatePreviewVaccinated();
+        _vaccinates.refresh();
+      },
+    );
   }
 
   void onDelete(PetVaccinated vaccinate, int index) {
-    _dialogService.showDialogConfirmDelete(() => deletePetWormFlushed(vaccinate, index));
+    _dialogService
+        .showDialogConfirmDelete(() => deletePetWormFlushed(vaccinate, index));
   }
 
   void deletePetWormFlushed(PetVaccinated vaccinate, int index) {
-    call(
+    run(
       () async => _deletePetVaccinatedUsecase.run(vaccinate.id),
       onSuccess: () {
         _vaccinates.removeAt(index);
@@ -140,7 +147,7 @@ class VaccinatedWidgetModel extends BaseViewModel {
 
   void sortByDate() {
     _vaccinates.sort((a, b) {
-      return a.date!.compareTo(b.date!)>=0?-1:1;
+      return a.date!.compareTo(b.date!) >= 0 ? -1 : 1;
     });
   }
 

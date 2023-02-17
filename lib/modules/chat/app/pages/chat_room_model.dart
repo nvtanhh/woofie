@@ -127,7 +127,7 @@ class ChatRoomPageModel extends BaseViewModel {
 
   Future<ChatRoom?> _initChatRoom() async {
     ChatRoom? chatRoom;
-    await call(
+    await run(
       () async {
         chatRoom = await _initChatRoomsUseCase.call(partner!);
       },
@@ -287,7 +287,7 @@ class ChatRoomPageModel extends BaseViewModel {
 
   Future<void> onSendMessage() async {
     if (isCanSendMessage) {
-      await call(
+      await run(
         () async {
           final Message sendingMessage = Message(
             roomId: room.id,
@@ -494,7 +494,7 @@ class ChatRoomPageModel extends BaseViewModel {
 
   Future _triggerFunctionalPost(Post post, {int? matingPetId}) async {
     if (post.type != PostType.lose && !post.isLiked!) {
-      await call(
+      await run(
         () async => _saveFunctionalPostReact.call(
             postId: post.id, matingPetId: matingPetId),
         onSuccess: () => post.isLiked = true,

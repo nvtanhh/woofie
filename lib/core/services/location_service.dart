@@ -39,5 +39,4 @@ class LocationService {
     return permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever;
   }
-
 }

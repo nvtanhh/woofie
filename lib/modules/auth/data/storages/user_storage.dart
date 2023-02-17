@@ -5,12 +5,19 @@ import 'package:suga_core/suga_core.dart';
 
 @singleton
 class UserStorage extends Storage<User> {
-  UserStorage(SharedPreferences prefs) : super(prefs: prefs, key: "current_user");
+  UserStorage(SharedPreferences prefs)
+      : super(prefs: prefs, key: "current_user");
 
   @override
   User? get({User? defaultValue}) {
-    final String? jsonString = prefs.getString(key);
-    return jsonString != null ? User.fromJsonString(jsonString) : defaultValue;
+    try {
+      final String? jsonString = prefs.getString(key);
+      return jsonString != null
+          ? User.fromJsonString(jsonString)
+          : defaultValue;
+    } catch (e) {
+      return defaultValue;
+    }
   }
 
   @override

@@ -41,7 +41,7 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
   }
 
   Future getPostDetail() async {
-    await call(
+    await run(
       () async {
         post.update(await _getDetailPostUsecase.call(post.id));
         if (post.distanceUserToPost == null) {
@@ -72,7 +72,8 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
   Future onWantsToContact() async {
     if (post.isMyPost) {
     } else {
-      final error = await injector<NavigationService>().navigateToChatRoom(user: post.creator, attachmentPost: post);
+      final error = await injector<NavigationService>()
+          .navigateToChatRoom(user: post.creator, attachmentPost: post);
       if (error != null && error) {
         Get.snackbar(
           "Sorry",
@@ -105,7 +106,8 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
     Get.dialog(
       ConfirmDialog(
         title: 'Xác nhận đã tìm thấy thú cưng',
-        content: 'Bạn đã tìm thấy ${pet.name} .\nKhi chọn "Có" bài viết của bạn sẽ được đóng lại.',
+        content:
+            'Bạn đã tìm thấy ${pet.name} .\nKhi chọn "Có" bài viết của bạn sẽ được đóng lại.',
         confirmText: 'Có',
         cancelText: 'Hủy',
         onConfirm: () => hadFoundPet(),
@@ -114,14 +116,13 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
   }
 
   Future hadFoundPet() async {
-    await call(
+    await run(
       () async {
         final posst = await _hadFoundPetUsecase.call(post);
         post.updateFromJson(posst.toJson());
       },
       onSuccess: () {},
       onFailure: (err) {
-        print("object");
         printInfo(info: err.toString());
       },
     );
@@ -139,12 +140,16 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
     switch (post.type) {
       case PostType.adop:
         if (post.additionalData != null) {
-          adopter = User.fromJsonPure(json.decode(post.additionalData!.replaceAll("'", "\"")) as Map<String, dynamic>);
+          adopter = User.fromJsonPure(
+              json.decode(post.additionalData!.replaceAll("'", "\""))
+                  as Map<String, dynamic>);
         }
         break;
       case PostType.mating:
         if (post.additionalData != null) {
-          matedPet = Pet.fromJsonPure(json.decode(post.additionalData!.replaceAll("'", "\"")) as Map<String, dynamic>);
+          matedPet = Pet.fromJsonPure(
+              json.decode(post.additionalData!.replaceAll("'", "\""))
+                  as Map<String, dynamic>);
         }
         break;
       default:

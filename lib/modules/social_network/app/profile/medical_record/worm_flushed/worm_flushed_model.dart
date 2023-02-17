@@ -53,7 +53,7 @@ class WormFlushedWidgetModel extends BaseViewModel {
       return;
     }
     wormFlushed!.petId = pet.id;
-    await call(
+    await run(
       () async {
         final wormF = await _addWormFlushedUsecase.call(wormFlushed!);
         wormFlushed!.id = wormF.id;
@@ -65,7 +65,8 @@ class WormFlushedWidgetModel extends BaseViewModel {
       },
       onFailure: (err) {
         printError(info: err.toString());
-        _toastService.error(message: LocaleKeys.error.trans(), context: Get.context!);
+        _toastService.error(
+            message: LocaleKeys.error.trans(), context: Get.context!);
       },
     );
   }
@@ -82,7 +83,7 @@ class WormFlushedWidgetModel extends BaseViewModel {
 
   Future getWormFlushes() async {
     if (isLastPage) return;
-    await call(
+    await run(
       () async {
         receiveWormFlushed = await _getWormFlushesUsecase.call(
           pet.id,
@@ -104,7 +105,7 @@ class WormFlushedWidgetModel extends BaseViewModel {
   }
 
   void deletePetWormFlushed(PetWormFlushed wormFlush, int index) {
-    call(
+    run(
       () async => _deletePetWormFlushUsecase.run(wormFlush.id),
       onSuccess: () {
         _wormFlushes.removeAt(index);
@@ -115,7 +116,8 @@ class WormFlushedWidgetModel extends BaseViewModel {
   }
 
   void onDelete(PetWormFlushed wormFlush, int index) {
-    _dialogService.showDialogConfirmDelete(() => deletePetWormFlushed(wormFlush, index));
+    _dialogService
+        .showDialogConfirmDelete(() => deletePetWormFlushed(wormFlush, index));
   }
 
   Future onEdit(PetWormFlushed wormFlush, int index) async {
@@ -128,20 +130,22 @@ class WormFlushedWidgetModel extends BaseViewModel {
     if (wormFlushed == null) {
       return;
     }
-    await call(
+    await run(
       () async => wormFlushed = await _updatePetWormFlushUsecase.run(wormFlush),
       onSuccess: () {
-        _wormFlushes[index]= wormFlushed!;
+        _wormFlushes[index] = wormFlushed!;
         updatePreviewWormFlush();
         _wormFlushes.refresh();
       },
     );
   }
-  void sortByDate(){
-    _wormFlushes.sort((a,b){
-      return a.date!.compareTo(b.date!)>=0?-1:1;
+
+  void sortByDate() {
+    _wormFlushes.sort((a, b) {
+      return a.date!.compareTo(b.date!) >= 0 ? -1 : 1;
     });
   }
+
   List<PetWormFlushed> get wormFlushes => _wormFlushes.toList();
 
   @override

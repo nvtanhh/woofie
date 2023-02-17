@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      builder: () => MFToast(
+      builder: (_, __) => MFToast(
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'MeoWoof',

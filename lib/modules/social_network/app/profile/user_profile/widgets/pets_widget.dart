@@ -78,7 +78,9 @@ class PetsWidget extends StatelessWidget {
                             buildCardAddPet(showTitle: true),
                           ],
                         )
-                      : Center(child: Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
+                      : Center(
+                          child:
+                              Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
                   : ListView.builder(
                       padding: EdgeInsets.only(
                         left: 15.w,
@@ -97,7 +99,9 @@ class PetsWidget extends StatelessWidget {
                           isMyPet: isMyPets,
                         );
                       },
-                      itemCount: isMyPets ? user.currentPets!.length + 1 : user.currentPets!.length,
+                      itemCount: isMyPets
+                          ? user.currentPets!.length + 1
+                          : user.currentPets!.length,
                       scrollDirection: Axis.horizontal,
                     );
             },

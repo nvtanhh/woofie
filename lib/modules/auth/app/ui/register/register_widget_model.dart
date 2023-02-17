@@ -48,17 +48,19 @@ class RegisterWidgetModel extends BaseViewModel {
 
   void onRegisterClick() {
     if (formKey.currentState?.validate() == true) {
-      call(
+      run(
         () async {
-          user = await _registerUsecase.call(emailEditingController.text,
-              passwordEditingController.text, nameEditingController.text);
+          user = await _registerUsecase.call(
+            emailEditingController.text.trim(),
+            passwordEditingController.text.trim(),
+            nameEditingController.text.trim(),
+          );
         },
         onSuccess: () {
           Get.back();
           Get.snackbar(
             LocaleKeys.register_success_message_title.trans(),
             LocaleKeys.register_success_message_description.trans(),
-            duration: const Duration(seconds: 3),
             backgroundColor: UIColor.accent2,
             colorText: UIColor.white,
           );

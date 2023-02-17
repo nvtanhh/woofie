@@ -142,10 +142,11 @@ class WeightChartPreviewWidget extends StatelessWidget {
                           showTitles: true,
                           getTitles: (val) {
                             return FormatHelper.formatDateTime(
-                                weights[weights.length - 1 - val.toInt()].date,
-                                pattern: "MM/yyyy");
+                              weights[weights.length - 1 - val.toInt()].date,
+                              pattern: "MM/yyyy",
+                            );
                           },
-                          getTextStyles: (value) =>
+                          getTextStyles: (_, __) =>
                               UITextStyle.text_body_10_w500),
                     ),
                     gridData: FlGridData(show: false),

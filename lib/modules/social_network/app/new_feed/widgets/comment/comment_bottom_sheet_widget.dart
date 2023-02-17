@@ -25,14 +25,17 @@ class CommentBottomSheetWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CommentBottomSheetWidgetState createState() => _CommentBottomSheetWidgetState();
+  _CommentBottomSheetWidgetState createState() =>
+      _CommentBottomSheetWidgetState();
 }
 
-class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWidget, CommentBottomSheetWidgetModel> {
+class _CommentBottomSheetWidgetState extends BaseViewState<
+    CommentBottomSheetWidget, CommentBottomSheetWidgetModel> {
   @override
   void loadArguments() {
     viewModel.post = widget.post;
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) => viewModel.startLoadingPaging());
+    WidgetsBinding.instance
+        ?.addPostFrameCallback((timeStamp) => viewModel.startLoadingPaging());
     super.loadArguments();
   }
 
@@ -81,27 +84,34 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
           children: [
             Expanded(
               child: PagedListView<int, Comment>(
-                pagingController: viewModel.commentServiceModel.pagingController,
+                pagingController:
+                    viewModel.commentServiceModel.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Comment>(
                   itemBuilder: (context, item, index) {
                     return CommentWidget(
                       comment: item,
-                      onLikeCommentClick: (_) => viewModel.commentServiceModel.onLikeComment(item, viewModel.post.id),
-                      onDelete: () => viewModel.commentServiceModel.onDeleteComment(item, index),
-                      onReport: () => viewModel.commentServiceModel.onReportComment(item, ""),
+                      onLikeCommentClick: (_) => viewModel.commentServiceModel
+                          .onLikeComment(item, viewModel.post.id),
+                      onDelete: () => viewModel.commentServiceModel
+                          .onDeleteComment(item, index),
+                      onReport: () => viewModel.commentServiceModel
+                          .onReportComment(item, ""),
                       onEdit: () {
-                        viewModel.commentServiceModel.setOldComment(item, index);
+                        viewModel.commentServiceModel
+                            .setOldComment(item, index);
                       },
                     );
                   },
-                  firstPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
+                  firstPageProgressIndicatorBuilder: (_) =>
+                      ShimmerCommentWidget(),
                   noItemsFoundIndicatorBuilder: (_) => Center(
                     child: Text(
                       LocaleKeys.new_feed_no_comments_yet.trans(),
                       style: UITextStyle.text_secondary_12_w500,
                     ),
                   ),
-                  newPageProgressIndicatorBuilder: (_) => ShimmerCommentWidget(),
+                  newPageProgressIndicatorBuilder: (_) =>
+                      ShimmerCommentWidget(),
                 ),
                 padding: EdgeInsets.only(
                   top: 10.h,
@@ -123,5 +133,6 @@ class _CommentBottomSheetWidgetState extends BaseViewState<CommentBottomSheetWid
   }
 
   @override
-  CommentBottomSheetWidgetModel createViewModel() => injector<CommentBottomSheetWidgetModel>();
+  CommentBottomSheetWidgetModel createViewModel() =>
+      injector<CommentBottomSheetWidgetModel>();
 }

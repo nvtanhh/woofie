@@ -35,7 +35,8 @@ class NotificationWidgetModel extends BaseViewModel {
     pagingController = PagingController(firstPageKey: nextPageKey);
     pagingController.addPageRequestListener(
       (pageKey) {
-        cancelableOperation = CancelableOperation.fromFuture(_loadMoreNotification(pageKey));
+        cancelableOperation =
+            CancelableOperation.fromFuture(_loadMoreNotification(pageKey));
       },
     );
     super.initState();
@@ -64,11 +65,14 @@ class NotificationWidgetModel extends BaseViewModel {
   }
 
   void onDeleteNotify(Notification notification, int index) {
-    call(() async => _deleteNotificationUsecase.run(notification.id), onSuccess: () {
-      pagingController.itemList?.removeAt(index);
-      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-      pagingController.notifyListeners();
-    });
+    run(
+      () async => _deleteNotificationUsecase.run(notification.id),
+      onSuccess: () {
+        pagingController.itemList?.removeAt(index);
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        pagingController.notifyListeners();
+      },
+    );
   }
 
   void onOptionTap() {}
@@ -105,7 +109,9 @@ class NotificationWidgetModel extends BaseViewModel {
   }
 
   void goToPost(int postId) {
-    Get.to(() => PostDetail(post: Post.factory.getItemWithIdFromCache(postId) ??Post(id: postId, uuid: "", type: PostType.activity)));
+    Get.to(() => PostDetail(
+        post: Post.factory.getItemWithIdFromCache(postId) ??
+            Post(id: postId, uuid: "", type: PostType.activity)));
   }
 
   void goToPostFunction(int postId) {

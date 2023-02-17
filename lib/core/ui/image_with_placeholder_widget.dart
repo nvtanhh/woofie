@@ -12,15 +12,16 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
   final double? width;
   final double? height;
   final String imageUrl;
-  final double? topLeftRadius;
-  final double? topRightRadius;
-  final double? bottomLeftRadius;
-  final double? bottomRightRadius;
+  final double topLeftRadius;
+  final double topRightRadius;
+  final double bottomLeftRadius;
+  final double bottomRightRadius;
   final double? radius;
   final BoxFit? fit;
   final GestureConfig Function(ExtendedImageState)? initGestureConfigHandler;
   final ExtendedImageMode? mode;
-  final String? placeHolderImage;
+  final Image? placeHolderImage;
+  final String? placeHolderImagePath;
   final bool isConstraintsSize;
   final bool clickable;
 
@@ -28,15 +29,16 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
     required this.imageUrl,
     this.width,
     this.height,
-    this.topLeftRadius,
-    this.topRightRadius,
-    this.bottomLeftRadius,
-    this.bottomRightRadius,
+    this.topLeftRadius = 0,
+    this.topRightRadius = 0,
+    this.bottomLeftRadius = 0,
+    this.bottomRightRadius = 0,
     this.radius,
     this.fit,
     this.initGestureConfigHandler,
     this.mode,
     this.placeHolderImage,
+    this.placeHolderImagePath,
     this.isConstraintsSize = true,
     this.clickable = true,
   });
@@ -55,10 +57,10 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
             : null,
         child: ClipRRect(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(radius ?? topLeftRadius ?? 0),
-            topRight: Radius.circular(radius ?? topRightRadius ?? 0),
-            bottomLeft: Radius.circular(radius ?? bottomLeftRadius ?? 0),
-            bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
+            topLeft: Radius.circular(radius ?? topLeftRadius),
+            topRight: Radius.circular(radius ?? topRightRadius),
+            bottomLeft: Radius.circular(radius ?? bottomLeftRadius),
+            bottomRight: Radius.circular(radius ?? bottomRightRadius),
           ),
           child: ExtendedImage.network(
             imageUrl,
@@ -67,6 +69,8 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
             fit: fit ?? BoxFit.cover,
             initGestureConfigHandler: initGestureConfigHandler,
             mode: mode ?? ExtendedImageMode.none,
+            timeLimit: const Duration(seconds: 3),
+            retries: 0,
             loadStateChanged: (e) {
               switch (e.extendedImageLoadState) {
                 case LoadState.loading:
@@ -104,17 +108,22 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
       width: width ?? 180.0.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(radius ?? topLeftRadius ?? 0),
-          topRight: Radius.circular(radius ?? topRightRadius ?? 0),
-          bottomLeft: Radius.circular(radius ?? bottomLeftRadius ?? 0),
-          bottomRight: Radius.circular(radius ?? bottomRightRadius ?? 0),
+          topLeft: Radius.circular(radius ?? topLeftRadius),
+          topRight: Radius.circular(radius ?? topRightRadius),
+          bottomLeft: Radius.circular(radius ?? bottomLeftRadius),
+          bottomRight: Radius.circular(radius ?? bottomRightRadius),
         ),
-        image: DecorationImage(
-          image: AssetGenImage(placeHolderImage ??
-              "resources/images/fallbacks/avatar-fallback.jpg"),
-          fit: BoxFit.cover,
-        ),
+        image: placeHolderImage != null
+            ? null
+            : DecorationImage(
+                image: AssetGenImage(
+                  placeHolderImagePath ??
+                      "resources/images/fallbacks/avatar-fallback.jpg",
+                ),
+                fit: BoxFit.cover,
+              ),
       ),
+      child: placeHolderImage,
     );
   }
 }

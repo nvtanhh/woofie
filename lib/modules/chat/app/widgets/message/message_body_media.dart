@@ -45,7 +45,7 @@ class MessageBodyMedia extends StatelessWidget {
       if (message.isSent) {
         return ImageWithPlaceHolderWidget(
           imageUrl: message.content,
-          placeHolderImage: 'resources/images/fallbacks/media-fallback.png',
+          placeHolderImagePath: 'resources/images/fallbacks/media-fallback.png',
           isConstraintsSize: false,
         );
       } else {

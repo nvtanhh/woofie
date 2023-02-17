@@ -38,8 +38,10 @@ class ServicesWidget extends StatelessWidget {
             ),
           );
         },
-        newPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
-        firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
+        newPageProgressIndicatorBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
+        firstPageProgressIndicatorBuilder: (_) =>
+            const Center(child: CircularProgressIndicator()),
       ),
       pagingController: pagingController,
     );

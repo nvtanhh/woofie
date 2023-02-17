@@ -132,7 +132,7 @@ class ChatManagerModel extends BaseViewModel {
   }
 
   void _getCountUserRequestMessage() {
-    call(
+    run(
       () async => countUserRequestMessage =
           await _countUserRequestMessagesUsecase.run(),
       showLoading: false,

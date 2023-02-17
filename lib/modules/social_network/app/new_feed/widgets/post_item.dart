@@ -99,12 +99,14 @@ class _PostItemState extends State<PostItem> {
           width: 60.w,
           child: GestureDetector(
             onTap: () => likeClick(),
-            child:  Row(
+            child: Row(
               children: [
                 Obx(
                   () {
                     return MWIcon(
-                      widget.post.updateSubjectValue.isLiked ?? false ? MWIcons.react : MWIcons.unReact,
+                      widget.post.updateSubjectValue.isLiked ?? false
+                          ? MWIcons.react
+                          : MWIcons.unReact,
                       size: MWIconSize.small,
                     );
                   },

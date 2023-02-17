@@ -56,12 +56,13 @@ class CommentServiceModel extends BaseViewModel {
   }
 
   void registerSubscriptionComment(int postId, {int indexInsertToList = 0}) {
-    call(
+    run(
       () async => snapshot = await _subscriptionCommentUsecase.run(postId),
       onFailure: (err) {
         printError(info: err.toString());
       },
-      onSuccess: () => onSubscriptionCommentSuccess(indexInsertToList: indexInsertToList),
+      onSuccess: () =>
+          onSubscriptionCommentSuccess(indexInsertToList: indexInsertToList),
       showLoading: false,
     );
   }
@@ -70,7 +71,9 @@ class CommentServiceModel extends BaseViewModel {
     snapshot!.listen(
       (event) {
         try {
-          Comment? comment = Comment.fromJson((GetMapFromHasura.getMap(event as Map)["comments"])[0] as Map<String, dynamic>);
+          Comment? comment = Comment.fromJson(
+              (GetMapFromHasura.getMap(event as Map)["comments"])[0]
+                  as Map<String, dynamic>);
           printInfo(info: comment.content ?? "");
           if (canInsertToList(indexInsertToList, comment.id)) {
             pagingController.itemList?.insert(indexInsertToList, comment);
@@ -90,7 +93,7 @@ class CommentServiceModel extends BaseViewModel {
   }
 
   void onDeleteComment(Comment comment, int index) {
-    call(
+    run(
       () async => _deleteCommentUsecase.run(comment.id),
       onSuccess: () {
         pagingController.itemList?.removeAt(index);
@@ -101,9 +104,10 @@ class CommentServiceModel extends BaseViewModel {
   }
 
   Future onReportComment(Comment comment, String content) async {
-    final String? content = await injector<DialogService>().showInputReport() as String?;
+    final String? content =
+        await injector<DialogService>().showInputReport() as String?;
     if (content == null) return;
-    await call(
+    await run(
       () async => _reportCommentUsecase.run(comment, content),
       onSuccess: () {
         injector<ToastService>().success(
@@ -115,17 +119,19 @@ class CommentServiceModel extends BaseViewModel {
   }
 
   void onLikeComment(Comment comment, int postId) {
-    call(
+    run(
       () => _likeCommentUsecase.run(idComment: comment.id, idPost: postId),
       showLoading: false,
     );
   }
 
-  void onEditComment({required Comment oldComment, required Comment newComment}) {
+  void onEditComment(
+      {required Comment oldComment, required Comment newComment}) {
     Comment? comment;
-    call(
+    run(
       // ignore: parameter_assignments
-      () async => comment = await _editCommentUsecase.run(oldComment, newComment),
+      () async =>
+          comment = await _editCommentUsecase.run(oldComment, newComment),
       onSuccess: () {
         comment?.commentTagUser = newComment.commentTagUser?.toList();
         comment?.creator = oldComment.creator;

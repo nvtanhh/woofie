@@ -56,7 +56,7 @@ class FunctionalPostItem extends StatelessWidget {
               topRightRadius: 20.r,
               bottomLeftRadius: 0,
               bottomRightRadius: 0,
-              placeHolderImage:
+              placeHolderImagePath:
                   "resources/images/fallbacks/pet-avatar-fallback.jpg",
             ),
           ),

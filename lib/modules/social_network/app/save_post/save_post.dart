@@ -55,7 +55,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: Column(
               children: [
-                _buildPostIdentifer(),
+                _buildPostIdentifier(),
                 Expanded(
                   child: TextField(
                     controller: viewModel.contentController,
@@ -183,7 +183,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
     );
   }
 
-  Widget _buildPostIdentifer() {
+  Widget _buildPostIdentifier() {
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 10),
       child: Row(

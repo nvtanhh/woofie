@@ -37,7 +37,7 @@ class PostDetailWidgetModel extends BaseViewModel {
   }
 
   void onLikeClick(int idPost) {
-    call(
+    run(
       () => _likePostUsecase.call(idPost),
       showLoading: false,
       onFailure: (err) {},
@@ -46,7 +46,7 @@ class PostDetailWidgetModel extends BaseViewModel {
 
   Future checkNeedReloadPost() async {
     if (post.creator == null) {
-      await call(
+      await run(
         () async => post.update(await _getDetailPostUsecase.call(post.id)),
         onSuccess: () {
           _loadComments(nextPageKey);
@@ -55,7 +55,8 @@ class PostDetailWidgetModel extends BaseViewModel {
               _loadComments(pageKey);
             },
           );
-          commentServiceModel.registerSubscriptionComment(post.id, indexInsertToList: 1);
+          commentServiceModel.registerSubscriptionComment(post.id,
+              indexInsertToList: 1);
         },
       );
       return;
@@ -65,21 +66,26 @@ class PostDetailWidgetModel extends BaseViewModel {
         _loadComments(pageKey);
       },
     );
-    commentServiceModel.registerSubscriptionComment(post.id, indexInsertToList: 1);
+    commentServiceModel.registerSubscriptionComment(post.id,
+        indexInsertToList: 1);
   }
 
   void _loadComments(int pageKey) {
-    call(
+    run(
       () async {
-        comments = await _getCommentInPostUsecase.call(post.id, offset: nextPageKey);
-        if (commentServiceModel.pagingController.itemList == null || commentServiceModel.pagingController.itemList?.isEmpty == true) {
-          comments.insert(0, Comment(id: 0, content: "content", postId: 0, creatorUUID: "0"));
+        comments =
+            await _getCommentInPostUsecase.call(post.id, offset: nextPageKey);
+        if (commentServiceModel.pagingController.itemList == null ||
+            commentServiceModel.pagingController.itemList?.isEmpty == true) {
+          comments.insert(0,
+              Comment(id: 0, content: "content", postId: 0, creatorUUID: "0"));
         }
         if (comments.length < pageSize) {
           commentServiceModel.pagingController.appendLastPage(comments);
         } else {
           nextPageKey = pageKey + comments.length;
-          commentServiceModel.pagingController.appendPage(comments, nextPageKey);
+          commentServiceModel.pagingController
+              .appendPage(comments, nextPageKey);
         }
       },
       showLoading: false,

@@ -39,11 +39,15 @@ class ConfirmGivePetModel extends BaseViewModel {
 
   Future<List<PostReaction>> getAllUserInPost() async {
     List<PostReaction> reactions = [];
-    await call(() async => reactions = await _getFunctionalPostReactions.call(postId: post.id), showLoading: false, onFailure: (err) {
-      print(err.toString());
-    });
+    await run(
+      () async =>
+          reactions = await _getFunctionalPostReactions.call(postId: post.id),
+      showLoading: false,
+      onFailure: (err) {},
+    );
     // remove myself
-    reactions.removeWhere((element) => element.reactor.id == _loggedInUser.user!.id);
+    reactions
+        .removeWhere((element) => element.reactor.id == _loggedInUser.user!.id);
     if (post.type == PostType.mating) {
       reactions.removeWhere((element) => element.matingPet == null);
     }
@@ -95,7 +99,7 @@ class ConfirmGivePetModel extends BaseViewModel {
   }
 
   Future _refreshUser(User user) async {
-    await call(
+    await run(
       () async => user.update(await _getUseProfileUseacse.call(user.id)),
     );
   }
@@ -115,10 +119,11 @@ class ConfirmGivePetModel extends BaseViewModel {
   }
 
   Future _givePet(User user, Pet pet) async {
-    await call(
+    await run(
       () async {
         await _changePetOwnerUsecase.call(user, pet);
-        await _closePostUsecase.run(post, additionalData: user.toJsonString().replaceAll("\"", "'"));
+        await _closePostUsecase.run(post,
+            additionalData: user.toJsonString().replaceAll("\"", "'"));
       },
       onSuccess: () {
         _refreshUser(_loggedInUser.user!);
@@ -137,9 +142,10 @@ class ConfirmGivePetModel extends BaseViewModel {
   }
 
   Future _matingWith(Pet pet, Pet myPet) async {
-    await call(
+    await run(
       () async {
-        await _closePostUsecase.run(post, additionalData: pet.toJsonString().replaceAll("\"", "'"));
+        await _closePostUsecase.run(post,
+            additionalData: pet.toJsonString().replaceAll("\"", "'"));
       },
       onSuccess: () {
         Get.back();

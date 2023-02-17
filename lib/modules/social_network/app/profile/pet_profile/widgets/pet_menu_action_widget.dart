@@ -80,7 +80,8 @@ class PetMenuActionWidget extends StatelessWidget {
         height: 40.h,
         margin: EdgeInsets.only(left: 20.w),
         padding: EdgeInsets.only(top: 5.h),
-        decoration: BoxDecoration(color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
+        decoration: BoxDecoration(
+            color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
         child: const Center(
           child: MWIcon(
             MWIcons.moreHoriz,

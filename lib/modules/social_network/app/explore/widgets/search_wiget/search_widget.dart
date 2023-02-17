@@ -18,13 +18,15 @@ import 'package:suga_core/suga_core.dart';
 class SearchWidget extends StatefulWidget {
   final String? textSearch;
   final UserLocation userLocation;
-  const SearchWidget({Key? key, this.textSearch,required this.userLocation}) : super(key: key);
+  const SearchWidget({Key? key, this.textSearch, required this.userLocation})
+      : super(key: key);
 
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
 }
 
-class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> with TickerProviderStateMixin {
+class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
+    with TickerProviderStateMixin {
   @override
   void loadArguments() {
     viewModel.tabController = TabController(
@@ -32,7 +34,7 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> 
       vsync: this,
     );
     viewModel.keyWord = widget.textSearch;
-    viewModel.userLocation= widget.userLocation;
+    viewModel.userLocation = widget.userLocation;
     super.loadArguments();
   }
 
@@ -95,17 +97,21 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel> 
                     ),
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
+                        padding:
+                            EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
                         child: TabBarView(
                           controller: viewModel.tabController,
                           children: [
-                            UsersWidget(pagingController: viewModel.userPagingController),
+                            UsersWidget(
+                                pagingController:
+                                    viewModel.userPagingController),
                             PetsWidget(
                               pagingController: viewModel.petPagingController,
                               follow: viewModel.followPet,
                             ),
                             ServicesWidget(
-                              pagingController: viewModel.servicePagingController,
+                              pagingController:
+                                  viewModel.servicePagingController,
                               userLocation: viewModel.userLocation,
                             ),
                           ],

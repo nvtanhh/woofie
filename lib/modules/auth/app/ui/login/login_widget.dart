@@ -134,6 +134,10 @@ class _LoginWidgetState extends BaseViewState<LoginWidget, LoginWidgetModel> {
                                             children: [
                                               MWIcon(
                                                 MWIcons.reVerifyEmail,
+                                                color: viewModel
+                                                        .isResendedVerify.value
+                                                    ? UIColor.accent2
+                                                    : UIColor.textBody,
                                               ),
                                               Text(
                                                 viewModel.isResendedVerify.value
