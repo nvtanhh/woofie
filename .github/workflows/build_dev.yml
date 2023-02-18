@@ -30,7 +30,12 @@ jobs:
           cache: true
 
       - name: Prepare to build
-        run: flutter pub get
+        run: |
+          flutter pub get
+          flutter pub run build_runner build --delete-conflicting-outputs
+          flutter pub run easy_localization:generate -f keys -O lib -o locale_keys.g.dart
+
+
 
       - name: Download Android keystore
         id: android_keystore
