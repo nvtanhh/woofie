@@ -25,7 +25,7 @@ class MessageSender extends StatelessWidget {
   final Post? attachmentPost;
 
   const MessageSender({
-    Key? key,
+    super.key,
     required this.textController,
     required this.onMediaPicked,
     required this.previewMediaMessage,
@@ -35,7 +35,7 @@ class MessageSender extends StatelessWidget {
     this.onTap,
     this.attachmentPost,
     this.onRemoveAttachmentPost,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,7 @@ class MessageSender extends StatelessWidget {
           LocaleKeys.chat_sender_pick_media_error_description.trans(),
           backgroundColor: UIColor.accent.withOpacity(.8),
           colorText: UIColor.white,
-          duration: const Duration(seconds: 2));
+          duration: const Duration(seconds: 2),);
       return;
     }
     final List<MediaFile> medias =

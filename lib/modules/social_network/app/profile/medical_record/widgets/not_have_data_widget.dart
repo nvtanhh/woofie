@@ -10,10 +10,10 @@ class NotHaveData extends StatelessWidget {
   final Function onAddClick;
 
   const NotHaveData({
-    Key? key,
+    super.key,
     required this.isMyPet,
     required this.onAddClick,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

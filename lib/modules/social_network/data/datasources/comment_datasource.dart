@@ -10,7 +10,7 @@ class CommentDatasource {
   CommentDatasource(this._hasuraConnect);
 
   Future<Comment?> createComment(
-      int postId, String content, List<User> userTag) async {
+      int postId, String content, List<User> userTag,) async {
     final listUserTag =
         userTag.map((e) => {"user_id": e.id, "post_id": postId}).toList();
     final mutation = """
@@ -84,7 +84,7 @@ mutation MyMutation {
     List<User> uNew,
   ) {
     // ignore: avoid_function_literals_in_foreach_calls
-    Map<String, List<int>> map = {};
+    final Map<String, List<int>> map = {};
     int i = 0;
     int j = 0;
     bool contain = false;
@@ -101,7 +101,7 @@ mutation MyMutation {
         map.update("remove", (data) {
           data.add(uOld[i].id);
           return data;
-        }, ifAbsent: () => [uOld[i].id]);
+        }, ifAbsent: () => [uOld[i].id],);
       }
     }
     i = 0;
@@ -118,7 +118,7 @@ mutation MyMutation {
         map.update("add", (data) {
           data.add(uNew[i].id);
           return data;
-        }, ifAbsent: () => [uNew[i].id]);
+        }, ifAbsent: () => [uNew[i].id],);
       }
     }
     return map;
@@ -140,7 +140,7 @@ mutation MyMutation {
   }
 
   Future<int> addCommentTagUser(
-      List<int> userIds, int commentId, int postId) async {
+      List<int> userIds, int commentId, int postId,) async {
     final users = userIds
         .map((e) => {"user_id": e, "post_id": postId, "comment_id": commentId})
         .join(",");
@@ -159,7 +159,7 @@ mutation MyMutation {
   }
 
   Future<int> deleteOrAddCommentTagUser(List<int> usersAdd,
-      List<int> usersDelete, int commentId, int postId) async {
+      List<int> usersDelete, int commentId, int postId,) async {
     final users = usersAdd
         .map((e) => {"user_id": e, "post_id": postId, "comment_id": commentId})
         .join(",");
@@ -196,7 +196,7 @@ mutation MyMutation {
     if (map.isNotEmpty) {
       if (map.length == 2) {
         affectedRows = await deleteOrAddCommentTagUser(
-            map["add"]!, map["remove"]!, oldComment.id, oldComment.postId!);
+            map["add"]!, map["remove"]!, oldComment.id, oldComment.postId!,);
       } else {
         if (map["remove"]?.isNotEmpty == true) {
           affectedRows =
@@ -204,7 +204,7 @@ mutation MyMutation {
         }
         if (map["add"]?.isNotEmpty == true) {
           affectedRows = await addCommentTagUser(
-              map["add"]!, oldComment.id, oldComment.postId!);
+              map["add"]!, oldComment.id, oldComment.postId!,);
         }
       }
     }

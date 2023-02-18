@@ -1,12 +1,9 @@
 import 'dart:io';
 
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
-import 'package:meowoof/theme/ui_color.dart';
-import 'package:shimmer/shimmer.dart';
 
 enum MWAvatarSize { extraSmall, small, medium, large, extraLarge }
 
@@ -78,7 +75,8 @@ class MWAvatar extends StatelessWidget {
         fit: fit ?? BoxFit.cover,
         height: avatarSize.w,
         width: avatarSize.w,
-        placeholder: Assets.resources.images.fallbacks.avatarFallback,
+        placeholder:
+            Assets.resources.images.fallbacks.avatarFallback.provider(),
         image: FileImage(avatarFile!),
       );
     } else if (avatarUrl != null && avatarUrl!.isNotEmpty) {

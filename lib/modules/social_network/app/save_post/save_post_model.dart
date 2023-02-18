@@ -346,7 +346,6 @@ class SavePostModel extends BaseViewModel {
     Get.snackbar(
       LocaleKeys.save_post_choose_type_error_title.trans(),
       '${LocaleKeys.save_post_choose_type_error_description.trans()}\n$sufDescription',
-      duration: const Duration(seconds: 3),
       backgroundColor: UIColor.accent,
       colorText: UIColor.white,
     );

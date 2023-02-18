@@ -105,7 +105,7 @@ class ChatRoomFactory extends UpdatableModelFactory<ChatRoom> {
     return ChatRoom(
       id: json['id'] as String,
       rawName: parseGroupName(json['name'] as String,
-          isGroup: json['isGroup'] as bool?),
+          isGroup: json['isGroup'] as bool?,),
       isGroup: json['isGroup'] as bool,
       memberUuids: List<String>.from(json['members'] as List<dynamic>),
       creatorUuid: json['creator'] as String,

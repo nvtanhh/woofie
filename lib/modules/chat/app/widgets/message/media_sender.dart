@@ -7,8 +7,7 @@ class MediasSenderWidget extends StatelessWidget {
 
   final Function(MediaFile)? onRemoveMedia;
 
-  const MediasSenderWidget({Key? key, required this.medias, this.onRemoveMedia})
-      : super(key: key);
+  const MediasSenderWidget({super.key, required this.medias, this.onRemoveMedia});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class MediasSenderWidget extends StatelessWidget {
                 isConstraintsSize: false,
               ),
             )
-            .toList());
+            .toList(),);
 
     // SingleChildScrollView(
     //   physics: const BouncingScrollPhysics(),

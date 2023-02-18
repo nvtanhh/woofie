@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/ui/toast.dart';
@@ -23,7 +22,7 @@ class ToastService {
         context: context,
         duration: duration,
         onDismissed: onDismissed,
-        scaffoldKey: scaffoldKey);
+        scaffoldKey: scaffoldKey,);
   }
 
   void success({
@@ -41,7 +40,7 @@ class ToastService {
         child: child,
         duration: duration,
         onDismissed: onDismissed,
-        scaffoldKey: scaffoldKey);
+        scaffoldKey: scaffoldKey,);
   }
 
   void error({
@@ -57,7 +56,7 @@ class ToastService {
         context: context,
         onDismissed: onDismissed,
         duration: duration,
-        scaffoldKey: scaffoldKey);
+        scaffoldKey: scaffoldKey,);
   }
 
   void info({
@@ -93,7 +92,7 @@ class ToastService {
         color: _getToastColor(type),
         message: message,
         duration: duration,
-        onDismissed: onDismissed);
+        onDismissed: onDismissed,);
   }
 
   Color _getToastColor(ToastType type) {

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -18,7 +17,7 @@ import 'package:suga_core/suga_core.dart';
 
 class NewFeedWidget extends StatefulWidget {
   final NewFeedWidgetController? controller;
-  const NewFeedWidget({Key? key, this.controller}) : super(key: key);
+  const NewFeedWidget({super.key, this.controller});
 
   @override
   NewFeedWidgetState createState() => NewFeedWidgetState();
@@ -105,7 +104,7 @@ class NewFeedWidgetState
                   Text(
                     LocaleKeys.app_name.trans(),
                     style: GoogleFonts.montserrat(
-                        textStyle: UITextStyle.text_header_24_w700),
+                        textStyle: UITextStyle.text_header_24_w700,),
                   ),
                 ],
               ),
@@ -145,7 +144,7 @@ class NewFeedWidgetState
 class NewFeedWidgetController {
   late NewFeedWidgetState _state;
   void attach(
-      {required BuildContext context, required NewFeedWidgetState state}) {
+      {required BuildContext context, required NewFeedWidgetState state,}) {
     _state = state;
   }
 

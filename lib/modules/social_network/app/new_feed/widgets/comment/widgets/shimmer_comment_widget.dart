@@ -20,7 +20,7 @@ class ShimmerCommentWidget extends StatelessWidget {
               height: 40.w,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
-                  color: UIColor.white),
+                  color: UIColor.white,),
               margin: EdgeInsets.only(right: 10.w),
             ),
             Column(
@@ -31,7 +31,7 @@ class ShimmerCommentWidget extends StatelessWidget {
                   height: 10.h,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
-                      color: UIColor.white),
+                      color: UIColor.white,),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -41,7 +41,7 @@ class ShimmerCommentWidget extends StatelessWidget {
                   height: 60.h,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.r),
-                      color: UIColor.white),
+                      color: UIColor.white,),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -53,7 +53,7 @@ class ShimmerCommentWidget extends StatelessWidget {
                       height: 10.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.r),
-                          color: UIColor.white),
+                          color: UIColor.white,),
                     ),
                     SizedBox(
                       width: 26.w,

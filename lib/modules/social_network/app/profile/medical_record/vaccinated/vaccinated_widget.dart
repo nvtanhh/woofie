@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,11 +22,11 @@ class VaccinatedWidget extends StatefulWidget {
   final bool? addData;
 
   const VaccinatedWidget({
-    Key? key,
+    super.key,
     required this.pet,
     this.addData,
     required this.isMyPet,
-  }) : super(key: key);
+  });
 
   @override
   _VaccinatedWidgetState createState() => _VaccinatedWidgetState();
@@ -40,8 +39,7 @@ class _VaccinatedWidgetState
     viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
     if (widget.addData == true) {
-      SchedulerBinding.instance!
-          .addPostFrameCallback((_) => viewModel.showDialogAddWeight());
+      SchedulerBinding.instance.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }
     super.loadArguments();
   }
@@ -88,7 +86,7 @@ class _VaccinatedWidgetState
                 padding: EdgeInsets.only(right: 10.w),
                 child: Text(
                   FormatHelper.formatDateTime(viewModel.vaccinates[index].date,
-                      pattern: "dd/MM/yyyy"),
+                      pattern: "dd/MM/yyyy",),
                   style: UITextStyle.text_secondary_12_w500,
                 ),
               ),
@@ -123,9 +121,9 @@ class _VaccinatedWidgetState
                         alignment: Alignment.topRight,
                         child: MedicalActionsTrailing(
                           onEdit: () => viewModel.onEdit(
-                              viewModel.vaccinates[index], index),
+                              viewModel.vaccinates[index], index,),
                           onDelete: () => viewModel.onDelete(
-                              viewModel.vaccinates[index], index),
+                              viewModel.vaccinates[index], index,),
                         ),
                       )
                   ],

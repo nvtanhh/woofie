@@ -119,7 +119,7 @@ class ImageWithPlaceHolderWidget extends StatelessWidget {
                 image: AssetGenImage(
                   placeHolderImagePath ??
                       "resources/images/fallbacks/avatar-fallback.jpg",
-                ),
+                ).provider(),
                 fit: BoxFit.cover,
               ),
       ),

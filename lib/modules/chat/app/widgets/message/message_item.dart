@@ -18,26 +18,25 @@ class MessageWidget extends StatelessWidget {
 
   const MessageWidget(this.message,
       {this.chatPartner,
-      Key? key,
+      super.key,
       this.isDisplayAvatar = true,
-      this.onMessageTap})
-      : super(key: key);
+      this.onMessageTap,});
 
   @override
   Widget build(BuildContext context) {
     final bool isMyMessage = message.isSentByMe;
 
-    final double _messageBorderRadius = 15.r;
-    final _borderRadius = BorderRadius.only(
+    final double messageBorderRadius = 15.r;
+    final borderRadius = BorderRadius.only(
       bottomLeft: Radius.circular(
-          (isMyMessage || !isDisplayAvatar) ? _messageBorderRadius : 0),
+          (isMyMessage || !isDisplayAvatar) ? messageBorderRadius : 0,),
       bottomRight: Radius.circular(isMyMessage
           ? !isDisplayAvatar
-              ? _messageBorderRadius
+              ? messageBorderRadius
               : 0
-          : _messageBorderRadius),
-      topLeft: Radius.circular(_messageBorderRadius),
-      topRight: Radius.circular(_messageBorderRadius),
+          : messageBorderRadius,),
+      topLeft: Radius.circular(messageBorderRadius),
+      topRight: Radius.circular(messageBorderRadius),
     );
     return Container(
       margin: EdgeInsets.only(
@@ -57,7 +56,7 @@ class MessageWidget extends StatelessWidget {
                 GestureDetector(
                   onTap: () => _onMessageTap(context),
                   child: ClipRRect(
-                    borderRadius: _borderRadius,
+                    borderRadius: borderRadius,
                     child: Opacity(
                       opacity: message.isSent ? 1 : 0.6,
                       child: DecoratedBox(

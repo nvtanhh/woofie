@@ -14,11 +14,11 @@ class OtherInfoMenuWidget extends StatelessWidget {
   final Pet pet;
 
   const OtherInfoMenuWidget({
-    Key? key,
+    super.key,
     this.onDeletePost,
     required this.isMyPet,
     required this.pet,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class OtherInfoMenuWidget extends StatelessWidget {
                   onTap: () {
                     Get.to(() => PetOwnerHistoryScreen(
                           ownerHistories: pet.allOwners ?? [],
-                        ));
+                        ),);
                   },
                   child: Row(
                     children: [

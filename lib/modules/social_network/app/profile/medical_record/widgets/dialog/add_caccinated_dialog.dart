@@ -22,9 +22,9 @@ class AddVaccinatedDialog extends StatelessWidget {
   ToastService toastService = injector<ToastService>();
 
   final outSizeBorder = const OutlineInputBorder(
-      borderSide: BorderSide(color: UIColor.silverSand));
+      borderSide: BorderSide(color: UIColor.silverSand),);
 
-  AddVaccinatedDialog({Key? key, this.petVaccinated}) : super(key: key) {
+  AddVaccinatedDialog({super.key, this.petVaccinated}) {
     if (petVaccinated != null) {
       _descriptionEditController.text = petVaccinated!.description ?? "";
       _vaccineNameEditController.text = petVaccinated!.name ?? "";
@@ -169,13 +169,13 @@ class AddVaccinatedDialog extends StatelessWidget {
     if (petVaccinated!.name == null || petVaccinated?.name?.isEmpty == true) {
       toastService.warning(
           message: LocaleKeys.profile_vaccinate_name_invalid.trans(),
-          context: Get.context!);
+          context: Get.context!,);
       return false;
     }
     if (petVaccinated!.date == null) {
       toastService.warning(
           message: LocaleKeys.profile_date_invalid.trans(),
-          context: Get.context!);
+          context: Get.context!,);
       return false;
     }
     return true;

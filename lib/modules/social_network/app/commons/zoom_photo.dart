@@ -2,7 +2,6 @@ import "dart:math" show pi;
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:photo_view/photo_view.dart';
@@ -49,7 +48,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto>
   void initState() {
     super.initState();
     _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
     _rotationAngle = 0.0;
     _rotationDirection = CLOCKWISE;
     _posX = 0.0;
@@ -100,7 +99,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto>
               ),
               _buildCloseButton()
             ],
-          )),
+          ),),
     );
   }
 
@@ -131,7 +130,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto>
   }
 
   void _updateDragValues(
-      double deltaX, double deltaY, PointerMoveEvent updatedDetails) {
+      double deltaX, double deltaY, PointerMoveEvent updatedDetails,) {
     if (deltaX.abs() > THRESHOLD_SECOND_POINTER_EVENT ||
         deltaY.abs() > THRESHOLD_SECOND_POINTER_EVENT ||
         !_isDismissible) return;
@@ -147,7 +146,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto>
   }
 
   Future _updateVelocityLazily(double deltaX, double deltaY) async {
-    Future.delayed(const Duration(milliseconds: 0), () {
+    Future.delayed(const Duration(), () {
       setState(() {
         _velocityX = deltaX;
         _velocityY = deltaY;
@@ -158,7 +157,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto>
   void _setBackToOrginalPosition() {
     setState(() {
       _offset = Tween<Offset>(
-              begin: Offset(_posX, _posY), end: const Offset(0.0, 0.0))
+              begin: Offset(_posX, _posY), end: const Offset(0.0, 0.0),)
           .chain(CurveTween(curve: Curves.easeInOutSine))
           .animate(_controller)
         ..addListener(() {
@@ -224,7 +223,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto>
       _offset = Tween<Offset>(
               begin: Offset(_posX, _posY),
               end: Offset(_velocityX * EXIT_RATE_MULTIPLIER,
-                  _velocityY * EXIT_RATE_MULTIPLIER))
+                  _velocityY * EXIT_RATE_MULTIPLIER,),)
           .chain(CurveTween(curve: Curves.easeInOutSine))
           .animate(_controller)
         ..addListener(() {
@@ -234,7 +233,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto>
         });
 
       _rotationAnimation = Tween<double>(
-              begin: _rotationAngle, end: 1.5 * pi * _rotationDirection)
+              begin: _rotationAngle, end: 1.5 * pi * _rotationDirection,)
           .chain(CurveTween(curve: Curves.easeInOutCubic))
           .animate(_controller)
         ..addListener(() {
@@ -274,7 +273,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto>
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   color: Colors.black87,
-                  borderRadius: BorderRadius.circular(50)),
+                  borderRadius: BorderRadius.circular(50),),
               child: const MWIcon(
                 MWIcons.close,
                 size: MWIconSize.large,
@@ -283,7 +282,7 @@ class ZoomablePhotoState extends State<ZoomablePhoto>
             ),
           )
         ],
-      )),
+      ),),
     );
   }
 

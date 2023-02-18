@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,13 +22,13 @@ class CommentWidget extends StatelessWidget {
   final Function? onReport;
 
   CommentWidget({
-    Key? key,
+    super.key,
     required this.comment,
     required this.onLikeCommentClick,
     this.onDelete,
     this.onEdit,
     this.onReport,
-  }) : super(key: key) {
+  }) {
     isLiked.value = comment.isLiked ?? false;
   }
 
@@ -77,7 +76,7 @@ class CommentWidget extends StatelessWidget {
                   padding: EdgeInsets.all(10.w),
                   decoration: BoxDecoration(
                       color: UIColor.holder,
-                      borderRadius: BorderRadius.circular(10.r)),
+                      borderRadius: BorderRadius.circular(10.r),),
                   child: Text.rich(
                     TextSpan(
                       text: "",
@@ -96,7 +95,7 @@ class CommentWidget extends StatelessWidget {
                 children: [
                   Text(
                     time_ago.format(comment.createdAt ?? DateTime.now(),
-                        locale: 'vi'),
+                        locale: 'vi',),
                     style: UITextStyle.text_secondary_12_w600,
                   ),
                   SizedBox(
@@ -139,10 +138,10 @@ class CommentWidget extends StatelessWidget {
           perfix +
           ')(' +
           comment.commentTagUser!.map((e) => e.name!).join('|') +
-          r')';
-      RegExp _regex = RegExp(pattern);
+          ')';
+      final RegExp regex = RegExp(pattern);
       comment.content?.splitMapJoin(
-        _regex,
+        regex,
         onMatch: (s) {
           pattern = comment.content!.trim().substring(s.start, s.end);
           inLineSpan.add(

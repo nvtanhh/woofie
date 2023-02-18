@@ -29,12 +29,12 @@ class AdoptionPetDetailWidget extends StatefulWidget {
   final VoidCallback? onReportPost;
 
   const AdoptionPetDetailWidget({
-    Key? key,
+    super.key,
     required this.post,
     this.onDeletePost,
     this.onEditPost,
     this.onReportPost,
-  }) : super(key: key);
+  });
 
   @override
   _AdoptionPetDetailState createState() => _AdoptionPetDetailState();
@@ -199,12 +199,12 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                                   CardDetailWidget(
                                     title: LocaleKeys.explore_gender.trans(),
                                     value: FormatHelper.genderPet(
-                                        viewModel.taggedPet.gender),
+                                        viewModel.taggedPet.gender,),
                                   ),
                                   CardDetailWidget(
                                     title: LocaleKeys.explore_age.trans(),
                                     value: DateTimeHelper.calcAge(
-                                        viewModel.taggedPet.dob),
+                                        viewModel.taggedPet.dob,),
                                   ),
                                   CardDetailWidget(
                                     title: LocaleKeys.explore_breed.trans(),
@@ -257,7 +257,7 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                             subtitle: Text(
                               LocaleKeys.explore_owner_pet.trans(),
                               style: GoogleFonts.montserrat(
-                                  textStyle: UITextStyle.text_body_14_w500),
+                                  textStyle: UITextStyle.text_body_14_w500,),
                             ),
                             trailing: SizedBox(
                               width: 96.w,
@@ -276,11 +276,11 @@ class _AdoptionPetDetailState extends BaseViewState<AdoptionPetDetailWidget,
                               width: double.infinity,
                               height: 47.h,
                               title: _getActionButtonTitleSelf(
-                                  viewModel.post.updateSubjectValue),
+                                  viewModel.post.updateSubjectValue,),
                               onPress: viewModel.onConfirmFuntionalPost,
                               borderRadius: 15.r,
                               backgroundColor: _getActionButtonColor(
-                                  viewModel.post.updateSubjectValue),
+                                  viewModel.post.updateSubjectValue,),
                             ),
                           ),
                       ],

@@ -25,14 +25,14 @@ class PetInfoWidget extends StatelessWidget {
   final Function(Pet)? onDeletePost;
 
   const PetInfoWidget({
-    Key? key,
+    super.key,
     required this.pet,
     required this.isMyPet,
     this.onPetReport,
     this.onPetBlock,
     this.followPet,
     this.onDeletePost,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +148,7 @@ class PetInfoWidget extends StatelessWidget {
                 padding: EdgeInsets.only(top: 5.h),
                 decoration: BoxDecoration(
                     color: UIColor.holder,
-                    borderRadius: BorderRadius.circular(10.r)),
+                    borderRadius: BorderRadius.circular(10.r),),
                 child: const Center(
                   child: MWIcon(
                     MWIcons.moreHoriz,

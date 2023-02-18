@@ -75,7 +75,7 @@ class UserDatasource {
   }
 
   Future<Map<String, dynamic>> updateUserInformationLocation(int userId,
-      {String? name, String? bio, int? locationId, String? avatarUrl}) async {
+      {String? name, String? bio, int? locationId, String? avatarUrl,}) async {
     final nName = name == null ? "" : 'name: "$name",';
     final nBio = bio == null ? "" : 'bio: "$bio",';
     final nLocationId = locationId == null ? "" : 'location_id: $locationId,';

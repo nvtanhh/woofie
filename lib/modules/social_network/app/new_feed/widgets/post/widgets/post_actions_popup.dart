@@ -14,13 +14,12 @@ class PostActionsTrailing extends StatelessWidget {
   final Widget? child;
 
   const PostActionsTrailing(
-      {Key? key,
+      {super.key,
       required this.post,
       required this.onDeletePost,
       required this.onEditPost,
       required this.onReportPost,
-      this.child})
-      : super(key: key);
+      this.child,});
 
   @override
   Widget build(BuildContext context) {

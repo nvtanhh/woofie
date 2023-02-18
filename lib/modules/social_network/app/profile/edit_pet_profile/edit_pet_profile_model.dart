@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
@@ -95,7 +94,7 @@ class EditPetProfileWidgetModel extends BaseViewModel {
   Future onUpdateAvatarClick() async {
     List<File>? files;
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
+        type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"],);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -111,7 +110,7 @@ class EditPetProfileWidgetModel extends BaseViewModel {
     final String fileName = basename(mediaFile.path);
     // get presigned URL
     final String? preSignedUrl = await _getPresignedAvatarPetUrlUsecase.run(
-        fileName, pet.uuid ??= const Uuid().v4());
+        fileName, pet.uuid ??= const Uuid().v4(),);
     // upload media to s3
     if (preSignedUrl != null) {
       printInfo(info: 'Uploading media to s3');

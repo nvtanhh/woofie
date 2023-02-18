@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/datetime_helper.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/core/ui/avatar/pet_avatar.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/core/extensions/string_ext.dart';
 
 class PetCardItem extends StatelessWidget {
   final Pet pet;
@@ -15,8 +15,7 @@ class PetCardItem extends StatelessWidget {
   final Function()? onClicked;
 
   const PetCardItem(
-      {Key? key, required this.pet, this.onClicked, this.isSelected = false})
-      : super(key: key);
+      {super.key, required this.pet, this.onClicked, this.isSelected = false,});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class PetCardItem extends StatelessWidget {
             ),
           ],
           border: Border.all(
-              color: isSelected ? UIColor.accent2 : Colors.transparent),
+              color: isSelected ? UIColor.accent2 : Colors.transparent,),
         ),
         child: Column(
           children: [

@@ -16,14 +16,14 @@ class SavePostRepository {
   final MediaDatasource _mediaDatasource;
 
   SavePostRepository(
-      this._postDatasource, this._storageDatasource, this._mediaDatasource);
+      this._postDatasource, this._storageDatasource, this._mediaDatasource,);
 
   Future<Post?> createDraftPost(NewPostData data) async {
     return _postDatasource.createDraftPost(data);
   }
 
   Future<String?> getPresignedPostMediaUrl(
-      String objectName, String postUuid) async {
+      String objectName, String postUuid,) async {
     return _storageDatasource.getPresignedUrlForPostMedia(objectName, postUuid);
   }
 

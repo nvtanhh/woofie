@@ -16,11 +16,11 @@ class NewPostUploader extends StatefulWidget {
   final Function(NewPostData) onCancelled;
 
   const NewPostUploader({
-    Key? key,
+    super.key,
     required this.data,
     required this.onPostPublished,
     required this.onCancelled,
-  }) : super(key: key);
+  });
 
   @override
   _NewPostUploaderState createState() => _NewPostUploaderState();

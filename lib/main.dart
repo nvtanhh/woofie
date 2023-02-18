@@ -123,21 +123,21 @@ void setupOneSignal() {
   );
   OneSignal.shared.setNotificationOpenedHandler((openedResult) {
     try {
-      int? postId =
+      final int? postId =
           openedResult.notification.additionalData?["post_id"] as int?;
-      int? postType =
+      final int? postType =
           openedResult.notification.additionalData?["post_type"] as int?;
       if (postId != null) {
         if (postType != null) {
           if (postType == 3) {
             Get.to(() => AdoptionPetDetailWidget(
-                post: Post(id: postId, type: PostType.lose, uuid: "")));
+                post: Post(id: postId, type: PostType.lose, uuid: ""),),);
           } else {
             Get.to(() => const ChatDashboard());
           }
         } else {
           Get.to(() => PostDetail(
-              post: Post(id: postId, type: PostType.activity, uuid: "")));
+              post: Post(id: postId, type: PostType.activity, uuid: ""),),);
         }
       } else {
         Get.to(() => RequestMessagePage());

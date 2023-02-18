@@ -17,8 +17,7 @@ class MessageBodyPostPreviewerMating extends StatelessWidget {
   final Message message;
   final Post? post;
 
-  const MessageBodyPostPreviewerMating(this.message, {Key? key, this.post})
-      : super(key: key);
+  const MessageBodyPostPreviewerMating(this.message, {super.key, this.post});
 
   @override
   Widget build(BuildContext context) {

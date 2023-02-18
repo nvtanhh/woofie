@@ -30,7 +30,7 @@ class ChatDatasource {
   }
 
   Future<List<ChatRoom>> getChatRooms(int limit, int skip,
-      {bool? isEveryoneCanChatWithMe}) async {
+      {bool? isEveryoneCanChatWithMe,}) async {
     final Map<String, dynamic> queryParameters = {};
     queryParameters['limit'] = limit;
     queryParameters['skip'] = skip;
@@ -55,7 +55,7 @@ class ChatDatasource {
   }
 
   Future<List<Message>> getMessagesWithRoomId(
-      int limit, int skip, String roomId) async {
+      int limit, int skip, String roomId,) async {
     final Map<String, dynamic> queryParameters = {
       'limit': limit,
       'skip': skip,
@@ -63,7 +63,7 @@ class ChatDatasource {
     final endpoint =
         _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
     final response = await _httpieService.get('$baseUrl/$endpoint',
-        queryParameters: queryParameters, appendAuthorizationToken: true);
+        queryParameters: queryParameters, appendAuthorizationToken: true,);
     if (response.statusCode == 200) {
       final list = json.decode(response.body)['messages'] as List;
       return list
@@ -90,10 +90,10 @@ class ChatDatasource {
     }
 
     final response = await _httpieService.post('$baseUrl/$endpoint',
-        body: body, appendAuthorizationToken: true);
+        body: body, appendAuthorizationToken: true,);
     if (response.statusCode == 201) {
       final Message newMessage = Message.fromJson(
-          json.decode(response.body)['new_message'] as Map<String, dynamic>);
+          json.decode(response.body)['new_message'] as Map<String, dynamic>,);
       newMessage.localUuid = sendingMessage.localUuid;
       return newMessage;
     } else {

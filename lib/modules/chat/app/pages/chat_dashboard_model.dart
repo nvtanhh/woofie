@@ -54,7 +54,7 @@ class ChatManagerModel extends BaseViewModel {
         await _getMessageSetting();
       }
       final chatRooms = await _getChatRoomsUseCase.call(
-          skip: pageKey, isEveryoneCanChatWithMe: _isEveryoneCanChatWithMe);
+          skip: pageKey, isEveryoneCanChatWithMe: _isEveryoneCanChatWithMe,);
       chatRooms.forEach(_getMoreChatRoomInformation);
       final isLastPage = chatRooms.length < _pageSize;
       if (isLastPage) {
@@ -98,7 +98,7 @@ class ChatManagerModel extends BaseViewModel {
   Future<void> _getMembersSync(ChatRoom room) async {
     room.members = await Future.wait(room.memberUuids
         .map((userUuid) async => _getUserWithUuid(userUuid))
-        .toList());
+        .toList(),);
   }
 
   void goToRequestMessagePage() {
@@ -120,7 +120,7 @@ class ChatManagerModel extends BaseViewModel {
     injector<NavigationService>().navigateToChatRoom(
         room: room,
         onAddNewMessages: (List<Message> messages) =>
-            _onChatRoomAddNewMessage(room, messages));
+            _onChatRoomAddNewMessage(room, messages),);
   }
 
   void _onChatRoomAddNewMessage(ChatRoom room, List<Message> messages) {

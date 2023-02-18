@@ -6,10 +6,10 @@ class MWCheckbox extends StatelessWidget {
   final OBCheckboxSize size;
 
   const MWCheckbox({
-    Key? key,
+    super.key,
     required this.value,
     this.size = OBCheckboxSize.medium,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -34,7 +34,7 @@ class BottomSheetService {
       required ValueChanged<Pet> onPetChosen,
       List<Pet>? taggedPets,
       String? title,
-      bool needConfirmButton = false}) {
+      bool needConfirmButton = false,}) {
     return showMaterialModalBottomSheet(
       context: Get.context!,
       builder: (context) => TagPetBottomSheetWidget(
@@ -49,7 +49,7 @@ class BottomSheetService {
   }
 
   Future<FilterOptions?> showMapSeacherFilterBottomSheet(
-      {FilterOptions? currentFilter}) async {
+      {FilterOptions? currentFilter,}) async {
     final FilterOptions? filterOptions = await showMaterialModalBottomSheet(
       context: Get.context!,
       builder: (context) => MapSearcherFilter(currentFilter: currentFilter),

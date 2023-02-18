@@ -4,9 +4,9 @@ import 'package:meowoof/modules/social_network/data/datasources/pet_datasource.d
 import 'package:meowoof/modules/social_network/data/datasources/post_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/service_datasource.dart';
 import 'package:meowoof/modules/social_network/data/datasources/user_datasource.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/post_reaction.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post_reaction.dart';
 import 'package:meowoof/modules/social_network/domain/models/service.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
@@ -69,7 +69,7 @@ class ExploreRepository {
   }
 
   Future<List<Post>> getPostsByLocation(double lat, double long, int radius,
-      {FilterOptions? filterOptions}) {
+      {FilterOptions? filterOptions,}) {
     return _postDatasource.getPostsByLocation(
       lat,
       long,

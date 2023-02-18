@@ -13,7 +13,7 @@ class MWSearchBar extends StatefulWidget {
   final String? textInit;
 
   const MWSearchBar({
-    Key? key,
+    super.key,
     this.onSearch,
     this.hintText,
     this.onCancel,
@@ -21,7 +21,7 @@ class MWSearchBar extends StatefulWidget {
     this.searchWidget = false,
     this.onSubmitted,
     this.textInit,
-  }) : super(key: key);
+  });
 
   @override
   MWSearchBarState createState() {
@@ -63,7 +63,7 @@ class MWSearchBarState extends State<MWSearchBar> {
             child: DecoratedBox(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
-                  color: UIColor.holder),
+                  color: UIColor.holder,),
               child: Stack(
                 children: <Widget>[
                   if (widget.searchWidget == false)
@@ -108,7 +108,7 @@ class MWSearchBarState extends State<MWSearchBar> {
                           disabledBorder: _outlineInputBorder,
                           enabledBorder: _outlineInputBorder,
                           hintStyle: TextStyle(
-                              color: Colors.grey[500], fontSize: 15.sp),
+                              color: Colors.grey[500], fontSize: 15.sp,),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                           suffixIcon: (!hasText.value)

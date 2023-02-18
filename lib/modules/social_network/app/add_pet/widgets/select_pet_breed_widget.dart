@@ -13,11 +13,11 @@ class SelectPetBreedWidget extends StatelessWidget {
   final Function(int) onSelectedIndex;
 
   const SelectPetBreedWidget({
-    Key? key,
+    super.key,
     required this.petBreeds,
     required this.selectedIndex,
     required this.onSelectedIndex,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

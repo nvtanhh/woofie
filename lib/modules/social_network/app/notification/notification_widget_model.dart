@@ -111,7 +111,7 @@ class NotificationWidgetModel extends BaseViewModel {
   void goToPost(int postId) {
     Get.to(() => PostDetail(
         post: Post.factory.getItemWithIdFromCache(postId) ??
-            Post(id: postId, uuid: "", type: PostType.activity)));
+            Post(id: postId, uuid: "", type: PostType.activity),),);
   }
 
   void goToPostFunction(int postId) {

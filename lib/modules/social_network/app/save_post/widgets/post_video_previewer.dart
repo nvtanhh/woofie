@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/services/dialog_service.dart';
@@ -23,7 +23,7 @@ class PostVideoPreviewer extends StatelessWidget {
   final BoxFit? fit;
 
   const PostVideoPreviewer({
-    Key? key,
+    super.key,
     this.postVideoFile,
     this.postVideo,
     this.onRemove,
@@ -34,7 +34,7 @@ class PostVideoPreviewer extends StatelessWidget {
     this.isConstraintsSize = true,
     this.playIconMargin,
     this.fit,
-  }) : super(key: key);
+  });
 
   static double avatarBorderRadius = 10.0;
   static const double buttonSize = 20;
@@ -64,7 +64,7 @@ class PostVideoPreviewer extends StatelessWidget {
                   height: height,
                   isConstraintsSize: isConstraintsSize,
                 );
-              })
+              },)
           : FutureBuilder<String?>(
               future: injector<MediaService>().getVideoThumbnailFromUrl(
                 postVideo?.url ?? "",
@@ -112,7 +112,7 @@ class PostVideoPreviewer extends StatelessWidget {
       height: buttonSize,
       child: FloatingActionButton(
         heroTag: Key(
-            'postVideoPreviewerRemoveButton${postVideoFile?.path}${postVideo?.url}'),
+            'postVideoPreviewerRemoveButton${postVideoFile?.path}${postVideo?.url}',),
         onPressed: onRemove,
         backgroundColor: Colors.black54,
         child: const MWIcon(
@@ -130,7 +130,7 @@ class PostVideoPreviewer extends StatelessWidget {
       height: playIconSize ?? buttonSize,
       child: FloatingActionButton(
         heroTag: Key(
-            'postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}'),
+            'postVideoPreviewerPlayButton${postVideoFile?.path}${postVideo?.url}',),
         backgroundColor: Colors.black54,
         onPressed: () => _onWantsToPlay(context),
         child: Icon(
@@ -153,7 +153,7 @@ class PostVideoPreviewer extends StatelessWidget {
   }
 
   Widget _wrapImageWidgetForThumbnail(Widget image,
-      {double? width, double? height, bool isConstraintsSize = true}) {
+      {double? width, double? height, bool isConstraintsSize = true,}) {
     return SizedBox(
       height: isConstraintsSize ? height ?? 80.h : null,
       width: isConstraintsSize ? width ?? 80.w : null,

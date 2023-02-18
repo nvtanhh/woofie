@@ -17,12 +17,12 @@ class PreviewFollowPet extends StatelessWidget {
   final bool isMyPet;
 
   const PreviewFollowPet({
-    Key? key,
+    super.key,
     required this.pet,
     this.onFollow,
     this.margin,
     required this.isMyPet,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class PreviewFollowPet extends StatelessWidget {
                 color: UIColor.dimGray,
                 blurRadius: 5,
                 offset: Offset(2, 0),
-                spreadRadius: 2),
+                spreadRadius: 2,),
           ],
           color: UIColor.white,
         ),
@@ -99,7 +99,7 @@ class PreviewFollowPet extends StatelessWidget {
                         textStyle: UITextStyle.white_10_w600,
                         borderRadius: BorderRadius.circular(5.r),
                         padding: EdgeInsets.symmetric(
-                            vertical: 6.h, horizontal: 8.w),
+                            vertical: 6.h, horizontal: 8.w,),
                         color: pet.updateSubjectValue.isFollowing ?? false
                             ? UIColor.textSecondary
                             : UIColor.primary,

@@ -24,7 +24,7 @@ class Comment {
   @JsonKey(name: "user")
   User? creator;
   @JsonKey(
-      name: "comment_reacts_aggregate", fromJson: Post.aggregateCountFromJson)
+      name: "comment_reacts_aggregate", fromJson: Post.aggregateCountFromJson,)
   int? commentReactsAggregate;
   @JsonKey(name: "comment_tag_users", fromJson: allUsersFromJson)
   List<User>? commentTagUser;

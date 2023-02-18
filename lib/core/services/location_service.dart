@@ -1,5 +1,5 @@
-import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
@@ -22,7 +22,7 @@ class LocationService {
 
     if (permission == LocationPermission.deniedForever) {
       return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+          'Location permissions are permanently denied, we cannot request permissions.',);
     }
     return Geolocator.getCurrentPosition();
   }
@@ -30,7 +30,7 @@ class LocationService {
   Future<Placemark> getCurrentPlacemark() async {
     final Position currentPosition = await determineCurrentPosition();
     final List<Placemark> placemarks = await placemarkFromCoordinates(
-        currentPosition.latitude, currentPosition.longitude);
+        currentPosition.latitude, currentPosition.longitude,);
     return placemarks.first;
   }
 

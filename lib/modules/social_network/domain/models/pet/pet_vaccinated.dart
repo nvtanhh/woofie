@@ -28,7 +28,7 @@ class PetVaccinated {
       this.createdAt,
       this.petId,
       this.date,
-      this.updatedAt});
+      this.updatedAt,});
 
   factory PetVaccinated.fromJson(Map<String, dynamic> json) =>
       _$PetVaccinatedFromJson(json);

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -21,7 +20,7 @@ import 'package:suga_core/suga_core.dart';
 class EditPetProfileWidget extends StatefulWidget {
   final Pet pet;
 
-  const EditPetProfileWidget({Key? key, required this.pet}) : super(key: key);
+  const EditPetProfileWidget({super.key, required this.pet});
 
   @override
   _EditPetProfileWidgetState createState() => _EditPetProfileWidgetState();
@@ -101,7 +100,7 @@ class _EditPetProfileWidgetState
                               height: 30.w,
                               decoration: BoxDecoration(
                                   color: UIColor.accent,
-                                  borderRadius: BorderRadius.circular(5.r)),
+                                  borderRadius: BorderRadius.circular(5.r),),
                               // padding: EdgeInsets.all(5.w),
                               child: const MWIcon(
                                 MWIcons.camera,
@@ -240,7 +239,7 @@ class _EditPetProfileWidgetState
                           padding: EdgeInsets.only(left: 5.w),
                           decoration: BoxDecoration(
                               border: Border.all(color: UIColor.silverSand),
-                              borderRadius: BorderRadius.circular(5.r)),
+                              borderRadius: BorderRadius.circular(5.r),),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -250,7 +249,7 @@ class _EditPetProfileWidgetState
                                       ? "dd/mm/yyyy"
                                       : FormatHelper.formatDateTime(
                                           viewModel.datePicker,
-                                          pattern: "dd/MM/yyyy"),
+                                          pattern: "dd/MM/yyyy",),
                                   style: viewModel.datePicker == null
                                       ? UITextStyle.second_12_medium
                                       : UITextStyle.text_body_12_w600,

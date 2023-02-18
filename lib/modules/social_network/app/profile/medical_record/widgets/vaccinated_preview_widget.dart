@@ -18,13 +18,13 @@ class VaccinatedPreviewWidget extends StatelessWidget {
   final Function onAddClick;
 
   const VaccinatedPreviewWidget({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     required this.vaccinates,
     required this.isMyPet,
     required this.onAddClick,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class VaccinatedPreviewWidget extends StatelessWidget {
     list.add(header);
     list.add(SizedBox(
       height: 10.h,
-    ));
+    ),);
     for (final vaccinate in vaccinates) {
       list.add(SizedBox(
         height: 50.h,
@@ -117,7 +117,7 @@ class VaccinatedPreviewWidget extends StatelessWidget {
                   ),
                   Text(
                     FormatHelper.formatDateTime(vaccinate.date,
-                        pattern: "dd/MM/yyyy"),
+                        pattern: "dd/MM/yyyy",),
                     style: UITextStyle.text_secondary_10_w600,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -127,7 +127,7 @@ class VaccinatedPreviewWidget extends StatelessWidget {
             )
           ],
         ),
-      ));
+      ),);
     }
     list.add(
       const MWIcon(

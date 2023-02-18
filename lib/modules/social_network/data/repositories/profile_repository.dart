@@ -37,7 +37,7 @@ class ProfileRepository {
   }
 
   Future<List<Post>> getPostsTimeline(int offset, int limit,
-      {String? userUUID}) async {
+      {String? userUUID,}) async {
     return _postDatasource.getPostsTimeline(
       offset,
       limit,
@@ -46,7 +46,7 @@ class ProfileRepository {
   }
 
   Future<List<PetVaccinated>> getVaccinates(
-      int idPet, int limit, int offset) async {
+      int idPet, int limit, int offset,) async {
     return _petDatasource.getVaccinates(idPet, limit, offset);
   }
 
@@ -55,7 +55,7 @@ class ProfileRepository {
   }
 
   Future<List<PetWormFlushed>> getWormFlushes(
-      int idPet, int limit, int offset) async {
+      int idPet, int limit, int offset,) async {
     return _petDatasource.getWormFlushes(idPet, limit, offset);
   }
 
@@ -96,7 +96,7 @@ class ProfileRepository {
   }
 
   Future<UserLocation> updateLocation(
-      int id, double long, double lat, String name) {
+      int id, double long, double lat, String name,) {
     return _locationDatasource.updateLocation(id, long, lat, name);
   }
 
@@ -105,9 +105,9 @@ class ProfileRepository {
   }
 
   Future<Map<String, dynamic>> updateUserInformationLocation(int userId,
-      {String? name, String? bio, int? locationId, String? avatarUrl}) {
+      {String? name, String? bio, int? locationId, String? avatarUrl,}) {
     return _userDatasource.updateUserInformationLocation(userId,
-        name: name, bio: bio, locationId: locationId, avatarUrl: avatarUrl);
+        name: name, bio: bio, locationId: locationId, avatarUrl: avatarUrl,);
   }
 
   Future<Map<String, dynamic>> updatePetInformation(
@@ -118,9 +118,9 @@ class ProfileRepository {
       String? avatarUrl,
       String? uuid,
       DateTime? dob,
-      Gender? gender) {
+      Gender? gender,) {
     return _petDatasource.updatePetInformation(
-        petId, name, bio, breed, avatarUrl, uuid, dob, gender);
+        petId, name, bio, breed, avatarUrl, uuid, dob, gender,);
   }
 
   Future<bool> deletePet(int petId) {

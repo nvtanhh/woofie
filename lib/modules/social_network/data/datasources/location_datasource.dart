@@ -10,7 +10,7 @@ class LocationDatasource {
   LocationDatasource(this._hasuraConnect);
 
   Future<UserLocation> updateLocation(
-      int id, double long, double lat, String name) async {
+      int id, double long, double lat, String name,) async {
     final manution = """
 mutation MyMutation {
   update_locations_by_pk(pk_columns: {id: $id}, _set: {lat: "$lat", long: "$long", name: "$name"}) {
@@ -29,7 +29,7 @@ mutation MyMutation {
   }
 
   Future<UserLocation> createLocation(
-      double long, double lat, String name) async {
+      double long, double lat, String name,) async {
     final manution = """
 mutation MyMutation {
   insert_locations_one(object: {lat: "$long", long: "$lat", name: "$name"}) {

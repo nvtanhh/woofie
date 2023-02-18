@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UsersWidget extends StatelessWidget {
   final PagingController<int, User> pagingController;
 
   const UsersWidget({
-    Key? key,
+    super.key,
     required this.pagingController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

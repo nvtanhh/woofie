@@ -72,12 +72,12 @@ class _HomeMenuWidgetState
                       icon: Icon(
                         Icons.home_filled,
                       ),
-                      label: ""),
+                      label: "",),
                   const BottomNavigationBarItem(
                       icon: Icon(
                         Icons.search_sharp,
                       ),
-                      label: ""),
+                      label: "",),
                   BottomNavigationBarItem(
                       icon: Obx(
                         () {
@@ -90,12 +90,12 @@ class _HomeMenuWidgetState
                           }
                         },
                       ),
-                      label: ""),
+                      label: "",),
                   const BottomNavigationBarItem(
                       icon: Icon(
                         Icons.person,
                       ),
-                      label: ""),
+                      label: "",),
                 ],
               ),
             ),
@@ -119,7 +119,7 @@ class _HomeMenuWidgetState
             width: 20.w,
             decoration: BoxDecoration(
                 color: UIColor.danger,
-                borderRadius: BorderRadius.circular(10.r)),
+                borderRadius: BorderRadius.circular(10.r),),
             child: Center(
               child: Text(
                 "${viewModel.countUnreadNotify}",

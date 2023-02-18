@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GroupChatIndentifier extends StatelessWidget {
-  const GroupChatIndentifier({Key? key}) : super(key: key);
+  const GroupChatIndentifier({super.key});
 
   @override
   Widget build(BuildContext context) {

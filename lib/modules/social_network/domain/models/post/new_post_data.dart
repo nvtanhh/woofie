@@ -29,7 +29,7 @@ class NewPostData {
       required this.type,
       this.mediaFiles,
       this.taggegPets,
-      this.location}) {
+      this.location,}) {
     remainingMediaToCompress = mediaFiles ?? [];
     newPostUuid = const Uuid().v4();
   }

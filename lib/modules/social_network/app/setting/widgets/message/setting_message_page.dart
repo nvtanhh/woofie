@@ -31,7 +31,7 @@ class _SettingMessagePageState
               groupValue: viewModel.statusMessage,
               onChanged: (_) => viewModel.onLangSelected(_),
               title: Text(LocaleKeys.setting_message_public.trans(),
-                  style: UITextStyle.text_body_14_w500),
+                  style: UITextStyle.text_body_14_w500,),
             ),
           ),
           Obx(

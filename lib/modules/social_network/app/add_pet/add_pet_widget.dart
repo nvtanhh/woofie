@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -18,7 +17,7 @@ import 'package:suga_core/suga_core.dart';
 class AddPetWidget extends StatefulWidget {
   final bool isAddMore;
 
-  const AddPetWidget({Key? key, this.isAddMore = false}) : super(key: key);
+  const AddPetWidget({super.key, this.isAddMore = false});
 
   @override
   _AddPetWidgetState createState() => _AddPetWidgetState();

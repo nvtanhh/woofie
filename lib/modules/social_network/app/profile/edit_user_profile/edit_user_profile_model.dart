@@ -1,4 +1,5 @@
-import 'package:extended_image/extended_image.dart';
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -205,7 +206,7 @@ class EditUserProfileWidgetModel extends BaseViewModel {
   Future pickMedia() async {
     List<File>? files;
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
+        type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"],);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     } else {

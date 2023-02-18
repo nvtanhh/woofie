@@ -21,13 +21,13 @@ class PostItemShimmer extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
                   color: UIColor.white,
-                )),
+                ),),
             Container(
                 height: 200.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
                   color: UIColor.white,
-                )),
+                ),),
           ],
         ),
       ),

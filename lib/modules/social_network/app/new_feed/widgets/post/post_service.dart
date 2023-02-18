@@ -2,12 +2,12 @@ import 'dart:collection';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
@@ -18,6 +18,7 @@ import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/core/services/toast_service.dart';
 import 'package:meowoof/core/ui/confirm_dialog.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/save_post/new_post_uploader.dart';
 import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
@@ -37,8 +38,6 @@ import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:path/path.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/core/extensions/string_ext.dart';
 
 @injectable
 class PostService extends BaseViewModel {
@@ -85,7 +84,7 @@ class PostService extends BaseViewModel {
     if (editedPostData.newAddedFiles != null &&
         editedPostData.newAddedFiles!.isNotEmpty) {
       editedPostData.newAddedMedias = await _startUploadNewMediaFiles(
-          editedPostData.newAddedFiles!, editedPostData.originPost);
+          editedPostData.newAddedFiles!, editedPostData.originPost,);
     }
 
     final bool isEditSuccessed = await _startEditPost(editedPostData);
@@ -139,7 +138,7 @@ class PostService extends BaseViewModel {
       onSuccess: () {
         if (isSuccess) {
           _toastService.success(
-              message: 'Post deleted!', context: Get.context!);
+              message: 'Post deleted!', context: Get.context!,);
         }
         pagingController.itemList?.removeAt(index);
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
@@ -173,7 +172,7 @@ class PostService extends BaseViewModel {
   }
 
   Future<List<UploadedMedia>> _startUploadNewMediaFiles(
-      List<MediaFile> newAddedFiles, Post oldPost) async {
+      List<MediaFile> newAddedFiles, Post oldPost,) async {
     final List<MediaFile> compressMediaFiles = await Future.wait(
       newAddedFiles.map((file) async => _compressPostMediaItem(file)).toList(),
     );
@@ -208,7 +207,7 @@ class PostService extends BaseViewModel {
   }
 
   Future<UploadedMedia?> _storeMediaItem(
-      MediaFile mediaFile, Post oldPost) async {
+      MediaFile mediaFile, Post oldPost,) async {
     final String fileName = basename(mediaFile.file.path);
     final String postUuid = oldPost.uuid;
     // get presigned URL
@@ -258,7 +257,7 @@ class PostService extends BaseViewModel {
   }
 
   void _onNewPostDataUploaderPostPublished(
-      Post publishedPost, NewPostData newPostData) {
+      Post publishedPost, NewPostData newPostData,) {
     _showSnackbarCreatePostSuccessful();
     pagingController.itemList?.insert(0, publishedPost);
     // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
@@ -295,7 +294,7 @@ class PostService extends BaseViewModel {
     injector<ToastService>().error(
         message: LocaleKeys.save_post_update_failed_toast.trans(),
         duration: const Duration(seconds: 2),
-        context: Get.context!);
+        context: Get.context!,);
   }
 
   void _refreshPost(int postId) {
@@ -304,7 +303,7 @@ class PostService extends BaseViewModel {
       onSuccess: () {
         injector<ToastService>().success(
             message: LocaleKeys.save_post_update_success_toast.trans(),
-            context: Get.context!);
+            context: Get.context!,);
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         pagingController.notifyListeners();
       },
@@ -366,7 +365,7 @@ class PostService extends BaseViewModel {
         final Position currentPosition =
             await injector<LocationService>().determineCurrentPosition();
         final userLocation = UserLocation(
-            lat: currentPosition.latitude, long: currentPosition.longitude);
+            lat: currentPosition.latitude, long: currentPosition.longitude,);
         // unawaited(updateLocation(userLocation));
         return userLocation;
       }

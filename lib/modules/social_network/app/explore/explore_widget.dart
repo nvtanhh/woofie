@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -254,7 +253,7 @@ class _ExploreWidgetState
                           child: ServiceWidget(
                             title: viewModel.services[index].name ?? "",
                             distance: viewModel.calculateDistance(
-                                viewModel.services[index].location!),
+                                viewModel.services[index].location!,),
                             widget: ImageWithPlaceHolderWidget(
                               imageUrl: viewModel.services[index].logo ?? "",
                               width: 60.w,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -11,11 +12,10 @@ import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 @injectable
 class MapSearcher extends StatefulWidget {
-  const MapSearcher({Key? key}) : super(key: key);
+  const MapSearcher({super.key});
 
   @override
   _MapSearcherState createState() => _MapSearcherState();

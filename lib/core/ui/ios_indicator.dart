@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 class IOSIndicatorWidget extends StatelessWidget {
-  const IOSIndicatorWidget({Key? key}) : super(key: key);
+  const IOSIndicatorWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

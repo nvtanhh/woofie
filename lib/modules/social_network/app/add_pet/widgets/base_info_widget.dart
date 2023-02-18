@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -30,13 +29,13 @@ class BaseInfoWidget extends StatelessWidget {
   final RxString _ageData = RxString("");
 
   BaseInfoWidget({
-    Key? key,
+    super.key,
     required this.onNameChange,
     required this.onAgeChange,
     required this.onAvatarChange,
     required this.onGenderChange,
     required this.onBioChange,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +132,7 @@ class BaseInfoWidget extends StatelessWidget {
                             padding: EdgeInsets.only(left: 10.w),
                             decoration: BoxDecoration(
                                 border: Border.all(color: UIColor.silverSand),
-                                borderRadius: BorderRadius.circular(5.r)),
+                                borderRadius: BorderRadius.circular(5.r),),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -293,7 +292,7 @@ class BaseInfoWidget extends StatelessWidget {
   Future onUpdateAvatarClick() async {
     List<File>? files;
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"]);
+        type: FileType.custom, allowedExtensions: ["jpg", "png", "JPG", "PNG"],);
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
     }

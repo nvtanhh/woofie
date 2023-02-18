@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meowoof/core/ui/icon.dart';
-import 'package:meowoof/modules/social_network/domain/models/location.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
 class PostLocator extends StatelessWidget {
@@ -11,8 +10,7 @@ class PostLocator extends StatelessWidget {
   final String? location;
 
   const PostLocator(
-      {Key? key, required this.location, this.maxLines = 1, this.iconSize = 20})
-      : super(key: key);
+      {super.key, required this.location, this.maxLines = 1, this.iconSize = 20,});
 
   @override
   Widget build(BuildContext context) {

@@ -22,7 +22,7 @@ import 'package:timeago/timeago.dart' as time_ago;
 class NotificationWidget extends StatefulWidget {
   final NotificationWidgetController? controller;
 
-  const NotificationWidget({Key? key, this.controller}) : super(key: key);
+  const NotificationWidget({super.key, this.controller});
 
   @override
   NotificationWidgetState createState() => NotificationWidgetState();
@@ -121,14 +121,14 @@ class NotificationWidgetState
                       width: Get.width,
                       height: 150.h,
                     );
-                  }),
+                  },),
                 ),
               ),
             ),
           ],
         ),
       ),
-    ));
+    ),);
   }
 
   Widget generateContentTitle(Notification notification) {
@@ -258,7 +258,7 @@ class NotificationWidgetController {
   late NotificationWidgetState _state;
 
   void attach(
-      {required BuildContext context, required NotificationWidgetState state}) {
+      {required BuildContext context, required NotificationWidgetState state,}) {
     _state = state;
   }
 

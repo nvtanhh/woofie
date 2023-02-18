@@ -29,7 +29,7 @@ class AuthRepository {
   }
 
   Future<User?> registerWithEmailPassword(
-      String email, String password, String name) {
+      String email, String password, String name,) {
     return _authDatasource.registerWithEmailPassword(email, password, name);
   }
 

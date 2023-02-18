@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
-import 'package:suga_core/suga_core.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/locale_keys.g.dart';
+import 'package:suga_core/suga_core.dart';
 
 @injectable
 class LanguageWidgetModel extends BaseViewModel {

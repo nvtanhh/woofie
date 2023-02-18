@@ -8,8 +8,8 @@ class UpdateContentRequestMessagesUsecase {
 
   UpdateContentRequestMessagesUsecase(this._chatRepository);
   Future run(
-      {required RequestContact requestContact, required String content}) {
+      {required RequestContact requestContact, required String content,}) {
     return _chatRepository.updateContentRequestMessages(
-        requestContact, content);
+        requestContact, content,);
   }
 }
