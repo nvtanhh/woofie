@@ -51,7 +51,7 @@ class HomeMenuWidgetModel extends BaseViewModel {
 
     getNumberNotificationUnread();
     _timer = Timer.periodic(
-        const Duration(seconds: 10), (_) => getNumberNotificationUnread());
+        const Duration(seconds: 10), (_) => getNumberNotificationUnread(),);
     super.initState();
   }
 

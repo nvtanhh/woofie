@@ -16,6 +16,6 @@ class GetPostByTypeUsecase {
     int offset = 0,
   }) {
     return _exploreRepository.getPostsByType(
-        postType, longUser, latUser, limit, offset);
+        postType, longUser, latUser, limit, offset,);
   }
 }

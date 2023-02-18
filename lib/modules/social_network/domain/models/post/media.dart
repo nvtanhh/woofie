@@ -12,7 +12,6 @@ class Media {
   @JsonKey(
     name: "url",
     fromJson: _parseAvatarUrl,
-    toJson: toNull,
     includeIfNull: false,
   )
   String? url;
@@ -24,8 +23,6 @@ class Media {
     this.url,
     this.type,
   });
-
-  static toNull(_) => null;
 
   static String _parseAvatarUrl(String url) {
     if (url.startsWith("http")) {

@@ -10,12 +10,12 @@ class ServiceWidget extends StatelessWidget {
   final EdgeInsets? margin;
 
   const ServiceWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.distance,
     required this.widget,
     this.margin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

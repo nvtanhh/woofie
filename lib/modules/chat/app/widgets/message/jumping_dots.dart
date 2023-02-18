@@ -7,12 +7,12 @@ class JumpingDots extends StatefulWidget {
   final double jumpHeight;
 
   const JumpingDots({
-    Key? key,
+    super.key,
     this.numberOfDots = 3,
     this.color,
     this.radius = 5,
     this.jumpHeight = 10,
-  }) : super(key: key);
+  });
 
   @override
   _JumpingDotsState createState() => _JumpingDotsState();
@@ -45,7 +45,7 @@ class _JumpingDotsState extends State<JumpingDots>
       widget.numberOfDots,
       (index) {
         return AnimationController(
-            vsync: this, duration: Duration(milliseconds: animationDuration));
+            vsync: this, duration: Duration(milliseconds: animationDuration),);
       },
     ).toList();
 
@@ -55,7 +55,7 @@ class _JumpingDotsState extends State<JumpingDots>
     ///and we want our dot to jump in upward direction
     for (int i = 0; i < widget.numberOfDots; i++) {
       _animations.add(Tween<double>(begin: 0, end: widget.jumpHeight)
-          .animate(_animationControllers[i]));
+          .animate(_animationControllers[i]),);
     }
     for (int i = 0; i < widget.numberOfDots; i++) {
       _animationControllers[i].addStatusListener((status) {
@@ -113,8 +113,7 @@ class DotWidget extends StatelessWidget {
   final double? radius;
   final Color? color;
 
-  const DotWidget({Key? key, this.color = Colors.black, this.radius = 5})
-      : super(key: key);
+  const DotWidget({super.key, this.color = Colors.black, this.radius = 5});
 
   @override
   Widget build(BuildContext context) {

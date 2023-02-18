@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,7 +16,7 @@ import 'package:suga_core/suga_core.dart';
 class EditUserProfileWidget extends StatefulWidget {
   final User user;
 
-  const EditUserProfileWidget({Key? key, required this.user}) : super(key: key);
+  const EditUserProfileWidget({super.key, required this.user});
 
   @override
   _EditUserProfileWidgetState createState() => _EditUserProfileWidgetState();
@@ -94,7 +93,7 @@ class _EditUserProfileWidgetState
                           height: 30.w,
                           decoration: BoxDecoration(
                               color: UIColor.accent,
-                              borderRadius: BorderRadius.circular(5.r)),
+                              borderRadius: BorderRadius.circular(5.r),),
                           // padding: EdgeInsets.all(5.w),
                           child: const MWIcon(
                             MWIcons.camera,

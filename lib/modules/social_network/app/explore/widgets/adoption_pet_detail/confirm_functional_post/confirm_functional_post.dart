@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
-import 'package:meowoof/core/ui/avatar/pet_avatar.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/confirm_functional_post/confirm_functional_post_model.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/pet_card_item.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post_reaction.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -17,7 +15,7 @@ import 'package:suga_core/suga_core.dart';
 
 class ConfirmGivePet extends StatefulWidget {
   final Post post;
-  const ConfirmGivePet({Key? key, required this.post}) : super(key: key);
+  const ConfirmGivePet({super.key, required this.post});
 
   @override
   _ConfirmGivePetState createState() => _ConfirmGivePetState();

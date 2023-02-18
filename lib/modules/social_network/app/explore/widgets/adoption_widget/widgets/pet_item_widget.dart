@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
@@ -22,7 +21,7 @@ class PetItemWidget extends StatelessWidget {
   final bool isConstraintsSize;
 
   const PetItemWidget({
-    Key? key,
+    super.key,
     required this.pet,
     required this.postType,
     required this.post,
@@ -31,7 +30,7 @@ class PetItemWidget extends StatelessWidget {
     this.width,
     this.showDistance = true,
     this.isConstraintsSize = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +55,6 @@ class PetItemWidget extends StatelessWidget {
                 fit: BoxFit.cover,
                 topLeftRadius: 15.r,
                 topRightRadius: 15.r,
-                bottomLeftRadius: 0,
-                bottomRightRadius: 0,
                 placeHolderImagePath:
                     "resources/images/fallbacks/pet-avatar-fallback.jpg",
               ),

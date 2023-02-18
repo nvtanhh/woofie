@@ -52,28 +52,24 @@ class Post extends UpdatableModel<Post> {
   @JsonKey(
     name: "post_reacts_aggregate",
     fromJson: aggregateCountFromJson,
-    toJson: toNull,
     includeIfNull: false,
   )
   int? postReactsCount;
   @JsonKey(
     name: "comments_aggregate",
     fromJson: aggregateCountFromJson,
-    toJson: toNull,
     includeIfNull: false,
   )
   int? postCommentsCount;
   @JsonKey(
     name: "medias_aggregate",
     fromJson: aggregateCountFromJson,
-    toJson: toNull,
     includeIfNull: false,
   )
   int? postMediasCount;
   @JsonKey(
     name: "post_reacts",
     fromJson: reactorsFromJson,
-    toJson: toNull,
     includeIfNull: false,
   )
   List<User>? reactors;
@@ -95,8 +91,6 @@ class Post extends UpdatableModel<Post> {
     this.location,
     this.additionalData,
   }) : super(id);
-
-  static toNull(_) => null;
 
   bool get isIncludeLocation => location != null;
 
@@ -178,7 +172,7 @@ class Post extends UpdatableModel<Post> {
       creator: json['user'] == null
           ? null
           : User.fromJsonPure(json['user'] as Map<String, dynamic>),
-      type: _$enumDecode(_$PostTypeEnumMap, json['type']),
+      type: $enumDecode(_$PostTypeEnumMap, json['type']),
       taggegPets: [
         Pet.fromJsonPure(json['post_pets'][0]['pet'] as Map<String, dynamic>)
       ],
@@ -195,7 +189,7 @@ class Post extends UpdatableModel<Post> {
       creator = User.fromJson(json['user'] as Map<String, dynamic>);
     }
     if (json['type'] != null) {
-      type = _$enumDecode(_$PostTypeEnumMap, json['type']);
+      type = $enumDecode(_$PostTypeEnumMap, json['type']);
     }
     if (json['creator_uuid'] != null) {
       creatorUUID = json['creator_uuid'] as String;
@@ -221,7 +215,7 @@ class Post extends UpdatableModel<Post> {
       taggegPets = allPetsFromJson(json['post_pets'] as List?);
     }
     if (json['status'] != null) {
-      status = _$enumDecodeNullable(_$PostStatusEnumMap, json['status']);
+      status = $enumDecodeNullable(_$PostStatusEnumMap, json['status']);
     }
     if (json['location'] != null) {
       location =
@@ -237,15 +231,18 @@ class Post extends UpdatableModel<Post> {
     }
     if (json['post_reacts_aggregate'] != null) {
       postReactsCount = aggregateCountFromJson(
-          json["post_reacts_aggregate"] as Map<String, dynamic>);
+        json["post_reacts_aggregate"] as Map<String, dynamic>,
+      );
     }
     if (json['comments_aggregate'] != null) {
       postCommentsCount = aggregateCountFromJson(
-          json["comments_aggregate"] as Map<String, dynamic>);
+        json["comments_aggregate"] as Map<String, dynamic>,
+      );
     }
     if (json['medias_aggregate'] != null) {
       postMediasCount = aggregateCountFromJson(
-          json["medias_aggregate"] as Map<String, dynamic>);
+        json["medias_aggregate"] as Map<String, dynamic>,
+      );
     }
     if (json['uuid'] != null) {
       uuid = json['uuid'] as String;

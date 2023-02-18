@@ -22,12 +22,12 @@ class ChatRoomPage extends StatefulWidget {
   final Post? attachmentPost;
 
   const ChatRoomPage({
-    Key? key,
+    super.key,
     this.room,
     this.partner,
     this.onAddNewMessages,
     this.attachmentPost,
-  }) : super(key: key);
+  });
 
   @override
   _ChatRoomPageState createState() => _ChatRoomPageState();
@@ -45,11 +45,6 @@ class _ChatRoomPageState
     viewModel.onAddNewMessages = widget.onAddNewMessages;
     viewModel.attachmentPost.value = widget.attachmentPost;
     super.loadArguments();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -104,8 +99,9 @@ class _ChatRoomPageState
         ),
         Obx(
           () => TypingWidget(
-              isTyping: viewModel.partnerTypingStatus.value,
-              chatPartner: viewModel.room.privateChatPartner),
+            isTyping: viewModel.partnerTypingStatus.value,
+            chatPartner: viewModel.room.privateChatPartner,
+          ),
         ),
         _buildMessageSender(),
       ],

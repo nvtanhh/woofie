@@ -1,8 +1,6 @@
-import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
-import 'package:meowoof/modules/chat/app/pages/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/request_contact.dart';
 import 'package:meowoof/modules/chat/domain/usecases/request_message/accept_request_message_usecase.dart';
 import 'package:meowoof/modules/chat/domain/usecases/request_message/deny_request_message_usecase.dart';

@@ -18,8 +18,7 @@ import 'package:suga_core/suga_core.dart';
 class SearchWidget extends StatefulWidget {
   final String? textSearch;
   final UserLocation userLocation;
-  const SearchWidget({Key? key, this.textSearch, required this.userLocation})
-      : super(key: key);
+  const SearchWidget({super.key, this.textSearch, required this.userLocation});
 
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
@@ -104,7 +103,7 @@ class _SearchWidgetState extends BaseViewState<SearchWidget, SearchWidgetModel>
                           children: [
                             UsersWidget(
                                 pagingController:
-                                    viewModel.userPagingController),
+                                    viewModel.userPagingController,),
                             PetsWidget(
                               pagingController: viewModel.petPagingController,
                               follow: viewModel.followPet,

@@ -15,6 +15,6 @@ class UpdateUserInformationUsecase {
     String? avatarUrl,
   }) {
     return _profileRepository.updateUserInformationLocation(userId,
-        name: name, bio: bio, locationId: locationId, avatarUrl: avatarUrl);
+        name: name, bio: bio, locationId: locationId, avatarUrl: avatarUrl,);
   }
 }

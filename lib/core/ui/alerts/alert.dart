@@ -10,14 +10,13 @@ class MWAlert extends StatefulWidget {
   final Color color;
 
   const MWAlert(
-      {Key? key,
+      {super.key,
       required this.child,
       this.height,
       this.width,
       this.padding = const EdgeInsets.all(15),
       this.borderRadius,
-      this.color = UIColor.holder})
-      : super(key: key);
+      this.color = UIColor.holder,});
 
   @override
   MWAlertState createState() {

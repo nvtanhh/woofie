@@ -19,7 +19,7 @@ class PostItem extends StatefulWidget {
   final VoidCallback? onReportPost;
 
   const PostItem({
-    Key? key,
+    super.key,
     required this.post,
     required this.onLikeClick,
     required this.onEditPost,
@@ -27,7 +27,7 @@ class PostItem extends StatefulWidget {
     required this.onPostClick,
     this.onCommentClick,
     this.onReportPost,
-  }) : super(key: key);
+  });
 
   @override
   _PostItemState createState() => _PostItemState();

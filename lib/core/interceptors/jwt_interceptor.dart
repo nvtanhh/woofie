@@ -27,10 +27,14 @@ class JwtInterceptor extends Interceptor {
   }
 
   @override
-  Future<void>? onConnected(HasuraConnect connect) {}
+  Future<void>? onConnected(HasuraConnect connect) {
+    return null;
+  }
 
   @override
-  Future<void>? onDisconnected() {}
+  Future<void>? onDisconnected() {
+    return null;
+  }
 
   @override
   Future? onRequest(Request request) async {
@@ -45,10 +49,14 @@ class JwtInterceptor extends Interceptor {
   }
 
   @override
-  Future<void>? onSubscription(Request request, Snapshot snapshot) {}
+  Future<void>? onSubscription(Request request, Snapshot snapshot) {
+    return null;
+  }
 
   @override
-  Future<void>? onTryAgain(HasuraConnect connect) {}
+  Future<void>? onTryAgain(HasuraConnect connect) {
+    return null;
+  }
 }
 
 class MyHttpOverrides extends HttpOverrides {

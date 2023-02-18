@@ -13,11 +13,10 @@ class UserMenuActionWidget extends StatelessWidget {
   final ValueChanged<User> onUserBlock;
 
   const UserMenuActionWidget(
-      {Key? key,
+      {super.key,
       required this.user,
       required this.onUserReport,
-      required this.onUserBlock})
-      : super(key: key);
+      required this.onUserBlock,});
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +80,7 @@ class UserMenuActionWidget extends StatelessWidget {
         margin: EdgeInsets.only(left: 20.w),
         padding: EdgeInsets.only(top: 5.h),
         decoration: BoxDecoration(
-            color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
+            color: UIColor.holder, borderRadius: BorderRadius.circular(10.r),),
         child: const Center(
           child: MWIcon(
             MWIcons.moreHoriz,

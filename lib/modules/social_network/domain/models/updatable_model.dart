@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math';
 
 import 'package:dcache/dcache.dart';
@@ -89,7 +88,7 @@ class UpdatableModelSimpleStorage<K, V extends UpdatableModel>
 
   UpdatableModelSimpleStorage({required int size}) {
     _size = size > maxInt ? maxInt : size;
-    _internalMap = LinkedHashMap();
+    _internalMap = {};
   }
 
   @override
@@ -121,29 +120,29 @@ class UpdatableModelSimpleStorage<K, V extends UpdatableModel>
 
   @override
   void remove(K key) {
-    CacheEntry<K, UpdatableModel> item = get(key);
+    final CacheEntry<K, UpdatableModel> item = get(key);
     // https://stackoverflow.com/questions/49879438/dart-do-i-have-to-cancel-stream-subscriptions-and-close-streamsinks
     // item.value.dispose();
-    this._internalMap.remove(key);
+    _internalMap.remove(key);
   }
 
   @override
-  int get length => this._internalMap.length;
+  int get length => _internalMap.length;
 
   @override
   bool containsKey(K key) {
-    return this._internalMap.containsKey(key);
+    return _internalMap.containsKey(key);
   }
 
   @override
-  List<K> get keys => this._internalMap.keys.toList(growable: true);
+  List<K> get keys => _internalMap.keys.toList(growable: true);
 
   @override
   List<CacheEntry<K, V>> get values =>
-      this._internalMap.values.toList(growable: true);
+      _internalMap.values.toList(growable: true);
 
   @override
-  int get capacity => this._size;
+  int get capacity => _size;
 }
 
-typedef void UpdateCallback(Map json);
+typedef UpdateCallback = void Function(Map json);

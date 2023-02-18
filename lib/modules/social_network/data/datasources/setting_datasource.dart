@@ -12,7 +12,7 @@ class SettingDatasource {
   final SettingStorage _settingStorage;
 
   SettingDatasource(
-      this._hasuraConnect, this._loggedInUser, this._settingStorage);
+      this._hasuraConnect, this._loggedInUser, this._settingStorage,);
 
   Future<Setting?> getSetting() async {
     try {

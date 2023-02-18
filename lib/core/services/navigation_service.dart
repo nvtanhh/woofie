@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/app/pages/chat_dashboard.dart';
 import 'package:meowoof/modules/chat/app/pages/chat_room.dart';
+import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
 import 'package:meowoof/modules/social_network/app/map/map_searcher.dart';

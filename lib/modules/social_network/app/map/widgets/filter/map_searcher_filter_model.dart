@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';

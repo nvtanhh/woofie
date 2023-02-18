@@ -74,7 +74,7 @@ class NewFeedWidgetModel extends BaseViewModel {
     try {
       _lastRefeshTime = DateTime.now();
       final newItems = await _getPostsUsecase.call(
-          offset: nextPageKey, lastValue: dateTimeValueLast);
+          offset: nextPageKey, lastValue: dateTimeValueLast,);
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         postService.pagingController.appendLastPage(newItems);

@@ -20,7 +20,7 @@ class MWButtonAlert extends StatelessWidget {
       this.isLoading = false,
       this.buttonIcon,
       this.assetImage,
-      this.theme = MWButtonAlertTheme.light});
+      this.theme = MWButtonAlertTheme.light,});
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +31,8 @@ class MWButtonAlert extends StatelessWidget {
           if (assetImage != null)
             Padding(
                 padding: const EdgeInsets.only(
-                    right: 30, left: 10, top: 10, bottom: 10),
-                child: assetImage!.image())
+                    right: 30, left: 10, top: 10, bottom: 10,),
+                child: assetImage!.image(),)
           else
             const SizedBox(),
           Flexible(
@@ -60,7 +60,7 @@ class MWButtonAlert extends StatelessWidget {
               ],
             ),
           )
-        ]),
+        ],),
       ),
     );
   }

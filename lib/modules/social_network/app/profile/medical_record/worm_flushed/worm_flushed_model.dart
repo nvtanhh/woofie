@@ -66,7 +66,7 @@ class WormFlushedWidgetModel extends BaseViewModel {
       onFailure: (err) {
         printError(info: err.toString());
         _toastService.error(
-            message: LocaleKeys.error.trans(), context: Get.context!);
+            message: LocaleKeys.error.trans(), context: Get.context!,);
       },
     );
   }

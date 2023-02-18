@@ -22,11 +22,11 @@ class PetsWidget extends StatelessWidget {
   final bool isMyPets;
 
   PetsWidget({
-    Key? key,
+    super.key,
     required this.user,
     this.onFollow,
     required this.isMyPets,
-  }) : super(key: key) {
+  }) {
     if (user.currentPets == null) {
       user.currentPets = [];
       user.notifyUpdate();
@@ -80,7 +80,7 @@ class PetsWidget extends StatelessWidget {
                         )
                       : Center(
                           child:
-                              Text(LocaleKeys.add_pet_do_not_have_pet.trans()))
+                              Text(LocaleKeys.add_pet_do_not_have_pet.trans()),)
                   : ListView.builder(
                       padding: EdgeInsets.only(
                         left: 15.w,

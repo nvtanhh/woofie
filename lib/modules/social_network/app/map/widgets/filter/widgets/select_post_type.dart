@@ -9,10 +9,10 @@ class MapSeacherFilterSelectPostTypeWidget extends StatelessWidget {
   final Function(PostType) onPostTypeSelected;
 
   const MapSeacherFilterSelectPostTypeWidget({
-    Key? key,
+    super.key,
     required this.onPostTypeSelected,
     this.selectedPostTypes = const [],
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

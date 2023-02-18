@@ -6,7 +6,7 @@ import 'package:meowoof/theme/ui_text_style.dart';
 
 class PostBody extends StatelessWidget {
   final Post post;
-  const PostBody({Key? key, required this.post}) : super(key: key);
+  const PostBody({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {

@@ -14,10 +14,10 @@ class PostsOfPetWidget extends StatefulWidget {
   final PostsOfPetWidgetController controller;
 
   const PostsOfPetWidget({
-    Key? key,
+    super.key,
     required this.idPet,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   PostsOfPetWidgetState createState() => PostsOfPetWidgetState();
@@ -104,7 +104,7 @@ class PostsOfPetWidgetState extends State<PostsOfPetWidget> {
 class PostsOfPetWidgetController {
   late PostsOfPetWidgetState _state;
   void attach(
-      {required BuildContext context, required PostsOfPetWidgetState state}) {
+      {required BuildContext context, required PostsOfPetWidgetState state,}) {
     _state = state;
   }
 

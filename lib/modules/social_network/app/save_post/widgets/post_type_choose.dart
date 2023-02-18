@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/icon.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/core/extensions/string_ext.dart';
 
 class PostTypeChoseWidget extends StatelessWidget {
   final Function(PostType) onPostTypeChosen;
   final PostType chosenPostType;
 
   const PostTypeChoseWidget(
-      {Key? key,
+      {super.key,
       required this.onPostTypeChosen,
-      this.chosenPostType = PostType.activity})
-      : super(key: key);
+      this.chosenPostType = PostType.activity,});
 
   @override
   Widget build(BuildContext context) {

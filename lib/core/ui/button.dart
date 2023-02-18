@@ -40,7 +40,7 @@ class MWButton extends StatelessWidget {
       this.outline = false,
       this.borderRadius,
       this.borderColor,
-      this.borderWidth});
+      this.borderWidth,});
 
   @override
   Widget build(BuildContext context) {
@@ -77,11 +77,11 @@ class MWButton extends StatelessWidget {
         decoration: BoxDecoration(
             border: outline
                 ? Border.all(
-                    width: borderWidth ?? 1, color: borderColor ?? textColor)
+                    width: borderWidth ?? 1, color: borderColor ?? textColor,)
                 : const Border(),
             boxShadow: boxShadow ?? [],
             color: finalBackgroundColor,
-            borderRadius: borderRadius ?? BorderRadius.circular(50.0)),
+            borderRadius: borderRadius ?? BorderRadius.circular(50.0),),
         child: Material(
           color: Colors.transparent,
           textStyle: defaultTextStyle,
@@ -99,7 +99,7 @@ class MWButton extends StatelessWidget {
   }
 
   TextStyle _getButtonTextStyleForSize(
-      {MWButtonSize? size, required Color color}) {
+      {MWButtonSize? size, required Color color,}) {
     TextStyle textStyle = TextStyle(color: color);
 
     switch (size) {
@@ -119,7 +119,7 @@ class MWButton extends StatelessWidget {
       height: 16.h,
       width: 16.w,
       child: CircularProgressIndicator(
-          strokeWidth: 2.0, valueColor: AlwaysStoppedAnimation<Color>(color)),
+          strokeWidth: 2.0, valueColor: AlwaysStoppedAnimation<Color>(color),),
     );
   }
 

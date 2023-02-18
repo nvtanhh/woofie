@@ -14,7 +14,7 @@ import 'package:meowoof/theme/ui_text_style.dart';
 class MessageBodyPostPreviewer extends StatelessWidget {
   final Message message;
 
-  const MessageBodyPostPreviewer(this.message, {Key? key}) : super(key: key);
+  const MessageBodyPostPreviewer(this.message, {super.key});
 
   @override
   Widget build(BuildContext context) {

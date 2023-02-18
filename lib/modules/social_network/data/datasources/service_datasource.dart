@@ -2,7 +2,6 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/modules/social_network/domain/models/service.dart';
-import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
 @lazySingleton
 class ServiceDatasource {
@@ -13,7 +12,7 @@ class ServiceDatasource {
   );
 
   Future<List<Service>> getServices() async {
-    final query = """
+    const query = """
 query MyQuery {
   pet_services {
     id
@@ -42,7 +41,7 @@ query MyQuery {
   }
 
   Future<List<Service>> searchService(
-      String keyWord, int limit, int offset) async {
+      String keyWord, int limit, int offset,) async {
     final query = """
     query MyQuery {
       pet_services(where: {_or: {service_type: {_ilike: "%${keyWord.toLowerCase()}%"}, name: {_ilike: "%${keyWord.toLowerCase()}%"}}}, limit: $limit, offset: $offset, order_by: {name: desc}) {

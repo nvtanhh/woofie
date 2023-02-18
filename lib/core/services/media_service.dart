@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/file_helper.dart';
@@ -15,16 +16,15 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-import 'package:get/get.dart';
 
 @lazySingleton
 class MediaService {
   String defaultThumbnailCacheUrl = '/thumbnailCache';
-  Map _thumbnail_cache = {};
+  final Map _thumbnail_cache = {};
   static const Uuid _uuid = Uuid();
 
   Future<Uint8List?> getVideoThumbnailFromFile(File videoFile,
-      {double? maxWidth, bool isConstraintsSize = true, int? quality}) async {
+      {double? maxWidth, bool isConstraintsSize = true, int? quality,}) async {
     return VideoThumbnail.thumbnailData(
       video: videoFile.path,
       imageFormat: ImageFormat.JPEG,
@@ -34,7 +34,7 @@ class MediaService {
   }
 
   Future<String?> getVideoThumbnailFromUrl(String url,
-      {double? maxWidth, bool isConstraintsSize = true, int? quality}) async {
+      {double? maxWidth, bool isConstraintsSize = true, int? quality,}) async {
     final filePath = await VideoThumbnail.thumbnailFile(
       video: url,
       thumbnailPath: await _getThumbnailCachePath(defaultThumbnailCacheUrl),
@@ -48,17 +48,21 @@ class MediaService {
   void clearAllThumbnail() {}
 
   Future<File?> cropImage(File image, {double? ratioX, double? ratioY}) async {
-    return ImageCropper().cropImage(
+    final croppedFile = await ImageCropper().cropImage(
       sourcePath: image.path,
       aspectRatio: ratioX != null && ratioY != null
           ? CropAspectRatio(ratioX: ratioX, ratioY: ratioY)
           : null,
-      androidUiSettings: const AndroidUiSettings(
-        toolbarColor: Colors.black,
-        statusBarColor: Colors.black,
-        toolbarWidgetColor: Colors.white,
-      ),
+      // androidUiSettings: const AndroidUiSettings(
+      //   toolbarColor: Colors.black,
+      //   statusBarColor: Colors.black,
+      //   toolbarWidgetColor: Colors.white,
+      // ),
     );
+    if (croppedFile != null) {
+      return File(croppedFile.path);
+    }
+    return null;
   }
 
   Future<FileType?> getMediaType(File file) async {
@@ -92,7 +96,7 @@ class MediaService {
     if (compressedImageData != null) {
       printInfo(
           info:
-              'Compressed image from ${image.lengthSync()} ===> ${compressedImageData.length}');
+              'Compressed image from ${image.lengthSync()} ===> ${compressedImageData.length}',);
       final String imageName = basename(image.path);
       final tempPath = await _getTempPath();
       final String thumbnailPath = '$tempPath/$imageName';
@@ -110,12 +114,12 @@ class MediaService {
     File resultFile;
 
     try {
-      final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
+      final FlutterFFmpeg flutterFFmpeg = FlutterFFmpeg();
       final String videoName = basename(video.path);
       final path = await _getTempPath();
       final String resultFilePath = '$path/$videoName';
-      final int exitCode = await _flutterFFmpeg.execute(
-          '-i ${video.path} -filter:v scale=720:-2 -vcodec libx264 -crf 23 -preset veryfast $resultFilePath');
+      final int exitCode = await flutterFFmpeg.execute(
+          '-i ${video.path} -filter:v scale=720:-2 -vcodec libx264 -crf 23 -preset veryfast $resultFilePath',);
 
       if (exitCode == 0) {
         resultFile = File(resultFilePath);
@@ -161,7 +165,7 @@ class MediaService {
   }
 
   Future<List<MediaFile>> pickMedias(
-      {bool allowMultiple = true, FileType type = FileType.media}) async {
+      {bool allowMultiple = true, FileType type = FileType.media,}) async {
     final List<MediaFile> medias = [];
     List<File>? files;
     final FilePickerResult? result = await FilePicker.platform
@@ -175,7 +179,7 @@ class MediaService {
       await Future.wait(files.map((file) async {
         final MediaFile media = await convertToMediaFile(file);
         medias.add(media);
-      }));
+      }),);
     }
     return medias;
   }

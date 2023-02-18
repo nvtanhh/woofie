@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -100,7 +99,7 @@ class MapSearcherModel extends BaseViewModel {
       onTap: () {
         debugPrint('circle pressed');
       },
-    ));
+    ),);
   }
 
   void _initPostService() {
@@ -190,7 +189,7 @@ class MapSearcherModel extends BaseViewModel {
             position: LatLng(lat, long),
             infoWindow: InfoWindow(
                 title: post.taggegPets![0].name,
-                onTap: () => Get.to(() => AdoptionPetDetailWidget(post: post))),
+                onTap: () => Get.to(() => AdoptionPetDetailWidget(post: post)),),
           ),
         );
       }
@@ -238,7 +237,7 @@ class MapSearcherModel extends BaseViewModel {
 
     // Oval for the image
     final Rect oval = Rect.fromLTWH(imageOffset, imageOffset,
-        size.width - (imageOffset * 2), size.height - (imageOffset * 2));
+        size.width - (imageOffset * 2), size.height - (imageOffset * 2),);
 
     // Add path for oval image
     canvas.clipPath(Path()..addOval(oval));
@@ -322,7 +321,7 @@ class MapSearcherModel extends BaseViewModel {
 
   void _removeUnnesseryMarkers(List<Post> posts) {
     markers.removeWhere(
-        (m) => !posts.any((post) => post.id.toString() == m.markerId.value));
+        (m) => !posts.any((post) => post.id.toString() == m.markerId.value),);
   }
 
   Future onFilterPressed() async {

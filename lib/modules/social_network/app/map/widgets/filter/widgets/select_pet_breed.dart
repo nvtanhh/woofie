@@ -1,9 +1,6 @@
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_breed.dart';
-import 'package:meowoof/modules/social_network/domain/models/pet/pet_type.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
@@ -13,11 +10,11 @@ class MapSeacherFilterSelectPetBreedWidget extends StatelessWidget {
   final Function(PetBreed) onPetBreedSelected;
 
   const MapSeacherFilterSelectPetBreedWidget({
-    Key? key,
+    super.key,
     required this.petBreeds,
     required this.onPetBreedSelected,
     this.selectedPetBreeds = const [],
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,7 @@ class MapSeacherFilterSelectPetBreedWidget extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
               color: isSelected ? UIColor.primary : UIColor.holder,
-              borderRadius: BorderRadius.circular(10.r)),
+              borderRadius: BorderRadius.circular(10.r),),
           child: Padding(
             padding: EdgeInsets.all(8.w),
             child: Text(

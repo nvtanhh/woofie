@@ -12,11 +12,11 @@ class MapSeacherFilterSelectPetTypeWidget extends StatelessWidget {
   final PetType? selectedPetType;
 
   const MapSeacherFilterSelectPetTypeWidget({
-    Key? key,
+    super.key,
     required this.petTypes,
     required this.onPetTypeSelected,
     this.selectedPetType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class MapSeacherFilterSelectPetTypeWidget extends StatelessWidget {
                       case LoadState.failed:
                         return _getPlaceholder();
                     }
-                  }),
+                  },),
                 ),
               ),
               SizedBox(

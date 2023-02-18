@@ -14,13 +14,13 @@ class CommentActionsTrailing extends StatelessWidget {
   final Widget widget;
 
   const CommentActionsTrailing({
-    Key? key,
+    super.key,
     required this.comment,
     required this.onDeleteComment,
     required this.onEditComment,
     required this.onReportComment,
     required this.widget,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

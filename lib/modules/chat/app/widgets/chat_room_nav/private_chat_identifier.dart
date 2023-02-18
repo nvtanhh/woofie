@@ -8,8 +8,7 @@ import 'package:meowoof/theme/ui_text_style.dart';
 class PrivateChatIdentifier extends StatelessWidget {
   final User? chatUser;
 
-  const PrivateChatIdentifier({Key? key, required this.chatUser})
-      : super(key: key);
+  const PrivateChatIdentifier({super.key, required this.chatUser});
 
   @override
   Widget build(BuildContext context) {

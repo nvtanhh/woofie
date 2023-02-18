@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meowoof/core/ui/icon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/theme/ui_color.dart';
 
 class IconWithBagedWidget extends StatelessWidget {
@@ -8,8 +8,7 @@ class IconWithBagedWidget extends StatelessWidget {
   final int count;
 
   const IconWithBagedWidget(
-      {Key? key, required this.goToRequestMessagePage, required this.count})
-      : super(key: key);
+      {super.key, required this.goToRequestMessagePage, required this.count,});
 
   @override
   Widget build(BuildContext context) {

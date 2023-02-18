@@ -18,7 +18,7 @@ import 'package:suga_core/suga_core.dart';
 class AdoptionWidget extends StatefulWidget {
   final PostType postType;
 
-  const AdoptionWidget({Key? key, required this.postType}) : super(key: key);
+  const AdoptionWidget({super.key, required this.postType});
 
   @override
   _AdoptionWidgetState createState() => _AdoptionWidgetState();

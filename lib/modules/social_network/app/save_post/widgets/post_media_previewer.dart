@@ -17,7 +17,7 @@ class MediaPreviewer extends StatelessWidget {
   final bool isConstraintsSize;
 
   const MediaPreviewer({
-    Key? key,
+    super.key,
     this.media,
     this.mediaFile,
     this.onRemove,
@@ -27,7 +27,7 @@ class MediaPreviewer extends StatelessWidget {
     this.height,
     this.fit,
     this.isConstraintsSize = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -72,7 +72,7 @@ class RequestContactDatasource {
   }
 
   Future<RequestContact> acceptRequestMessages(
-      RequestContact requestContact) async {
+      RequestContact requestContact,) async {
     final String mutation = """
   mutation MyMutation {
   update_request_contact_by_pk(pk_columns: {id: ${requestContact.id}}, _set: {status: ${RequestContactStatus.accept.index}}) {
@@ -93,8 +93,8 @@ class RequestContactDatasource {
   }
 
   Future<RequestContact> denyRequestMessages(
-      RequestContact requestContact) async {
-    String mutation = """
+      RequestContact requestContact,) async {
+    final String mutation = """
   mutation MyMutation {
   update_request_contact_by_pk(pk_columns: {id: ${requestContact.id}}, _set: {status: ${RequestContactStatus.deny.index}}) {
     id
@@ -131,7 +131,7 @@ class RequestContactDatasource {
   }
 
   Future updateContentRequestMessage(
-      RequestContact requestContact, String content) async {
+      RequestContact requestContact, String content,) async {
     final String mutation = """
   mutation MyMutation {
   update_request_contact_by_pk(pk_columns: {id: ${requestContact.id}}, _set: {content: "$content"}) {
@@ -185,7 +185,7 @@ query MyQuery {
         );
       } catch (e) {
         return RequestContact.fromJson(
-            requestContacts[0] as Map<String, dynamic>);
+            requestContacts[0] as Map<String, dynamic>,);
       }
     }
     return null;

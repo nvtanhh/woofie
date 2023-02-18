@@ -22,12 +22,12 @@ class PostHeader extends StatelessWidget {
   final VoidCallback? onReportPost;
 
   const PostHeader({
-    Key? key,
+    super.key,
     required this.post,
     required this.onDeletePost,
     required this.onEditPost,
     this.onReportPost,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class PostHeader extends StatelessWidget {
             children: createTagPet(),
             style: UITextStyle.heading_16_semiBold,
             recognizer: TapGestureRecognizer()
-              ..onTap = () => openProfileUser(user)),
+              ..onTap = () => openProfileUser(user),),
         maxLines: 2,
       ),
       subtitle: Row(
@@ -85,7 +85,7 @@ class PostHeader extends StatelessWidget {
     inLineSpan.add(
       TextSpan(
           text: " ${LocaleKeys.new_feed_with.trans()} ",
-          style: UITextStyle.heading_16_reg),
+          style: UITextStyle.heading_16_reg,),
     );
     for (var i = 0; i < pets.length; i++) {
       inLineSpan.add(

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:better_player/better_player.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class VideoDialog extends StatelessWidget {
@@ -10,11 +9,11 @@ class VideoDialog extends StatelessWidget {
   final bool? autoPlay;
 
   const VideoDialog({
-    Key? key,
+    super.key,
     this.video,
     this.videoUrl,
     this.autoPlay = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class VideoDialog extends StatelessWidget {
         child: video != null
             ? BetterPlayer.file(video!.path)
             : BetterPlayer.network(videoUrl!,
-                betterPlayerConfiguration: const BetterPlayerConfiguration()),
+                betterPlayerConfiguration: const BetterPlayerConfiguration(),),
       ),
     );
   }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/modules/chat/app/widgets/chat_room_nav/chat_identifier.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/theme/ui_color.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatRoomNav extends StatelessWidget {
   final ChatRoom room;
 
-  const ChatRoomNav(this.room, {Key? key}) : super(key: key);
+  const ChatRoomNav(this.room, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -151,7 +151,7 @@ class WeightWidgetModel extends BaseViewModel {
       () async => _deletePetWeightUsecase.run(petWeight.id),
       onSuccess: () {
         _toastService.success(
-            message: "Delete success!", context: Get.context!);
+            message: "Delete success!", context: Get.context!,);
         pagingController.itemList?.removeAt(index);
         sortByDate();
         onAddWeightAndRebuildChart();

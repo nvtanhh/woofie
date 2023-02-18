@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:meowoof/assets.gen.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/ui/avatar/avatar.dart';
-import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/profile/pet_profile/pet_profile.dart';
 import 'package:meowoof/modules/social_network/app/profile/user_profile/user_profile.dart';
@@ -21,11 +19,11 @@ class InfoUserPostWidget extends StatelessWidget {
   final DateTime postCreatedAt;
 
   const InfoUserPostWidget({
-    Key? key,
+    super.key,
     required this.user,
     required this.pets,
     required this.postCreatedAt,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +45,12 @@ class InfoUserPostWidget extends StatelessWidget {
               children: [
                 Text.rich(
                   TextSpan(
-                      text: user.name,
-                      children: createTagPet(),
-                      style: UITextStyle.text_header_16_w600,
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () => openProfileUser(user)),
+                    text: user.name,
+                    children: createTagPet(),
+                    style: UITextStyle.text_header_16_w600,
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => openProfileUser(user),
+                  ),
                   maxLines: 2,
                 ),
                 SizedBox(height: 3.h),
@@ -100,7 +99,7 @@ class InfoUserPostWidget extends StatelessWidget {
 
   ImageProvider defineAvatar() {
     if (user.avatarUrl == null) {
-      return Assets.resources.icons.icPerson;
+      return Assets.resources.icons.icPerson.provider();
     } else {
       return NetworkImage(
         user.avatarUrl ?? "",
@@ -113,8 +112,10 @@ class InfoUserPostWidget extends StatelessWidget {
   }
 
   void openProfileUser(User user) {
-    Get.to(() => UserProfile(
-          user: user,
-        ));
+    Get.to(
+      () => UserProfile(
+        user: user,
+      ),
+    );
   }
 }

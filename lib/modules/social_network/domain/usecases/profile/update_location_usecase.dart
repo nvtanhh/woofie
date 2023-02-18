@@ -12,7 +12,7 @@ class UpdateLocationUsecase {
       {required int id,
       required double long,
       required double lat,
-      required String name}) {
+      required String name,}) {
     return _profileRepository.updateLocation(id, long, long, name);
   }
 }

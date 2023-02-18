@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
 import 'package:meowoof/modules/social_network/app/explore/widgets/adoption_pet_detail/adoption_pet_detail_widget.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 
@@ -46,9 +46,7 @@ class PostMapWidget extends StatelessWidget {
                     : post.medias!.first.url!,
                 fit: BoxFit.cover,
                 topLeftRadius: 15.r,
-                topRightRadius: 0,
                 bottomLeftRadius: 15.r,
-                bottomRightRadius: 0,
                 placeHolderImagePath:
                     "resources/images/fallbacks/pet-avatar-fallback.jpg",
               ),

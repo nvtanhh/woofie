@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:async/async.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/services/media_service.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
@@ -21,8 +22,6 @@ import 'package:meowoof/modules/social_network/domain/usecases/save_post/upload_
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/core/extensions/string_ext.dart';
 
 @injectable
 class NewPostUploaderModel extends BaseViewModel {
@@ -93,7 +92,7 @@ class NewPostUploaderModel extends BaseViewModel {
 
       if (data.remainingMediaToCompress.isNotEmpty) {
         _setStatusMessage(
-            LocaleKeys.save_post_status_compressing_media.trans());
+            LocaleKeys.save_post_status_compressing_media.trans(),);
         _setStatus(PostUploaderStatus.compressingPostMedia);
         await _compressPostMedia();
       }
@@ -133,7 +132,7 @@ class NewPostUploaderModel extends BaseViewModel {
 
   Future _compressPostMedia() async {
     return Future.wait(
-        data.remainingMediaToCompress.map(_compressPostMediaItem));
+        data.remainingMediaToCompress.map(_compressPostMediaItem),);
   }
 
   Future _compressPostMediaItem(MediaFile postMediaItem) async {
@@ -173,7 +172,7 @@ class NewPostUploaderModel extends BaseViewModel {
     }
     if (uploadedMediaUrl != null) {
       final UploadedMedia mediaFileUploader = UploadedMedia(
-          uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type));
+          uploadedMediaUrl, _convertToMediaTypeCode(mediaFile.type),);
       data.uploadedMediasToAddToPost.add(mediaFileUploader);
       data.compressedMedia.remove(mediaFile);
     }
@@ -255,7 +254,7 @@ class NewPostUploaderModel extends BaseViewModel {
         },
         onFailure: (error) {
           printError(
-              info: 'Failed to delete post wit error: ${error.toString()}');
+              info: 'Failed to delete post wit error: ${error.toString()}',);
           return false;
         },
       );

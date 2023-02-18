@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:meowoof/assets.gen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/assets.gen.dart';
 
 class MWLogo extends StatelessWidget {
   final double? size;
   final double? borderRadius;
 
-  const MWLogo({Key? key, this.size, this.borderRadius}) : super(key: key);
+  const MWLogo({super.key, this.size, this.borderRadius});
 
   @override
   Widget build(BuildContext context) {

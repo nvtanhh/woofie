@@ -141,15 +141,15 @@ class AdoptionPetDetailWidgetModel extends BaseViewModel {
       case PostType.adop:
         if (post.additionalData != null) {
           adopter = User.fromJsonPure(
-              json.decode(post.additionalData!.replaceAll("'", "\""))
-                  as Map<String, dynamic>);
+              json.decode(post.additionalData!.replaceAll("'", '"'))
+                  as Map<String, dynamic>,);
         }
         break;
       case PostType.mating:
         if (post.additionalData != null) {
           matedPet = Pet.fromJsonPure(
-              json.decode(post.additionalData!.replaceAll("'", "\""))
-                  as Map<String, dynamic>);
+              json.decode(post.additionalData!.replaceAll("'", '"'))
+                  as Map<String, dynamic>,);
         }
         break;
       default:

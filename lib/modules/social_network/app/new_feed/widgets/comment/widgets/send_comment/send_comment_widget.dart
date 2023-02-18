@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -22,11 +21,11 @@ class SendCommentWidget extends StatefulWidget {
   final Comment? comment;
 
   const SendCommentWidget({
-    Key? key,
+    super.key,
     required this.onSendComment,
     required this.post,
     this.comment,
-  }) : super(key: key);
+  });
 
   @override
   _SendCommentWidgetState createState() => _SendCommentWidgetState();
@@ -42,7 +41,7 @@ class _SendCommentWidgetState
     viewModel.showSuggestionDialog = showSuggestionDialog;
     viewModel.customSpan = customSpan;
     WidgetsBinding.instance
-        ?.addPostFrameCallback((timeStamp) => viewModel.loadUserFromLocal());
+        .addPostFrameCallback((timeStamp) => viewModel.loadUserFromLocal());
     super.loadArguments();
   }
 
@@ -82,13 +81,13 @@ class _SendCommentWidgetState
                 hintText: LocaleKeys.new_feed_write_a_comment.trans(),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide.none),
+                    borderSide: BorderSide.none,),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide.none),
+                    borderSide: BorderSide.none,),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide.none),
+                    borderSide: BorderSide.none,),
                 fillColor: UIColor.holder,
                 focusColor: UIColor.black,
                 filled: true,
@@ -177,7 +176,7 @@ class _SendCommentWidgetState
                                   onPressed: () {
                                     viewModel.removeOverlay();
                                   },
-                                  icon: const Icon(Icons.close)),
+                                  icon: const Icon(Icons.close),),
                             ),
                             Text('Filter: ${viewModel.filterState?.text}'),
                             Flexible(
@@ -195,7 +194,7 @@ class _SendCommentWidgetState
                                             viewModel.controller
                                                 ?.approveSelection(
                                                     viewModel.filterState!,
-                                                    item);
+                                                    item,);
                                             viewModel.addTagUser(item.item!);
                                           }
                                           viewModel.removeOverlay();
@@ -221,7 +220,7 @@ class _SendCommentWidgetState
       },
     );
 
-    Overlay.of(Get.context!)?.insert(viewModel.overlayEntry!);
+    Overlay.of(Get.context!).insert(viewModel.overlayEntry!);
   }
 
   @override

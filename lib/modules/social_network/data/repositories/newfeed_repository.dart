@@ -21,7 +21,7 @@ class NewFeedRepository {
   );
 
   Future<List<Post>> getPosts(
-      {int limit = 10, int offset = 0, DateTime? lastValue}) {
+      {int limit = 10, int offset = 0, DateTime? lastValue,}) {
     return _postDatasource.getPostsTimeline(offset, limit);
   }
 
@@ -42,7 +42,7 @@ class NewFeedRepository {
   }
 
   Future<Comment?> createComment(
-      int postId, String content, List<User> userTag) {
+      int postId, String content, List<User> userTag,) {
     return _commentDatasource.createComment(postId, content, userTag);
   }
 

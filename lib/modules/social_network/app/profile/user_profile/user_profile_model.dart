@@ -119,7 +119,7 @@ class UserProfileModel extends BaseViewModel {
   Future _loadMorePost(int pageKey) async {
     try {
       posts = await _getPostOfUserUsecase.call(
-          userUUID: user!.uuid, offset: nextPageKey, limit: pageSize);
+          userUUID: user!.uuid, offset: nextPageKey, limit: pageSize,);
       if (postService.pagingController.itemList == null ||
           postService.pagingController.itemList?.isEmpty == true) {
         posts.insert(
@@ -162,7 +162,7 @@ class UserProfileModel extends BaseViewModel {
       onSuccess: () {
         if (result) {
           _toastService.success(
-              message: "Post deleted!", context: Get.context!);
+              message: "Post deleted!", context: Get.context!,);
           postService.pagingController.itemList?.removeAt(index);
           // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
           postService.pagingController.notifyListeners();
@@ -229,7 +229,7 @@ class UserProfileModel extends BaseViewModel {
                 injector<NavigationService>().navigateToChatRoom(
                     user: targetUser.uuid == requestContact?.toUser?.uuid
                         ? requestContact!.toUser
-                        : requestContact!.fromUser);
+                        : requestContact!.fromUser,);
                 return;
               case RequestContactStatus.waiting:
                 sendContentRequestMessage(requestContact!);

@@ -12,8 +12,7 @@ class MessageBody extends StatelessWidget {
   final User? partner;
 
   const MessageBody(this.message,
-      {Key? key, required this.isMyMessage, this.partner})
-      : super(key: key);
+      {super.key, required this.isMyMessage, this.partner,});
 
   @override
   Widget build(BuildContext context) {

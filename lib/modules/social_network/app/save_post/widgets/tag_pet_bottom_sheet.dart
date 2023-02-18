@@ -14,13 +14,13 @@ class TagPetBottomSheetWidget extends StatefulWidget {
   final bool needConfirmButton;
 
   const TagPetBottomSheetWidget({
-    Key? key,
+    super.key,
     required this.onPetChosen,
     required this.userPets,
     this.taggedPets = const [],
     this.title,
     this.needConfirmButton = false,
-  }) : super(key: key);
+  });
 
   @override
   _TagPetBottomSheetWidgetState createState() =>
@@ -58,7 +58,7 @@ class _TagPetBottomSheetWidgetState extends State<TagPetBottomSheetWidget> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Text(widget.title ?? 'Gắn thẻ thú cưng:',
-                style: UITextStyle.heading_18_semiBold),
+                style: UITextStyle.heading_18_semiBold,),
           ),
           SizedBox(
             height: 210.h,
@@ -88,7 +88,7 @@ class _TagPetBottomSheetWidgetState extends State<TagPetBottomSheetWidget> {
                           });
                         }
                         _setSelectedPet(widget.userPets[index]);
-                      }),
+                      },),
                 );
               },
             ),

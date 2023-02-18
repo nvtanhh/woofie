@@ -26,11 +26,11 @@ class WeightWidget extends StatefulWidget {
   final bool? addData;
 
   const WeightWidget({
-    Key? key,
+    super.key,
     required this.pet,
     required this.isMyPet,
     this.addData,
-  }) : super(key: key);
+  });
 
   @override
   _WeightWidgetState createState() => _WeightWidgetState();
@@ -44,8 +44,7 @@ class _WeightWidgetState
     viewModel.isMyPet = widget.isMyPet;
     viewModel.listWeightChart = widget.pet.petWeights ?? [];
     if (widget.addData == true) {
-      SchedulerBinding.instance!
-          .addPostFrameCallback((_) => viewModel.addWeightPress());
+      SchedulerBinding.instance.addPostFrameCallback((_) => viewModel.addWeightPress());
     }
     super.loadArguments();
   }
@@ -121,7 +120,7 @@ class _WeightWidgetState
                         ),
                         subtitle: Text(
                           FormatHelper.formatDateTime(petWeight.date,
-                              pattern: "dd/MM/yyyy"),
+                              pattern: "dd/MM/yyyy",),
                           style: UITextStyle.text_secondary_10_w600,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -139,7 +138,7 @@ class _WeightWidgetState
                             quarterTurns: defineAngle(
                                 index,
                                 viewModel.pagingController.itemList?.length ??
-                                    0),
+                                    0,),
                             child: index ==
                                     ((viewModel.pagingController.itemList
                                                 ?.length ??
@@ -172,7 +171,7 @@ class _WeightWidgetState
                               ),
                             Text(
                               calcAgeFromWeight(
-                                  viewModel.pet.dob, petWeight.date),
+                                  viewModel.pet.dob, petWeight.date,),
                               style: UITextStyle.text_secondary_12_w500,
                             ),
                           ],
