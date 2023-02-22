@@ -9,8 +9,8 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:meowoof/configs/app_config.dart';
-import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/interceptors/jwt_interceptor.dart';
+import 'package:meowoof/core/services/environment_service.dart';
 import 'package:meowoof/injector.config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,7 +50,7 @@ abstract class RegisterModule {
   @lazySingleton
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {
     return HasuraConnect(
-      BackendConfig.BASE_HASURA_URL,
+      injector<EnvironmentService>().hasuraUrl,
       interceptors: [interceptor],
     );
   }

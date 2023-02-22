@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meowoof/configs/backend_config.dart';
+import 'package:meowoof/core/services/environment_service.dart';
+import 'package:meowoof/injector.dart';
 
 part 'media.g.dart';
 
@@ -32,7 +33,7 @@ class Media {
     if (!url.startsWith('/')) {
       finalUrl = '/$url';
     }
-    return BackendConfig.S3_URL + finalUrl;
+    return injector<EnvironmentService>().s3Url + finalUrl;
   }
 
   factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);
