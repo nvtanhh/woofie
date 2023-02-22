@@ -29,6 +29,10 @@ jobs:
           flutter-version: "3.7.0"
           cache: true
 
+      - name: Create env file
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+
       - name: Prepare to build
         run: flutter pub get
 
