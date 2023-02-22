@@ -74,7 +74,7 @@ dependencies:
   google_sign_in: ^5.0.3
 
   # A Flutter plugin for using the native Facebook Login SDKs on Android and iOS.
-  flutter_facebook_auth: 
+  flutter_facebook_auth:
 
   # Toast Library for Flutter
   fluttertoast: ^8.0.6
@@ -180,12 +180,16 @@ dependencies:
 
   # A CacheManager to download and cache files in the cache directory of the app. Various settings on how long to keep a file can be changed.
   flutter_cache_manager: ^3.1.2
+
   #A cross platform plugin for displaying local notifications.
   flutter_local_notifications: ^8.1.1+1
+
   #A Flutter plugin for launching a URL. Supports iOS, Android, web, Windows, macOS, and Linux.
   url_launcher: ^6.0.10
 
   flutter_easyloading: ^3.0.5
+
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   analyzer: ^5.5.0
@@ -211,6 +215,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - .env
+
     - resources/langs/
     - resources/icons/
     - resources/google_fonts/

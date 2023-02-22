@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -59,14 +60,20 @@ class HttpieService {
     bool? appendAuthorizationToken,
   }) async {
     final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken,);
+      headers: headers,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
 
     final uri = Uri.parse(url);
 
     Response? response;
     try {
-      response = await client.post(uri,
-          headers: finalHeaders, body: body, encoding: encoding,);
+      response = await client.post(
+        uri,
+        headers: finalHeaders,
+        body: body,
+        encoding: encoding,
+      );
     } catch (error) {
       _handleRequestError(error);
     }
@@ -74,11 +81,13 @@ class HttpieService {
     return HttpieResponse(response!);
   }
 
-  Future<HttpieResponse> put(String url,
-      {Map<String, String>? headers,
-      Object? body,
-      Encoding? encoding,
-      bool? appendAuthorizationToken,}) async {
+  Future<HttpieResponse> put(
+    String url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+    bool? appendAuthorizationToken,
+  }) async {
     final finalHeaders = await _getHeadersWithConfig(
       headers: headers,
       appendAuthorizationToken: appendAuthorizationToken,
@@ -89,8 +98,12 @@ class HttpieService {
     late Response response;
 
     try {
-      response = await client.put(uri,
-          headers: finalHeaders, body: body, encoding: encoding,);
+      response = await client.put(
+        uri,
+        headers: finalHeaders,
+        body: body,
+        encoding: encoding,
+      );
     } catch (error) {
       _handleRequestError(error);
     }
@@ -106,15 +119,21 @@ class HttpieService {
     bool? appendAuthorizationToken,
   }) async {
     final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken,);
+      headers: headers,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
 
     final uri = Uri.parse(url);
 
     late Response response;
 
     try {
-      response = await client.patch(uri,
-          headers: finalHeaders, body: body, encoding: encoding,);
+      response = await client.patch(
+        uri,
+        headers: finalHeaders,
+        body: body,
+        encoding: encoding,
+      );
     } catch (error) {
       _handleRequestError(error);
     }
@@ -130,7 +149,9 @@ class HttpieService {
     bool? appendAuthorizationToken,
   }) async {
     final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken,);
+      headers: headers,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
 
     final uri = Uri.parse(url);
 
@@ -152,7 +173,9 @@ class HttpieService {
     bool? appendAuthorizationToken,
   }) async {
     final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken,);
+      headers: headers,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
 
     if (queryParameters != null && queryParameters.keys.isNotEmpty) {
       // ignore: parameter_assignments
@@ -205,11 +228,13 @@ class HttpieService {
 
     jsonHeaders.addAll(headers);
 
-    return put(url,
-        headers: jsonHeaders,
-        body: jsonBody,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken,);
+    return put(
+      url,
+      headers: jsonHeaders,
+      body: jsonBody,
+      encoding: encoding,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
   }
 
   Future<HttpieResponse> patchJSON(
@@ -225,20 +250,26 @@ class HttpieService {
 
     jsonHeaders.addAll(headers);
 
-    return patch(url,
-        headers: jsonHeaders,
-        body: jsonBody,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken,);
+    return patch(
+      url,
+      headers: jsonHeaders,
+      body: jsonBody,
+      encoding: encoding,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
   }
 
-  Future<HttpieResponse> get(String url,
-      {Map<String, String>? headers,
-      Map<String, dynamic>? queryParameters,
-      bool? appendLanguageHeader,
-      bool? appendAuthorizationToken,}) async {
+  Future<HttpieResponse> get(
+    String url, {
+    Map<String, String>? headers,
+    Map<String, dynamic>? queryParameters,
+    bool? appendLanguageHeader,
+    bool? appendAuthorizationToken,
+  }) async {
     final finalHeaders = await _getHeadersWithConfig(
-        headers: headers, appendAuthorizationToken: appendAuthorizationToken,);
+      headers: headers,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
 
     if (queryParameters != null && queryParameters.keys.isNotEmpty) {
       // ignore: parameter_assignments
@@ -259,7 +290,9 @@ class HttpieService {
   }
 
   Future<HttpieResponse> getWithHeader(
-      String url, Map<String, String>? header,) async {
+    String url,
+    Map<String, String>? header,
+  ) async {
     late Response response;
     final uri = Uri.parse(url);
     try {
@@ -278,12 +311,14 @@ class HttpieService {
     Encoding? encoding,
     bool? appendAuthorizationToken,
   }) {
-    return _multipartRequest(url,
-        method: 'POST',
-        headers: headers,
-        body: body,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken,);
+    return _multipartRequest(
+      url,
+      method: 'POST',
+      headers: headers,
+      body: body,
+      encoding: encoding,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
   }
 
   Future<HttpieStreamedResponse> deleteMultiform(
@@ -293,12 +328,14 @@ class HttpieService {
     Encoding? encoding,
     bool? appendAuthorizationToken,
   }) {
-    return _multipartRequest(url,
-        method: 'DELETE',
-        headers: headers,
-        body: body,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken,);
+    return _multipartRequest(
+      url,
+      method: 'DELETE',
+      headers: headers,
+      body: body,
+      encoding: encoding,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
   }
 
   Future<HttpieStreamedResponse> patchMultiform(
@@ -308,12 +345,14 @@ class HttpieService {
     Encoding? encoding,
     bool? appendAuthorizationToken,
   }) {
-    return _multipartRequest(url,
-        method: 'PATCH',
-        headers: headers,
-        body: body,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken,);
+    return _multipartRequest(
+      url,
+      method: 'PATCH',
+      headers: headers,
+      body: body,
+      encoding: encoding,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
   }
 
   Future<HttpieStreamedResponse> putMultiform(
@@ -323,20 +362,24 @@ class HttpieService {
     Encoding? encoding,
     bool? appendAuthorizationToken,
   }) {
-    return _multipartRequest(url,
-        method: 'PUT',
-        headers: headers,
-        body: body,
-        encoding: encoding,
-        appendAuthorizationToken: appendAuthorizationToken,);
+    return _multipartRequest(
+      url,
+      method: 'PUT',
+      headers: headers,
+      body: body,
+      encoding: encoding,
+      appendAuthorizationToken: appendAuthorizationToken,
+    );
   }
 
-  Future<HttpieStreamedResponse> _multipartRequest(String url,
-      {Map<String, String>? headers,
-      required String method,
-      Map<String, dynamic>? body = const {},
-      Encoding? encoding,
-      bool? appendAuthorizationToken,}) async {
+  Future<HttpieStreamedResponse> _multipartRequest(
+    String url, {
+    Map<String, String>? headers,
+    required String method,
+    Map<String, dynamic>? body = const {},
+    Encoding? encoding,
+    bool? appendAuthorizationToken,
+  }) async {
     final request = http.MultipartRequest(method, Uri.parse(url));
 
     final finalHeaders = await _getHeadersWithConfig(
@@ -544,11 +587,14 @@ class HttpieStreamedResponse extends HttpieBaseResponse<http.StreamedResponse> {
   Future<String> readAsString() {
     final completer = Completer<String>();
     final contents = StringBuffer();
-    _httpResponse.stream.transform(utf8.decoder).listen((String data) {
-      contents.write(data);
-    }, onDone: () {
-      completer.complete(contents.toString());
-    },);
+    _httpResponse.stream.transform(utf8.decoder).listen(
+      (String data) {
+        contents.write(data);
+      },
+      onDone: () {
+        completer.complete(contents.toString());
+      },
+    );
     return completer.future;
   }
 }
@@ -629,7 +675,8 @@ class HttpieRequestError<T extends HttpieBaseResponse> implements Exception {
               return value;
             } else {
               return convertStatusCodeToHumanReadableMessage(
-                  response.statusCode,);
+                response.statusCode,
+              );
             }
           }
         } else {
