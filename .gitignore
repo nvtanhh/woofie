@@ -1,6 +1,5 @@
 # Custom
 .fvm/
-injector.config.dart
 android/app/release/
 .env
 
