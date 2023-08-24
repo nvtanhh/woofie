@@ -17,14 +17,14 @@ class MediaButton extends StatelessWidget {
   final bool allowEditMedia;
 
   const MediaButton({
-    Key? key,
+    super.key,
     this.mediaFile,
     this.postMedia,
     this.onMediasPicked,
     this.onRemove,
     this.onImageEdited,
     this.allowEditMedia = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

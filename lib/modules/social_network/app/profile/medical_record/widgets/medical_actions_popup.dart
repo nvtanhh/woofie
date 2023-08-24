@@ -12,8 +12,7 @@ class MedicalActionsTrailing extends StatelessWidget {
   final Widget? child;
 
   const MedicalActionsTrailing(
-      {Key? key, required this.onDelete, required this.onEdit, this.child})
-      : super(key: key);
+      {super.key, required this.onDelete, required this.onEdit, this.child,});
 
   @override
   Widget build(BuildContext context) {

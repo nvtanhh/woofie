@@ -6,7 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meowoof/configs/app_config.dart';
+import 'package:meowoof/core/services/environment_service.dart';
 import 'package:meowoof/core/ui/toast.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/app/pages/chat_dashboard.dart';
@@ -23,18 +23,11 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await setupInjector();
-  setupEasyLoading();
-  setupOneSignal();
-  // set up google_fonts
-  LicenseRegistry.addLicense(() async* {
-    final license =
-        await rootBundle.loadString('resources/google_fonts/OFL.txt');
-    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
-  });
-  // setting status bar color
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
-  );
+  await injector<EnvironmentService>().init();
+
+  _setupEasyLoading();
+  _setupOneSignal();
+  _setupFontsLicense();
   runApp(
     EasyLocalization(
       supportedLocales: const [
@@ -45,6 +38,18 @@ Future main() async {
       fallbackLocale: const Locale('vi'),
       child: MyApp(),
     ),
+  );
+}
+
+void _setupFontsLicense() {
+  LicenseRegistry.addLicense(() async* {
+    final license =
+        await rootBundle.loadString('resources/google_fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
+  // setting status bar color
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
   );
 }
 
@@ -90,10 +95,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void setupOneSignal() {
+void _setupOneSignal() {
   //Remove this method to stop OneSignal Debugging
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  OneSignal.shared.setAppId(AppConfig.APP_ID_ONESIGNAL);
+  OneSignal.shared.setAppId(injector<EnvironmentService>().onesignalAppId);
   OneSignal.shared.setNotificationWillShowInForegroundHandler(
     (OSNotificationReceivedEvent notification) {
       // injector<FlutterLocalNotificationsPlugin>().show(
@@ -123,21 +128,27 @@ void setupOneSignal() {
   );
   OneSignal.shared.setNotificationOpenedHandler((openedResult) {
     try {
-      int? postId =
+      final int? postId =
           openedResult.notification.additionalData?["post_id"] as int?;
-      int? postType =
+      final int? postType =
           openedResult.notification.additionalData?["post_type"] as int?;
       if (postId != null) {
         if (postType != null) {
           if (postType == 3) {
-            Get.to(() => AdoptionPetDetailWidget(
-                post: Post(id: postId, type: PostType.lose, uuid: "")));
+            Get.to(
+              () => AdoptionPetDetailWidget(
+                post: Post(id: postId, type: PostType.lose, uuid: ""),
+              ),
+            );
           } else {
             Get.to(() => const ChatDashboard());
           }
         } else {
-          Get.to(() => PostDetail(
-              post: Post(id: postId, type: PostType.activity, uuid: "")));
+          Get.to(
+            () => PostDetail(
+              post: Post(id: postId, type: PostType.activity, uuid: ""),
+            ),
+          );
         }
       } else {
         Get.to(() => RequestMessagePage());
@@ -150,7 +161,7 @@ void setupOneSignal() {
   OneSignal.shared.consentGranted(true);
 }
 
-void setupEasyLoading() {
+void _setupEasyLoading() {
   EasyLoading.instance
     ..indicatorType = EasyLoadingIndicatorType.ring
     ..maskType = EasyLoadingMaskType.black

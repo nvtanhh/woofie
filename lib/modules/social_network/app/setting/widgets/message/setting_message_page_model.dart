@@ -67,7 +67,7 @@ class SettingMessagePageModel extends BaseViewModel {
   void createSetting() {
     run(
       () async => setting = await _createSettingUsecase.run(
-        jsonEncode(jsonSetting).replaceAll("\"", "'"),
+        jsonEncode(jsonSetting).replaceAll('"', "'"),
       ),
     );
   }

@@ -14,10 +14,10 @@ class ServicesWidget extends StatelessWidget {
   final UserLocation userLocation;
 
   const ServicesWidget({
-    Key? key,
+    super.key,
     required this.pagingController,
     required this.userLocation,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

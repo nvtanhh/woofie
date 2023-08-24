@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'aggregate.dart';
+import 'package:meowoof/modules/social_network/domain/models/aggregate/aggregate.dart';
 
 part 'object_aggregate.g.dart';
 

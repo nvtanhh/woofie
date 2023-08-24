@@ -4,7 +4,7 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/configs/backend_config.dart';
+import 'package:meowoof/configs/app_config.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
@@ -74,7 +74,9 @@ class NewFeedWidgetModel extends BaseViewModel {
     try {
       _lastRefeshTime = DateTime.now();
       final newItems = await _getPostsUsecase.call(
-          offset: nextPageKey, lastValue: dateTimeValueLast);
+        offset: nextPageKey,
+        lastValue: dateTimeValueLast,
+      );
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         postService.pagingController.appendLastPage(newItems);
@@ -109,7 +111,7 @@ class NewFeedWidgetModel extends BaseViewModel {
 
   bool _isCanRefesh() {
     return DateTime.now().difference(_lastRefeshTime).inSeconds >
-        BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
+        AppConfig.REFRESH_INTERVAL_LIMIT_SECOND;
   }
 
   void _scrollToTop() {

@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/datetime_helper.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/core/extensions/string_ext.dart';
 
 class ChatSenderPostPreviewer extends StatelessWidget {
   final Post post;
   final VoidCallback? onRemovePost;
 
-  const ChatSenderPostPreviewer(this.post, {Key? key, this.onRemovePost})
-      : super(key: key);
+  const ChatSenderPostPreviewer(this.post, {super.key, this.onRemovePost});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +75,7 @@ class ChatSenderPostPreviewer extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5.r),
                                 ),
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 5.w, vertical: 2.h),
+                                    horizontal: 5.w, vertical: 2.h,),
                                 child: Text(
                                   pet.gender?.index == 0
                                       ? LocaleKeys.add_pet_pet_male.trans()
@@ -99,7 +98,7 @@ class ChatSenderPostPreviewer extends StatelessWidget {
                                   ),
                                   margin: EdgeInsets.only(left: 5.w),
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 5.w, vertical: 2.h),
+                                      horizontal: 5.w, vertical: 2.h,),
                                   child: Text(
                                     age,
                                     style: UITextStyle.text_body_10_w500,

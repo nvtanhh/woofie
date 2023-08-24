@@ -26,7 +26,7 @@ class PetWeight {
       this.description,
       this.createdAt,
       this.date,
-      this.updatedAt});
+      this.updatedAt,});
 
   factory PetWeight.fromJson(Map<String, dynamic> json) =>
       _$PetWeightFromJson(json);

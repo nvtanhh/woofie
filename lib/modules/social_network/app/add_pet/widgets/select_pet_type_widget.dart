@@ -12,11 +12,11 @@ class SelectPetTypeWidget extends StatelessWidget {
   final Function(int) onSelectedIndex;
 
   const SelectPetTypeWidget({
-    Key? key,
+    super.key,
     required this.petTypes,
     this.selectedIndex = -1,
     required this.onSelectedIndex,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class SelectPetTypeWidget extends StatelessWidget {
                               case LoadState.failed:
                                 return _getPlaceholder();
                             }
-                          }),
+                          },),
                         ),
                         SizedBox(
                           height: 5.h,

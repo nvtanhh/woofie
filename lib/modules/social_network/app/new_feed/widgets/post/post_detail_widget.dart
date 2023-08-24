@@ -20,9 +20,9 @@ class PostDetail extends StatefulWidget {
   final Post post;
 
   const PostDetail({
-    Key? key,
+    super.key,
     required this.post,
-  }) : super(key: key);
+  });
 
   @override
   _PostDetailState createState() => _PostDetailState();

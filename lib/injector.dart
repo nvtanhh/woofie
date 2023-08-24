@@ -9,17 +9,15 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:meowoof/configs/app_config.dart';
-import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/interceptors/jwt_interceptor.dart';
+import 'package:meowoof/core/services/environment_service.dart';
+import 'package:meowoof/injector.config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'injector.config.dart';
 
 final injector = GetIt.instance;
 
 @injectableInit
-Future setupInjector() async =>
-    $initGetIt(injector, environment: Environment.dev);
+Future setupInjector() async => injector.init(environment: Environment.dev);
 
 @module
 abstract class RegisterModule {
@@ -51,17 +49,19 @@ abstract class RegisterModule {
 
   @lazySingleton
   HasuraConnect getHasuraConnect(JwtInterceptor interceptor) {
-    return HasuraConnect(BackendConfig.BASE_HASURA_URL,
-        interceptors: [interceptor]);
+    return HasuraConnect(
+      injector<EnvironmentService>().hasuraUrl,
+      interceptors: [interceptor],
+    );
   }
 
   @lazySingleton
   FlutterLocalNotificationsPlugin getFlutterLocalNotificationsPlugin() {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@drawable/ic_stat_onesignal_default');
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
     );

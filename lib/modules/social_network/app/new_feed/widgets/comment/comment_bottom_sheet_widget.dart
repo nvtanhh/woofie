@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,9 +19,9 @@ class CommentBottomSheetWidget extends StatefulWidget {
   final Post post;
 
   const CommentBottomSheetWidget({
-    Key? key,
+    super.key,
     required this.post,
-  }) : super(key: key);
+  });
 
   @override
   _CommentBottomSheetWidgetState createState() =>
@@ -35,7 +34,7 @@ class _CommentBottomSheetWidgetState extends BaseViewState<
   void loadArguments() {
     viewModel.post = widget.post;
     WidgetsBinding.instance
-        ?.addPostFrameCallback((timeStamp) => viewModel.startLoadingPaging());
+        .addPostFrameCallback((timeStamp) => viewModel.startLoadingPaging());
     super.loadArguments();
   }
 

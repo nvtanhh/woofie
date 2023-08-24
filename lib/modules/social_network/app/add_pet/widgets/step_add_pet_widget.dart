@@ -6,9 +6,9 @@ class StepAddPetWidget extends StatelessWidget {
   final int currentStep;
 
   const StepAddPetWidget({
-    Key? key,
+    super.key,
     required this.currentStep,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

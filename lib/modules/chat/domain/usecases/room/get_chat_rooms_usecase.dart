@@ -9,8 +9,8 @@ class GetChatRoomsUseCase {
   GetChatRoomsUseCase(this._chatRoomRepository);
 
   Future<List<ChatRoom>> call(
-      {int limit = 10, int skip = 0, bool? isEveryoneCanChatWithMe = true}) {
+      {int limit = 10, int skip = 0, bool? isEveryoneCanChatWithMe = true,}) {
     return _chatRoomRepository.getChatRooms(limit, skip,
-        isEveryoneCanChatWithMe: isEveryoneCanChatWithMe);
+        isEveryoneCanChatWithMe: isEveryoneCanChatWithMe,);
   }
 }

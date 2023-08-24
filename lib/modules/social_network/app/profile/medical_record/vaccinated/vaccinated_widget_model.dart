@@ -66,7 +66,7 @@ class VaccinatedWidgetModel extends BaseViewModel {
       onFailure: (err) {
         printError(info: err.toString());
         _toastService.error(
-            message: LocaleKeys.error.trans(), context: Get.context!);
+            message: LocaleKeys.error.trans(), context: Get.context!,);
       },
     );
   }
@@ -100,7 +100,7 @@ class VaccinatedWidgetModel extends BaseViewModel {
       },
       onFailure: (err) {
         _toastService.error(
-            message: LocaleKeys.error.trans(), context: Get.context!);
+            message: LocaleKeys.error.trans(), context: Get.context!,);
         printError(info: err.toString());
       },
     );

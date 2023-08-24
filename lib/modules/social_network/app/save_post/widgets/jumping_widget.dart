@@ -6,11 +6,11 @@ class JumpingWidget extends StatefulWidget {
   final double jumpingHeight;
 
   const JumpingWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 500),
     this.jumpingHeight = 10,
-  }) : super(key: key);
+  });
 
   @override
   _JumpingWidgetState createState() => _JumpingWidgetState();
@@ -50,7 +50,7 @@ class _JumpingWidgetState extends State<JumpingWidget>
         animation: _animate,
         builder: (BuildContext context, Widget? child) {
           return Transform.translate(
-              offset: Offset(0, _animate.value), child: child);
+              offset: Offset(0, _animate.value), child: child,);
         },
         child: widget.child,
       ),

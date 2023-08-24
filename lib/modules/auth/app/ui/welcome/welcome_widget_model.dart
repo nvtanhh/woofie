@@ -54,7 +54,7 @@ class WelcomeWidgetModel extends BaseViewModel {
       },
       onFailure: (err) {
         _toastService.error(
-            message: "Login fail! Try again", context: Get.context!);
+            message: "Login fail! Try again", context: Get.context!,);
         printError(
           info: err.toString(),
         );

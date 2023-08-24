@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,7 +16,7 @@ import 'package:suga_core/suga_core.dart';
 class ServiceDetailPage extends StatefulWidget {
   final Service service;
 
-  const ServiceDetailPage({Key? key, required this.service}) : super(key: key);
+  const ServiceDetailPage({super.key, required this.service});
 
   @override
   _ServiceDetailPageState createState() => _ServiceDetailPageState();
@@ -28,8 +27,8 @@ class _ServiceDetailPageState
   @override
   void loadArguments() {
     viewModel.service = widget.service;
-    WidgetsBinding.instance?.addPostFrameCallback(
-        (_) => viewModel.mapSearcherModel.getZoomLevel());
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => viewModel.mapSearcherModel.getZoomLevel(),);
     super.loadArguments();
   }
 

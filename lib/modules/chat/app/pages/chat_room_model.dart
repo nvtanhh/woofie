@@ -7,13 +7,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/configs/backend_config.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/unwaited.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/bottom_sheet_service.dart';
+import 'package:meowoof/core/services/environment_service.dart';
 import 'package:meowoof/core/services/media_service.dart';
 import 'package:meowoof/core/ui/confirm_dialog.dart';
 import 'package:meowoof/injector.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/chat/domain/usecases/message/get_messages_usecase.dart';
@@ -32,8 +34,6 @@ import 'package:path/path.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:suga_core/suga_core.dart';
 import 'package:uuid/uuid.dart';
-import 'package:meowoof/locale_keys.g.dart';
-import 'package:meowoof/core/extensions/string_ext.dart';
 
 @injectable
 class ChatRoomPageModel extends BaseViewModel {
@@ -154,7 +154,7 @@ class ChatRoomPageModel extends BaseViewModel {
     final token = await _auth.currentUser?.getIdToken();
 
     _socket = IO.io(
-      BackendConfig.BASE_CHAT_URL,
+      injector<EnvironmentService>().chatUrl,
       IO.OptionBuilder()
           .setQuery({
             'token': token,
@@ -169,7 +169,7 @@ class ChatRoomPageModel extends BaseViewModel {
     });
 
     _socket?.on('authenticated', (data) {
-      printInfo(info: 'Socket authenticate status ${data.toString()}');
+      printInfo(info: 'Socket authenticate status $data');
     });
 
     _socket?.on('is-typing', _onPartnerTyping);
@@ -496,7 +496,9 @@ class ChatRoomPageModel extends BaseViewModel {
     if (post.type != PostType.lose && !post.isLiked!) {
       await run(
         () async => _saveFunctionalPostReact.call(
-            postId: post.id, matingPetId: matingPetId),
+          postId: post.id,
+          matingPetId: matingPetId,
+        ),
         onSuccess: () => post.isLiked = true,
         showLoading: false,
       );

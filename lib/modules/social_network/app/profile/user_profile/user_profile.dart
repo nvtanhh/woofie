@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,7 +18,7 @@ class UserProfile extends StatefulWidget {
 
   final UserProfileController? controller;
 
-  const UserProfile({Key? key, this.user, this.controller}) : super(key: key);
+  const UserProfile({super.key, this.user, this.controller});
 
   @override
   UserProfileState createState() => UserProfileState();
@@ -143,7 +142,7 @@ class UserProfileState extends BaseViewState<UserProfile, UserProfileModel>
 class UserProfileController {
   late UserProfileState _state;
   void attach(
-      {required BuildContext context, required UserProfileState state}) {
+      {required BuildContext context, required UserProfileState state,}) {
     _state = state;
   }
 

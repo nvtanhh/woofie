@@ -22,9 +22,9 @@ class AddWeightDialog extends StatelessWidget {
   bool isUpdate = false;
 
   AddWeightDialog({
-    Key? key,
+    super.key,
     this.petWeight,
-  }) : super(key: key) {
+  }) {
     if (petWeight == null) {
       petWeight = PetWeight(id: 0);
     } else {
@@ -56,7 +56,7 @@ class AddWeightDialog extends StatelessWidget {
   }
 
   final outSizeBorder = const OutlineInputBorder(
-      borderSide: BorderSide(color: UIColor.silverSand));
+      borderSide: BorderSide(color: UIColor.silverSand),);
 
   @override
   Widget build(BuildContext context) {
@@ -181,13 +181,13 @@ class AddWeightDialog extends StatelessWidget {
     if ((petWeight!.weight ?? 0) < 0.5 || (petWeight!.weight ?? 0) > 210) {
       toastService.warning(
           message: LocaleKeys.profile_weight_invalid.trans(),
-          context: Get.context!);
+          context: Get.context!,);
       return false;
     }
     if (petWeight!.date == null) {
       toastService.warning(
           message: LocaleKeys.profile_date_invalid.trans(),
-          context: Get.context!);
+          context: Get.context!,);
       return false;
     }
     return true;

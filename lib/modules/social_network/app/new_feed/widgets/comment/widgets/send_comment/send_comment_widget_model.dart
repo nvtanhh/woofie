@@ -142,8 +142,8 @@ class SendCommentWidgetModel extends BaseViewModel {
             element.item?.name?.toLowerCase().contains(
                 (filterState?.text ?? " ")
                     .substring(1, filterState?.text.length ?? 1)
-                    .toLowerCase()) ==
-            true)
+                    .toLowerCase(),) ==
+            true,)
         .toList();
   }
 

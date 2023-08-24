@@ -20,9 +20,9 @@ class ChatRepository {
   );
 
   Future<List<ChatRoom>> getChatRooms(int limit, int skip,
-      {bool? isEveryoneCanChatWithMe}) {
+      {bool? isEveryoneCanChatWithMe,}) {
     return _datasource.getChatRooms(limit, skip,
-        isEveryoneCanChatWithMe: isEveryoneCanChatWithMe);
+        isEveryoneCanChatWithMe: isEveryoneCanChatWithMe,);
   }
 
   Future<String> getPresignedChatMediaUrl(String fileName, String chatRoomId) {
@@ -30,7 +30,7 @@ class ChatRepository {
   }
 
   Future<List<Message>> getMessagesWithRoomId(
-      int limit, int skip, String roomId) {
+      int limit, int skip, String roomId,) {
     return _datasource.getMessagesWithRoomId(limit, skip, roomId);
   }
 
@@ -63,8 +63,8 @@ class ChatRepository {
   }
 
   Future updateContentRequestMessages(
-      RequestContact requestContact, String content) {
+      RequestContact requestContact, String content,) {
     return _requestContactDatasource.updateContentRequestMessage(
-        requestContact, content);
+        requestContact, content,);
   }
 }

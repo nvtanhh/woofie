@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:meowoof/core/ui/icon.dart';
@@ -11,15 +10,13 @@ import 'package:meowoof/modules/social_network/domain/models/user.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:path/path.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MessageBodyMedia extends StatelessWidget {
   final Message message;
 
   final User? partner;
 
-  const MessageBodyMedia(this.message, {Key? key, required this.partner})
-      : super(key: key);
+  const MessageBodyMedia(this.message, {super.key, required this.partner});
 
   @override
   Widget build(BuildContext context) {

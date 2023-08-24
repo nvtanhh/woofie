@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
-import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/ios_indicator.dart';
 import 'package:meowoof/injector.dart';
-import 'package:meowoof/modules/social_network/app/add_pet/widgets/select_pet_type_widget.dart';
 import 'package:meowoof/modules/social_network/app/map/widgets/filter/map_searcher_filter_model.dart';
 import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
 import 'package:meowoof/modules/social_network/app/map/widgets/filter/widgets/select_pet_breed.dart';
@@ -13,12 +12,11 @@ import 'package:meowoof/modules/social_network/app/map/widgets/filter/widgets/se
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MapSearcherFilter extends StatefulWidget {
   final FilterOptions? currentFilter;
 
-  const MapSearcherFilter({Key? key, this.currentFilter}) : super(key: key);
+  const MapSearcherFilter({super.key, this.currentFilter});
 
   @override
   _MapSearcherFilterState createState() => _MapSearcherFilterState();

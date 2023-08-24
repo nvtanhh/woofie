@@ -3,11 +3,11 @@ import 'package:injectable/injectable.dart';
 import 'package:meowoof/core/helpers/get_map_from_hasura.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/modules/social_network/app/map/widgets/filter/models/filter_option.dart';
-import 'package:meowoof/modules/social_network/domain/models/post/post_reaction.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/comment.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media_file.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/new_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
+import 'package:meowoof/modules/social_network/domain/models/post/post_reaction.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/updated_post_data.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
 
@@ -20,13 +20,13 @@ class PostDatasource {
   PostDatasource(this._hasuraConnect, this._loggedInUser);
 
   Future<List<Post>> getPosts(
-      {int limit = 10, int offset = 0, DateTime? lastValue}) async {
+      {int limit = 10, int offset = 0, DateTime? lastValue,}) async {
     await Future.delayed(const Duration(seconds: 1));
     return <Post>[];
   }
 
   Future<List<Comment>> getCommentsInPost(
-      int postId, int limit, int offset) async {
+      int postId, int limit, int offset,) async {
     user = _loggedInUser.user;
     final query = """
     query MyQuery {
@@ -422,9 +422,13 @@ class PostDatasource {
     return Post.fromJson(postJson as Map<String, dynamic>);
   }
 
-  Future<PostStatus?> getPostStatusWithId(int postId) async {}
+  Future<PostStatus?> getPostStatusWithId(int postId) async {
+    return null;
+  }
 
-  Future<Post?> getPostWithId(int postId) async {}
+  Future<Post?> getPostWithId(int postId) async {
+    return null;
+  }
 
   Future<bool> editPost(EditedPostData editedPostData) async {
     final mediasData = editedPostData.newAddedMedias
@@ -556,7 +560,7 @@ class PostDatasource {
   }
 
   Future<List<Post>> getPostsByLocation(double lat, double long, int radius,
-      {FilterOptions? filterOptions}) async {
+      {FilterOptions? filterOptions,}) async {
     String filter = '';
     if (filterOptions != null) {
       final postTypeIds = (filterOptions.selectedPostTypes?.isNotEmpty ?? false)

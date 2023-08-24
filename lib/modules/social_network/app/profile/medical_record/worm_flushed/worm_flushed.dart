@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,11 +22,11 @@ class WormFlushedWidget extends StatefulWidget {
   final bool? addData;
 
   const WormFlushedWidget({
-    Key? key,
+    super.key,
     required this.pet,
     required this.isMyPet,
     this.addData,
-  }) : super(key: key);
+  });
 
   @override
   _WormFlushedWidgetState createState() => _WormFlushedWidgetState();
@@ -40,8 +39,7 @@ class _WormFlushedWidgetState
     viewModel.pet = widget.pet;
     viewModel.isMyPet = widget.isMyPet;
     if (widget.addData == true) {
-      SchedulerBinding.instance!
-          .addPostFrameCallback((_) => viewModel.showDialogAddWeight());
+      SchedulerBinding.instance.addPostFrameCallback((_) => viewModel.showDialogAddWeight());
     }
     super.loadArguments();
   }
@@ -145,9 +143,9 @@ class _WormFlushedWidgetState
                         alignment: Alignment.topRight,
                         child: MedicalActionsTrailing(
                           onEdit: () => viewModel.onEdit(
-                              viewModel.wormFlushes[index], index),
+                              viewModel.wormFlushes[index], index,),
                           onDelete: () => viewModel.onDelete(
-                              viewModel.wormFlushes[index], index),
+                              viewModel.wormFlushes[index], index,),
                         ),
                       )
                   ],

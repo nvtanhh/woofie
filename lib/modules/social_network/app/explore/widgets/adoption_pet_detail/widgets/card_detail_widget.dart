@@ -8,10 +8,10 @@ class CardDetailWidget extends StatelessWidget {
   final String value;
 
   const CardDetailWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

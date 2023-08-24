@@ -32,11 +32,11 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
     _toastInProgress = false;
     _dismissInProgress = false;
 
-    offset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 0.1))
+    offset = Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, 0.1))
         .animate(controller);
   }
 
@@ -52,15 +52,14 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
       String? message,
       Widget? child,
       Duration? duration,
-      VoidCallback? onDismissed}) async {
+      VoidCallback? onDismissed,}) async {
     if (_toastInProgress) return;
     _toastInProgress = true;
     _overlayEntry = _createOverlayEntryFromTop(
-        color: color, message: message, onDismissed: onDismissed, child: child);
+        color: color, message: message, onDismissed: onDismissed, child: child,);
     final overlay = Overlay.of(_currentContext);
     if (_overlayEntry != null) {
-      WidgetsBinding.instance!
-          .addPostFrameCallback((_) => overlay?.insert(_overlayEntry!));
+      WidgetsBinding.instance.addPostFrameCallback((_) => overlay.insert(_overlayEntry!));
     }
     await controller.forward();
 
@@ -86,7 +85,7 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
       {required Color color,
       String? message,
       Widget? child,
-      VoidCallback? onDismissed}) {
+      VoidCallback? onDismissed,}) {
     return OverlayEntry(builder: (context) {
       final MediaQueryData existingMediaQuery = MediaQuery.of(context);
       // 44 is header height
@@ -107,17 +106,17 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
                   paddingTop: paddingTop,
                   color: color,
                   message: message,
-                  child: child),
-            ))
-      ]);
-    });
+                  child: child,),
+            ),)
+      ],);
+    },);
   }
 
   Widget _buildToast(
       {required double paddingTop,
       required Color color,
       String? message,
-      Widget? child}) {
+      Widget? child,}) {
     return Material(
       color: Colors.transparent,
       child: Column(
@@ -139,12 +138,12 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
                             Flexible(
                               child: Container(
                                 margin: const EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 20),
+                                    vertical: 20, horizontal: 20,),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
+                                    horizontal: 15, vertical: 10,),
                                 decoration: BoxDecoration(
                                     color: color,
-                                    borderRadius: BorderRadius.circular(50)),
+                                    borderRadius: BorderRadius.circular(50),),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
@@ -153,7 +152,7 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
                                           child: Text(
                                             message ?? 'Just a toast',
                                             style: const TextStyle(
-                                                color: Colors.white),
+                                                color: Colors.white,),
                                             textAlign: TextAlign.center,
                                           ),
                                         )
@@ -183,8 +182,7 @@ class MWToastState extends State<MFToast> with SingleTickerProviderStateMixin {
 }
 
 class _MeoWoofToast extends InheritedWidget {
-  const _MeoWoofToast({Key? key, required Widget child})
-      : super(key: key, child: child);
+  const _MeoWoofToast({required super.child});
 
   @override
   bool updateShouldNotify(_MeoWoofToast old) {

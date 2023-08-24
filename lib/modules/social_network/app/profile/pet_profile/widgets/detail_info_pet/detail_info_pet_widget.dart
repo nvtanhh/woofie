@@ -23,13 +23,13 @@ class DetailInfoPetWidget extends StatefulWidget {
   final Function onAddVaccinatedClick;
 
   const DetailInfoPetWidget({
-    Key? key,
+    super.key,
     required this.pet,
     required this.isMyPet,
     required this.onAddWeightClick,
     required this.onAddWormFlushedClick,
     required this.onAddVaccinatedClick,
-  }) : super(key: key);
+  });
 
   @override
   _DetailInfoPetWidgetState createState() => _DetailInfoPetWidgetState();

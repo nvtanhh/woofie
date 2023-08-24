@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/configs/backend_config.dart';
 import 'package:meowoof/core/helpers/url_parser.dart';
+import 'package:meowoof/core/services/environment_service.dart';
 import 'package:meowoof/core/services/httpie.dart';
+import 'package:meowoof/injector.dart';
 import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 import 'package:meowoof/modules/chat/domain/models/message.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
@@ -26,11 +27,14 @@ class ChatDatasource {
   static const SEND_MESSAGE_ENDPOINT = 'api/message/{room_id}';
 
   ChatDatasource(this._httpieService, this._urlParser) {
-    baseUrl = BackendConfig.BASE_CHAT_URL;
+    baseUrl = injector<EnvironmentService>().chatUrl;
   }
 
-  Future<List<ChatRoom>> getChatRooms(int limit, int skip,
-      {bool? isEveryoneCanChatWithMe}) async {
+  Future<List<ChatRoom>> getChatRooms(
+    int limit,
+    int skip, {
+    bool? isEveryoneCanChatWithMe,
+  }) async {
     final Map<String, dynamic> queryParameters = {};
     queryParameters['limit'] = limit;
     queryParameters['skip'] = skip;
@@ -55,15 +59,21 @@ class ChatDatasource {
   }
 
   Future<List<Message>> getMessagesWithRoomId(
-      int limit, int skip, String roomId) async {
+    int limit,
+    int skip,
+    String roomId,
+  ) async {
     final Map<String, dynamic> queryParameters = {
       'limit': limit,
       'skip': skip,
     };
     final endpoint =
         _urlParser.parse(SEND_MESSAGE_ENDPOINT, {'room_id': roomId});
-    final response = await _httpieService.get('$baseUrl/$endpoint',
-        queryParameters: queryParameters, appendAuthorizationToken: true);
+    final response = await _httpieService.get(
+      '$baseUrl/$endpoint',
+      queryParameters: queryParameters,
+      appendAuthorizationToken: true,
+    );
     if (response.statusCode == 200) {
       final list = json.decode(response.body)['messages'] as List;
       return list
@@ -89,11 +99,15 @@ class ChatDatasource {
       body['description'] = sendingMessage.description!;
     }
 
-    final response = await _httpieService.post('$baseUrl/$endpoint',
-        body: body, appendAuthorizationToken: true);
+    final response = await _httpieService.post(
+      '$baseUrl/$endpoint',
+      body: body,
+      appendAuthorizationToken: true,
+    );
     if (response.statusCode == 201) {
       final Message newMessage = Message.fromJson(
-          json.decode(response.body)['new_message'] as Map<String, dynamic>);
+        json.decode(response.body)['new_message'] as Map<String, dynamic>,
+      );
       newMessage.localUuid = sendingMessage.localUuid;
       return newMessage;
     } else {

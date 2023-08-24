@@ -56,7 +56,7 @@ class PostDetailWidgetModel extends BaseViewModel {
             },
           );
           commentServiceModel.registerSubscriptionComment(post.id,
-              indexInsertToList: 1);
+              indexInsertToList: 1,);
         },
       );
       return;
@@ -67,7 +67,7 @@ class PostDetailWidgetModel extends BaseViewModel {
       },
     );
     commentServiceModel.registerSubscriptionComment(post.id,
-        indexInsertToList: 1);
+        indexInsertToList: 1,);
   }
 
   void _loadComments(int pageKey) {
@@ -78,7 +78,7 @@ class PostDetailWidgetModel extends BaseViewModel {
         if (commentServiceModel.pagingController.itemList == null ||
             commentServiceModel.pagingController.itemList?.isEmpty == true) {
           comments.insert(0,
-              Comment(id: 0, content: "content", postId: 0, creatorUUID: "0"));
+              Comment(id: 0, content: "content", postId: 0, creatorUUID: "0"),);
         }
         if (comments.length < pageSize) {
           commentServiceModel.pagingController.appendLastPage(comments);

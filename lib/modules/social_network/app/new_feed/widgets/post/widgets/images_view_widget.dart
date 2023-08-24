@@ -16,12 +16,12 @@ class ImagesViewWidget extends StatelessWidget {
   final bool counterPositionTop;
 
   ImagesViewWidget({
-    Key? key,
+    super.key,
     required this.medias,
     this.height,
     this.fit,
     this.counterPositionTop = true,
-  }) : super(key: key);
+  });
   final PageController _pageController = PageController();
   final RxInt indexPage = RxInt(0);
 

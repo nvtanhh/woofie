@@ -117,7 +117,7 @@ class _RegisterWidgetState
                                       width: 12.0.w,
                                     ),
                                   ],
-                                )),
+                                ),),
                           ),
                           SizedBox(
                             height: 20.h,
@@ -162,7 +162,7 @@ class _RegisterWidgetState
                                       width: 12.0.w,
                                     ),
                                   ],
-                                )),
+                                ),),
                           ),
                           SizedBox(
                             height: 20.h,
@@ -218,7 +218,7 @@ class _RegisterWidgetState
                                             : Icons.visibility_rounded,
                                       ),
                                     ),
-                                  )),
+                                  ),),
                               obscureText: !viewModel.showPassword,
                             ),
                           ),

@@ -23,13 +23,13 @@ class User extends UpdatableModel<User> {
   String? phoneNumber;
   @JsonKey(name: "email")
   String? email;
-  @JsonKey(name: "current_pets", toJson: toNull, includeIfNull: false)
+  @JsonKey(name: "current_pets", includeIfNull: false)
   List<Pet>? currentPets;
   @JsonKey(
-      name: "all_pets",
-      fromJson: allPetsFromJson,
-      toJson: toNull,
-      includeIfNull: false)
+    name: "all_pets",
+    fromJson: allPetsFromJson,
+    includeIfNull: false,
+  )
   List<Pet>? allPets;
   @JsonKey(name: "avatar")
   Media? avatar;
@@ -59,8 +59,6 @@ class User extends UpdatableModel<User> {
     this.avatarUrl,
     this.active,
   }) : super(uuid);
-
-  static toNull(_) => null;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
@@ -136,7 +134,7 @@ class User extends UpdatableModel<User> {
 }
 
 class UserFactory extends UpdatableModelFactory<User> {
-  UserFactory({String? key}) : super(key: key);
+  UserFactory({super.key});
 
   @override
   User makeFromJson(Map<String, dynamic> json) => _$UserFromJson(json);

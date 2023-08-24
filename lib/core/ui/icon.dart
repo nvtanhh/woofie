@@ -29,12 +29,12 @@ class MWIcon extends StatelessWidget {
 
   const MWIcon(
     this.iconData, {
-    Key? key,
+    super.key,
     this.size,
     this.customSize,
     this.color,
     this.themeColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +177,7 @@ class MWIcons {
   static final icAdoption =
       MWIconData(assetImageFile: Assets.resources.images.explore.icAdoption);
   static final icAdoptionBold = MWIconData(
-      assetImageFile: Assets.resources.images.explore.icAdoptionBold);
+      assetImageFile: Assets.resources.images.explore.icAdoptionBold,);
   static final icMating =
       MWIconData(assetImageFile: Assets.resources.images.explore.icMating);
   static final icMatingBold =

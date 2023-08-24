@@ -99,7 +99,7 @@ class AdoptionWidgetModel extends BaseViewModel {
         onFailure: (err) {
           pagingController.error = err;
         },
-        onSuccess: () {});
+        onSuccess: () {},);
   }
 
   void onItemClick(Post post) {

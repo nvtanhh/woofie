@@ -22,7 +22,7 @@ class _LanguageState
         appBar: AppBar(
           title: Text(
             LocaleKeys.setting_language.trans(
-                args: [viewModel.defineLanguage(viewModel.currentLanguage)]),
+                args: [viewModel.defineLanguage(viewModel.currentLanguage)],),
             style: UITextStyle.text_header_18_w600,
           ),
           leading: IconButton(
@@ -37,7 +37,7 @@ class _LanguageState
               groupValue: viewModel.currentLanguage,
               onChanged: (_) => viewModel.onLangSelected(_, context),
               title: Text(LocaleKeys.setting_vietnamese.trans(),
-                  style: UITextStyle.text_body_14_w500),
+                  style: UITextStyle.text_body_14_w500,),
             ),
             RadioListTile<String>(
               value: 'en',

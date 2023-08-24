@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/datetime_helper.dart';
 import 'package:meowoof/core/ui/button_widget.dart';
 import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/core/ui/image_with_placeholder_widget.dart';
+import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_actions_popup.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:meowoof/core/extensions/string_ext.dart';
-import 'package:meowoof/locale_keys.g.dart';
 
 class FunctionalPostItem extends StatelessWidget {
   final Post post;
@@ -21,7 +21,7 @@ class FunctionalPostItem extends StatelessWidget {
   final VoidCallback? onReportPost;
 
   const FunctionalPostItem({
-    Key? key,
+    super.key,
     required this.post,
     required this.onLikeClick,
     required this.onPostClick,
@@ -29,7 +29,7 @@ class FunctionalPostItem extends StatelessWidget {
     required this.onDeletePost,
     this.onCommentClick,
     this.onReportPost,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +54,6 @@ class FunctionalPostItem extends StatelessWidget {
               height: double.infinity,
               topLeftRadius: 20.r,
               topRightRadius: 20.r,
-              bottomLeftRadius: 0,
-              bottomRightRadius: 0,
               placeHolderImagePath:
                   "resources/images/fallbacks/pet-avatar-fallback.jpg",
             ),
@@ -126,7 +124,7 @@ class FunctionalPostItem extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(5.r),
                                   ),
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 8.w, vertical: 6.h),
+                                      horizontal: 8.w, vertical: 6.h,),
                                   child: Text(
                                     post.taggegPets?.first.gender?.index == 0
                                         ? LocaleKeys.add_pet_pet_male.trans()
@@ -144,7 +142,7 @@ class FunctionalPostItem extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(5.r),
                                     ),
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 8.w, vertical: 6.h),
+                                        horizontal: 8.w, vertical: 6.h,),
                                     child: Text(
                                       age,
                                       style: UITextStyle.text_body_12_w500,

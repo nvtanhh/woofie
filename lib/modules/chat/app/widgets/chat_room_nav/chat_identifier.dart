@@ -6,8 +6,7 @@ import 'package:meowoof/modules/chat/domain/models/chat_room.dart';
 class ChatIndentifierWidget extends StatelessWidget {
   final ChatRoom chatRoom;
 
-  const ChatIndentifierWidget({Key? key, required this.chatRoom})
-      : super(key: key);
+  const ChatIndentifierWidget({super.key, required this.chatRoom});
 
   @override
   Widget build(BuildContext context) {

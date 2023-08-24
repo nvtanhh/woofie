@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meowoof/core/extensions/string_ext.dart';
 import 'package:meowoof/core/helpers/format_helper.dart';
@@ -8,15 +9,13 @@ import 'package:meowoof/modules/social_network/app/profile/user_profile/user_pro
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_owner_history.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
-import 'package:timelines/timelines.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:timeago/timeago.dart' as time_ago;
+import 'package:timelines/timelines.dart';
 
 class PetOwnerHistoryScreen extends StatelessWidget {
   final List<PetOwnerHistory> ownerHistories;
 
-  const PetOwnerHistoryScreen({Key? key, required this.ownerHistories})
-      : super(key: key);
+  const PetOwnerHistoryScreen({super.key, required this.ownerHistories});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +45,7 @@ class PetOwnerHistoryScreen extends StatelessWidget {
             ownerHistories[index].isCurrentOwner()
                 ? LocaleKeys.profile_now.trans()
                 : FormatHelper.formatDateTime(ownerHistories[index].giveTime,
-                    pattern: "MM/yyyy"),
+                    pattern: "MM/yyyy",),
             style: UITextStyle.text_secondary_14_w500,
           ),
         ),

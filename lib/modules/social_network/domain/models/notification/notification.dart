@@ -47,7 +47,7 @@ class Notification {
       this.createdAt,
       this.isRead,
       this.owner,
-      this.ownerId});
+      this.ownerId,});
 
   factory Notification.fromJson(Map<String, dynamic> json) =>
       _$NotificationFromJson(json);

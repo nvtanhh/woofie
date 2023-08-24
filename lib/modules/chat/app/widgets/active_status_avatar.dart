@@ -11,13 +11,13 @@ class ActiveStatusAvatar extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const ActiveStatusAvatar({
-    Key? key,
+    super.key,
     required this.avatarUrl,
     required this.isActive,
     this.isSmallSize = false,
     this.borderRadius = 10,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

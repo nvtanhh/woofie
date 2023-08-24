@@ -10,11 +10,11 @@ class DropdownBreadsWidget extends StatelessWidget {
   final Function(PetBreed) onPetBreadChange;
 
   DropdownBreadsWidget({
-    Key? key,
+    super.key,
     required this.breads,
     required this.onPetBreadChange,
     required this.initValue,
-  }) : super(key: key) {
+  }) {
     petBreedSelected.value = initValue;
   }
 

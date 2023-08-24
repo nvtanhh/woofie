@@ -25,14 +25,14 @@ class InfoUserWidget extends StatelessWidget {
   final Function(User) onWantsToContact;
 
   const InfoUserWidget({
-    Key? key,
+    super.key,
     required this.user,
     required this.onFollowPet,
     required this.isMe,
     required this.onWantsToContact,
     this.onUserReport,
     this.onUserBlock,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

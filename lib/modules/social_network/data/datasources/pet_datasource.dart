@@ -106,7 +106,7 @@ class PetDatasource {
   }
 
   Future<List<PetVaccinated>> getVaccinates(
-      int idPet, int limit, int offset) async {
+      int idPet, int limit, int offset,) async {
     final query = """
     query MyQuery {
   pet_vaccinateds(limit: $limit, offset: $offset, where: {pet_id: {_eq: $idPet}}, order_by: {date: desc}) {
@@ -145,7 +145,7 @@ class PetDatasource {
   }
 
   Future<List<PetWormFlushed>> getWormFlushes(
-      int idPet, int limit, int offset) async {
+      int idPet, int limit, int offset,) async {
     final query = """
     query MyQuery {
   pet_worm_flusheds(limit: $limit, offset: $offset, where: {pet_id: {_eq: $idPet}}, order_by: {date: desc}) {
@@ -402,7 +402,7 @@ mutation MyMutation {
     final data = await _hasuraConnect.mutation(manution);
     return PetVaccinated.fromJson(
         GetMapFromHasura.getMap(data as Map)["update_pet_vaccinateds_by_pk"]
-            as Map<String, dynamic>);
+            as Map<String, dynamic>,);
   }
 
   Future<PetWeight> updatePetWeight(PetWeight petWeight) async {
@@ -422,11 +422,11 @@ mutation MyMutation {
     final data = await _hasuraConnect.mutation(manution);
     return PetWeight.fromJson(
         GetMapFromHasura.getMap(data as Map)["update_pet_weights_by_pk"]
-            as Map<String, dynamic>);
+            as Map<String, dynamic>,);
   }
 
   Future<PetWormFlushed> updatePetWormFlush(
-      PetWormFlushed petWormFlushed) async {
+      PetWormFlushed petWormFlushed,) async {
     final manution = """
 mutation MyMutation {
   update_pet_worm_flusheds_by_pk(pk_columns: {id: ${petWormFlushed.id}}, _set: {date: "${petWormFlushed.date.toString()}", description: "${petWormFlushed.description}"}) {
@@ -443,7 +443,7 @@ mutation MyMutation {
     final data = await _hasuraConnect.mutation(manution);
     return PetWormFlushed.fromJson(
         GetMapFromHasura.getMap(data as Map)["update_pet_worm_flusheds_by_pk"]
-            as Map<String, dynamic>);
+            as Map<String, dynamic>,);
   }
 
   Future<bool> changePetOwner(User user, Pet pet) async {

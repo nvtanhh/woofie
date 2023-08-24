@@ -10,8 +10,7 @@ class ChatRoomItem extends StatelessWidget {
   final VoidCallback onChatRoomPressed;
 
   const ChatRoomItem(
-      {Key? key, required this.room, required this.onChatRoomPressed})
-      : super(key: key);
+      {super.key, required this.room, required this.onChatRoomPressed,});
 
   @override
   Widget build(BuildContext context) {

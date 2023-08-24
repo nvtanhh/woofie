@@ -9,7 +9,7 @@ class GetMessagesUseCase {
   GetMessagesUseCase(this._chatRepository);
 
   Future<List<Message>> call(
-      {int limit = 10, int skip = 0, required String roomId}) {
+      {int limit = 10, int skip = 0, required String roomId,}) {
     return _chatRepository.getMessagesWithRoomId(limit, skip, roomId);
   }
 }

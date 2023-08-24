@@ -80,7 +80,7 @@ class ExploreWidgetModel extends BaseViewModel {
         final Position currentPosition =
             await injector<LocationService>().determineCurrentPosition();
         final userLocation = UserLocation(
-            lat: currentPosition.latitude, long: currentPosition.longitude);
+            lat: currentPosition.latitude, long: currentPosition.longitude,);
         // unawaited(updateLocation(userLocation));
         return userLocation;
       }

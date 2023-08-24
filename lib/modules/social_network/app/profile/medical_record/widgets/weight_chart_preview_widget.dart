@@ -22,13 +22,13 @@ class WeightChartPreviewWidget extends StatelessWidget {
   final Function onAddClick;
 
   WeightChartPreviewWidget({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     required this.weights,
     required this.isMyPet,
     required this.onAddClick,
-  }) : super(key: key) {
+  }) {
     for (var i = 0; i < weights.length; i++) {
       showIndexes.add(i);
       allSpots.add(
@@ -96,7 +96,7 @@ class WeightChartPreviewWidget extends StatelessWidget {
                           LineBarSpot(
                               tooltipsOnBar,
                               lineBarsData.indexOf(tooltipsOnBar),
-                              tooltipsOnBar.spots[index]),
+                              tooltipsOnBar.spots[index],),
                         ]);
                       },
                     ).toList(),
@@ -147,7 +147,7 @@ class WeightChartPreviewWidget extends StatelessWidget {
                             );
                           },
                           getTextStyles: (_, __) =>
-                              UITextStyle.text_body_10_w500),
+                              UITextStyle.text_body_10_w500,),
                     ),
                     gridData: FlGridData(show: false),
                     borderData: FlBorderData(

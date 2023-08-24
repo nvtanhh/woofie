@@ -9,20 +9,19 @@ import 'package:meowoof/core/ui/icon.dart';
 import 'package:meowoof/injector.dart';
 import 'package:meowoof/locale_keys.g.dart';
 import 'package:meowoof/modules/social_network/app/new_feed/widgets/post/widgets/post_locatior.dart';
+import 'package:meowoof/modules/social_network/app/save_post/save_post_model.dart';
+import 'package:meowoof/modules/social_network/app/save_post/widgets/jumping_widget.dart';
 import 'package:meowoof/modules/social_network/app/save_post/widgets/media_button.dart';
+import 'package:meowoof/modules/social_network/app/save_post/widgets/post_type_choose.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/post.dart';
 import 'package:meowoof/theme/ui_color.dart';
 import 'package:meowoof/theme/ui_text_style.dart';
 import 'package:suga_core/suga_core.dart';
 
-import 'save_post_model.dart';
-import 'widgets/jumping_widget.dart';
-import 'widgets/post_type_choose.dart';
-
 class CreatePost extends StatefulWidget {
   final Post? post;
 
-  const CreatePost({Key? key, this.post}) : super(key: key);
+  const CreatePost({super.key, this.post});
 
   @override
   _CreatePostState createState() => _CreatePostState();
@@ -83,7 +82,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
         ),
         Padding(
           padding: EdgeInsets.only(
-              bottom: 300.h - MediaQuery.of(context).viewInsets.bottom),
+              bottom: 300.h - MediaQuery.of(context).viewInsets.bottom,),
           child: _mediaWrapper(),
         ),
       ],
@@ -169,7 +168,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                 borderRadius: BorderRadius.circular(5.r),
                 textStyle: UITextStyle.heading_16_medium.apply(
                     color:
-                        viewModel.isDisable ? UIColor.textBody : UIColor.white),
+                        viewModel.isDisable ? UIColor.textBody : UIColor.white,),
                 child: Text(
                   widget.post == null
                       ? LocaleKeys.save_post_post_action.trans()
@@ -223,7 +222,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
                               Text(
                                   LocaleKeys.save_post_tag_your_pet_text
                                       .trans(),
-                                  style: UITextStyle.second_14_medium),
+                                  style: UITextStyle.second_14_medium,),
                             ],
                           ),
                         ),
@@ -264,7 +263,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
     inLineSpan.add(
       TextSpan(
           text: " ${LocaleKeys.new_feed_with.trans()} ",
-          style: UITextStyle.heading_16_reg),
+          style: UITextStyle.heading_16_reg,),
     );
     for (var i = 0; i < viewModel.taggedPets.length; i++) {
       inLineSpan.add(
@@ -311,7 +310,7 @@ class _CreatePostState extends BaseViewState<CreatePost, SavePostModel> {
           overflow: TextOverflow.ellipsis,
         ),
       ),
-    ]);
+    ],);
   }
 
   Widget _buildPostTypeWidget() {

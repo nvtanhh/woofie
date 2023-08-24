@@ -9,9 +9,8 @@ import 'package:meowoof/modules/social_network/domain/models/pet/pet_vaccinated.
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_weight.dart';
 import 'package:meowoof/modules/social_network/domain/models/pet/pet_worm_flushed.dart';
 import 'package:meowoof/modules/social_network/domain/models/post/media.dart';
+import 'package:meowoof/modules/social_network/domain/models/updatable_model.dart';
 import 'package:meowoof/modules/social_network/domain/models/user.dart';
-
-import '../updatable_model.dart';
 
 part 'pet.g.dart';
 
@@ -37,13 +36,13 @@ class Pet extends UpdatableModel<Pet> {
   Media? avatar;
   @JsonKey(name: "current_owner_uuid")
   String? currentOwnerUuid;
-  @JsonKey(name: "current_owner", toJson: toNull, includeIfNull: false)
+  @JsonKey(name: "current_owner", includeIfNull: false)
   User? currentOwner;
   @JsonKey(
-      name: "pet_owners",
-      fromJson: allOwnersFromJson,
-      toJson: toNull,
-      includeIfNull: false)
+    name: "pet_owners",
+    fromJson: allOwnersFromJson,
+    includeIfNull: false,
+  )
   List<PetOwnerHistory>? allOwners;
   @JsonKey(name: "pet_breed_id")
   int? petBreedId;
@@ -79,8 +78,6 @@ class Pet extends UpdatableModel<Pet> {
     this.petWeights,
     this.avatarUrl,
   }) : super(id);
-
-  static toNull(_) => null;
 
   factory Pet.fromJson(Map<String, dynamic> json) {
     return factory.fromJson(json);
@@ -131,7 +128,7 @@ class Pet extends UpdatableModel<Pet> {
     }
     if (json['pet_type_id'] != null) petTypeId = json['pet_type_id'] as int;
     if (json['gender'] != null) {
-      gender = _$enumDecodeNullable(_$GenderEnumMap, json['gender']);
+      gender = $enumDecodeNullable(_$GenderEnumMap, json['gender']);
     }
     if (json['dob'] != null) {
       dob = json['dob'] == null ? null : DateTime.parse(json['dob'] as String);

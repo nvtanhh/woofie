@@ -71,9 +71,9 @@ class CommentServiceModel extends BaseViewModel {
     snapshot!.listen(
       (event) {
         try {
-          Comment? comment = Comment.fromJson(
+          final Comment comment = Comment.fromJson(
               (GetMapFromHasura.getMap(event as Map)["comments"])[0]
-                  as Map<String, dynamic>);
+                  as Map<String, dynamic>,);
           printInfo(info: comment.content ?? "");
           if (canInsertToList(indexInsertToList, comment.id)) {
             pagingController.itemList?.insert(indexInsertToList, comment);
@@ -126,7 +126,7 @@ class CommentServiceModel extends BaseViewModel {
   }
 
   void onEditComment(
-      {required Comment oldComment, required Comment newComment}) {
+      {required Comment oldComment, required Comment newComment,}) {
     Comment? comment;
     run(
       // ignore: parameter_assignments

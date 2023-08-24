@@ -7,7 +7,7 @@ import 'package:meowoof/theme/ui_text_style.dart';
 class ItemTagUserWidget extends StatelessWidget {
   final User user;
 
-  const ItemTagUserWidget({Key? key, required this.user}) : super(key: key);
+  const ItemTagUserWidget({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

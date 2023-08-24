@@ -108,13 +108,13 @@ class AddPetWidgetModel extends BaseViewModel {
     if (pet.name == null || pet.name?.isEmpty == true) {
       _toastService.warning(
           message: LocaleKeys.add_pet_name_invalid.trans(),
-          context: Get.context!);
+          context: Get.context!,);
       return false;
     }
     if (pet.dob == null) {
       _toastService.warning(
           message: LocaleKeys.add_pet_age_invalid.trans(),
-          context: Get.context!);
+          context: Get.context!,);
       return false;
     }
     return true;
@@ -124,7 +124,7 @@ class AddPetWidgetModel extends BaseViewModel {
     final String fileName = basename(mediaFile.path);
     // get presigned URL
     final String? preSignedUrl = await _getPresignedAvatarPetUrlUsecase.run(
-        fileName, pet.uuid ??= const Uuid().v4());
+        fileName, pet.uuid ??= const Uuid().v4(),);
     // upload media to s3
     if (preSignedUrl != null) {
       printInfo(info: 'Uploading media to s3');

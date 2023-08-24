@@ -13,7 +13,7 @@ class PetItemShimmerWidget extends StatelessWidget {
         width: 165.w,
         height: 213.h,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.r), color: UIColor.white),
+            borderRadius: BorderRadius.circular(15.r), color: UIColor.white,),
         child: Stack(
           children: [
             Container(

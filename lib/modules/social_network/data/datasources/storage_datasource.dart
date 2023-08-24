@@ -48,35 +48,35 @@ class StorageDatasource {
         _urlParser.parse(AVATAR_USER_SUBFOLDER, {'user_uuid': userUuid});
 
     return _getPresignedUrl(
-        '$subFolder/$objectName', AVATAR_DEFAULT_BUCKET_NAME);
+        '$subFolder/$objectName', AVATAR_DEFAULT_BUCKET_NAME,);
   }
 
   Future<String> getPresignedChatMediaUrl(
-      String objectName, String chatRoomId) async {
+      String objectName, String chatRoomId,) async {
     final String subFolder =
         _urlParser.parse(CHAT_MEDIA_SUBFOLDER, {'room_id': chatRoomId});
 
     final url = await _getPresignedUrl(
-        '$subFolder/$objectName', CHAT_MEDIA_DEFAULT_BUCKET_NAME);
+        '$subFolder/$objectName', CHAT_MEDIA_DEFAULT_BUCKET_NAME,);
     return url!;
   }
 
   Future<String?> getPresignedUrlForPostMedia(
-      String objectName, String postUuid) async {
+      String objectName, String postUuid,) async {
     final userUuid = _loggedInUser.user!.uuid;
 
     final String subFolder = _urlParser.parse(
-        POST_MEDIA_SUBFOLDER, {'user_uuid': userUuid, 'post_uuid': postUuid});
+        POST_MEDIA_SUBFOLDER, {'user_uuid': userUuid, 'post_uuid': postUuid},);
 
     return _getPresignedUrl(
-        '$subFolder/$objectName', POST_MEDIA_DEFAULT_BUCKET_NAME);
+        '$subFolder/$objectName', POST_MEDIA_DEFAULT_BUCKET_NAME,);
   }
 
   Future<String?> getPresignedAvatarPetUrl(String fileName, String petUUID) {
     final userUuid = _loggedInUser.user!.uuid;
 
     final String subFolder = _urlParser.parse(
-        AVATAR_PET_SUBFOLDER, {'user_uuid': userUuid, 'pet_uuid': petUUID});
+        AVATAR_PET_SUBFOLDER, {'user_uuid': userUuid, 'pet_uuid': petUUID},);
 
     return _getPresignedUrl('$subFolder/$fileName', AVATAR_DEFAULT_BUCKET_NAME);
   }

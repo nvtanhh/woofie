@@ -10,7 +10,7 @@ class ReportDialogWidget extends StatelessWidget {
   final String? title;
   TextEditingController textEditingController = TextEditingController();
 
-  ReportDialogWidget({Key? key, this.title}) : super(key: key);
+  ReportDialogWidget({super.key, this.title});
 
   @override
   Widget build(BuildContext context) {

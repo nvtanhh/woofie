@@ -1,12 +1,7 @@
 # Custom
 .fvm/
-lib/configs/*_config.dart
-*.g.dart
-injector.config.dart
-fonts.gen.dart
-assets.gen.dart
-
 android/app/release/
+.env
 
 ###########################################################
 

@@ -13,11 +13,11 @@ class PetMenuActionWidget extends StatelessWidget {
   final ValueChanged<Pet> onPetBlock;
 
   const PetMenuActionWidget({
-    Key? key,
+    super.key,
     required this.pet,
     required this.onPetReport,
     required this.onPetBlock,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class PetMenuActionWidget extends StatelessWidget {
         margin: EdgeInsets.only(left: 20.w),
         padding: EdgeInsets.only(top: 5.h),
         decoration: BoxDecoration(
-            color: UIColor.holder, borderRadius: BorderRadius.circular(10.r)),
+            color: UIColor.holder, borderRadius: BorderRadius.circular(10.r),),
         child: const Center(
           child: MWIcon(
             MWIcons.moreHoriz,

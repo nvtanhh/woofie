@@ -16,10 +16,10 @@ class PetsWidget extends StatelessWidget {
   final Function(int) follow;
 
   const PetsWidget({
-    Key? key,
+    super.key,
     required this.pagingController,
     required this.follow,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

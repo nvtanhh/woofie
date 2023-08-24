@@ -14,12 +14,12 @@ class PostItemInListView extends StatelessWidget {
   final Function(Post)? onPostClick;
 
   PostItemInListView({
-    Key? key,
+    super.key,
     required this.post,
     this.onCommentClick,
     required this.onLikeClick,
     this.onPostClick,
-  }) : super(key: key) {
+  }) {
     post.isLiked ??= false;
   }
 

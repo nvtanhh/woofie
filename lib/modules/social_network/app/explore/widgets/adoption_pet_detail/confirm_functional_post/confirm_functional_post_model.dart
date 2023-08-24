@@ -123,7 +123,7 @@ class ConfirmGivePetModel extends BaseViewModel {
       () async {
         await _changePetOwnerUsecase.call(user, pet);
         await _closePostUsecase.run(post,
-            additionalData: user.toJsonString().replaceAll("\"", "'"));
+            additionalData: user.toJsonString().replaceAll('"', "'"),);
       },
       onSuccess: () {
         _refreshUser(_loggedInUser.user!);
@@ -145,7 +145,7 @@ class ConfirmGivePetModel extends BaseViewModel {
     await run(
       () async {
         await _closePostUsecase.run(post,
-            additionalData: pet.toJsonString().replaceAll("\"", "'"));
+            additionalData: pet.toJsonString().replaceAll('"', "'"),);
       },
       onSuccess: () {
         Get.back();

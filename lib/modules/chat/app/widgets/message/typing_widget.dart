@@ -10,8 +10,7 @@ class TypingWidget extends StatelessWidget {
   final User? chatPartner;
 
   const TypingWidget(
-      {Key? key, required this.isTyping, required this.chatPartner})
-      : super(key: key);
+      {super.key, required this.isTyping, required this.chatPartner,});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class TypingWidget extends StatelessWidget {
                 isSmallSize: true,
                 borderRadius: 8,
                 isActive: false,
-              )),
+              ),),
           Container(
             height: 30.h,
             padding: const EdgeInsets.symmetric(horizontal: 8),

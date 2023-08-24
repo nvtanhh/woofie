@@ -18,13 +18,13 @@ class WormFlushedPreviewWidget extends StatelessWidget {
   final Function onAddClick;
 
   const WormFlushedPreviewWidget({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     required this.wormFlushed,
     required this.isMyPet,
     required this.onAddClick,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class WormFlushedPreviewWidget extends StatelessWidget {
     list.add(header);
     list.add(SizedBox(
       height: 10.h,
-    ));
+    ),);
     for (final worm in wormFlushed) {
       list.add(SizedBox(
         height: 50.h,
@@ -108,7 +108,7 @@ class WormFlushedPreviewWidget extends StatelessWidget {
                 children: [
                   Text(
                     FormatHelper.formatDateTime(worm.date,
-                        pattern: "dd/MM/yyyy"),
+                        pattern: "dd/MM/yyyy",),
                     style: UITextStyle.text_body_12_w600,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -127,7 +127,7 @@ class WormFlushedPreviewWidget extends StatelessWidget {
             )
           ],
         ),
-      ));
+      ),);
     }
     list.add(
       const MWIcon(

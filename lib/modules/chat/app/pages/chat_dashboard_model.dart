@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meowoof/configs/backend_config.dart';
+import 'package:meowoof/configs/app_config.dart';
 import 'package:meowoof/core/logged_user.dart';
 import 'package:meowoof/core/services/navigation_service.dart';
 import 'package:meowoof/injector.dart';
@@ -54,7 +54,9 @@ class ChatManagerModel extends BaseViewModel {
         await _getMessageSetting();
       }
       final chatRooms = await _getChatRoomsUseCase.call(
-          skip: pageKey, isEveryoneCanChatWithMe: _isEveryoneCanChatWithMe);
+        skip: pageKey,
+        isEveryoneCanChatWithMe: _isEveryoneCanChatWithMe,
+      );
       chatRooms.forEach(_getMoreChatRoomInformation);
       final isLastPage = chatRooms.length < _pageSize;
       if (isLastPage) {
@@ -96,9 +98,11 @@ class ChatManagerModel extends BaseViewModel {
   }
 
   Future<void> _getMembersSync(ChatRoom room) async {
-    room.members = await Future.wait(room.memberUuids
-        .map((userUuid) async => _getUserWithUuid(userUuid))
-        .toList());
+    room.members = await Future.wait(
+      room.memberUuids
+          .map((userUuid) async => _getUserWithUuid(userUuid))
+          .toList(),
+    );
   }
 
   void goToRequestMessagePage() {
@@ -113,14 +117,15 @@ class ChatManagerModel extends BaseViewModel {
 
   bool _isCanRefesh() {
     return DateTime.now().difference(_lastRefeshTime).inSeconds >
-        BackendConfig.REFRESH_INTERVAL_LIMIT_SECOND;
+        AppConfig.REFRESH_INTERVAL_LIMIT_SECOND;
   }
 
   void onChatRoomPressed(ChatRoom room) {
     injector<NavigationService>().navigateToChatRoom(
-        room: room,
-        onAddNewMessages: (List<Message> messages) =>
-            _onChatRoomAddNewMessage(room, messages));
+      room: room,
+      onAddNewMessages: (List<Message> messages) =>
+          _onChatRoomAddNewMessage(room, messages),
+    );
   }
 
   void _onChatRoomAddNewMessage(ChatRoom room, List<Message> messages) {
